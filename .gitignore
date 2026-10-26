@@ -218,3 +218,20 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# SceneGuard: local datasets, generated output, model weights and secrets
+/data/
+/outputs/
+/runs/
+/weights/
+/models/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.engine
+*.mp4
+*.avi
+*.mkv
+*.mov
+.env.*
