@@ -1,7 +1,7 @@
 # Codex 다음 작업 — iSafetyBench 데이터 적합성 조사 (Phase 1B)
 
 - 날짜: 2026-10-26
-- 상태: 사용자 승인된 **다음 작업**, 실제 다운로드/검증 아직 미실행. 데이터 접근/라이선스 점검부터 수행.
+- 상태(2026-10-27): **Phase 1B 감사 실행 완료·사용자 검수 대기**. 결과: [ISAFETYBENCH_SAMPLE_AUDIT.md](data/ISAFETYBENCH_SAMPLE_AUDIT.md). 아래는 실행 범위의 기록이며 모델 구현 승인으로 해석하지 않는다.
 - 반드시 읽을 문서: `AGENTS.md`, `docs/decisions/ADR-0002-reconsider-safety-dataset.md`, `docs/WORK_PLAN.md`, `docs/data/ISAFETYBENCH_AUDIT_PLAN.md`
 
 ## 배경

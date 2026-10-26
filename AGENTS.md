@@ -3,7 +3,7 @@
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
 ## 현재 단계와 목표
-- 현재 단계: 기존 Safe and Unsafe Behaviours 샘플 감사 완료 → **패널 상태 분류 메인 MVP 제외 → iSafetyBench 후보 데이터 감사 예정(Phase 1B)**.
+- 현재 단계: 기존 Safe and Unsafe Behaviours 샘플 감사 완료 → **패널 상태 분류 메인 MVP 제외 → iSafetyBench Phase 1B 감사 완료·사용자 검수 대기**.
 - 이전 감사 데이터: Safe and Unsafe Behaviours (검사 결과와 로컬 자료 보존). **새 후보: iSafetyBench, 아직 미확정.** 기타 데이터셋은 필요 시 재검토.
 - 모델·아키텍처는 **미확정**. YOLO, BoT-SORT, ConvLSTM, VLM을 익숙하다는 이유만으로 필수 도입하지 않는다.
 - 장비: 로컬 RTX 3080. OS/VRAM/CUDA/패키지 버전은 확인하지 않았으므로 측정 후 기록.
@@ -21,7 +21,7 @@
 10. **역할 분담:** Codex는 조사 자동화·스크립트·분석·기록 초안을 담당하고, 사용자는 영상 의미 검수·요구사항/모델 선택의 최종 결정을 담당한다.
 
 ## 지금 바로 수행할 작업
-**현재 지시:** `docs/decisions/ADR-0002-reconsider-safety-dataset.md`와 `docs/CODEX_NEXT_TASK.md`를 읽고 iSafetyBench의 실제 파일·라벨·라이선스와 소량 샘플을 감사한다. **산출물:** `docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md`. `docs/CODEX_FIRST_TASK.md`는 이미 수행한 기존 데이터 감사의 이력이다. 사용자 검토 전에 학습이나 VLM 서버 구축을 시작하지 않는다.
+**현재 상태:** Phase 1B 결과는 `docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md`에 기록했다. `docs/CODEX_NEXT_TASK.md`는 실행한 감사 지시이며, 다음에는 감사 문서의 사용자 검수 항목과 G1B 조건을 확인한다. iSafetyBench는 Conditional Go 의견으로 최종 채택 전이다. `docs/CODEX_FIRST_TASK.md`는 이미 수행한 기존 데이터 감사의 이력이다. 사용자 검토 전에 학습이나 VLM 서버 구축을 시작하지 않는다.
 
 ## 세션 종료 전
 - `docs/HANDOFF.md`의 '최근 확인 결과', '남은 문제', '다음 결정'을 업데이트.

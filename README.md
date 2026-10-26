@@ -10,7 +10,8 @@
 - ✅ Safe and Unsafe Behaviours 영상 8개 소량 다운로드·라벨·디코딩 감사 ([결과](docs/data/SAMPLE_AUDIT.md))
 - ✅ 패널 상태 분류는 메인 MVP에서 제외 ([결정 근거](docs/decisions/ADR-0002-reconsider-safety-dataset.md))
 - ✅ **제품 방향 설정:** 이미 선택한 짧은 사고·이상상황 영상에 대한 복합 행동/사건 분석 및 안전 담당자 검토 지원 ([ADR-0003](docs/decisions/ADR-0003-incident-review-product-direction.md))
-- ⬜ **iSafetyBench 실제 데이터 검증(다음 할 일)**: 출처·라이선스·정답·소량 영상 감사 (메인 데이터 확정 아님)
+- ✅ **iSafetyBench Phase 1B 감사:** 주석 1,100개·영상 8개 검증, Conditional Go 제안 ([결과](docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md))
+- ⬜ 사용자 영상 의미 검수·권리/평가 조건 보완·G1B 결정 (메인 데이터 확정 아님)
 - ⬜ 첫 MVP 대상 안전 이벤트 결정
 - ⬜ 최종 모델/아키텍처 결정 및 자체 실험
 - ⬜ 추론 최적화·서비스 운영·포트폴리오 완성
@@ -22,7 +23,7 @@
 
 ## 기술과 데이터 — 모두 후보
 - 기존 감사 데이터: [Safe and Unsafe Behaviours](https://huggingface.co/datasets/Voxel51/Safe_and_Unsafe_Behaviours) ([결과](docs/data/SAMPLE_AUDIT.md)) — 연구 자료 보존, 메인 확정 아님
-- 새 검증 후보: [iSafetyBench](https://huggingface.co/datasets/raiyaanabdullah/isafety-bench) — 실제 미디어·주석·라이선스 확인 전
+- 새 검증 후보: [iSafetyBench](https://huggingface.co/datasets/raiyaanabdullah/isafety-bench) — 8개 감사 완료, 사용자 검수·원 영상 권리 확인 대기
 - 추가 후보: [CMOT](https://github.com/XZ-YAN/CMOT-Dataset), [Construction-PPE](https://docs.ultralytics.com/datasets/detect/construction-ppe)
 - CV/시간 분석: YOLO 계열, 필요시 추적기(BoT-SORT 등), 행동 인식 모델
 - 언어·상황 설명: VLM 후보
@@ -33,8 +34,8 @@
 
 ## 바로 시작하는 방법
 1. [Codex 작업 규칙](AGENTS.md), [프로젝트 목표](docs/PROJECT_CHARTER.md), [작업 계획](docs/WORK_PLAN.md)을 읽는다.
-2. [새 Codex 작업 지시](docs/CODEX_NEXT_TASK.md)에 따라 iSafetyBench의 출처·라벨·접근·사용 조건과 가능한 샘플 6~10개를 감사한다.
-3. [후보 데이터 감사 계획](docs/data/ISAFETYBENCH_AUDIT_PLAN.md)에 따라 `docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md` 작성.
+2. [Phase 1B 감사 결과](docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md)에서 샘플별 관찰·보류 태그·근거 시점을 확인한다.
+3. 로컬 영상 8개를 사람이 검수하고, 라벨 보정·장면 경계·사용 조건·평가 분할의 남은 항목을 보완한다.
 4. 사람이 실제 영상을 검수하고 **Go / Conditional Go / No-Go** 결정을 내린다.
 5. 첫 이벤트·평가 단위를 확정한 뒤 [ADR](docs/decisions/ADR-0001-research-first.md)에 근거를 쌓아 모델을 선정한다.
 

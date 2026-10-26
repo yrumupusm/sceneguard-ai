@@ -1,6 +1,6 @@
 # iSafetyBench 후보 데이터 감사 계획
 
-- 상태: 실파일·정답 스키마 검증 전
+- 상태(2026-10-27): 실파일 8개·전체 정답 스키마 감사 완료. [결과](ISAFETYBENCH_SAMPLE_AUDIT.md)는 Conditional Go 의견이며 사용자 검수·원 영상 권리 보완은 대기 중.
 - 논문: https://openaccess.thecvf.com/content/ICCV2025W/VISION%2725/html/Abdullah_iSafetyBench_A_video-language_benchmark_for_safety_in_industrial_environment_ICCVW_2025_paper.html
 - 데이터 후보: https://huggingface.co/datasets/raiyaanabdullah/isafety-bench
 - 저장소 후보: https://github.com/iSafetyBench/data
