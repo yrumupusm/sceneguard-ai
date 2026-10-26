@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: Phase 1 초기 샘플 감사 완료·패널 중심 MVP 제외 → **Phase 1B iSafetyBench 후보 감사 예정** (2026-10-26)
+- 상태: **사고 영상 분석·검토 지원** 제품 목표 설정 → **Phase 1B iSafetyBench 후보 감사 예정** (2026-10-27)
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -32,7 +32,7 @@
 
 ## Phase 1B — 새 후보 데이터(iSafetyBench) 적합성 확인
 
-근거: [ADR-0002](decisions/ADR-0002-reconsider-safety-dataset.md). 이전 8개 영상의 Conditional Go·검사 결과는 삭제하지 않는다.
+근거: [ADR-0002](decisions/ADR-0002-reconsider-safety-dataset.md), [ADR-0003](decisions/ADR-0003-incident-review-product-direction.md), [제품 업무 흐름](PRODUCT_WORKFLOW.md). 이전 8개 영상의 Conditional Go·검사 결과는 삭제하지 않는다.
 
 - [x] 기존 패널 닫힘/열림 이미지 비교로 상태 감지 대상 확인(일부 이미지 검수)
 - [x] **패널 상태 분류를 메인 MVP에서 제외** 결정
@@ -40,6 +40,7 @@
 - [ ] 영상별 클래스/행동 정답/설명/원본 ID·중복 여부 확인
 - [ ] 소량 영상(가능하면 6~10개)만 확보하여 실제 장면과 공식 주석 대조
 - [ ] 사고·행동 분석을 사람이 검수 가능한 문제로 정의할 수 있는지 확인
+- [ ] 짧은 영상에서 복수 행동, 사건 설명, 근거 후보, 검토 보조에 쓸 수 있는 필드/추가 라벨 요구 확인
 - [ ] `docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md` 작성 및 Go / Conditional Go / No-Go 의견
 - [ ] 사용자 영상 의미 검수, 메인 데이터/문제 범위 결정
 
