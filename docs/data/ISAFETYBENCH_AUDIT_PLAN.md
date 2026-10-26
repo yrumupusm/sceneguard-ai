@@ -1,0 +1,30 @@
+# iSafetyBench 후보 데이터 감사 계획
+
+- 상태: 실파일·정답 스키마 검증 전
+- 논문: https://openaccess.thecvf.com/content/ICCV2025W/VISION%2725/html/Abdullah_iSafetyBench_A_video-language_benchmark_for_safety_in_industrial_environment_ICCVW_2025_paper.html
+- 데이터 후보: https://huggingface.co/datasets/raiyaanabdullah/isafety-bench
+- 저장소 후보: https://github.com/iSafetyBench/data
+- 이용 조건과 실제 파일 접근 가능 여부는 **Codex가 재확인할 것**
+
+## 왜 검토하는가
+고정형 공장 CCTV의 패널 상태만 분류하는 대신, 사고·정상 작업의 **복합 행동 인식, 사건 설명, 증거 기반 검토 보조**의 가능성을 조사한다. 새 데이터로 메인 과제를 바꾸기 전 적합성 감사가 필수다.
+
+## 확인 항목
+| 항목 | 확인 방법/기록할 내용 |
+| --- | --- |
+| 접근 | 영상 URL/다운로드 여부/파일 형식/실제 디코딩 가능 여부 |
+| 권리 | 데이터셋 라이선스·원본 플랫폼 영상 권리·재배포 여부 |
+| 정답 | 영상별 정상/위험, 행동 다중 정답, 설명, 위치·구간 정보 존재 여부 |
+| 샘플 | 정상/위험 및 행동 유형별 6~10개, 영상 ID·기본 메타데이터 |
+| 문제 정의 | 어떤 사건이 시각적 근거만으로 판단 가능하고 어떤 판단은 불가능한가 |
+| 평가 | 영상/다중행동 분류와 설명 검수 가능성, 행동 시점·추적 평가의 추가 주석 여부 |
+| 누수 | 동일 원본 영상 파생 클립, 공통 장면, 분할의 독립성 |
+| 자원 | RTX 3080에서 처리 가능한 전처리·추론 전략은 추후 실험으로 검증 |
+
+## 기대 산출물
+`docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md` 와 다음 행동 후보 제안. 실물 파일 확보 전 성능·범위·모델 도입을 확정하지 않는다.
+
+## 게이트
+- GO: 접근·라이선스·정답·영상 내용이 초기 문제/평가 단위를 뒷받침
+- CONDITIONAL GO: 핵심 조건을 일부만 확인; 보완 계획이 구체적
+- NO-GO: 권리/접근/정답/관찰 가능성에서 중대한 장애
