@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: **사고 영상 분석·검토 지원** 제품 목표 설정 → **Phase 1B 감사 완료·사용자 검수 대기** (2026-10-27)
+- 상태: **산업 CCTV 영상과 직무 적합성 중심으로 데이터 재검토 → Phase 1C SteelBench 샘플 감사 예정** (2026-10-27)
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -49,7 +49,19 @@
 
 **Gate G1B:** 접근·사용 조건·라벨·시각적 정보가 목표와 평가 단위를 뒷받침하는지 확인 후 첫 사건 분석 MVP 채택 여부 결정. 기술 도입은 G2에서 결정.
 
-Codex: [다음 업무 지시](CODEX_NEXT_TASK.md) / [감사 계획](data/ISAFETYBENCH_AUDIT_PLAN.md).
+이 단계의 감사 지시 이력은 Git에서 확인할 수 있으며, 현재 [다음 업무 지시](CODEX_NEXT_TASK.md)는 SteelBench 소량 테스트로 갱신되었다. 기존 iSafetyBench 감사 결과는 보존한다.
+
+## Phase 1C — SteelBench 산업 CCTV 소량 검증 (현재)
+
+자료: [R-003 후보 조사](research/0003-cctv-dataset-shortlist.md) · [Codex 지시](CODEX_NEXT_TASK.md). **SteelBench 메인 채택 전**.
+
+- [ ] 데이터 배포 범위, 실제 MP4 접근 및 라이선스·프라이버시 조건 확인
+- [ ] 정답 JSON과 매핑되는 CCTV 영상 4~6개만 로컬 검사 (해상도·FPS·디코딩)
+- [ ] PPE·행동·안전 태그의 관찰 가능성, CCTV 구도/가림 및 시간 정답 여부 기록
+- [ ] `docs/data/STEELBENCH_SAMPLE_AUDIT.md` 작성, 사용자 의미 검수 질문 및 Go/Conditional Go/No-Go 제안
+- [ ] 사용자 검수 후 메인 데이터/첫 평가 단위 결정
+
+**Gate G1C:** 공개 데이터 범위 내에서 실제 CCTV 영상·주석·이용 조건이 목표와 맞는지 확인한다. 그 전 모델 학습·추론·UI 구현 없음.
 
 ## Phase 2 — 요구·평가 정의와 모델 선택
 - [ ] 목표: 영상 분류 / 이벤트 구간 / 객체별 추적 중 평가 단위 확정
