@@ -7,18 +7,21 @@
 ## 현재 상태 (2026-10-26)
 - ✅ 프로젝트 목표 및 개발·기록 원칙 정리
 - ✅ 선행연구 요약: [Unsafe-Net 등 R-001](docs/research/0001-literature-and-initial-hypotheses.md), [iSafetyBench R-002](docs/research/0002-isafetybench-review.md)
-- ⬜ **실제 데이터 검증(다음 할 일)**: 대표 정상·위험 영상 소량 확보, 라벨 매핑과 이용 조건 확인
+- ✅ Safe and Unsafe Behaviours 영상 8개 소량 다운로드·라벨·디코딩 감사 ([결과](docs/data/SAMPLE_AUDIT.md))
+- ✅ 패널 상태 분류는 메인 MVP에서 제외 ([결정 근거](docs/decisions/ADR-0002-reconsider-safety-dataset.md))
+- ⬜ **iSafetyBench 실제 데이터 검증(다음 할 일)**: 출처·라이선스·정답·소량 영상 감사 (아직 새 메인 데이터로 확정하지 않음)
 - ⬜ 첫 MVP 대상 안전 이벤트 결정
 - ⬜ 최종 모델/아키텍처 결정 및 자체 실험
 - ⬜ 추론 최적화·서비스 운영·포트폴리오 완성
 
 ## 프로젝트 문제
-산업현장 CCTV의 위험 **후보 이벤트**를 찾아 발생 구간과 근거 영상을 제시하고, 사람이 안전상황을 검토할 수 있도록 설명을 제공한다. 단, 법규상 위반·작업 권한·허용 적재량은 영상만으로 확정하지 않는다. 실제 사용자 요구를 인터뷰해 검증한 단계는 아니다.
+산업현장 영상에서 영상으로 확인 가능한 안전 관련 **행동·사건 후보를 분석**하고, 사람이 검토할 수 있도록 판단 근거와 설명을 제공하는 소프트웨어를 탐색한다. 실시간 CCTV 감지와 사고 영상 사후 분석 중 어떤 범위가 적합한지는 실제 데이터 감사 결과로 결정한다. 단, 법규상 위반·작업 권한·허용 적재량은 영상만으로 확정하지 않는다. 실제 사용자 요구를 인터뷰해 검증한 단계는 아니다.
 
-최초 이벤트 후보: **지정 통로 이탈**, **설비 패널 개방**. 실제 샘플을 확인한 뒤 채택/보류한다.
+기존 데이터의 **설비 패널 열린/닫힌 상태**는 시각적으로 확인했지만, 프로젝트 메인 MVP에서는 제외했다. 복합 안전 행동 및 사고 영상 분석은 차기 후보이며 미확정이다.
 
 ## 기술과 데이터 — 모두 후보
-- 우선 확인할 데이터: [Safe and Unsafe Behaviours](https://huggingface.co/datasets/Voxel51/Safe_and_Unsafe_Behaviours) ([원본 연구 데이터](https://data.mendeley.com/datasets/xjmtb22pff/1))
+- 기존 감사 데이터: [Safe and Unsafe Behaviours](https://huggingface.co/datasets/Voxel51/Safe_and_Unsafe_Behaviours) ([결과](docs/data/SAMPLE_AUDIT.md)) — 연구 자료 보존, 메인 확정 아님
+- 새 검증 후보: [iSafetyBench](https://huggingface.co/datasets/raiyaanabdullah/isafety-bench) — 실제 미디어·주석·라이선스 확인 전
 - 추가 후보: [CMOT](https://github.com/XZ-YAN/CMOT-Dataset), [Construction-PPE](https://docs.ultralytics.com/datasets/detect/construction-ppe)
 - CV/시간 분석: YOLO 계열, 필요시 추적기(BoT-SORT 등), 행동 인식 모델
 - 언어·상황 설명: VLM 후보
@@ -29,8 +32,8 @@
 
 ## 바로 시작하는 방법
 1. [Codex 작업 규칙](AGENTS.md), [프로젝트 목표](docs/PROJECT_CHARTER.md), [작업 계획](docs/WORK_PLAN.md)을 읽는다.
-2. [첫 Codex 작업 지시](docs/CODEX_FIRST_TASK.md)에 따라 샘플 6~10개의 접근성·라벨·행동을 감사한다.
-3. [데이터 감사 템플릿](docs/data/SAMPLE_AUDIT_TEMPLATE.md)을 복제하여 `docs/data/SAMPLE_AUDIT.md` 작성.
+2. [새 Codex 작업 지시](docs/CODEX_NEXT_TASK.md)에 따라 iSafetyBench의 출처·라벨·접근·사용 조건과 가능한 샘플 6~10개를 감사한다.
+3. [후보 데이터 감사 계획](docs/data/ISAFETYBENCH_AUDIT_PLAN.md)에 따라 `docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md` 작성.
 4. 사람이 실제 영상을 검수하고 **Go / Conditional Go / No-Go** 결정을 내린다.
 5. 첫 이벤트·평가 단위를 확정한 뒤 [ADR](docs/decisions/ADR-0001-research-first.md)에 근거를 쌓아 모델을 선정한다.
 
