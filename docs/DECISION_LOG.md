@@ -9,6 +9,7 @@
 | 2026-10-26 | Safe and Unsafe Behaviours 8개 영상 샘플 감사 완료(6개 부합 관찰, 2개 보류) | 완료 / Conditional Go | [SAMPLE_AUDIT](data/SAMPLE_AUDIT.md) | 전체 영상 사람 검수는 아님 |
 | 2026-10-26 | 패널 상태 분류는 SceneGuard 메인 MVP에서 제외 | **결정** | [ADR-0002](decisions/ADR-0002-reconsider-safety-dataset.md) | 열린/닫힌 상태는 확인했으나 복합 행동 분석 목표와 범위 불일치 |
 | 2026-10-26 | iSafetyBench로 사고·복합 행동 영상 분석 가능성 재검토 | **조사 후보, 미확정** | [ADR-0002](decisions/ADR-0002-reconsider-safety-dataset.md) | 영상·라벨·라이선스 확인 전 데이터 확정 금지 |
+| 2026-10-27 | 첫 제품 활용 목표를 사고·이상상황 영상의 **분석 및 사람 검토 지원**으로 정함 | **제품 방향 채택 / 구현 미검증** | [ADR-0003](decisions/ADR-0003-incident-review-product-direction.md) · [업무 흐름](PRODUCT_WORKFLOW.md) | 입력은 선택된 짧은 영상; 실시간 예방은 후순위. 메인 데이터·모델은 미확정 |
 | 미정 | 최초 MVP 사건, 평가 단위, 모델 | 미결정 | Phase 1 샘플 감사 후 결정 | 사용자 검토 필수 |
 
 결정을 변경할 때는 기존 ADR을 삭제하지 않고 후속 ADR로 상태와 이유를 연결한다.
