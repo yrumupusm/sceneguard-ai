@@ -10,6 +10,7 @@
 
 | 후보 | 실제 카메라/현장 | 주석 특성 | 공개 영상 접근성 | 제약 | 다음 판단 |
 | --- | --- | --- | --- | --- | --- |
+| **ACCIDENT (CVPRW 2026)** | 실제 **도로 CCTV** 사고 영상, 산업안전 현장은 아님 | 실제 2,027 / 합성 2,211 클립. 사고 **시각·화면 위치·충돌 유형** 주석; 시간/공간/유형 3과제. CV/VLM baseline 제공 | 공식 Kaggle `picekl/accident`를 인증된 Kaggle CLI로 다운로드(직접 샘플 미검증) | 연구 전용 제한·클립 원 출처 라이선스/개별 재게시 조건·Kaggle 로그인 확인 필요. 프로젝트를 **교통 CCTV**로 바꾸면 주제 변경 | **강력 대안**: 산업안전 주제를 유지할지, 교통 CCTV 사고 관제로 바꿀지 사용자 결정 후 검증 |
 | **SteelBench (2026)** | 실제 제철소 64대 고정 CCTV / 16개 구역 | 1,345개 15초 클립, 작업자 행동 25종, PPE, 안전규칙, 가림·조명, 검수 출처 기록 | **전체 영상 공개 아님. MP4 샘플 50개(594MB), 그중 정답 JSON 47개. 전체는 8프레임/클립 JPG와 정답·매니페스트 중심** | CC BY-NC 4.0, 원 제철소 영상의 research-only 사용 계약·프라이버시 조건 확인 필요. 전부 장시간 비디오 정답 아님 | **우선 검토**: sample/의 주석 대응 클립 소량을 실제 다운로드·재생. 학습용 전체 영상으로 오인하지 말 것 |
 | **CMA (Construction Meta Action, 2023)** | 실제 건설현장 영상, 고정 CCTV 여부 **미확인** | 1,595개 짧은 작업 행동 클립, 7종 행동 | Baidu Netdisk(공식 Github에서 코드 제공). 국내 다운로드 가능 여부 미확인 | 연구용, 비상업 사용. 사건 발생 시점/객체 주석 수준 확인 필요 | **2차 검토**: Baidu 접근과 구도·주석 샘플을 먼저 확인 |
 | **MEVA (2021)** | 현실적인 다중 고정 카메라와 일부 드론/다른 촬영 데이터 | 사람/차량 행동, 공개 시간적 행동 탐지 주석 | AWS 공개 S3, 지상 카메라 328시간(516GB) 중 **소량 선택 가능성 확인 필요** | **산업 안전 특화 아님**, 대부분 시나리오 연출·도심 테스트시설 | 시간 구간 자동 탐지/오탐 측정 목적의 **보조 데이터 후보** |
@@ -29,6 +30,8 @@
 
 ## 다음 검증 제안(구현·다운로드는 아직 안 함)
 
+**우선 결정 질문:** 산업안전 CCTV를 유지한다면 SteelBench → CMA 순서, **교통 CCTV 사고 탐지로 전환해도 된다면 ACCIDENT를 별도 최우선 후보**로 감사한다. 서로 다른 도메인의 성능을 혼합 평가하지 않는다.
+
 **1단계: SteelBench** 데이터 카드·manifest·sample 목록·GT JSON을 고정 revision에서 확인. 실제 다운로드는 권리 조건 확인 후 정답 매핑되는 4~6개 MP4만 로컬로; 카메라 구도, 작업자 크기, 행동/안전 태그, 주석 모호성, 근거 구간 표시 가능성 평가. 50개 전량/전체 JPG 다운로드 금지.
 
 **2단계: CMA** 배포 접근 가능 여부, CCTV와 비CCTV 영상 비율, 행동 클래스·실제 정답을 파일 샘플로 확인. 접근 불가 시 MEVA/VIRAT으로 전환.
@@ -36,6 +39,9 @@
 **3단계: 문제 정의 확인** CCTV 실시간 경보가 핵심인가, 녹화된 CCTV에서 이벤트 후보를 검출해 검토 지원하는 것이 핵심인가? 두 경우에 요구하는 정답(연속 영상의 시간 GT / 클립 행동 GT)이 다름. 사용자와 Gate에서 확정. 모델 구현은 이후.
 
 ## 출처
+- ACCIDENT CVPRW 2026 (2,027 real + 2,211 synthetic / time, location, collision GT): https://openaccess.thecvf.com/content/CVPR2026W/AUTOPILOT/html/Picek_ACCIDENT_A_Benchmark_Dataset_for_Vehicle_Accident_Detection_from_Traffic_CVPRW_2026_paper.html
+- ACCIDENT 프로젝트/공식 코드/다운로드: https://accidentbench.github.io/ ; https://github.com/accidentbench/ACCIDENT ; https://www.kaggle.com/datasets/picekl/accident
+- ACCIDENT 공개 주석/영상 권리 설명(논문 보충자료): https://openaccess.thecvf.com/content/CVPR2026W/AUTOPILOT/supplemental/Picek_ACCIDENT_A_Benchmark_CVPRW_2026_supplemental.pdf
 - SteelBench (데이터 카드, 배포 범위 및 조건): https://huggingface.co/datasets/steelbench/SteelBench
 - SteelBench 2026 논문: https://arxiv.org/abs/2607.05264
 - CMA 공식 연구 저장소: https://github.com/S1mpleyang/ConstructionActionRecognition
