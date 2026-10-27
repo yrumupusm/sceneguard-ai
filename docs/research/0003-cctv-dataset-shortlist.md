@@ -28,6 +28,13 @@
 5. **AI-Hub 고소작업 데이터셋은 웹페이지에 자료 유형을 이미지/JPG로 표기**. 구축에 사용한 371시간 영상이 곧 다운로드 가능한 연속 MP4를 의미하는 건 아니다.
 6. **실제 제품 포트폴리오**: 데이터 라이선스가 CC BY-NC / 연구 전용이면 공개 데모/미디어 업로드 또는 상업적 사용은 별도 검토. CCTV 촬영 대상 프라이버시 주의.
 
+## 접근 검증 우선순위 재조정 (2026-10-27)
+
+- **SteelBench:** [로컬 접근 감사](../data/STEELBENCH_SAMPLE_AUDIT.md)에서 공식 HF API, README, LICENSE 및 sample 경로가 모두 HTTP 401. 0개 확보. 별도 공식 재공개 없이는 진행 보류(데이터 내용 자체 No-Go 아님).
+- **ACCIDENT:** [공식 GitHub의 데이터 설정](https://github.com/accidentbench/ACCIDENT/blob/main/dataset/README.md)은 Kaggle `picekl/accident` + 인증된 CLI를 요구. [공식 다운로드 스크립트](https://github.com/accidentbench/ACCIDENT/blob/main/dataset/download_dataset.sh)는 `kaggle datasets download -d`로 **전체 ZIP**을 다운로드하므로 소량 감사에 **그대로 실행하지 않음**. Kaggle 개별 파일 접근/실제 영상/공개 정답은 아직 로컬 실측 전.
+- **중요한 정답 차이:** [ACCIDENT @ CVPR 공식 대회](https://www.kaggle.com/competitions/accident/overview)는 실제 영상의 **라벨 있는 훈련 자료를 제공하지 않는다고 명시**. 논문에서 기술한 실제 CCTV 2,027개 사고 시점·위치·유형 주석 전체가 다운로드 가능한 훈련/평가 정답이라는 뜻으로 오해하지 않음. 대회 자료와 별도 [Kaggle dataset](https://www.kaggle.com/datasets/picekl/accident)의 메타데이터/파일을 직접 대조해야 함.
+- **다음 과업:** `../CODEX_NEXT_TASK.md`에 따라 ACCIDENT의 인증/권리/개별 파일 접근 우선 검증. 데이터셋 학습 및 본격 제품 구현 전, CCTV 도메인(산업 vs 교통) 최종 선택은 사용자에게 남김.
+
 ## 다음 검증 제안(구현·다운로드는 아직 안 함)
 
 **우선 결정 질문:** 산업안전 CCTV를 유지한다면 SteelBench → CMA 순서, **교통 CCTV 사고 탐지로 전환해도 된다면 ACCIDENT를 별도 최우선 후보**로 감사한다. 서로 다른 도메인의 성능을 혼합 평가하지 않는다.
