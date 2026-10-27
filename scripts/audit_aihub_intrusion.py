@@ -27,6 +27,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source',type=Path,default=ROOT/'data/TS_침입')
     parser.add_argument('--ids',nargs='+',default=DEFAULT_IDS)
+    parser.add_argument('--append',action='store_true',help='Preserve earlier samples, maximum ten total')
     args=parser.parse_args()
     if not 1<=len(set(args.ids))<=10 or any(not re.fullmatch(r'\d{3}',s) for s in args.ids):
         parser.error('Select 1–10 unique three-digit IDs')
@@ -34,7 +35,11 @@ def main():
     save(OUT/'inventory.json',{'source_files':[{'name':p.name,'bytes':p.stat().st_size} for p in files],
         'label_candidates':[str(p.relative_to(ROOT/'data')) for p in (ROOT/'data').rglob('E01_*.json')]})
     ffmpeg=imageio_ffmpeg.get_ffmpeg_exe()
-    results=[]
+    results=json.loads((OUT/'manifest.json').read_text()) if args.append and (OUT/'manifest.json').exists() else []
+    requested={f'E01_{suffix}.mp4' for suffix in args.ids}
+    results=[r for r in results if r['name'] not in requested]
+    if len(results)+len(set(args.ids))>10:
+        parser.error('Append would exceed ten audited videos')
     for suffix in args.ids:
         path=args.source/f'E01_{suffix}.mp4'
         stream=imageio_ffmpeg.read_frames(str(path),pix_fmt='rgb24',output_params=['-fps_mode','passthrough'])
