@@ -5,7 +5,7 @@
 
 | 후보 | 적합성과 비용 | 선택 |
 | --- | --- | --- |
-| TorchVision SSDLite320 MobileNetV3 Large COCO_V1 | 약 3.4M 파라미터/13.4MB, 고정 320 입력. 작은 검출기로 최소 파이프라인 진단 가능; 작은 사람 축소 손실 위험 큼 | 이번 첫 모델. 학습 없이 person만 출력 |
+| TorchVision SSDLite320 MobileNetV3 Large COCO_V1 | 약 3.4M 파라미터/13.4MiB, 고정 320 입력. 작은 검출기로 최소 파이프라인 진단 가능; 작은 사람 축소 손실 위험 큼 | 이번 첫 모델. 학습 없이 person만 출력 |
 | YOLOv8n | 640 입력의 작은 모델 후보; 작은 사람 보존에 상대적으로 유리할 가능성이나 직접 비교 미실행. 별도 패키지와 AGPL/Enterprise 이용 조건 고려 | 설치·실행 보류 |
 | TorchVision FCOS ResNet50 FPN | 더 큰 해상도/백본 대안. 동일 프레임워크로 바꿀 수 있지만 가중치·연산 비용 증가 | 첫 smoke test 이전 복수 모델 설치 금지, 후속 근거 후 검토 |
 
@@ -20,3 +20,7 @@
 - PyAV의 `frame.pts * frame.time_base`로 원본 시각 유지. [시간 API](https://pyav.org/docs/stable/api/time.html). FPS로 정답 인덱스를 보정하지 않는다.
 
 실측 모델 SHA·정확한 용량·패키지 버전·GPU 메모리·처리 속도는 실행 후 실험 문서에 기록한다. 검출 크기/가림 실패가 주원인이면 고해상도 검출을 검토하고, 연결 실패가 주원인일 때만 tracker 보강을 검토한다.
+
+## 첫 실행 후 판단
+
+[EXP-0001](../experiments/EXP-0001-phase2a-cv-baseline.md)에서 4개 smoke와 007 전체 클립을 실행했다. 030 smoke 사람 검출 1/480프레임, 031 smoke 0/480프레임, 007 full 312/4171프레임으로 사건 후보가 생성되지 않았다. 이 비율은 사람 정답 기반 recall이 아니다. 현재 SSDLite320/score 0.5 설정을 메인 감지 모델로 채택하지 않고, 다음 비교는 검출 해상도/가림 대응을 우선 후보로 둔다. 더 복잡한 tracker나 학습의 효과를 이번 결과로 입증하지 않았다.

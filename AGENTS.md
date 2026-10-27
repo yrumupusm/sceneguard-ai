@@ -3,9 +3,9 @@
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
 ## 현재 단계와 목표
-- 현재 단계: **Phase 2A 제한된 CV baseline 구현·로컬 진단 실험 승인**(2026-10-27, ADR-0006). 1차 문제는 CCTV 출입 경계 통과/넘기 **이벤트 후보** 감지. AI-Hub 영상 10개·45개 JSON 구조 감사 및 설계 완료; 최종 메인 데이터·모델·정량 성능은 미확정.
-- 이전 감사: Safe and Unsafe Behaviours·iSafetyBench, SteelBench 401, ACCIDENT 5개 CCTV 감사 완료(Conditional Go). 모두 보존. **현재 후보: AI-Hub 지능형 관제 서비스 CCTV 영상 데이터(71850)의 침입 범주, 사용자 미리보기 확인·로컬 원본 미감사**. 문서: `docs/data/AIHUB_INTRUSION_AUDIT_PLAN.md`.
-- 모델/가중치는 **미선정**. 이번 승인 범위는 사전학습 사람 검출 1개 + 최소 IoU 연결 + 카메라별 ROI/경계 통과 후보 **작은 프로토타입**. YOLO/BoT-SORT/VLM 등 특정 브랜드·구성을 당연한 필수로 고정하지 않는다.
+- 현재 단계: **Phase 2A 최소 CV baseline 구현·첫 로컬 진단 완료**(2026-10-27, ADR-0006). 1차 문제는 CCTV 출입 경계 통과/넘기 **이벤트 후보** 감지. AI-Hub 영상 10개·45개 JSON 구조 감사 및 설계 완료; 최종 메인 데이터·모델·정량 성능은 미확정.
+- 이전 감사: Safe and Unsafe Behaviours·iSafetyBench, SteelBench 401, ACCIDENT 5개 CCTV 감사 완료(Conditional Go). 모두 보존. **현재 후보: AI-Hub 지능형 관제 서비스 CCTV 영상 데이터(71850)의 침입 범주, 로컬 10개 감사·사용자 검수 및 평가 설계 기록 보유**. 문서: `docs/data/AIHUB_INTRUSION_AUDIT_PLAN.md`.
+- 첫 진단 모델은 **SSDLite320 COCO_V1**(ADR-0007), 검출 누락을 확인해 **메인 모델 채택 보류**. 실제 결과는 `docs/experiments/EXP-0001-phase2a-cv-baseline.md`. 이번 승인 범위는 사전학습 사람 검출 1개 + 최소 IoU 연결 + 카메라별 ROI/경계 통과 후보 **작은 프로토타입**. YOLO/BoT-SORT/VLM 등 특정 브랜드·구성을 당연한 필수로 고정하지 않는다.
 - 장비: 로컬 RTX 3080. OS/VRAM/CUDA/패키지 버전은 확인하지 않았으므로 측정 후 기록.
 
 ## 필수 규칙

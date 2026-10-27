@@ -1,8 +1,12 @@
 # 가장 단순한 CV baseline 설계
 
-- 최초 설계 2026-10-27 / **설계 당시 구현·추론·학습 미실행**. [ADR-0006](../decisions/ADR-0006-limited-cv-baseline-prototype.md)에 따라 **제한된 로컬 구현·진단 실험은 사용자 승인됨**. GitHub 지침 갱신 시점에는 여전히 모델 미선정·실제 실험 결과 없음. 이번 단계는 `../CODEX_NEXT_TASK.md`를 따른다.
+- 최초 설계 2026-10-27 / **설계 당시 구현·추론·학습 미실행**. [ADR-0006](../decisions/ADR-0006-limited-cv-baseline-prototype.md)에 따라 **제한된 로컬 구현·진단 실험은 사용자 승인됨**. 최초 승인 시점에는 모델 미선정·미실험이었으며, 아래 Phase 2A 구현 결과와 EXP-0001에서 현재 상태를 확인한다.
 - 목표: 녹화 CCTV에서 지정 경계의 **통과 후보 시각과 근거**를 반환. 물리적 울타리 넘기 완료·법적 무단침입을 자동 확정하지 않는다.
 - 근거와 대안: [ADR-0005](../decisions/ADR-0005-minimal-boundary-baseline-design.md). 평가 자료: [구성안](../data/AIHUB_INTRUSION_EVALUATION_PLAN.md).
+
+## Phase 2A 구현 결과
+
+[ADR-0006](../decisions/ADR-0006-limited-cv-baseline-prototype.md) 승인 범위에서 최소 CLI와 인공 회귀 테스트를 구현하고 로컬 진단을 수행했다. [CLI 사용법](CV_BASELINE_CLI.md), [EXP-0001 실제 결과](../experiments/EXP-0001-phase2a-cv-baseline.md), [실험용 모델 근거](../decisions/ADR-0007-phase2a-detector.md)를 따른다. 아래는 최초 설계 계약이며 정량 정답 지표의 전제는 아직 미완료다. 이번 실행으로 메인 데이터/모델 최종 승인이나 물리적 넘기 완료 판단을 주장하지 않는다.
 
 ## 입력과 출력 계약
 
