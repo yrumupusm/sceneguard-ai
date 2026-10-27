@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: **산업 CCTV 영상과 직무 적합성 중심으로 데이터 재검토 → Phase 1C SteelBench 접근 실패로 샘플 감사 보류** (2026-10-27)
+- 상태: **산업/교통 CCTV 데이터 적합성 재검토 → SteelBench 공식 경로 401 보류 → Phase 1D ACCIDENT 접근 검사 예정** (2026-10-27)
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -49,11 +49,11 @@
 
 **Gate G1B:** 접근·사용 조건·라벨·시각적 정보가 목표와 평가 단위를 뒷받침하는지 확인 후 첫 사건 분석 MVP 채택 여부 결정. 기술 도입은 G2에서 결정.
 
-이 단계의 감사 지시 이력은 Git에서 확인할 수 있으며, 현재 [다음 업무 지시](CODEX_NEXT_TASK.md)는 SteelBench 소량 테스트로 갱신되었다. 기존 iSafetyBench 감사 결과는 보존한다.
+이 단계의 감사 지시 이력은 Git에서 확인할 수 있다. 현재 [다음 업무 지시](CODEX_NEXT_TASK.md)는 ACCIDENT 접근 검사로 갱신되었으며 기존 iSafetyBench 감사 결과는 보존한다.
 
-## Phase 1C — SteelBench 산업 CCTV 소량 검증 (현재)
+## Phase 1C — SteelBench 산업 CCTV 소량 검증 (접근 제한으로 보류)
 
-자료: [R-003 후보 조사](research/0003-cctv-dataset-shortlist.md) · [Codex 지시](CODEX_NEXT_TASK.md). **SteelBench 메인 채택 전**.
+자료: [R-003 후보 조사](research/0003-cctv-dataset-shortlist.md) · [SteelBench 접근 감사](data/STEELBENCH_SAMPLE_AUDIT.md). **SteelBench 메인 채택 전**.
 
 실행 결과: [접근 검사 기록](data/STEELBENCH_SAMPLE_AUDIT.md). 공식 경로 HTTP 401, MP4/정답 JSON 확보 0개. 현재 경로 No-Go이며 내용 적합성은 미판정. 공식 접근 복구 후 재개.
 
@@ -66,6 +66,19 @@
 - [ ] 사용자 검수 후 메인 데이터/첫 평가 단위 결정
 
 **Gate G1C:** 공개 데이터 범위 내에서 실제 CCTV 영상·주석·이용 조건이 목표와 맞는지 확인한다. 그 전 모델 학습·추론·UI 구현 없음.
+
+## Phase 1D — ACCIDENT 교통 CCTV 접근·샘플 검사 (현재)
+
+근거: [R-003 후보 조사](research/0003-cctv-dataset-shortlist.md) · [Codex 다음 작업](CODEX_NEXT_TASK.md). **영상 확보/평가 여부 확인 전, 교통 CCTV로 제품 영역 전환 미확정**.
+
+- [ ] 공식 Kaggle `picekl/accident` 파일 목록·개별 다운로드 지원·인증과 권리 조건 확인
+- [ ] 대회 hidden test와 dataset의 공개 정답 파일을 구분해 영상별 주석 스키마 확인
+- [ ] 이용 허용·개별 접근 가능할 때에만 실제 CCTV 영상 4~6개 검증 (FPS/디코딩/사고 시점·위치·유형)
+- [ ] `docs/data/ACCIDENT_SAMPLE_AUDIT.md`에 실측·미검증·평가누수·Go/Conditional Go/No-Go 문서화
+- [ ] 접근 불가 시 CMA 공식 배포의 접근성만 점검 (승인 없는 전체 다운로드 금지)
+- [ ] 사용자 검수 후 교통/산업 CCTV 최종 문제 정의 및 메인 데이터 채택 결정
+
+**Gate G1D:** 실제 파일 접근·원본/정답 매핑·비상업 이용 조건을 확인하고 나서 G2 기술 비교에 진입.
 
 ## Phase 2 — 요구·평가 정의와 모델 선택
 - [ ] 목표: 영상 분류 / 이벤트 구간 / 객체별 추적 중 평가 단위 확정
@@ -95,4 +108,4 @@
 - [ ] 논문 수치 vs 자체 성능, 미완성 vs 완성 기능 구분
 
 ## 다음 회의에 필요한 것
-새 후보 `docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md`, iSafetyBench 이용 조건, 샘플·정답 매핑과 사용자 검수, Gate G1B 결론. 이후 문제 범위와 모델 후보를 결정한다.
+ACCIDENT 접근 검증 결과와 실제 공개 정답 범위, 가능하다면 사용자 샘플 검수, Gate G1D 의견. 이후 산업안전 CCTV·교통 CCTV 중 메인 문제를 확정한다.
