@@ -1,4 +1,4 @@
-"""Local-only SSDLite + adjacent IoU + configured boundary diagnostic CLI."""
+"""Local-only detector + adjacent IoU + configured boundary diagnostic CLI."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -9,10 +9,9 @@ import subprocess
 import time
 
 from .boundary import BoundaryTracker
+from .detectors import SPECS, build_detector
 
 ROOT = Path(__file__).resolve().parents[1]
-WEIGHT_NAME = 'ssdlite320_mobilenet_v3_large_coco-a79551df.pth'
-WEIGHT_URL = 'https://download.pytorch.org/models/' + WEIGHT_NAME
 
 
 def digest(path):
@@ -39,7 +38,8 @@ def parse_args():
     p.add_argument('--video',type=Path,required=True)
     p.add_argument('--config',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--weights',type=Path,default=ROOT/'weights'/WEIGHT_NAME)
+    p.add_argument('--detector',choices=list(SPECS),default='ssdlite320')
+    p.add_argument('--weights',type=Path,default=None)
     p.add_argument('--download-weights',action='store_true',help='Explicit official weight download only')
     p.add_argument('--device',choices=['cuda','cpu'],default='cuda')
     p.add_argument('--start',type=float,default=0.)
@@ -68,7 +68,6 @@ def run(args):
     import numpy as np
     import torch
     import torchvision
-    from torchvision.models.detection import ssdlite320_mobilenet_v3_large
     output=safe_output(args.output)
     output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(args.config.read_text())
@@ -82,26 +81,30 @@ def run(args):
     torch.backends.cudnn.benchmark=False
     torch.backends.cuda.matmul.allow_tf32=False
     torch.backends.cudnn.allow_tf32=False
-    args.weights=args.weights.resolve()
+    spec=SPECS[args.detector]
+    weight_url='https://download.pytorch.org/models/'+spec['filename']
+    args.weights=(args.weights or ROOT/'weights'/spec['filename']).resolve()
     if not args.weights.is_relative_to(ROOT/'weights'):
         raise ValueError('Weights must remain in ignored weights/')
     if not args.weights.exists():
         if not args.download_weights:
             raise FileNotFoundError('Missing local weights; use explicit --download-weights')
         args.weights.parent.mkdir(parents=True,exist_ok=True)
-        torch.hub.download_url_to_file(WEIGHT_URL,str(args.weights),hash_prefix='a79551df')
-    model=ssdlite320_mobilenet_v3_large(weights=None,weights_backbone=None).eval()
+        torch.hub.download_url_to_file(weight_url,str(args.weights),hash_prefix=spec['hash_prefix'])
+    if not digest(args.weights).startswith(spec['hash_prefix']):
+        raise ValueError('Weight hash does not match selected detector')
+    model=build_detector(args.detector)
     model.load_state_dict(torch.load(args.weights,map_location='cpu',weights_only=True))
     model.to(args.device)
     def sync():
         if args.device=='cuda':torch.cuda.synchronize()
     source_hash=digest(args.video)
-    code_files=[Path(__file__),ROOT/'sceneguard/boundary.py']
+    code_files=[Path(__file__),ROOT/'sceneguard/boundary.py',ROOT/'sceneguard/detectors.py']
     meta=dict(started_utc=datetime.now(timezone.utc).isoformat(),
               video_id=args.video.stem, source_sha256=source_hash,
               config_sha256=digest(args.config), config=cfg, model_sha256=digest(args.weights),
-              model_bytes=args.weights.stat().st_size,model_url=WEIGHT_URL,
-              model='ssdlite320_mobilenet_v3_large.COCO_V1', model_input=[320,320],
+              model_bytes=args.weights.stat().st_size,model_url=weight_url,
+              model=spec['name'], model_input=spec['input'],
               model_parameters=sum(p.numel() for p in model.parameters()),
               code_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
               code_file_sha256={str(p.relative_to(ROOT)):digest(p) for p in code_files},
@@ -115,6 +118,11 @@ def run(args):
               requested_window=[args.start,args.end], seed=0, batch_size=1,precision='float32',
               warmup_frames=10, threads=2, sampling='none', split='development_only',
               ground_truth_loaded=False, completion='unknown')
+    def record_transform(module, inputs, transformed):
+        images=transformed[0]
+        meta['model_input_observed']={'resized_hw':[list(s) for s in images.image_sizes],
+                                      'padded_nchw':list(images.tensors.shape)}
+    model.transform.register_forward_hook(record_transform)
     json_save(output/'run.json',meta)
     timings={k:[] for k in ['decode','preprocess','detector','rules','output','total']}
     count=0;nonempty=0;boxes=0;events_all=[];pts_values=[];preroll=0.;decode_eof=False
