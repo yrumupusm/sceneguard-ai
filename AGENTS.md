@@ -3,8 +3,8 @@
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
 ## 현재 단계와 목표
-- 현재 단계: Safe and Unsafe Behaviours와 iSafetyBench 감사 완료 → **SteelBench 고정형 산업 CCTV 후보 소량 감사(Phase 1C) 예정**. 노타 AI 영상 관제 직무 관련성을 고려한 데이터 재검토 단계.
-- 이전 감사 데이터: Safe and Unsafe Behaviours, iSafetyBench (검사 결과 및 로컬 자료 보존). **새 검증 후보: SteelBench, 아직 메인 데이터로 미확정.** 조사 근거: `docs/research/0003-cctv-dataset-shortlist.md`.
+- 현재 단계: Safe and Unsafe Behaviours·iSafetyBench 감사 완료, SteelBench 공식 경로 HTTP 401로 접근 감사 실패 → **ACCIDENT 교통 CCTV 접근·소량 검증(Phase 1D) 예정**. 산업안전에서 교통 분야로의 최종 전환은 미결정.
+- 이전 감사: Safe and Unsafe Behaviours·iSafetyBench, SteelBench 401 접근 실패 (문서·로컬 자료 보존). **현재 확인 후보: ACCIDENT (메인 데이터 미확정)**. 조사 근거: `docs/research/0003-cctv-dataset-shortlist.md`.
 - 모델·아키텍처는 **미확정**. YOLO, BoT-SORT, ConvLSTM, VLM을 익숙하다는 이유만으로 필수 도입하지 않는다.
 - 장비: 로컬 RTX 3080. OS/VRAM/CUDA/패키지 버전은 확인하지 않았으므로 측정 후 기록.
 
@@ -21,7 +21,7 @@
 10. **역할 분담:** Codex는 조사 자동화·스크립트·분석·기록 초안을 담당하고, 사용자는 영상 의미 검수·요구사항/모델 선택의 최종 결정을 담당한다.
 
 ## 지금 바로 수행할 작업
-**현재 지시:** `docs/CODEX_NEXT_TASK.md`를 읽고 SteelBench 공개 샘플 MP4 중 주석과 연결되는 4~6개만 소량 검사한다. 결과는 `docs/data/STEELBENCH_SAMPLE_AUDIT.md`에 기록한다. iSafetyBench 과거 감사는 `docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md`에 보존. 사용자 승인 전 모델 학습·추론 서비스 구축 금지.
+**현재 지시:** `docs/CODEX_NEXT_TASK.md`에 따라 ACCIDENT 공식 Kaggle 데이터셋의 **실제 파일 접근과 정답 제공 범위**를 먼저 점검한다. 공식 전체 ZIP 다운로드 스크립트 사용 금지. 접근·조건이 충족되고 개별 파일 다운로드가 가능할 때에만 4~6개를 감사해 `docs/data/ACCIDENT_SAMPLE_AUDIT.md`에 기록한다. Kaggle 인증은 사용자 로컬 환경에서만 처리. SteelBench 실패·과거 감사 기록 보존. 사용자 승인 전 모델 학습·추론 서비스 구축 금지.
 
 ## 세션 종료 전
 - `docs/HANDOFF.md`의 '최근 확인 결과', '남은 문제', '다음 결정'을 업데이트.
