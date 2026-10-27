@@ -1,0 +1,6 @@
+# Install torch/torchvision first from the official CUDA 12.4 index (see CLI doc).
+torch==2.5.1
+torchvision==0.20.1
+av==16.0.1
+numpy==2.2.6
+pillow==12.3.0
