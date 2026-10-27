@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: **Phase 1E — AI-Hub 71850 침입 CCTV 소량 데이터 감사 예정 / 1차 경계 넘기 MVP 잠정 선정** (2026-10-27). 이전 ACCIDENT 감사 완료·Conditional Go 보존.
+- 상태: **Phase 1E — AI-Hub 로컬 영상 8개 감사 완료 / 실제 JSON·정상 구간 검수 대기** (2026-10-27). 이전 ACCIDENT 감사 완료·Conditional Go 보존.
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -85,8 +85,15 @@
 
 ## Phase 1E — AI-Hub 침입 CCTV 감사 (현재 우선 작업)
 
+결과: [AIHUB_INTRUSION_SAMPLE_AUDIT](data/AIHUB_INTRUSION_SAMPLE_AUDIT.md). 로컬 8개 32,912프레임 디코딩·시각 감사, Conditional Go 제안. 다운로드 JSON 부재·검수된 정상 시간 0, G1E 미통과.
+
+- [x] 기존 로컬 파일·공식 공개 목록·비로그인 권한 확인
+- [x] 8개 전체 디코딩과 추출 프레임 감사 및 카메라 중복 후보 기록
+- [ ] 사용자 TL_침입 JSON 경로 확보 (공식 파일키 555921)
+- [ ] 사용자 이미지 4/7번 실제 파일명 연결
+
 - 결정: [ADR-0004](decisions/ADR-0004-boundary-crossing-cctv-mvp.md)
-- 데이터: [AI-Hub 71850](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71850) 침입 범주 (공식 소개 약 55영상, 실제 파일 접근·구성 검증 전)
+- 데이터: [AI-Hub 71850](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71850) 침입 범주 (공식 소개 약 55영상, 로컬 Training 폴더 45개 발견·8개 검사; 전체 배포 구성 대조 미완료)
 - 감사 기준: [AIHUB_INTRUSION_AUDIT_PLAN](data/AIHUB_INTRUSION_AUDIT_PLAN.md) / [Codex 지시](CODEX_NEXT_TASK.md)
 
 - [x] 사용자 제공 미리보기에서 유사한 학교 출입구 구도 편중 및 특수 사례 **줄 넘기(4번), 공원 울타리 넘기(7번)** 구분
@@ -94,7 +101,7 @@
 - [ ] AI-Hub 접근·다운로드 승인·재배포/개인정보 정책 확인
 - [ ] 6~10개 이내 MP4 및 공식 JSON 실제 연결·구간 시작/종료 검증
 - [ ] 길이·정상/비이벤트 구간 검수, 카메라/장소별 중복/분할 단위 파악
-- [ ] `docs/data/AIHUB_INTRUSION_SAMPLE_AUDIT.md` 및 사람 검수 질문 기록
+- [x] `docs/data/AIHUB_INTRUSION_SAMPLE_AUDIT.md` 및 사람 검수 질문 기록
 - [ ] Gate G1E Go / Conditional Go / No-Go. 최종 메인 데이터 승인
 
 **Gate G1E:** 적법한 로컬 영상 접근, 시각적으로 검수 가능한 이벤트/정상구간, 평가 분할과 최소 baseline 설계가 가능한 수준인지 판단.
