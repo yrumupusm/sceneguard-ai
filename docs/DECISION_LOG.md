@@ -13,4 +13,6 @@
 | 2026-10-27 | **학교 CCTV 출입 경계 침범 감지를 첫 MVP 문제로 잠정 선정** | **조건부 방향 결정 / 데이터·모델 미확정** | [ADR-0004](decisions/ADR-0004-boundary-crossing-cctv-mvp.md) · [감사 계획](data/AIHUB_INTRUSION_AUDIT_PLAN.md) | 카메라별 ROI/경계 설정, 정상 구간 오탐·새 카메라 일반화 검증. ACCIDENT 등 과거 감사 보존 |
 | 미정 | AI-Hub 데이터 최종 채택, 구간 GT·평가 분할 및 모델 | 미결정 | Phase 1E 샘플 감사 후 결정 | 사용자 영상/권리 검토 필요 |
 
+| 2026-10-27 | 사전학습 사람 검출·최소 IoU 추적·카메라별 경계선 규칙 **개발용 실험 시작** | **제한적 구현 승인 / 정답·모델·평가 미확정** | [ADR-0006](decisions/ADR-0006-limited-cv-baseline-prototype.md) · [Codex 지시](CODEX_NEXT_TASK.md) | 개발용 2~4개 로컬 클립 smoke test, 실측 실패·자원 기록. VLM/학습/최종 일반화 주장 보류 |
+
 결정을 변경할 때는 기존 ADR을 삭제하지 않고 후속 ADR로 상태와 이유를 연결한다.
