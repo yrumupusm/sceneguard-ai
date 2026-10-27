@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: **ACCIDENT Phase 1D 공개 주석·CCTV 5개 감사 완료, Conditional Go 제안 / 사용자 검수·도메인 결정 대기** (2026-10-27)
+- 상태: **Phase 1E — AI-Hub 71850 침입 CCTV 소량 데이터 감사 예정 / 1차 경계 넘기 MVP 잠정 선정** (2026-10-27). 이전 ACCIDENT 감사 완료·Conditional Go 보존.
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -49,7 +49,7 @@
 
 **Gate G1B:** 접근·사용 조건·라벨·시각적 정보가 목표와 평가 단위를 뒷받침하는지 확인 후 첫 사건 분석 MVP 채택 여부 결정. 기술 도입은 G2에서 결정.
 
-이 단계의 감사 지시 이력은 Git에서 확인할 수 있다. 현재 [다음 업무 지시](CODEX_NEXT_TASK.md)는 ACCIDENT 접근 검사로 갱신되었으며 기존 iSafetyBench 감사 결과는 보존한다.
+이 단계의 감사 지시 이력은 Git에서 확인할 수 있다. 현재 [다음 업무 지시](CODEX_NEXT_TASK.md)는 **AI-Hub 침입 CCTV 감사**로 갱신되었다. 기존 자료는 보존한다.
 
 ## Phase 1C — SteelBench 산업 CCTV 소량 검증 (접근 제한으로 보류)
 
@@ -83,6 +83,22 @@
 
 **Gate G1D:** 실제 파일 접근·원본/정답 매핑·비상업 이용 조건을 확인하고 나서 G2 기술 비교에 진입.
 
+## Phase 1E — AI-Hub 침입 CCTV 감사 (현재 우선 작업)
+
+- 결정: [ADR-0004](decisions/ADR-0004-boundary-crossing-cctv-mvp.md)
+- 데이터: [AI-Hub 71850](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71850) 침입 범주 (공식 소개 약 55영상, 실제 파일 접근·구성 검증 전)
+- 감사 기준: [AIHUB_INTRUSION_AUDIT_PLAN](data/AIHUB_INTRUSION_AUDIT_PLAN.md) / [Codex 지시](CODEX_NEXT_TASK.md)
+
+- [x] 사용자 제공 미리보기에서 유사한 학교 출입구 구도 편중 및 특수 사례 **줄 넘기(4번), 공원 울타리 넘기(7번)** 구분
+- [x] **'무단침입 확정'이 아니라 '설정된 경계의 통과/넘기 행동 후보'**를 잠정 MVP로 정의
+- [ ] AI-Hub 접근·다운로드 승인·재배포/개인정보 정책 확인
+- [ ] 6~10개 이내 MP4 및 공식 JSON 실제 연결·구간 시작/종료 검증
+- [ ] 길이·정상/비이벤트 구간 검수, 카메라/장소별 중복/분할 단위 파악
+- [ ] `docs/data/AIHUB_INTRUSION_SAMPLE_AUDIT.md` 및 사람 검수 질문 기록
+- [ ] Gate G1E Go / Conditional Go / No-Go. 최종 메인 데이터 승인
+
+**Gate G1E:** 적법한 로컬 영상 접근, 시각적으로 검수 가능한 이벤트/정상구간, 평가 분할과 최소 baseline 설계가 가능한 수준인지 판단.
+
 ## Phase 2 — 요구·평가 정의와 모델 선택
 - [ ] 목표: 영상 분류 / 이벤트 구간 / 객체별 추적 중 평가 단위 확정
 - [ ] 카메라·세션 편향과 유사 영상 누수 방지 분할 설계
@@ -111,4 +127,4 @@
 - [ ] 논문 수치 vs 자체 성능, 미완성 vs 완성 기능 구분
 
 ## 다음 회의에 필요한 것
-ACCIDENT 접근 검증 결과와 실제 공개 정답 범위, 가능하다면 사용자 샘플 검수, Gate G1D 의견. 이후 산업안전 CCTV·교통 CCTV 중 메인 문제를 확정한다.
+AI-Hub 침입 실제 MP4·JSON 소량 감사와 카메라/장소 중복·정상 구간·권리 조건, Gate G1E 의견. 통과하면 Phase 2에서 **공통 모델+카메라별 경계선/ROI baseline**과 평가 지표를 결정한다. VLM 필요성은 baseline 실패 분석 후 검토.
