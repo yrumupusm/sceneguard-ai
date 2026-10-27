@@ -1,10 +1,20 @@
 # SceneGuard — 다음 작업과 대화 인수인계
 
 - 마지막 정리: 2026-10-27
-- 현재 단계: **ACCIDENT Phase 1D 공개 주석·CCTV 5개 감사 완료, Conditional Go 제안. 사용자 검수·도메인/메인 데이터 결정 대기**
+- 현재 단계: **Phase 1E — CCTV 출입 경계 침범 감지 MVP 잠정 채택, AI-Hub 침입 영상·정답 소량 감사 예정. 메인 데이터/모델 미확정.**
 - 저장소: https://github.com/yrumupusm/sceneguard-ai
 - 이전 감사 실행 기준 HEAD: `ba43440`. 감사 문서·검사 스크립트는 같은 작업 단위로 GitHub에 기록하며, 원본 영상·추출 이미지·메타데이터는 Git 제외 경로에만 보관.
 - 사용자 운영 지시: 이후에도 작업 단위별 코드·실험 결과·기술 선택 근거·오류 해결 기록을 검토 후 커밋·푸시한다. 상세 절차는 `AGENTS.md` 참고.
+
+## 가장 최근 결정 및 현재 지시 — AI-Hub 침입 CCTV (2026-10-27)
+
+- **사용자 선택:** 1차 MVP를 카메라별 출입 경계 통과/넘기 행동 감지와 관제 검토 지원으로 **잠정 선택**. 법적 무단침입·출입 권한은 판정하지 않음. [ADR-0004](decisions/ADR-0004-boundary-crossing-cctv-mvp.md).
+- 이유: ACCIDENT의 짧은 사고 클립보다 사용자가 검토한 AI-Hub 침입 영상(일부 약 1~2분)에 정상 전후 구간이 있을 가능성. 단, 실제 정상 정답·길이는 미검증.
+- **사용자 제공 전체 미리보기:** 학교 출입구/철제 울타리 구도가 반복. **이미지 4번은 줄 넘기**, **7번은 공원처럼 보이는 장소의 울타리 넘기**. 각 특수 유형은 매우 적어 일반화 성능 주장 불가. 4/7은 공식 파일 ID가 아니라 사용자 제공 이미지 순서.
+- 새 자료: [AI-Hub 71850](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71850) 침입 범주. 현재까지 로컬 MP4·공식 JSON 개별 다운로드 및 영상 의미 감사는 **미실행**.
+- **지금 할 일:** [CODEX_NEXT_TASK](CODEX_NEXT_TASK.md), [AI-Hub 데이터 감사 계획](data/AIHUB_INTRUSION_AUDIT_PLAN.md)을 읽고 이용 조건·로컬 접근 → 6~10개 샘플·시점·카메라 독립성·비이벤트 구간 감사. 산출물 `docs/data/AIHUB_INTRUSION_SAMPLE_AUDIT.md`.
+- 판단: Gate G1E 후 메인 데이터 확정 및 **공통 CV 모델+카메라별 ROI/가상선 baseline** 설계 여부 결정. VLM은 CV 실패 사례에 효용이 있는지 이후 평가. 모델 학습·서비스 구현 현재 금지.
+- **이 아래 이전 '다음 작업' 표현은 당시 작업 지시의 이력이며 현재 지시가 아님**. Safe and Unsafe Behaviours, iSafetyBench, SteelBench, ACCIDENT 감사 결과·로컬 자료는 모두 보존.
 
 ## 최근 확인 결과 — Phase 1D ACCIDENT (2026-10-27)
 
