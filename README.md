@@ -1,58 +1,38 @@
 # SceneGuard
 
-**산업현장 사고·이상상황 영상 분석 및 사람 검토 지원 — 데이터 검증 단계**
+**CCTV 출입 경계 침범 이벤트 탐지·검토 지원 — 데이터 감사 단계**
 
-> 목표는 최신 AI 모델을 많이 넣는 것이 아니라, 실제 CCTV 영상에서 관찰 가능한 안전 이벤트를 확인하고 **문제 정의 → 선행연구 → 대안 비교 → 데이터 검증 → 기술 선택 → 실험·개선** 전 과정을 근거와 함께 기록하는 것이다.
+SceneGuard는 AI Software Engineer 직무 포트폴리오를 위한 실험 프로젝트다. 공개된 CCTV 영상에서 **사람의 출입 경계 통과/넘기 행동**을 감지하고, 카메라별 경계 설정·오탐·감지 시점·실행 비용을 재현 가능하게 평가하는 것이 첫 목표다. 법적 **무단침입이나 출입 권한을 영상만으로 확정하지 않는다.**
 
-## 현재 상태 (2026-10-27)
-- ✅ 프로젝트 목표 및 개발·기록 원칙 정리
-- ✅ 선행연구 요약: [Unsafe-Net 등 R-001](docs/research/0001-literature-and-initial-hypotheses.md), [iSafetyBench R-002](docs/research/0002-isafetybench-review.md)
-- ✅ Safe and Unsafe Behaviours 영상 8개 소량 다운로드·라벨·디코딩 감사 ([결과](docs/data/SAMPLE_AUDIT.md))
-- ✅ 패널 상태 분류는 메인 MVP에서 제외 ([결정 근거](docs/decisions/ADR-0002-reconsider-safety-dataset.md))
-- ✅ **제품 방향 설정:** 이미 선택한 짧은 사고·이상상황 영상에 대한 복합 행동/사건 분석 및 안전 담당자 검토 지원 ([ADR-0003](docs/decisions/ADR-0003-incident-review-product-direction.md))
-- ✅ **iSafetyBench Phase 1B 감사:** 주석 1,100개·영상 8개 검증, Conditional Go 제안 ([결과](docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md))
-- ⬜ 사용자 영상 의미 검수·권리/평가 조건 보완·G1B 결정 (메인 데이터 확정 아님)
-- ⬜ 첫 MVP 대상 안전 이벤트 결정
-- ⬜ 최종 모델/아키텍처 결정 및 자체 실험
-- ⬜ 추론 최적화·서비스 운영·포트폴리오 완성
+## 현재 결정 (2026-10-27)
+- **첫 MVP 방향 잠정 채택:** 학교 등 고정형 CCTV에서 카메라별 감시선/ROI를 지정해 **출입 경계 통과·넘기 이벤트 후보를 검토하는 시스템**. [ADR-0004](docs/decisions/ADR-0004-boundary-crossing-cctv-mvp.md).
+- **현재 데이터 후보:** [AI-Hub 71850 지능형 관제 서비스 CCTV 영상 데이터](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71850)의 **침입 범주**. 사용자 제공 전체 장면 미리보기에서 학교 철제 출입구 반복이 확인됨. 특수 사례는 **4번 줄 넘기**, **7번 공원 울타리 넘기**로 구별.
+- **아직 검증 전:** 로컬 원본 MP4·JSON 파일 접근, 실제 카메라/장소 중복, 비이벤트 구간, 영상별 정답, 다운로드/배포·개인정보 조건, 최종 모델.
+- **다음 작업:** [Codex 지시](docs/CODEX_NEXT_TASK.md)와 [침입 데이터 감사 계획](docs/data/AIHUB_INTRUSION_AUDIT_PLAN.md)에 따라 공식 자료 접근 확인 → 6~10개 이내 소량 감사 → 사용자 영상 검수 → 데이터 Go/No-Go 결정.
+- **기술 후보(선정 전):** 공통 사람 검출/추적 + CCTV별 설정한 ROI/가상선 baseline. 실제 울타리 넘기와 선 통과의 차이를 평가. VLM의 추가 가치는 CV baseline의 실패·처리비용 분석 이후 판단.
+- **장비:** 로컬 RTX 3080. 모델 성능·속도·GPU 메모리는 아직 측정되지 않았다.
 
-## 프로젝트 문제
-산업현장 안전 담당자가 이미 선택한 **짧은 사고·이상상황 클립의 행동/사건 후보를 분석**하고, 근거 후보와 설명을 확인·수정·확정하여 관리할 수 있도록 돕는 소프트웨어를 탐색한다. 실제 안전 담당자의 업무 개선 효과는 아직 검증하지 않았다. **장시간 CCTV에서 사고 구간을 자동 발견하거나 사고 전 위험을 예측하는 기능은 후속 과제**다. 단, 법규상 위반·작업 권한·허용 적재량은 영상만으로 확정하지 않는다. 실제 사용자 요구를 인터뷰해 검증한 단계는 아니다.
+## 왜 이 문제인가
+- ACCIDENT 교통 사고 CCTV는 실제 영상·정답 검증에 성공했지만 짧은 **사고 포함 클립** 위주라 정상 구간 오탐 평가에 제약이 있음.
+- AI-Hub 침입 범주의 일부 CCTV 영상은 사용자 확인상 **1~2분 길이**로 사건 전후 확인에 유리할 가능성이 있음. 실제 비이벤트 시간은 아직 정답으로 검수되지 않았다.
+- 학교 출입구 구도가 반복되는 **장면 편중** 때문에 카메라별 설정 방식과 새로운 카메라 일반화 성능을 구분해 측정해야 한다.
+- 상용 침입 검지 기능 자체를 새 발명으로 주장하지 않는다. **기존 단순 방식의 실패·오탐과 VLM 도입 필요성을 실험으로 판단하는 과정**을 핵심 성과로 삼는다.
 
-기존 데이터의 **설비 패널 열린/닫힌 상태**는 시각적으로 확인했지만, 프로젝트 메인 MVP에서는 제외했다. 복합 안전 행동 및 사고 영상 분석은 차기 후보이며 미확정이다.
+## 데이터 조사 이력 (보존)
+| 데이터 | 실제 확인한 결과 | 현재 역할 |
+| --- | --- | --- |
+| [Safe and Unsafe Behaviours](docs/data/SAMPLE_AUDIT.md) | 8개 CCTV 영상 검사, 패널 상태 중심의 단순 문제 | 감사 이력 |
+| [iSafetyBench](docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md) | 1,100개 주석과 8개 영상 감사, 일반/편집 촬영 포함 | 보조 참고 |
+| [SteelBench](docs/data/STEELBENCH_SAMPLE_AUDIT.md) | 공식 배포 주소 HTTP 401, 영상 확보 0개 | 접근 문제로 보류 |
+| [ACCIDENT](docs/data/ACCIDENT_SAMPLE_AUDIT.md) | 2,027개 공개 주석 연결 및 실제 교통 CCTV 5개 감사 | 교통 사고 대안, 보존 |
 
-## 기술과 데이터 — 모두 후보
-- 기존 감사 데이터: [Safe and Unsafe Behaviours](https://huggingface.co/datasets/Voxel51/Safe_and_Unsafe_Behaviours) ([결과](docs/data/SAMPLE_AUDIT.md)) — 연구 자료 보존, 메인 확정 아님
-- 새 검증 후보: [iSafetyBench](https://huggingface.co/datasets/raiyaanabdullah/isafety-bench) — 8개 감사 완료, 사용자 검수·원 영상 권리 확인 대기
-- 추가 후보: [CMOT](https://github.com/XZ-YAN/CMOT-Dataset), [Construction-PPE](https://docs.ultralytics.com/datasets/detect/construction-ppe)
-- CV/시간 분석: YOLO 계열, 필요시 추적기(BoT-SORT 등), 행동 인식 모델
-- 언어·상황 설명: VLM 후보
-- 추론 최적화/운영: 필요성이 검증되면 ONNX, TensorRT, API, Docker 검토
-- 로컬 목표: NVIDIA RTX 3080 (VRAM·실행 환경·속도는 확인 전)
+관련 결정: [ADR-0001](docs/decisions/ADR-0001-research-first.md), [ADR-0002](docs/decisions/ADR-0002-reconsider-safety-dataset.md), [ADR-0003](docs/decisions/ADR-0003-incident-review-product-direction.md), **[ADR-0004](docs/decisions/ADR-0004-boundary-crossing-cctv-mvp.md)**.
 
-**YOLO/BoT-SORT/VLM을 당연한 구성요소로 확정하지 않는다.** 선행연구와 실제 데이터, 정확도·속도·자원·라벨링 비용을 보고 최소 기술을 선정한다.
+## 다음 작업과 운영 원칙
+- [AGENTS.md](AGENTS.md): Codex 프로젝트 작업·보안·검증 지침
+- [docs/WORK_PLAN.md](docs/WORK_PLAN.md): Phase 1E 데이터 감사 → Phase 2 평가·모델 설계 → 실험
+- [docs/PROJECT_CHARTER.md](docs/PROJECT_CHARTER.md): 프로젝트 문제·성공 기준
+- [docs/PRODUCT_WORKFLOW.md](docs/PRODUCT_WORKFLOW.md): 관제·검수 시나리오
+- [docs/HANDOFF.md](docs/HANDOFF.md): 최신 인수인계
 
-## 바로 시작하는 방법
-1. [Codex 작업 규칙](AGENTS.md), [프로젝트 목표](docs/PROJECT_CHARTER.md), [작업 계획](docs/WORK_PLAN.md)을 읽는다.
-2. [Phase 1B 감사 결과](docs/data/ISAFETYBENCH_SAMPLE_AUDIT.md)에서 샘플별 관찰·보류 태그·근거 시점을 확인한다.
-3. 로컬 영상 8개를 사람이 검수하고, 라벨 보정·장면 경계·사용 조건·평가 분할의 남은 항목을 보완한다.
-4. 사람이 실제 영상을 검수하고 **Go / Conditional Go / No-Go** 결정을 내린다.
-5. 첫 이벤트·평가 단위를 확정한 뒤 [ADR](docs/decisions/ADR-0001-research-first.md)에 근거를 쌓아 모델을 선정한다.
-
-## 기록 위치
-| 문서/폴더 | 목적 |
-| --- | --- |
-| [PROJECT_CHARTER](docs/PROJECT_CHARTER.md) | 목표·제약·성공 기준 |
-| [PRODUCT_WORKFLOW](docs/PRODUCT_WORKFLOW.md) | 가정 사용자 업무 흐름과 검증할 효용 |
-| [WORK_PLAN](docs/WORK_PLAN.md) | 진행 단계·담당·완료 조건 |
-| [research](docs/research/) | 논문에 보고된 사실·한계 |
-| [decisions](docs/decisions/) / [decision log](docs/DECISION_LOG.md) | 기술 대안·선정·번복 이유 |
-| [data](docs/data/) | 영상/라벨/라이선스 적합성 |
-| [experiments](docs/experiments/) | 실제 실험 환경·명령·측정값 |
-| [troubleshooting](docs/troubleshooting/) | 실패·원인·수정·검증 |
-| [PORTFOLIO_EVIDENCE](docs/PORTFOLIO_EVIDENCE.md) | 채용 포트폴리오용 증거 |
-| [HANDOFF](docs/HANDOFF.md) | 다음 세션 인수인계 |
-| [SETUP_DOCS](docs/SETUP_DOCS.md) | 로컬 클론·Codex 시작 안내 |
-
-## 공개 저장소 유의사항
-원본 영상·모델 가중치·개인정보·비밀키·대용량 출력은 기본적으로 커밋하지 않는다. 스크린샷/영상 공개는 데이터 라이선스 확인 후 진행한다. 논문 수치나 미실행 실험을 자체 성과처럼 표현하지 않는다.
+**영상·추출 프레임·원 주석·개인정보·비밀키/토큰·모델 가중치는 GitHub에 공개하지 않는다.** 데이터 접근·재배포 조건을 확인한 뒤 필요한 자료만 로컬에서 감사한다. 선행연구 보고치와 SceneGuard 실측을 구분한다.
