@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: **Phase 1E — AI-Hub 로컬 영상 9개·실제 JSON 대조 완료 / 사용자 의미·정상 구간 검수 대기** (2026-10-27). 이전 ACCIDENT 감사 완료·Conditional Go 보존.
+- 상태: **Phase 1E — AI-Hub 누적 10개 감사·사용자 검수 반영 / 평가 구성·CV baseline 설계 완료, 구현 보류** (2026-10-27). 이전 ACCIDENT 감사 완료·Conditional Go 보존.
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -105,6 +105,17 @@
 - [ ] Gate G1E Go / Conditional Go / No-Go. 최종 메인 데이터 승인
 
 **Gate G1E:** 적법한 로컬 영상 접근, 시각적으로 검수 가능한 이벤트/정상구간, 평가 분할과 최소 baseline 설계가 가능한 수준인지 판단.
+
+### 사용자 검수 후속 (2026-10-27)
+
+- [x] [사용자 검수 기록](data/AIHUB_INTRUSION_USER_REVIEW.md)을 공식 라벨과 분리
+- [x] 006 추가로 총 10개 디코딩, 119~132초 비이벤트 후보와 공식 JSON 대조; 프레임 수 불일치 기록
+- [x] 001/007/030 등장·시작 구분 및 031 접촉·미완료 종료 반영
+- [x] [평가 구성안](data/AIHUB_INTRUSION_EVALUATION_PLAN.md): 006/007 및 013/039/045 그룹 누수 방지
+- [x] [최소 CV baseline 설계](design/CV_BASELINE.md), [ADR-0005](decisions/ADR-0005-minimal-boundary-baseline-design.md) 제안 작성
+- [ ] 정밀 시간·완료·음성 범위 사용자 확정, 006 메타데이터 차이 해소
+- [ ] camera/site 그룹·평가 manifest·매칭 허용 오차 동결
+- [ ] 모델/라이선스/환경 선정 및 구현 승인 (현재 학습·추론·구현 없음)
 
 ## Phase 2 — 요구·평가 정의와 모델 선택
 - [ ] 목표: 영상 분류 / 이벤트 구간 / 객체별 추적 중 평가 단위 확정
