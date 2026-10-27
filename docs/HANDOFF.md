@@ -1,10 +1,19 @@
 # SceneGuard — 다음 작업과 대화 인수인계
 
 - 마지막 정리: 2026-10-27
-- 현재 단계: **SteelBench 접근 검사 수행, HTTP 401로 영상 감사 보류 — 모델·메인 데이터 미확정**
+- 현재 단계: **SteelBench HTTP 401로 보류 → ACCIDENT 교통 CCTV 실제 파일 접근·주석 검증 예정(Phase 1D). 모델·메인 데이터 미확정**
 - 저장소: https://github.com/yrumupusm/sceneguard-ai
 - 이전 감사 실행 기준 HEAD: `ba43440`. 감사 문서·검사 스크립트는 같은 작업 단위로 GitHub에 기록하며, 원본 영상·추출 이미지·메타데이터는 Git 제외 경로에만 보관.
 - 사용자 운영 지시: 이후에도 작업 단위별 코드·실험 결과·기술 선택 근거·오류 해결 기록을 검토 후 커밋·푸시한다. 상세 절차는 `AGENTS.md` 참고.
+
+## 다음 우선 작업 — ACCIDENT (2026-10-27)
+
+- **사용자 승인:** SteelBench 공식 접근 불가가 확인되어 다음 후보 ACCIDENT의 접근 여부부터 검증한다. 산업안전에서 교통 사고 관제로 제품 목표를 최종 변경한 것은 아니다.
+- 문서: [CODEX_NEXT_TASK](CODEX_NEXT_TASK.md) · [R-003 데이터셋 후보 조사](research/0003-cctv-dataset-shortlist.md) · [ACCIDENT 공식 GitHub](https://github.com/accidentbench/ACCIDENT).
+- 외부 확인: ACCIDENT 논문은 실제 CCTV 2,027개와 합성 영상 2,211개 및 사고 시점·위치·충돌 유형을 보고. 공식 GitHub `dataset/download_dataset.sh`는 Kaggle `picekl/accident` **전체 ZIP 다운로드**, 사전 Kaggle 인증을 요구한다. 실제 개별 파일 다운로드·정답 제공 범위는 **아직 로컬 확인 전**.
+- 공식 Kaggle **대회**는 실제 영상에 대한 라벨 있는 **학습 데이터**를 제공하지 않는다고 고지. Kaggle 별도 **dataset** 파일 목록 및 공개 정답을 별도 검증해야 한다.
+- **Codex 다음 산출물:** `docs/data/ACCIDENT_SAMPLE_AUDIT.md`. 접근 허용·권리·소량 개별 파일 확보 여부를 먼저 검사하고, 가능하면 4~6개 영상만 로컬 감사. 전체 다운로드·모델 구현 금지.
+- ACCIDENT도 접근 제약이 크면 CMA 공식 배포 접근만 조사; 전환·모델 선정은 사용자 승인 이후.
 
 ## 최근 확인 결과 — Phase 1C 접근 실패 (2026-10-27)
 
