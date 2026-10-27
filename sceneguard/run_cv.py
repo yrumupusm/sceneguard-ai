@@ -1,5 +1,6 @@
 """Local-only detector + adjacent IoU + configured boundary diagnostic CLI."""
 import argparse
+from contextlib import nullcontext
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -41,6 +42,7 @@ def parse_args():
     p.add_argument('--detector',choices=list(SPECS),default='ssdlite320')
     p.add_argument('--weights',type=Path,default=None)
     p.add_argument('--download-weights',action='store_true',help='Explicit official weight download only')
+    p.add_argument('--cache-person',action='store_true',help='Cache post-model person results before project score filter')
     p.add_argument('--diagnose-fcos',action='store_true',help='Read-only stage logging; timings not comparable')
     p.add_argument('--device',choices=['cuda','cpu'],default='cuda')
     p.add_argument('--start',type=float,default=0.)
@@ -99,6 +101,7 @@ def run(args):
     model=build_detector(args.detector)
     model.load_state_dict(torch.load(args.weights,map_location='cpu',weights_only=True))
     model.to(args.device)
+    postprocess_settings={k:getattr(model,k,None) for k in ['score_thresh','topk_candidates','nms_thresh','detections_per_img']}
     diagnostics=None
     if args.diagnose_fcos:
         from .fcos_diagnostics import FCOSDiagnostics
@@ -112,7 +115,7 @@ def run(args):
               video_id=args.video.stem, source_sha256=source_hash,
               config_sha256=digest(args.config), config=cfg, model_sha256=digest(args.weights),
               model_bytes=args.weights.stat().st_size,model_url=weight_url,
-              model=spec['name'], model_input=spec['input'],
+              model=spec['name'], model_input=spec['input'], model_postprocess=postprocess_settings,
               model_parameters=sum(p.numel() for p in model.parameters()),
               code_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
               code_file_sha256={str(p.relative_to(ROOT)):digest(p) for p in code_files},
@@ -136,7 +139,7 @@ def run(args):
     count=0;nonempty=0;boxes=0;events_all=[];pts_values=[];preroll=0.;decode_eof=False
     last_preview=-float('inf'); previous_decoded=None;warm=False;started=None
     try:
-        with av.open(str(args.video)) as container, (output/'frames.jsonl').open('w') as frames_out, (output/'events.jsonl').open('w') as events_out:
+        with av.open(str(args.video)) as container, (output/'frames.jsonl').open('w') as frames_out, (output/'events.jsonl').open('w') as events_out, ((output/'person_cache.jsonl').open('w') if args.cache_person else nullcontext(None)) as cache_out:
             stream=container.streams.video[0];stream.thread_count=2
             meta.update(source_size=[stream.width,stream.height],display_fps=float(stream.average_rate) if stream.average_rate else None)
             iterator=iter(container.decode(stream))
@@ -172,6 +175,11 @@ def run(args):
                 if diagnostics:diagnostics.pts=pts
                 with torch.inference_mode():prediction=model([tensor])[0]
                 sync();inferred=time.perf_counter()
+                if cache_out is not None:
+                    person=prediction['labels']==1
+                    cache_out.write(json.dumps(dict(pts=pts,native_pts=frame.pts,time_base=str(frame.time_base),
+                        source_size=[frame.width,frame.height],boxes=prediction['boxes'][person].cpu().tolist(),
+                        scores=prediction['scores'][person].cpu().tolist()))+'\n')
                 # Person label 1 in TorchVision COCO; output boxes normalized to source image.
                 mask=(prediction['labels']==1)&(prediction['scores']>=cfg['score_threshold'])
                 box_list=prediction['boxes'][mask].cpu().tolist();scores=prediction['scores'][mask].cpu().tolist()
@@ -197,6 +205,7 @@ def run(args):
                 count+=1;nonempty+=bool(rows);boxes+=len(rows);pts_values.append(pts)
                 if count%900==0:print(args.video.stem,count,'frames',len(events_all),'candidates',flush=True)
             frames_out.flush();events_out.flush()
+            if cache_out is not None:cache_out.flush()
         wall=time.perf_counter()-started if started else 0.
         if not count:raise ValueError('No frames in requested window')
         meta.update(status='complete',frames=count,frames_with_person=nonempty,person_boxes=boxes,
@@ -208,6 +217,10 @@ def run(args):
                     peak_reserved_bytes=torch.cuda.max_memory_reserved() if args.device=='cuda' else None,
                     active_tracks_at_end=len(tracker.tracks),end_state='observation_stopped_not_completion',
                     stage_ms={k:dict(mean=float(np.mean(v)),p50=float(np.percentile(v,50)),p95=float(np.percentile(v,95))) for k,v in timings.items()})
+        if args.cache_person:
+            meta['person_cache']=dict(schema=1,stage='model_return_after_internal_filters_nms_global_cap_before_project_score',
+                sha256=digest(output/'person_cache.jsonl'),coordinate_space='original_pixels',class_id=1)
+            meta['timing_comparable']=False
         if diagnostics:
             diagnostics.finish()
             meta['diagnostic_logging']=True

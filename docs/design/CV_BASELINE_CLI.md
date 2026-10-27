@@ -80,3 +80,12 @@ FCOS는 min_size=800/max_size=1333, 모델 내부 resize/padding 실제 크기�
 `--diagnose-fcos`는 FCOS 전용이다. 원래 후처리 반환값은 그대로 쓰고 별도 shadow에서 내부 단계·NMS 억제 관계를 기록한다. 계측 시간은 기존 성능 측정과 비교하지 않는다. 현재 상세 raw 저장 시점은 E01_030의 84/88/90/92/94/96초로 고정되어 있으며 모든 처리 프레임의 단계 집계와 후처리 일치 검사는 수행한다.
 
 `--start 84 --end 96.000001`은 exclusive end 규칙으로 96초까지 포함한다. 기존 config/모델/입력/필터를 바꾸지 않으며, 새 출력 디렉터리를 지정한다. 재현 명령·사람 위치 대응 방식·로그 형식·제한은 [EXP-0003](../experiments/EXP-0003-fcos-candidate-diagnostics.md)을 따른다. 검수 위치는 진단 표시만 위한 것이며 crop 추론이나 정답 입력으로 사용하지 않는다.
+
+
+## EXP-0004 반환 person 캐시와 점수 기준 재생
+
+`run_cv --cache-person`은 모델 내부 후처리/NMS/global cap 이후, 프로젝트 마지막 person 점수 기준 이전의 person 박스·점수·원본 PTS를 로컬 `person_cache.jsonl`에 보존한다. 기존 최종 출력은 그대로이며 캐시 기록 시간은 기존 추론 속도와 비교하지 않는다.
+
+`python -m sceneguard.replay_thresholds --cache <cache-dir> --baseline <EXP2-run> --output <new-dir>`는 0.5/0.4/0.3/0.25를 각각 새 tracker로 재생한다. stage/schema/hash와 고정 설정, 수집 및 재생 0.5의 기존 결과 완전 일치를 검사한다. 내부에서 탈락한 후보를 복원하거나 NMS를 다시 적용하지 않는다. 출력 t050/t040/t030/t025의 config·summary에 실제 기준과 캐시 해시를 기록한다. 재생 FPS는 모델 FPS가 아니다.
+
+`render_threshold_review.py`는 기존 35검수 PTS를 원본 위에 네 조건으로 표시하고, `summarize_threshold_review.py`는 동일 PTS/앵커 ID의 span을 진단한다. 출력은 로컬 전용이고 ID는 검증된 사람 정체가 아니다. 실행 명령과 경로는 [EXP-0004](../experiments/EXP-0004-fcos-score-threshold-comparison.md)를 따른다.
