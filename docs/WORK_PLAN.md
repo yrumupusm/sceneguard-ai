@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: **산업/교통 CCTV 데이터 적합성 재검토 → SteelBench 공식 경로 401 보류 → Phase 1D ACCIDENT 접근 검사 예정** (2026-10-27)
+- 상태: **ACCIDENT Phase 1D 공개 주석·CCTV 5개 감사 완료, Conditional Go 제안 / 사용자 검수·도메인 결정 대기** (2026-10-27)
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -69,13 +69,16 @@
 
 ## Phase 1D — ACCIDENT 교통 CCTV 접근·샘플 검사 (현재)
 
-근거: [R-003 후보 조사](research/0003-cctv-dataset-shortlist.md) · [Codex 다음 작업](CODEX_NEXT_TASK.md). **영상 확보/평가 여부 확인 전, 교통 CCTV로 제품 영역 전환 미확정**.
+근거: [R-003 후보 조사](research/0003-cctv-dataset-shortlist.md) · [Codex 다음 작업](CODEX_NEXT_TASK.md). **5개 소량 감사 완료, 교통 CCTV로 제품 영역 전환 미확정**.
 
-- [ ] 공식 Kaggle `picekl/accident` 파일 목록·개별 다운로드 지원·인증과 권리 조건 확인
-- [ ] 대회 hidden test와 dataset의 공개 정답 파일을 구분해 영상별 주석 스키마 확인
-- [ ] 이용 허용·개별 접근 가능할 때에만 실제 CCTV 영상 4~6개 검증 (FPS/디코딩/사고 시점·위치·유형)
-- [ ] `docs/data/ACCIDENT_SAMPLE_AUDIT.md`에 실측·미검증·평가누수·Go/Conditional Go/No-Go 문서화
-- [ ] 접근 불가 시 CMA 공식 배포의 접근성만 점검 (승인 없는 전체 다운로드 금지)
+결과: [ACCIDENT_SAMPLE_AUDIT](data/ACCIDENT_SAMPLE_AUDIT.md). 공개 CSV 2,027행·실제 MP4 목록 1:1 매핑, 5개 420프레임 디코딩·추출 프레임 감사. Conditional Go 제안, 사용자 검수와 권리/분할 보완 대기.
+
+- [x] 공식 파일 목록·개별 공개 다운로드·배포 라이선스/연구 제한 확인 (원 출처별 권리는 미확인)
+- [ ] 원 출처별 권리·재게시 조건 및 분할 누수 후보 직접 대조
+- [x] 대회 hidden test와 dataset의 공개 정답 파일을 구분해 영상별 주석 스키마 확인
+- [x] 이용 허용·개별 접근 가능할 때에만 실제 CCTV 영상 4~6개 검증 (FPS/디코딩/사고 시점·위치·유형)
+- [x] `docs/data/ACCIDENT_SAMPLE_AUDIT.md`에 실측·미검증·평가누수·Go/Conditional Go/No-Go 문서화
+- 해당 없음: ACCIDENT 접근 성공으로 CMA 대체 조사 미실행
 - [ ] 사용자 검수 후 교통/산업 CCTV 최종 문제 정의 및 메인 데이터 채택 결정
 
 **Gate G1D:** 실제 파일 접근·원본/정답 매핑·비상업 이용 조건을 확인하고 나서 G2 기술 비교에 진입.
