@@ -41,6 +41,7 @@ def parse_args():
     p.add_argument('--detector',choices=list(SPECS),default='ssdlite320')
     p.add_argument('--weights',type=Path,default=None)
     p.add_argument('--download-weights',action='store_true',help='Explicit official weight download only')
+    p.add_argument('--diagnose-fcos',action='store_true',help='Read-only stage logging; timings not comparable')
     p.add_argument('--device',choices=['cuda','cpu'],default='cuda')
     p.add_argument('--start',type=float,default=0.)
     p.add_argument('--end',type=float,default=None)
@@ -68,6 +69,8 @@ def run(args):
     import numpy as np
     import torch
     import torchvision
+    if args.diagnose_fcos and args.detector != 'fcos800':
+        raise ValueError('Diagnostics require FCOS')
     output=safe_output(args.output)
     output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(args.config.read_text())
@@ -96,10 +99,15 @@ def run(args):
     model=build_detector(args.detector)
     model.load_state_dict(torch.load(args.weights,map_location='cpu',weights_only=True))
     model.to(args.device)
+    diagnostics=None
+    if args.diagnose_fcos:
+        from .fcos_diagnostics import FCOSDiagnostics
+        diagnostics=FCOSDiagnostics(model,output,cfg['score_threshold'])
     def sync():
         if args.device=='cuda':torch.cuda.synchronize()
     source_hash=digest(args.video)
     code_files=[Path(__file__),ROOT/'sceneguard/boundary.py',ROOT/'sceneguard/detectors.py']
+    if diagnostics:code_files.append(ROOT/'sceneguard/fcos_diagnostics.py')
     meta=dict(started_utc=datetime.now(timezone.utc).isoformat(),
               video_id=args.video.stem, source_sha256=source_hash,
               config_sha256=digest(args.config), config=cfg, model_sha256=digest(args.weights),
@@ -161,6 +169,7 @@ def run(args):
                 rgb=frame.to_ndarray(format='rgb24')
                 tensor=torch.from_numpy(rgb).permute(2,0,1).to(args.device,dtype=torch.float32)/255.
                 sync();preprocessed=time.perf_counter()
+                if diagnostics:diagnostics.pts=pts
                 with torch.inference_mode():prediction=model([tensor])[0]
                 sync();inferred=time.perf_counter()
                 # Person label 1 in TorchVision COCO; output boxes normalized to source image.
@@ -199,6 +208,10 @@ def run(args):
                     peak_reserved_bytes=torch.cuda.max_memory_reserved() if args.device=='cuda' else None,
                     active_tracks_at_end=len(tracker.tracks),end_state='observation_stopped_not_completion',
                     stage_ms={k:dict(mean=float(np.mean(v)),p50=float(np.percentile(v,50)),p95=float(np.percentile(v,95))) for k,v in timings.items()})
+        if diagnostics:
+            diagnostics.finish()
+            meta['diagnostic_logging']=True
+            meta['timing_comparable']=False
         json_save(output/'timings_ms.json',timings)
         json_save(output/'native_pts.json',pts_values)
         json_save(output/'run.json',meta)
