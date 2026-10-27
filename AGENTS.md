@@ -3,8 +3,8 @@
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
 ## 현재 단계와 목표
-- 현재 단계: Safe and Unsafe Behaviours·iSafetyBench 감사 완료, SteelBench 공식 경로 HTTP 401로 접근 감사 실패 → **ACCIDENT 교통 CCTV 접근·소량 검증(Phase 1D) 예정**. 산업안전에서 교통 분야로의 최종 전환은 미결정.
-- 이전 감사: Safe and Unsafe Behaviours·iSafetyBench, SteelBench 401 접근 실패 (문서·로컬 자료 보존). **현재 확인 후보: ACCIDENT (메인 데이터 미확정)**. 조사 근거: `docs/research/0003-cctv-dataset-shortlist.md`.
+- 현재 단계: **출입 경계 침범 감지(카메라별 경계 설정) 1차 MVP 잠정 채택 → AI-Hub 71850 침입 데이터 소량 감사 Phase 1E 예정**. 실제 파일/라벨·카메라 독립성 검증 전이며 모델 미선정. 관련: ADR-0004.
+- 이전 감사: Safe and Unsafe Behaviours·iSafetyBench, SteelBench 401, ACCIDENT 5개 CCTV 감사 완료(Conditional Go). 모두 보존. **현재 후보: AI-Hub 지능형 관제 서비스 CCTV 영상 데이터(71850)의 침입 범주, 사용자 미리보기 확인·로컬 원본 미감사**. 문서: `docs/data/AIHUB_INTRUSION_AUDIT_PLAN.md`.
 - 모델·아키텍처는 **미확정**. YOLO, BoT-SORT, ConvLSTM, VLM을 익숙하다는 이유만으로 필수 도입하지 않는다.
 - 장비: 로컬 RTX 3080. OS/VRAM/CUDA/패키지 버전은 확인하지 않았으므로 측정 후 기록.
 
@@ -21,7 +21,7 @@
 10. **역할 분담:** Codex는 조사 자동화·스크립트·분석·기록 초안을 담당하고, 사용자는 영상 의미 검수·요구사항/모델 선택의 최종 결정을 담당한다.
 
 ## 지금 바로 수행할 작업
-**현재 지시:** `docs/CODEX_NEXT_TASK.md`에 따라 ACCIDENT 공식 Kaggle 데이터셋의 **실제 파일 접근과 정답 제공 범위**를 먼저 점검한다. 공식 전체 ZIP 다운로드 스크립트 사용 금지. 접근·조건이 충족되고 개별 파일 다운로드가 가능할 때에만 4~6개를 감사해 `docs/data/ACCIDENT_SAMPLE_AUDIT.md`에 기록한다. Kaggle 인증은 사용자 로컬 환경에서만 처리. SteelBench 실패·과거 감사 기록 보존. 사용자 승인 전 모델 학습·추론 서비스 구축 금지.
+**현재 지시:** `docs/CODEX_NEXT_TASK.md` 및 `docs/data/AIHUB_INTRUSION_AUDIT_PLAN.md`를 읽고 AI-Hub 71850의 침입 CCTV 실제 파일·정답·카메라 중복·검수된 정상 구간을 6~10개 이내로 감사한다. 줄 넘기(이미지 4번)·공원 울타리 넘기(7번)는 별도 예외. **출입 경계 통과 행동과 법적 무단침입 판단을 구분**한다. 인증은 사용자 로컬에서만, 모델 학습/서비스 구축 전 데이터 승인 필요.
 
 ## 세션 종료 전
 - `docs/HANDOFF.md`의 '최근 확인 결과', '남은 문제', '다음 결정'을 업데이트.
