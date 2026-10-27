@@ -1,6 +1,6 @@
 # Phase 2A 로컬 CLI
 
-이 CLI는 개발 영상 진단용이며 이벤트 정답 평가기가 아니다. 원본 JSON/캡션을 읽지 않는다. 모델은 [ADR-0007](../decisions/ADR-0007-phase2a-detector.md)의 SSDLite320 COCO_V1 1개다.
+이 CLI는 개발 영상 진단용이며 이벤트 정답 평가기가 아니다. 원본 JSON/캡션을 읽지 않는다. 기본 모델은 [ADR-0007](../decisions/ADR-0007-phase2a-detector.md)의 SSDLite320 COCO_V1이다. 추가 비교용 FCOS COCO_V1은 [ADR-0008](../decisions/ADR-0008-fcos-detector-comparison.md)에 따른다.
 
 ## 환경 준비
 
@@ -8,7 +8,7 @@
 uv venv .venv --python python3
 UV_HTTP_TIMEOUT=180 uv pip install --python .venv/bin/python torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu124
 uv pip install --python .venv/bin/python av==16.0.1 numpy==2.2.6 pillow==12.3.0
-python3 -m unittest discover -s tests -v
+.venv/bin/python -m unittest discover -s tests -v
 ```
 
 CUDA 없는 환경은 명시적으로 `--device cpu`를 지정해야 한다. 자동 CPU 전환으로 GPU 결과를 혼동하지 않는다. CUDA 드라이버와 PyTorch 번들 runtime 버전은 다를 수 있다. 의존성/가중치는 격리 환경·로컬 weights에만 둔다.
@@ -59,3 +59,17 @@ CUDA 없는 환경은 명시적으로 `--device cpu`를 지정해야 한다. 자
 - 실패 시 처리된 프레임 수와 오류를 run.json에 기록한다(모델 준비 이전 실패는 CLI 오류로 남음). 실패 실행의 일부 출력을 완료 결과로 합치지 않는다.
 
 전체 precision/recall/F1/FP-hour 계산은 하지 않는다. 006의 후보 비이벤트·프레임 수 차이, 006/007 같은 카메라, 031의 미완료 종료를 그대로 유지한다. 임계값·경계는 추론 전에 정하고 출력에 맞춰 수정하지 않는다.
+
+
+## FCOS 소규모 비교
+
+`--detector fcos800`으로 선택한다. 생략하면 기존 `ssdlite320`이다. 가중치 경로는 선택 모델에 맞게 자동 결정하며 최초 다운로드는 `--download-weights`로 명시한다. 두 모델 모두 공식 hash prefix를 확인한다. 기존 출력 디렉터리를 재사용하지 않는다.
+
+FCOS는 min_size=800/max_size=1333, 모델 내부 resize/padding 실제 크기는 `model_input_observed`에 저장한다. ROI·추적·임계값은 그대로다. 코드 구조가 달라진 모델 비교이며 해상도 단독 효과 실험이 아니다. 새 실험은 EXP-0001의 네 짧은 구간만 사용한다.
+
+```bash
+.venv/bin/python -m sceneguard.run_cv --detector fcos800 --video data/TS_침입/E01_030.mp4 --config data/cv_phase2a/configs/C6.json --output outputs/cv_phase2b/fcos030 --start 84 --end 100 --download-weights
+.venv/bin/python scripts/compare_cv_runs.py --old outputs/cv_phase2a/smoke030 --new outputs/cv_phase2b/fcos030 --video data/TS_침입/E01_030.mp4 --output outputs/cv_phase2b/review030
+```
+
+비교 스크립트는 영상/config/추적 코드 해시 및 모든 PTS 일치를 검사하고, 2초 간격의 가까운 원본 프레임을 로컬 이미지로 저장한다. 정답 생성이나 정확도 계산 기능은 없다.

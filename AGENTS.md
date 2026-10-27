@@ -3,10 +3,11 @@
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
 ## 현재 단계와 목표
-- 현재 단계: **Phase 2A 최소 CV baseline 구현·첫 로컬 진단 완료**(2026-10-27, ADR-0006). 1차 문제는 CCTV 출입 경계 통과/넘기 **이벤트 후보** 감지. AI-Hub 영상 10개·45개 JSON 구조 감사 및 설계 완료; 최종 메인 데이터·모델·정량 성능은 미확정.
+- 현재 단계: **Phase 2B FCOS 추가 검출기 소규모 비교 완료**(2026-10-27, ADR-0006). 1차 문제는 CCTV 출입 경계 통과/넘기 **이벤트 후보** 감지. AI-Hub 영상 10개·45개 JSON 구조 감사 및 설계 완료; 최종 메인 데이터·모델·정량 성능은 미확정.
 - 이전 감사: Safe and Unsafe Behaviours·iSafetyBench, SteelBench 401, ACCIDENT 5개 CCTV 감사 완료(Conditional Go). 모두 보존. **현재 후보: AI-Hub 지능형 관제 서비스 CCTV 영상 데이터(71850)의 침입 범주, 로컬 10개 감사·사용자 검수 및 평가 설계 기록 보유**. 문서: `docs/data/AIHUB_INTRUSION_AUDIT_PLAN.md`.
-- 첫 진단 모델은 **SSDLite320 COCO_V1**(ADR-0007), 검출 누락을 확인해 **메인 모델 채택 보류**. 실제 결과는 `docs/experiments/EXP-0001-phase2a-cv-baseline.md`. 이번 승인 범위는 사전학습 사람 검출 1개 + 최소 IoU 연결 + 카메라별 ROI/경계 통과 후보 **작은 프로토타입**. YOLO/BoT-SORT/VLM 등 특정 브랜드·구성을 당연한 필수로 고정하지 않는다.
-- 장비: 로컬 RTX 3080. OS/VRAM/CUDA/패키지 버전은 확인하지 않았으므로 측정 후 기록.
+- 첫 진단 모델은 **SSDLite320 COCO_V1**(ADR-0007), 검출 누락을 확인해 **메인 모델 채택 보류**. 실제 결과는 `docs/experiments/EXP-0001-phase2a-cv-baseline.md`. Phase 2A 최초 승인 범위는 사전학습 사람 검출 1개 + 최소 IoU 연결 + 카메라별 ROI/경계 통과 후보 **작은 프로토타입**. YOLO/BoT-SORT/VLM 등 특정 브랜드·구성을 당연한 필수로 고정하지 않는다.
+- 장비: 로컬 RTX 3080 10GB / WSL2 Ubuntu 22.04 / torch 2.5.1+cu124 / torchvision 0.20.1+cu124. 실측 환경은 EXP-0001/0002 참조.
+- 최신 비교: [EXP-0002](docs/experiments/EXP-0002-fcos-detector-comparison.md), [ADR-0008](docs/decisions/ADR-0008-fcos-detector-comparison.md). 사용자 승인으로 FCOS 한 개를 추가해 동일 네 구간 비교 완료. 사람 일부 복원과 중복·배경 오검출 의심·누락·연결 실패가 함께 남아 메인 모델 채택 보류. 모델과 해상도 효과를 분리했다고 주장하지 않는다.
 
 ## 필수 규칙
 1. **사실의 출처 분리:** `논문에서 보고`, `데이터셋 문서`, `로컬에서 확인`, `추정/가설`을 명확히 구분. 실측하지 않은 FPS·정확도·지연·VRAM 사용량은 절대 쓰지 않음.
@@ -21,7 +22,7 @@
 10. **역할 분담:** Codex는 조사 자동화·스크립트·분석·기록 초안을 담당하고, 사용자는 영상 의미 검수·요구사항/모델 선택의 최종 결정을 담당한다.
 
 ## 지금 바로 수행할 작업
-**현재 지시:** [ADR-0006](docs/decisions/ADR-0006-limited-cv-baseline-prototype.md)의 승인 범위에서 `docs/CODEX_NEXT_TASK.md`에 따라 **로컬 CV baseline을 작게 구현·진단**한다. 사람 검출→최소 IoU 연결→카메라별 경계 양측 이동 후보 기록. E01_006 119~132초는 정상 **후보**이며 공식 영상 4,006프레임/JSON 4,011프레임 불일치를 보정하지 않는다. G1E 평가 승인과 별개. VLM/학습/UI/대규모 자료 수집 금지.
+**현재 지시:** `docs/CODEX_NEXT_TASK.md`에 따라 EXP-0002의 실제 사람/중복/비사람 의심/누락 사례와 평가 범위를 검토한다. 이번 FCOS 한 모델 선정·구현·실행은 사용자 승인에 따라 완료했으며 재승인 불필요. 기존 EXP-0001·설정·공식 라벨 보존. E01_006 119~132초 비이벤트 후보·4006/4011 불일치, 031 접촉/공식 시작/미완료 종료를 유지한다. G1E 미완료. VLM/학습/UI/고급 tracker/대규모 수집은 추가하지 않는다.
 
 ## 세션 종료 전
 - `docs/HANDOFF.md`의 '최근 확인 결과', '남은 문제', '다음 결정'을 업데이트.
