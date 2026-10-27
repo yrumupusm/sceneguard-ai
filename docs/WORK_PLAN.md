@@ -1,6 +1,6 @@
 # SceneGuard 단계별 작업 계획
 
-- 상태: **산업 CCTV 영상과 직무 적합성 중심으로 데이터 재검토 → Phase 1C SteelBench 샘플 감사 예정** (2026-10-27)
+- 상태: **산업 CCTV 영상과 직무 적합성 중심으로 데이터 재검토 → Phase 1C SteelBench 접근 실패로 샘플 감사 보류** (2026-10-27)
 - 역할: 사용자 = 문제 선택·영상 의미 검수·최종 승인 / Codex = 조사·로컬 스크립트·실험 지원·문서 기록
 - 규칙: 실제 확인된 항목만 완료 처리. 단계별 결정 게이트에서 다음으로 진행할지 판단.
 
@@ -55,10 +55,14 @@
 
 자료: [R-003 후보 조사](research/0003-cctv-dataset-shortlist.md) · [Codex 지시](CODEX_NEXT_TASK.md). **SteelBench 메인 채택 전**.
 
+실행 결과: [접근 검사 기록](data/STEELBENCH_SAMPLE_AUDIT.md). 공식 경로 HTTP 401, MP4/정답 JSON 확보 0개. 현재 경로 No-Go이며 내용 적합성은 미판정. 공식 접근 복구 후 재개.
+
+- [x] 공개 접근 요청과 오류 재현 기록 작성
 - [ ] 데이터 배포 범위, 실제 MP4 접근 및 라이선스·프라이버시 조건 확인
 - [ ] 정답 JSON과 매핑되는 CCTV 영상 4~6개만 로컬 검사 (해상도·FPS·디코딩)
 - [ ] PPE·행동·안전 태그의 관찰 가능성, CCTV 구도/가림 및 시간 정답 여부 기록
-- [ ] `docs/data/STEELBENCH_SAMPLE_AUDIT.md` 작성, 사용자 의미 검수 질문 및 Go/Conditional Go/No-Go 제안
+- [x] `docs/data/STEELBENCH_SAMPLE_AUDIT.md`에 접근 실패·현재 경로 No-Go·재개 조건 기록
+- [ ] 실제 영상 감사 후 의미 검수 질문·데이터 적합성 의견 작성
 - [ ] 사용자 검수 후 메인 데이터/첫 평가 단위 결정
 
 **Gate G1C:** 공개 데이터 범위 내에서 실제 CCTV 영상·주석·이용 조건이 목표와 맞는지 확인한다. 그 전 모델 학습·추론·UI 구현 없음.
