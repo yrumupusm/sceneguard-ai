@@ -1,6 +1,6 @@
 # 가장 단순한 CV baseline 설계
 
-- 2026-10-27 / **설계만, 구현·추론·학습 미실행**. 특정 검출기·추적 라이브러리·가중치 미선정.
+- 최초 설계 2026-10-27 / **설계 당시 구현·추론·학습 미실행**. [ADR-0006](../decisions/ADR-0006-limited-cv-baseline-prototype.md)에 따라 **제한된 로컬 구현·진단 실험은 사용자 승인됨**. GitHub 지침 갱신 시점에는 여전히 모델 미선정·실제 실험 결과 없음. 이번 단계는 `../CODEX_NEXT_TASK.md`를 따른다.
 - 목표: 녹화 CCTV에서 지정 경계의 **통과 후보 시각과 근거**를 반환. 물리적 울타리 넘기 완료·법적 무단침입을 자동 확정하지 않는다.
 - 근거와 대안: [ADR-0005](../decisions/ADR-0005-minimal-boundary-baseline-design.md). 평가 자료: [구성안](../data/AIHUB_INTRUSION_EVALUATION_PLAN.md).
 
