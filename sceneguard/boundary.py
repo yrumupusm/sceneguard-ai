@@ -38,7 +38,7 @@ class SideState:
     last_emitted: float = -math.inf
 
 
-class BoundaryTracker:
+class BoundaryRules:
     def __init__(self, config):
         self.a, self.b = [tuple(p) for p in config['line']]
         self.roi = config['roi']
@@ -98,6 +98,11 @@ class BoundaryTracker:
         state.pending = 0
         return event
 
+
+
+class BoundaryTracker(BoundaryRules):
+    """Original conservative adjacent-IoU linking, unchanged behavior."""
+
     def step(self, pts, detections):
         if not math.isfinite(pts) or (self.previous_pts is not None and pts <= self.previous_pts):
             raise ValueError('PTS must be finite and strictly increasing')
@@ -134,3 +139,30 @@ class BoundaryTracker:
         self.stats['disconnected_tracks'] += len(set(old)-retained)
         self.tracks = current; self.previous_pts = pts
         return rows, events
+
+
+class ObservedBoundary(BoundaryRules):
+    """Use external IDs and measured boxes only; a missing observation resets state."""
+    def step(self, pts, observations):
+        if not math.isfinite(pts) or (self.previous_pts is not None and pts <= self.previous_pts):
+            raise ValueError('PTS must be finite and strictly increasing')
+        current = {}; events = []; seen = set()
+        gap = self.previous_pts is not None and pts-self.previous_pts > self.max_gap
+        for row in observations:
+            if not row.get('observed') or not row.get('confirmed', True):
+                continue
+            tid = row['track_id']
+            if tid in seen:
+                raise ValueError('Duplicate observed ID')
+            seen.add(tid)
+            b = row['bbox']
+            if len(b) != 4 or not all(math.isfinite(v) for v in b) or not (0 <= b[0] < b[2] <= 1 and 0 <= b[1] < b[3] <= 1):
+                raise ValueError('Invalid measured bbox')
+            state = self.tracks.get(tid, SideState()) if not gap else SideState()
+            event = self.observe(state, ((b[0]+b[2])/2, b[3]), pts)
+            if event:
+                events.append(event | {'track_id': tid})
+            current[tid] = state
+        self.tracks = current
+        self.previous_pts = pts
+        return events

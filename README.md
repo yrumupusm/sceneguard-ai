@@ -8,6 +8,8 @@ SceneGuard는 AI Software Engineer 직무 포트폴리오를 위한 실험 프�
 
 추가로 **FCOS COCO_V1**을 동일 네 짧은 구간에서 비교했다. 실제 사람 일부를 새로 검출했지만 누락·중복·배경 오검출 의심과 연결 실패가 남아 메인 채택은 보류한다. 실측 비교와 다음 작업: [EXP-0002](docs/experiments/EXP-0002-fcos-detector-comparison.md), [ADR-0008](docs/decisions/ADR-0008-fcos-detector-comparison.md). 모델과 입력 크기가 함께 바뀐 결과이며 해상도 단독 효과가 아니다.
 
+같은 FCOS 캐시로 **IoU / ByteTrack high-only / low 2차 연결**도 비교했다. 일부 실제 사람의 연결이 개선됐지만 중복·배경 track과 부분 신체 기반 경계 후보 오류가 남아 기본 tracker 교체는 보류한다. [EXP-0005](docs/experiments/EXP-0005-bytetrack-cache-comparison.md)에 재현·연속 검수·실패를 기록했다. 검출 재추론이나 새 가중치 다운로드는 없었다.
+
 ## 현재 결정 (2026-10-27)
 - **첫 MVP 방향 잠정 채택:** 학교 등 고정형 CCTV에서 카메라별 감시선/ROI를 지정해 **출입 경계 통과·넘기 이벤트 후보를 검토하는 시스템**. [ADR-0004](docs/decisions/ADR-0004-boundary-crossing-cctv-mvp.md).
 - **현재 데이터 후보:** [AI-Hub 71850 지능형 관제 서비스 CCTV 영상 데이터](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71850)의 **침입 범주**. 사용자 제공 전체 장면 미리보기에서 학교 철제 출입구 반복이 확인됨. 특수 사례는 **4번 줄 넘기**, **7번 공원 울타리 넘기**로 구별.

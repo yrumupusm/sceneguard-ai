@@ -1,0 +1,6 @@
+# Additional CPU-only tracker dependencies on top of requirements-cv.txt.
+# No detector/weights. cython-bbox declares Cython and uses it for its build.
+scipy==1.15.3
+lap==0.5.12
+cython-bbox==0.1.5
+Cython==3.3.0

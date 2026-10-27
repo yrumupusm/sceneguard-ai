@@ -89,3 +89,12 @@ FCOS는 min_size=800/max_size=1333, 모델 내부 resize/padding 실제 크기�
 `python -m sceneguard.replay_thresholds --cache <cache-dir> --baseline <EXP2-run> --output <new-dir>`는 0.5/0.4/0.3/0.25를 각각 새 tracker로 재생한다. stage/schema/hash와 고정 설정, 수집 및 재생 0.5의 기존 결과 완전 일치를 검사한다. 내부에서 탈락한 후보를 복원하거나 NMS를 다시 적용하지 않는다. 출력 t050/t040/t030/t025의 config·summary에 실제 기준과 캐시 해시를 기록한다. 재생 FPS는 모델 FPS가 아니다.
 
 `render_threshold_review.py`는 기존 35검수 PTS를 원본 위에 네 조건으로 표시하고, `summarize_threshold_review.py`는 동일 PTS/앵커 ID의 span을 진단한다. 출력은 로컬 전용이고 ID는 검증된 사람 정체가 아니다. 실행 명령과 경로는 [EXP-0004](../experiments/EXP-0004-fcos-score-threshold-comparison.md)를 따른다.
+
+
+## EXP-0005 ByteTrack 캐시 재생
+
+`uv pip install --python .venv/bin/python -r requirements-tracking.txt` 후 `python -m sceneguard.replay_tracking 030 006 007 031`로 기존 EXP-0004 캐시를 A/B/C 재생한다. detector/가중치를 로드하지 않는다. 출력은 `outputs/cv_phase2e/track{ID}/{A,B,C}`이며 이미 존재하면 실패한다.
+
+B/C의 `detections`는 confirmed 실제 관측이다. bbox는 캐시 원본 정규화 좌표, filter_bbox는 Kalman 위치, cache_index는 원시 캐시 대응이다. states에는 unconfirmed/observed=false lost_prediction을 따로 보존한다. 예측 bbox는 경계 입력에 쓰지 않는다. `ObservedBoundary`는 외부 track_id를 그대로 사용하고 한 프레임 미관측 또는 PTS gap>.1초에서 경계 상태를 reset한다. A의 기존 IoU 연결/출력은 회귀 검증으로 보존한다.
+
+`audit_tracking_replay.py`는 실제 관측·후보 연속성을 검증하고, `render_tracking_review.py`는 네 연속 비교 영상·35개 고정 이미지·후보 주변 표시용 확대 카드를 만든다. 공식 ByteTrack 출처/고정 설정/최소 호환 수정/테스트/실패는 [EXP-0005](../experiments/EXP-0005-bytetrack-cache-comparison.md)와 ADR-0010 참조. 캐시 처리 시간은 전체 추론 FPS가 아니다.
