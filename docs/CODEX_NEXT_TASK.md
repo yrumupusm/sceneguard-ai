@@ -11,7 +11,7 @@
 - 현재 사람 근거는 030 87.5–92.5초 창 안 약90초 넘기 행동 존재라는 **부분 양성 관찰** 하나다. 전체 창의 onset·사람별 완료는 정답이 아니다. 030의 84초 관찰도 순간적인 서기/접근뿐이다. 031 종료 시 집단 미완료는 030에 이전하지 않는다. 007의 56.633→56.667 박스 관찰은 ChatGPT 시각 초안이다.
 - 전체 12개 중 full-window 확인 양성 0, 확인 음성 0, 검수 전 uncertain 11. 따라서 정확도/precision/recall/F1/FPR/시간당 오탐은 null. Candidate 빈도는 정답률이 아니다.
 - 007/030 여섯 개 이하의 원본 전용 질문 클립은 Git 제외 로컬 `outputs/mvp0001_evaluation/EXP-0014/question_clips/`에 보관한다. 파일은 q01–q06이며 다음 질문에서 실제 질문 목적과 원본 PTS를 표시한다.
-- EXP-0014 기본 채택은 보류. Astra high 독립 검토 2회가 최종 report/metrics hash까지 통과했다. 초기 review의 metrics schema 차단은 여섯 진단 graph row를 추가하고 기존 validator로 재검증해 해소했다. Reviews: [초기 산술 검토](reviews/EXP-0014-coordinator-review.md), [최종 등록 준비 검토](reviews/EXP-0014-delivery-review.md). `complete` 등록과 기존 서비스 화면 확인은 통과했다. GitHub 게시와 원격 main 확인이 남았다.
+- EXP-0014 기본 채택은 보류. Astra high 독립 검토 2회가 최종 report/metrics hash까지 통과했다. 초기 review의 metrics schema 차단은 여섯 진단 graph row를 추가하고 기존 validator로 재검증해 해소했다. Reviews: [초기 산술 검토](reviews/EXP-0014-coordinator-review.md), [최종 등록 준비 검토](reviews/EXP-0014-delivery-review.md). `complete` 등록, GitHub 게시, 원격 report/metrics/review/binding 해시 확인, 기존 서비스의 실제 화면 검증이 통과했다. 요약의 행동 성능은 여전히 미확정이다.
 
 ## 다음 단계
 
@@ -19,7 +19,7 @@
 2. 기존 사용자 관찰을 재질문하지 않는다. Codex는 필요 구간을 한 번에 최대 6개로 모아 원본 전용 클립을 제시한다. 질문별 대답은 `넘기 시도/진행 보임`, `이 구간에는 안 보임`, `가려져 판단 불가`로 받으며, 동작 완료·개인별 행위는 별도 확정 근거가 없으면 미정이다.
 3. 새 사람 답변을 받으면 선택 manifest를 불변으로 두고 label revision에 출처·정확 구간·범위·검수자 입력 상태를 기록한다. 한 순간의 부재를 5초 음성으로 일반화하지 않는다. 새로 확인되지 않은 구간은 `uncertain`을 유지한다.
 4. EXP-0013의 선택된 창 응답만 다시 CPU 평가한다. 필요한 분모가 확보되지 않으면 점수는 계속 null이다. C4의 exact reuse, 013의 과거 노출, 카메라/세션 중복을 독립 증거로 세지 않는다.
-5. 현재 EXP-0014 완료 등록과 실제 local browser 검증은 통과: 담당3 카드, report, 6 metrics, 2 graphs, 검토문, q01–q06 원본 영상 재생/seek 완료. 코드·문서·sanitized records만 GitHub에 게시하고 remote main 및 화면 소스 버전을 확인한다. 사람 확인이 충분하지 않으면 결과는 “평가 수행 완료·행동 성능 미확정/부족”으로 종료한다.
+5. EXP-0014 완료 등록, GitHub 게시, 실제 local browser 검증을 완료했다. 담당3 카드, report, 6 metrics, 2 graphs, 검토문, q01–q06 원본 영상 재생/seek가 확인됐다. 다음 작업은 한 번의 사람 검수 응답을 label revision으로 기록하고 같은 CPU 평가를 재집계하는 것이다. 사람 확인이 충분하지 않으면 “평가 수행 완료·행동 성능 미확정/부족”으로 종료한다.
 
 ## 범위와 금지
 

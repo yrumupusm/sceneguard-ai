@@ -2,7 +2,15 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
-## 최신 사용자 운영 지시 — 실험 전달 완료 절차 (2026-10-28)
+## 최신 범위 — EXP-0014 평가와 MVP 정리 (2026-10-28)
+
+사용자는 최신 지침 `c73d217`에서 기존 EXP-0013 출력만 사용한 평가·정리, 기존 웹 등록 및 GitHub 반영을 승인했다. [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md), [MVP_SMALL_EVALUATION_PLAN](docs/data/MVP_SMALL_EVALUATION_PLAN.md), [EXP-0013 observation errata](docs/data/EXP-0013-observation-errata.md)를 따른다. 평가는 최대12개 고정 창의 저장 B/C 답변만 CPU로 대조한다. 새 GPU 추론·모델·웹 기능은 금지다.
+
+현재 EXP-0014는 24개 cached pair 추적, 평가기와 기존 runtime-state regression 포함 21개 focused CPU test, source immutability를 확인했다. 두 번의 Astra high 독립 리뷰가 최종 report/metrics hash를 묶었고 등록 validator·완료 등록·GitHub 게시/원격 해시 확인·실제 로컬 브라우저 확인까지 통과했다. 행동 성능은 partial positive 한 개와 full-window confirmed negative 0개라 미검증이며 모든 정량 성능 점수 null이다. 030 약90초 행동 존재는 부분 사용자 관찰이며 completion은 미정, 031의 종료 관찰은 030에 적용하지 않는다. 007 박스 변화는 ChatGPT 시각 초안이다. 남은 것은 핵심 구간의 한 번에 묶은 사용자 확인이다. 결과·라벨·기존 report binding은 덮어쓰지 않는다.
+
+검수 질문용 원본 클립은 `outputs/mvp0001_evaluation/EXP-0014/question_clips/`에 로컬만 둔다. Git에는 코드·문서·식별 가능한 개인 정보가 없는 창별 요약만 포함할 수 있다. 원본 영상, 프레임, 가중치, raw 응답, artifact manifest, runtime DB/log/receipt는 제외한다.
+
+## 상시 사용자 운영 지시 — 실험 전달 완료 절차 (2026-10-28)
 
 **최신 MVP-0001 결과: 코드·CPU 테스트·세 원본 실제 Qwen 처리는 완료. 행동 성능 검증·채택은 보류.** [EXP-0013 비교 보고서](docs/experiments/EXP-0013-mvp-comparison.md), [MVP 요약](docs/experiments/MVP-0001-summary.md), [전달 기록](docs/orchestration/MVP-0001_DELIVERY.md)을 따른다. GPU 자원 부족 당시 EXP-0011/12 차단 결과는 불변으로 보존했고, 후속 실제 실행은 EXP-0013으로 별도 기록한다. 실제 EOF 처리는 사람 행동 구분 정확도나 운영 적합성을 의미하지 않는다. 이번 승인 범위 완료 뒤 GPU 작업을 자동 예약하지 않는다. 웹 기능 확장과 기존 CV/EXP6 기본 교체는 하지 않는다.
 

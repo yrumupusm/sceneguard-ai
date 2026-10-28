@@ -6,7 +6,7 @@
 - EXP-0013 실제 전체 처리와 기능 prototype은 완료. 새 GPU 추론 없이 EXP-0013의 12개 창 B/C 24개 결과를 EXP-0014로 추출·대조했다. 24/24 pair trace와 88 source file unchanged, 평가기와 event 회귀 포함 CPU 테스트 21개 통과.
 - B candidate 4/12, C 5/12는 출력 빈도만 뜻한다. unknown 11개, 부분 양성 1개, full-window 확정 음성 0개라 행동 정확도/precision/recall/F1/FPR/시간당 오탐 null. 둘 다 자동 적용 보류. 세부 표는 [EXP-0014](experiments/EXP-0014-mvp-small-evaluation.md), 정리 요약 [MVP-0001](experiments/MVP-0001-summary.md).
 - 출처 정정 적용: 사용자의 030 약90초 언급은 행동 존재 부분 관찰, 030 약84초는 해당 순간 서기/접근, 031 종료 시 집단 미완료는 030의 근거가 아님. 007 56.633→56.667 박스 변화는 ChatGPT 시각 검토이지 사용자 확정 정답이 아님.
-- Astra high 독립 검토 2회가 final hash에 연결됐다. 초기 review에서 완료 등록이 막힌 metrics schema 누락을 발견했고, standard `experiment_id`/`metrics[]`를 추가해 실제 validator와 graph source hash를 검증했다. 최종 바인딩된 report `f6c591...d1f75`, metrics `433b93...8de1685`; 최신 review [EXP-0014 delivery review](reviews/EXP-0014-delivery-review.md)는 등록 준비를 통과했지만 행동 성능을 승인하지 않는다. EXP-0014 완료 등록과 기존 로컬 화면 검증은 통과했다. GitHub 반영 및 원격 main 확인이 남아 있다.
+- Astra high 독립 검토 2회가 final hash에 연결됐다. 초기 review에서 완료 등록이 막힌 metrics schema 누락을 발견했고, standard `experiment_id`/`metrics[]`를 추가해 실제 validator와 graph source hash를 검증했다. 최종 바인딩된 report `f6c591...d1f75`, metrics `433b93...8de1685`; 최신 review [EXP-0014 delivery review](reviews/EXP-0014-delivery-review.md)는 등록 준비를 통과했지만 행동 성능을 승인하지 않는다. EXP-0014 완료 등록과 기존 로컬 화면 검증, GitHub 게시 및 원격 main 파일 검증은 통과했다. GitHub commit `8cb71f5fca7c01fe6c5a21843da78dfd3d4b66f6`; verification receipt는 로컬 `runtime/EXP-0014/github-verification-final-local.json`에만 보관한다.
 - 검수용 원본 구간 최대6개는 `outputs/mvp0001_evaluation/EXP-0014/question_clips/`에 로컬만 생성했다. GitHub·로컬 서비스 확인 뒤 한 번에 질문하고, 새 답은 CPU label revision에만 반영한다.
 - 원본 영상·검수 클립·캐시·모델·raw 응답·runtime receipt는 Git 제외. 새 GPU 실행, 새 모델, UI 변경은 하지 않는다.
 
