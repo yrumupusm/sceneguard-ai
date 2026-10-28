@@ -7,7 +7,7 @@
 - 결과: primary 3개는 모두 비사건이며 후보 B 2/3, C 1/3. 진단 q03/q04/q06은 후보 B 0/3, C 2/3. 6개 전체는 B 2/6, C 3/6. 확인된 비사건 5개에서 양쪽 각각 2개 후보가 남고, 유일한 시도 양성 q04에서는 B가 놓치고 C가 후보를 냈다. 이는 작은 개발 표본 진단이지 오류율/정확도 추정이 아니다.
 - 미확정 5개는 unknown으로 유지하고, d030_90은 독립된 부분 양성으로 보존했다. primary 양성 0이므로 정확도·precision·recall·F1·FPR·시간당 오탐은 null. 모델/구성 자동 채택 보류다.
 - 담당 Sol high Task `task_dbf80c1a9687` / Dispatch `ctx_f36ccf3479f0`, 독립 검토 Astra high Task `task_ff0208b63e32` / Dispatch `ctx_155bbf7a2164`; 기존 Run을 재사용했다. 16개 focused CPU tests와 metrics validator 통과. 등록은 담당3에 연결됐다.
-- 기존 화면 `http://127.0.0.1:8765/`에서 실제 slot3 카드, report/reviewer, 6 metrics·2 graphs, q01–q06 영상 재생/seek를 확인했다. GitHub 게시 확인과 브라우저 확인은 별도다. 완료 커밋은 이 handoff 갱신 뒤 기록한다.
+- 기존 화면 `http://127.0.0.1:8765/`에서 실제 slot3 카드, report/reviewer, 6 metrics·2 graphs, q01–q06 영상 재생/seek를 확인했다. GitHub 게시 확인과 브라우저 확인은 별도 receipt로 각각 통과했다. GitHub 검증 commit `b0bceb41d4b397c834668d33a445fdd687a4b893`; 뒤이은 handoff 상태 반영은 최종 커밋으로 추가 게시한다.
 - 새 추론/모델/GPU/web 개발 없음. 로컬 미디어·runtime receipt는 Git 제외. 다음 작업은 독립 카메라/세션을 평가 단위로 하는 사전 고정 검증 계획이다. [EXP-0015](experiments/EXP-0015-user-label-revision.md), [다음 작업](CODEX_NEXT_TASK.md), [전달 기록](orchestration/MVP-0001_DELIVERY.md).
 
 ## 최신 상태 — EXP-0014 저장 출력 평가 (2026-10-28)
