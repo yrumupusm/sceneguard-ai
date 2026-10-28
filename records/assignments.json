@@ -77,6 +77,19 @@
       "synthetic": false,
       "task_id": "task_e09cc6304b35",
       "title": "로컬 MVP의 전체 영상 비교 실행"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T12:46:49+00:00",
+      "dispatch_id": "ctx_2ec715e81804",
+      "experiment_id": "EXP-0014",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_509c15597c5b",
+      "title": "MVP-0001 기존 출력 소규모 행동 평가"
     }
   ],
   "schema_version": 1

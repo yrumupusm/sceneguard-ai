@@ -1,0 +1,881 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "MVP-EVAL-0001",
+  "based_on_exp": "EXP-0013",
+  "manifest_status": "frozen_selection_before_itemized_BC_result_read",
+  "selection_timing": "Retrospective after completed inference and prior public aggregate report; the twelve itemized per-window B/C result.json files were not consulted during selection. This is outcome-aware development material, not a prospective or independent test.",
+  "selection_rule": "At most four non-overlapping scheduled 5-second windows per source, on the existing 2.5-second grid; use early/middle/late strata and pre-existing official/user-observation anchors. Keep 007 box-change, 030 84s/90s/EOF and official-event anchors diagnostic, outside primary counts. Never select based on itemized B/C predictions. C4/013 is fallback/reuse diagnostic only.",
+  "constraints": {
+    "methods": [
+      "B whole-frame Qwen",
+      "C fixed-camera ROI Qwen"
+    ],
+    "new_inference": false,
+    "new_gpu_work": false,
+    "new_model_or_weights": false,
+    "window_seconds": 5.0,
+    "stride_seconds": 2.5,
+    "max_windows_total": 12,
+    "max_windows_per_source": 4,
+    "unknown_is_negative": false,
+    "official_labels_modified": false
+  },
+  "sources": {
+    "E01_007": {
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "C_policy": "fixed ROI"
+    },
+    "E01_030": {
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "camera_group": "C6",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "C_policy": "fixed ROI"
+    },
+    "E01_013": {
+      "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+      "camera_group": "C4",
+      "site_group": "site_unknown_school",
+      "split_role": "reserved_diagnostic_validation",
+      "C_policy": "full-frame fallback/reuse; no ROI comparison"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "s007_early",
+      "source_id": "E01_007",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "window_id": "w000001",
+      "start_pts_seconds": 0.0,
+      "end_pts_seconds": 5.0,
+      "evaluation_role": "primary",
+      "selection_reason": "early time stratum",
+      "reference_label": "uncertain",
+      "label_status": "needs_human_review",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "No verified action label for this interval.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000001",
+          "scheduled_interval_seconds": [
+            0.0,
+            5.0
+          ],
+          "actual_sampled_pts_seconds": [
+            0.0,
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0,
+            4.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 4.5,
+          "last_arrived_pts": 5.0,
+          "rgb_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c"
+        },
+        "C": {
+          "window_id": "w000001",
+          "scheduled_interval_seconds": [
+            0.0,
+            5.0
+          ],
+          "actual_sampled_pts_seconds": [
+            0.0,
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0,
+            4.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 4.5,
+          "last_arrived_pts": 5.0,
+          "rgb_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "s007_preevent",
+      "source_id": "E01_007",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "window_id": "w000020",
+      "start_pts_seconds": 47.5,
+      "end_pts_seconds": 52.5,
+      "evaluation_role": "primary",
+      "selection_reason": "pre-event time stratum selected from the timeline, not model states",
+      "reference_label": "uncertain",
+      "label_status": "needs_human_review",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "Prior appearance/start distinction does not establish this whole window as negative or positive.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000020",
+          "scheduled_interval_seconds": [
+            47.5,
+            52.5
+          ],
+          "actual_sampled_pts_seconds": [
+            47.5,
+            48.0,
+            48.5,
+            49.0,
+            49.5,
+            50.0,
+            50.5,
+            51.0,
+            51.5,
+            52.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 52.0,
+          "last_arrived_pts": 52.5,
+          "rgb_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703"
+        },
+        "C": {
+          "window_id": "w000020",
+          "scheduled_interval_seconds": [
+            47.5,
+            52.5
+          ],
+          "actual_sampled_pts_seconds": [
+            47.5,
+            48.0,
+            48.5,
+            49.0,
+            49.5,
+            50.0,
+            50.5,
+            51.0,
+            51.5,
+            52.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 52.0,
+          "last_arrived_pts": 52.5,
+          "rgb_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "d007_boxchange",
+      "source_id": "E01_007",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "window_id": "w000022",
+      "start_pts_seconds": 52.5,
+      "end_pts_seconds": 57.5,
+      "evaluation_role": "diagnostic",
+      "selection_reason": "pre-existing 56.633-56.667 box-change review anchor",
+      "reference_label": "uncertain",
+      "label_status": "ai_visual_review_partial",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "ChatGPT local frame observation only; not user-confirmed action truth.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000022",
+          "scheduled_interval_seconds": [
+            52.5,
+            57.5
+          ],
+          "actual_sampled_pts_seconds": [
+            52.5,
+            53.0,
+            53.5,
+            54.0,
+            54.5,
+            55.0,
+            55.5,
+            56.0,
+            56.5,
+            57.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 57.0,
+          "last_arrived_pts": 57.5,
+          "rgb_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c"
+        },
+        "C": {
+          "window_id": "w000022",
+          "scheduled_interval_seconds": [
+            52.5,
+            57.5
+          ],
+          "actual_sampled_pts_seconds": [
+            52.5,
+            53.0,
+            53.5,
+            54.0,
+            54.5,
+            55.0,
+            55.5,
+            56.0,
+            56.5,
+            57.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 57.0,
+          "last_arrived_pts": 57.5,
+          "rgb_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "d007_official",
+      "source_id": "E01_007",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "window_id": "w000026",
+      "start_pts_seconds": 62.5,
+      "end_pts_seconds": 67.5,
+      "evaluation_role": "diagnostic",
+      "selection_reason": "official event-frame reference interval, converted to the existing 2.5s schedule",
+      "reference_label": "uncertain",
+      "label_status": "official_annotation_reference",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "Official Invasion annotation is kept separate from person-level action truth; frame base remains ambiguous.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000026",
+          "scheduled_interval_seconds": [
+            62.5,
+            67.5
+          ],
+          "actual_sampled_pts_seconds": [
+            62.5,
+            63.0,
+            63.5,
+            64.0,
+            64.5,
+            65.0,
+            65.5,
+            66.0,
+            66.5,
+            67.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 67.0,
+          "last_arrived_pts": 67.5,
+          "rgb_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512"
+        },
+        "C": {
+          "window_id": "w000026",
+          "scheduled_interval_seconds": [
+            62.5,
+            67.5
+          ],
+          "actual_sampled_pts_seconds": [
+            62.5,
+            63.0,
+            63.5,
+            64.0,
+            64.5,
+            65.0,
+            65.5,
+            66.0,
+            66.5,
+            67.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 67.0,
+          "last_arrived_pts": 67.5,
+          "rgb_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": {
+        "event_class": "Invasion",
+        "event_frame": [
+          [
+            1893,
+            2212
+          ]
+        ]
+      },
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "s030_time",
+      "source_id": "E01_030",
+      "camera_group": "C6",
+      "site_group": "site_unknown_school",
+      "window_id": "w000021",
+      "start_pts_seconds": 50.0,
+      "end_pts_seconds": 55.0,
+      "evaluation_role": "primary",
+      "selection_reason": "middle time stratum selected from the timeline, not model states",
+      "reference_label": "uncertain",
+      "label_status": "needs_human_review",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "No user-confirmed full-window negative.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000021",
+          "scheduled_interval_seconds": [
+            50.0,
+            55.0
+          ],
+          "actual_sampled_pts_seconds": [
+            50.0,
+            50.5,
+            51.0,
+            51.5,
+            52.0,
+            52.5,
+            53.0,
+            53.5,
+            54.0,
+            54.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 54.5,
+          "last_arrived_pts": 55.0,
+          "rgb_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b"
+        },
+        "C": {
+          "window_id": "w000021",
+          "scheduled_interval_seconds": [
+            50.0,
+            55.0
+          ],
+          "actual_sampled_pts_seconds": [
+            50.0,
+            50.5,
+            51.0,
+            51.5,
+            52.0,
+            52.5,
+            53.0,
+            53.5,
+            54.0,
+            54.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 54.5,
+          "last_arrived_pts": 55.0,
+          "rgb_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "d030_84",
+      "source_id": "E01_030",
+      "camera_group": "C6",
+      "site_group": "site_unknown_school",
+      "window_id": "w000034",
+      "start_pts_seconds": 82.5,
+      "end_pts_seconds": 87.5,
+      "evaluation_role": "diagnostic",
+      "selection_reason": "prior user observation near 84s",
+      "reference_label": "uncertain",
+      "label_status": "human_observation_partial",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "User described three people standing/approaching around 84s; this moment does not label the whole window as negative.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000034",
+          "scheduled_interval_seconds": [
+            82.5,
+            87.5
+          ],
+          "actual_sampled_pts_seconds": [
+            82.5,
+            83.0,
+            83.5,
+            84.0,
+            84.5,
+            85.0,
+            85.5,
+            86.0,
+            86.5,
+            87.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 87.0,
+          "last_arrived_pts": 87.5,
+          "rgb_sha256": "2146ccde04ca47b3a19d350916e5bdf6dfebe80264a81fcaf3d4b4ee78e6d4fe"
+        },
+        "C": {
+          "window_id": "w000034",
+          "scheduled_interval_seconds": [
+            82.5,
+            87.5
+          ],
+          "actual_sampled_pts_seconds": [
+            82.5,
+            83.0,
+            83.5,
+            84.0,
+            84.5,
+            85.0,
+            85.5,
+            86.0,
+            86.5,
+            87.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 87.0,
+          "last_arrived_pts": 87.5,
+          "rgb_sha256": "2146ccde04ca47b3a19d350916e5bdf6dfebe80264a81fcaf3d4b4ee78e6d4fe"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "d030_90",
+      "source_id": "E01_030",
+      "camera_group": "C6",
+      "site_group": "site_unknown_school",
+      "window_id": "w000036",
+      "start_pts_seconds": 87.5,
+      "end_pts_seconds": 92.5,
+      "evaluation_role": "diagnostic",
+      "selection_reason": "prior user observation near 90s; failure anchor kept outside primary counts",
+      "reference_label": "climbing_present",
+      "label_status": "human_observation_partial",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "User reported three people climbing around 90s; action presence only, no exact onset, identities, or completion.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000036",
+          "scheduled_interval_seconds": [
+            87.5,
+            92.5
+          ],
+          "actual_sampled_pts_seconds": [
+            87.5,
+            88.0,
+            88.5,
+            89.0,
+            89.5,
+            90.0,
+            90.5,
+            91.0,
+            91.5,
+            92.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 92.0,
+          "last_arrived_pts": 92.5,
+          "rgb_sha256": "e130773095f3d6c875dfe31f7d4b4203ec5db187c6a20a0127d03d47eb419b08"
+        },
+        "C": {
+          "window_id": "w000036",
+          "scheduled_interval_seconds": [
+            87.5,
+            92.5
+          ],
+          "actual_sampled_pts_seconds": [
+            87.5,
+            88.0,
+            88.5,
+            89.0,
+            89.5,
+            90.0,
+            90.5,
+            91.0,
+            91.5,
+            92.0
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 92.0,
+          "last_arrived_pts": 92.5,
+          "rgb_sha256": "e130773095f3d6c875dfe31f7d4b4203ec5db187c6a20a0127d03d47eb419b08"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "d030_eof",
+      "source_id": "E01_030",
+      "camera_group": "C6",
+      "site_group": "site_unknown_school",
+      "window_id": "w000063",
+      "start_pts_seconds": 155.0,
+      "end_pts_seconds": 160.0,
+      "evaluation_role": "diagnostic",
+      "selection_reason": "EOF-adjacent audit anchor; no label borrowed from E01_031",
+      "reference_label": "uncertain",
+      "label_status": "needs_human_review",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "030 individual/collective completion is unverified; 031 noncompletion observation does not apply.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000063",
+          "scheduled_interval_seconds": [
+            155.0,
+            160.0
+          ],
+          "actual_sampled_pts_seconds": [
+            155.0,
+            155.5,
+            156.0,
+            156.5,
+            157.0,
+            157.5,
+            158.0,
+            158.5,
+            159.0,
+            159.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 159.5,
+          "last_arrived_pts": 160.0,
+          "rgb_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b"
+        },
+        "C": {
+          "window_id": "w000063",
+          "scheduled_interval_seconds": [
+            155.0,
+            160.0
+          ],
+          "actual_sampled_pts_seconds": [
+            155.0,
+            155.5,
+            156.0,
+            156.5,
+            157.0,
+            157.5,
+            158.0,
+            158.5,
+            159.0,
+            159.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 159.5,
+          "last_arrived_pts": 160.0,
+          "rgb_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "s013_early",
+      "source_id": "E01_013",
+      "camera_group": "C4",
+      "site_group": "site_unknown_school",
+      "window_id": "w000001",
+      "start_pts_seconds": 0.0,
+      "end_pts_seconds": 5.0,
+      "evaluation_role": "fallback_diagnostic",
+      "selection_reason": "early time stratum; C4 uses whole-frame fallback",
+      "reference_label": "uncertain",
+      "label_status": "needs_human_review",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "No user-confirmed action label; not an ROI comparison.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000001",
+          "scheduled_interval_seconds": [
+            0.0,
+            5.0
+          ],
+          "actual_sampled_pts_seconds": [
+            0.0,
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0,
+            4.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 4.5,
+          "last_arrived_pts": 5.0,
+          "rgb_sha256": "a80444f36bca987298ee7e40505c12896ea04abcba823fff41f0ff4c7839a0bf"
+        },
+        "C": {
+          "window_id": "w000001",
+          "scheduled_interval_seconds": [
+            0.0,
+            5.0
+          ],
+          "actual_sampled_pts_seconds": [
+            0.0,
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0,
+            4.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 4.5,
+          "last_arrived_pts": 5.0,
+          "rgb_sha256": "a80444f36bca987298ee7e40505c12896ea04abcba823fff41f0ff4c7839a0bf"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "s013_mid",
+      "source_id": "E01_013",
+      "camera_group": "C4",
+      "site_group": "site_unknown_school",
+      "window_id": "w000017",
+      "start_pts_seconds": 40.0,
+      "end_pts_seconds": 45.0,
+      "evaluation_role": "fallback_diagnostic",
+      "selection_reason": "middle time stratum; C4 uses whole-frame fallback",
+      "reference_label": "uncertain",
+      "label_status": "needs_human_review",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "No user-confirmed action label; not an ROI comparison.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000017",
+          "scheduled_interval_seconds": [
+            40.0,
+            45.0
+          ],
+          "actual_sampled_pts_seconds": [
+            40.0,
+            40.5,
+            41.0,
+            41.5,
+            42.0,
+            42.5,
+            43.0,
+            43.5,
+            44.0,
+            44.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 44.5,
+          "last_arrived_pts": 45.0,
+          "rgb_sha256": "b41a51eee08dad41d404984ae7c4df514f271c219433292a325df433c185005a"
+        },
+        "C": {
+          "window_id": "w000017",
+          "scheduled_interval_seconds": [
+            40.0,
+            45.0
+          ],
+          "actual_sampled_pts_seconds": [
+            40.0,
+            40.5,
+            41.0,
+            41.5,
+            42.0,
+            42.5,
+            43.0,
+            43.5,
+            44.0,
+            44.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 44.5,
+          "last_arrived_pts": 45.0,
+          "rgb_sha256": "b41a51eee08dad41d404984ae7c4df514f271c219433292a325df433c185005a"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "d013_official",
+      "source_id": "E01_013",
+      "camera_group": "C4",
+      "site_group": "site_unknown_school",
+      "window_id": "w000025",
+      "start_pts_seconds": 60.0,
+      "end_pts_seconds": 65.0,
+      "evaluation_role": "fallback_diagnostic",
+      "selection_reason": "prior official-event audit interval; C4 uses whole-frame fallback",
+      "reference_label": "uncertain",
+      "label_status": "official_annotation_reference",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "Official event reference is not human scene confirmation; previously exposed diagnostic source.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000025",
+          "scheduled_interval_seconds": [
+            60.0,
+            65.0
+          ],
+          "actual_sampled_pts_seconds": [
+            60.0,
+            60.5,
+            61.0,
+            61.5,
+            62.0,
+            62.5,
+            63.0,
+            63.5,
+            64.0,
+            64.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 64.5,
+          "last_arrived_pts": 65.0,
+          "rgb_sha256": "209677be9a495e46d8609e55d3eb3ad3713dbce795761595e7e5c2ceeb25db59"
+        },
+        "C": {
+          "window_id": "w000025",
+          "scheduled_interval_seconds": [
+            60.0,
+            65.0
+          ],
+          "actual_sampled_pts_seconds": [
+            60.0,
+            60.5,
+            61.0,
+            61.5,
+            62.0,
+            62.5,
+            63.0,
+            63.5,
+            64.0,
+            64.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 64.5,
+          "last_arrived_pts": 65.0,
+          "rgb_sha256": "209677be9a495e46d8609e55d3eb3ad3713dbce795761595e7e5c2ceeb25db59"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": {
+        "event_class": "Invasion",
+        "event_frame": [
+          [
+            1818,
+            1982
+          ]
+        ]
+      },
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    },
+    {
+      "case_id": "s013_late",
+      "source_id": "E01_013",
+      "camera_group": "C4",
+      "site_group": "site_unknown_school",
+      "window_id": "w000049",
+      "start_pts_seconds": 120.0,
+      "end_pts_seconds": 125.0,
+      "evaluation_role": "fallback_diagnostic",
+      "selection_reason": "late time stratum; C4 uses whole-frame fallback",
+      "reference_label": "uncertain",
+      "label_status": "needs_human_review",
+      "evidence_source": "docs/data/EXP-0013-observation-errata.md + configs/mvp0001_eval_manifest.json + docs/data/AIHUB_INTRUSION_USER_REVIEW.md",
+      "uncertainty": "No user-confirmed action label; not an ROI comparison.",
+      "paired_methods": {
+        "B": {
+          "window_id": "w000049",
+          "scheduled_interval_seconds": [
+            120.0,
+            125.0
+          ],
+          "actual_sampled_pts_seconds": [
+            120.0,
+            120.5,
+            121.0,
+            121.5,
+            122.0,
+            122.5,
+            123.0,
+            123.5,
+            124.0,
+            124.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 124.5,
+          "last_arrived_pts": 125.0,
+          "rgb_sha256": "6b05059a7008eb81c3e4a8d1d25587233abcf7e48b508b7c81c354b36e23f026"
+        },
+        "C": {
+          "window_id": "w000049",
+          "scheduled_interval_seconds": [
+            120.0,
+            125.0
+          ],
+          "actual_sampled_pts_seconds": [
+            120.0,
+            120.5,
+            121.0,
+            121.5,
+            122.0,
+            122.5,
+            123.0,
+            123.5,
+            124.0,
+            124.5
+          ],
+          "actual_sample_count": 10,
+          "last_input_pts": 124.5,
+          "last_arrived_pts": 125.0,
+          "rgb_sha256": "6b05059a7008eb81c3e4a8d1d25587233abcf7e48b508b7c81c354b36e23f026"
+        }
+      },
+      "B_C_sampled_pts_equal": true,
+      "official_annotation_reference": null,
+      "itemized_result_read_before_freeze": false,
+      "B_C_decoded_source_rgb_equal": true,
+      "processor_tensor_equal": null
+    }
+  ],
+  "label_policy": "No unreviewed time is negative. Only d030_90 has a partial user-confirmed positive presence in the selected window. No confirmed negative windows; no accuracy/precision/recall/F1/FPR/hourly FP."
+}

@@ -820,6 +820,79 @@
       "task_id": "task_e09cc6304b35",
       "title": "로컬 MVP의 전체 영상 비교 실행",
       "worker_opinion": "세 구성의 로컬 처리와 후보 근거 생성을 보고함. 007/030 장면은 사람 확인 대상이며, 전체 행동 성능을 확정할 정답 표본이 충분하지 않음."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T12:46:49+00:00",
+      "attempt_id": "cpu-cache-eval-c73d217-ec293844",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_2ec715e81804",
+      "evaluated_model": "Qwen3-VL-2B-Instruct EXP-0013 B whole-frame / C fixed-camera ROI cached outputs",
+      "evidence": [
+        {
+          "artifact_id": "exp14-q01",
+          "kind": "video",
+          "label": "E01_007 원본 검수 구간 00.0–05.0초"
+        },
+        {
+          "artifact_id": "exp14-q02",
+          "kind": "video",
+          "label": "E01_007 원본 검수 구간 47.5–52.5초"
+        },
+        {
+          "artifact_id": "exp14-q03",
+          "kind": "video",
+          "label": "E01_007 원본 검수 구간 52.5–57.5초"
+        },
+        {
+          "artifact_id": "exp14-q04",
+          "kind": "video",
+          "label": "E01_007 원본 검수 구간 62.5–67.5초"
+        },
+        {
+          "artifact_id": "exp14-q05",
+          "kind": "video",
+          "label": "E01_030 원본 검수 구간 50.0–55.0초"
+        },
+        {
+          "artifact_id": "exp14-q06",
+          "kind": "video",
+          "label": "E01_030 원본 검수 구간 155.0–160.0초"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0014",
+      "limitations": [
+        "12개 개발/진단 창을 모델 추론과 공개 aggregate 이후 선택했으며 독립·맹검 평가가 아니다.",
+        "확인 가능한 근거는 030 87.5–92.5초의 행동 존재 부분 관찰 하나뿐이며 전체 창·인원별 완료 정답이 아니다.",
+        "확정 full-window 음성 0개, 검수 전 unknown 11개, verified negative duration 0초라 정확도·precision·recall·F1·FPR·시간당 오탐률은 산출하지 않았다.",
+        "013 C4의 네 C 결과는 B 결과를 정확히 재사용했고 ROI 개선/독립 성공 표본이 아니다.",
+        "행동 설명 사실성, 감시 경계 대응, 새 카메라 일반화 및 실시간 운영은 확인하지 않았다."
+      ],
+      "metric_definitions": "records/EXP-0014/metrics.json",
+      "metrics_path": "records/EXP-0014/metrics.json",
+      "metrics_sha256": "433b932add64fb4c92e75860d13586f1cee6aa0e25b5a6ed5178eff108de1685",
+      "next_step": "사용자에게 6개 이하 원본 구간을 한 번에 제시해 필요한 장면만 확인받고, 답변이 오면 별도 label revision을 만들어 CPU 집계를 갱신한다. 새 모델 추론은 하지 않는다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "77a8232578bb8db953680a41ab76ce3b4e057dc8abc0d77ce0c194ffc2665312",
+      "report_path": "docs/experiments/EXP-0014-mvp-small-evaluation.md",
+      "report_sha256": "f6c591788b3cc740f4896ca0da5328b26e4817e958e9c0892dc57e70f39d1f75",
+      "review_binding_path": "docs/reviews/EXP-0014.binding.json",
+      "review_path": "docs/reviews/EXP-0014-delivery-review.md",
+      "review_sha256": "30e48736f9fe9e87b8cca8322dc8940c65e7697f315bf3b235fc2e6d330d44df",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "433b932add64fb4c92e75860d13586f1cee6aa0e25b5a6ed5178eff108de1685",
+      "reviewed_report_sha256": "f6c591788b3cc740f4896ca0da5328b26e4817e958e9c0892dc57e70f39d1f75",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "EXP-0013의 고정 12개 시간창, B/C 24개 저장 응답을 CPU에서 검증했다. B/C candidate 출력은 4/12, 5/12이며 이는 정답 성능이 아니다. 사용자 관찰로 지지되는 부분 양성은 하나뿐이고 확인 음성 창이 없어 행동 성능 점수는 산출하지 않는다.",
+      "synthetic": false,
+      "task_id": "task_509c15597c5b",
+      "title": "MVP-0001 기존 출력 소규모 행동 평가",
+      "worker_opinion": "출력 연결·집계·등록 형식을 검증했으나 라벨 불충분으로 실제 행동 성능과 B/C 채택은 판단할 수 없다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

@@ -42,3 +42,12 @@ CPU 준비 후 기존2,235개 파일의 size/mtime,565개 SHA256 및 두 기존 
 - **실제 서비스 화면 확인:** `verify_delivery browser` passed at **http://127.0.0.1:8765/** using the existing page. EXP-0013 담당 슬롯3 카드에 “작업자 완료”가 표시되고, report와 2 metrics 그래프 및 reviewer 의견이 열렸다. 등록된 reference 007/030 영상과 B030/C007/C030 근거 영상 총5개 모두 decode·재생·1.5초 seek에 성공했다. polling 이후에도 video 상태가 유지됐고 화면 source SHA가 GitHub receipt와 동일했다. Receipt: local-only `runtime/mvp-0001/exp13/browser-final.json`.
 - 이 확인은 **로컬 서비스가 최신 저장소 파일을 읽어 실제 화면에 표시한 것**이다. GitHub 게시와 별도 검사로 통과했다. 결과 화면의 행동 판단 성능이나 자동 판정 적합성을 검증한 것은 아니다.
 - 사용자 검토할 장면은 결과 페이지의 007 약56초와 030 약90초/EOF 후보로 제한한다. 실제 영상의 의미를 사람이 확인하기 전 채택은 보류한다. 다음 실행이나 GPU 작업을 자동 예약하지 않는다.
+
+## 후속 저장 출력 평가와 결과 화면 — EXP-0014
+
+EXP-0013 원본 응답만 사용해 고정된 12개 5초 창의 B/C 24개 레코드를 CPU로 평가했다. 새 모델 추론·미디어 디코딩·모델 다운로드 없이 24/24 레코드의 입력/PTS/응답 연결과 source immutability를 확인했다. EXP-0014를 기존 Run의 담당 슬롯3에 Sol high로 배정했고 진행/완료 등록을 거쳐 catalog에 반영했다. 담당/등록 상태는 `records/assignments.json`, `records/catalog.json`, 로컬 runtime 패키지에 연결된다. runtime 패키지와 receipt는 로컬 전용이다.
+
+- 공개 산출물은 [EXP-0014 보고서](../experiments/EXP-0014-mvp-small-evaluation.md), [고정 manifest](../../configs/mvp_small_eval_manifest.json), sanitized item review, metrics, 재현 스크립트/테스트, 두 Astra high 검토와 binding, summary/handoff다. 로컬 미디어·클립·가중치·raw 응답·runtime DB/log/receipt는 공개하지 않는다.
+- 마지막 검증: CPU focused tests 21 passed; 기존 `complete.metrics` validator 통과; 완료 등록 `registered`. 로컬 browser `http://127.0.0.1:8765/`에서 EXP-0014 담당3 카드, 보고서, 6 diagnostic metrics, 2 graphs, reviewer section을 열었다. q01–q06 원본 전용 5초 clip 모두 duration 5s, 1920×1080, 재생 및 1.5초 seek/decode에 성공했고 polling 이후에도 video 상태가 유지됐다. 브라우저 receipt는 ignored `runtime/EXP-0014/browser-check-local.json`이다.
+- **평가 결과:** B candidate 4/12, C 5/12는 빈도만 뜻한다. 완전한 정답 양성 0, confirmed negative 0, 030 한 부분 양성 관찰뿐이므로 accuracy/precision/recall/F1/FPR/hourly false alarm은 null이다. 기능 프로토타입과 평가 코드 검증은 완료했지만 행동 성능 입증/채택은 보류다.
+- GitHub 게시는 이 EXP-0014 기록을 반영한 별도 commit과 `verify_delivery github`로 확인한다. 실제 로컬 페이지 검증을 GitHub 게시 검증으로 간주하지 않는다.

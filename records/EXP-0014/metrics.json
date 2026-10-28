@@ -1,0 +1,238 @@
+{
+  "based_on_exp": "EXP-0013",
+  "behavioral_validation": "insufficient_evidence_human_review_pending",
+  "confirmed_negative_cases": 0,
+  "counting_formula": "For each method/group, denominator = selected scheduled windows; candidate + candidate_absent + unavailable = denominator. Invalid pairing, missing, parse failure, insufficient input and indeterminate without candidate are unavailable. Candidate with indeterminate remains candidate. No merged event is read.",
+  "diagnostics_by_method": {
+    "B": {
+      "completion_observed_claims": 8,
+      "completion_without_climbing_action": 4,
+      "denominator": 12,
+      "postprocessed_schema_valid": 12,
+      "strict_form_compliant": 4,
+      "text_consistency": {
+        "climbing_motion_described_claim_only": 2,
+        "explicit_motion_denial": 1,
+        "no_climbing_motion_described": 1,
+        "not_applicable": 8
+      }
+    },
+    "C": {
+      "completion_observed_claims": 7,
+      "completion_without_climbing_action": 3,
+      "denominator": 12,
+      "postprocessed_schema_valid": 12,
+      "strict_form_compliant": 8,
+      "text_consistency": {
+        "climbing_motion_described_claim_only": 4,
+        "no_climbing_motion_described": 1,
+        "not_applicable": 7
+      }
+    }
+  },
+  "evaluation_extraction_complete": true,
+  "evaluation_id": "EXP-0014",
+  "exclusions": {
+    "031_observation": "not transferred to 030 EOF",
+    "cost": "not measured by this evaluator; reused generation is not a speed improvement",
+    "diagnostic_anchors": "kept outside primary performance denominators",
+    "fallback": "four C4 cases excluded from ROI comparative performance; four C records reuse B",
+    "official_annotation": "manifest reference only; no official label file read",
+    "partial_positive": "d030_90 presence only, diagnostic; no person count, onset or completion score",
+    "target_boundary": "alignment unverified; off-ROI success/negative never inferred",
+    "unknown_labels": "excluded from behavioral scores, retained in output counts"
+  },
+  "execution_scope": "CPU cached text/metadata only; no media decoding or inference",
+  "experiment_id": "EXP-0014",
+  "frozen_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+  "implementation_sha256": "3d53242c824cba4200d9ba7fe6765bb74608a72094ea41983183db6cf9fedfac",
+  "invalid_or_missing_records": 0,
+  "item_results_sha256": "4178c85a188117329bc8099138be75c41837a87a84f5c34b7167ef670445d2c4",
+  "labels_revision": "frozen_manifest_with_EXP-0013_observation_errata",
+  "metrics": [
+    {
+      "label": "B: candidate output count (not a correctness score)",
+      "sample_n": 12,
+      "scope": "EXP-0014 fixed 12-window development sample; 11 unknown and 1 partial-positive label(s); candidate windows; not behavioral accuracy",
+      "source": "records/EXP-0014/window_reviews.json",
+      "source_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "unit": "window",
+      "value": 4,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B: original-form schema compliant",
+      "sample_n": 12,
+      "scope": "EXP-0014 fixed 12-window development sample; 11 unknown and 1 partial-positive label(s); form-only diagnostic; not behavioral accuracy",
+      "source": "records/EXP-0014/window_reviews.json",
+      "source_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "unit": "window",
+      "value": 4,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B: observed completion claims without climbing action",
+      "sample_n": 12,
+      "scope": "EXP-0014 fixed 12-window development sample; 11 unknown and 1 partial-positive label(s); text-only diagnostic; not behavioral accuracy",
+      "source": "records/EXP-0014/window_reviews.json",
+      "source_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "unit": "window",
+      "value": 4,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C: candidate output count (not a correctness score)",
+      "sample_n": 12,
+      "scope": "EXP-0014 fixed 12-window development sample; 11 unknown and 1 partial-positive label(s); candidate windows; not behavioral accuracy",
+      "source": "records/EXP-0014/window_reviews.json",
+      "source_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "unit": "window",
+      "value": 5,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C: original-form schema compliant",
+      "sample_n": 12,
+      "scope": "EXP-0014 fixed 12-window development sample; 11 unknown and 1 partial-positive label(s); form-only diagnostic; not behavioral accuracy",
+      "source": "records/EXP-0014/window_reviews.json",
+      "source_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "unit": "window",
+      "value": 8,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C: observed completion claims without climbing action",
+      "sample_n": 12,
+      "scope": "EXP-0014 fixed 12-window development sample; 11 unknown and 1 partial-positive label(s); text-only diagnostic; not behavioral accuracy",
+      "source": "records/EXP-0014/window_reviews.json",
+      "source_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "unit": "window",
+      "value": 3,
+      "verification": "source_json_sha256_checked"
+    }
+  ],
+  "model_pairing_scope": "Same recorded execution input hash and generation metadata; model weights not reopened or rehashed",
+  "output_presence_tables": [
+    {
+      "candidate": 4,
+      "candidate_absent": 8,
+      "denominator": 12,
+      "group": "all_selected",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 11
+    },
+    {
+      "candidate": 2,
+      "candidate_absent": 1,
+      "denominator": 3,
+      "group": "primary",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 3
+    },
+    {
+      "candidate": 2,
+      "candidate_absent": 3,
+      "denominator": 5,
+      "group": "diagnostic",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 4
+    },
+    {
+      "candidate": 0,
+      "candidate_absent": 4,
+      "denominator": 4,
+      "group": "fallback_diagnostic",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 4
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 0,
+      "denominator": 1,
+      "group": "partial_positive_presence",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 5,
+      "candidate_absent": 7,
+      "denominator": 12,
+      "group": "all_selected",
+      "method": "C",
+      "reused_count": 4,
+      "unavailable": 0,
+      "unknown_label_count": 11
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 2,
+      "denominator": 3,
+      "group": "primary",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 3
+    },
+    {
+      "candidate": 4,
+      "candidate_absent": 1,
+      "denominator": 5,
+      "group": "diagnostic",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 4
+    },
+    {
+      "candidate": 0,
+      "candidate_absent": 4,
+      "denominator": 4,
+      "group": "fallback_diagnostic",
+      "method": "C",
+      "reused_count": 4,
+      "unavailable": 0,
+      "unknown_label_count": 4
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 0,
+      "denominator": 1,
+      "group": "partial_positive_presence",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    }
+  ],
+  "performance_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "fpr": null,
+    "hourly_false_alarms": null,
+    "precision": null,
+    "recall": null
+  },
+  "performance_null_reason": "No fully confirmed primary labels or negative windows; partial positive is diagnostic and target alignment/explanation factuality remain unreviewed",
+  "primary_fully_confirmed_negative_denominator": 0,
+  "primary_fully_confirmed_positive_denominator": 0,
+  "schema_version": 1,
+  "selected_case_count": 12,
+  "selected_pair_records": 24,
+  "selection_timing": "Retrospective after completed inference and prior public aggregate report; the twelve itemized per-window B/C result.json files were not consulted during selection. This is outcome-aware development material, not a prospective or independent test.",
+  "source_files_verified_unchanged": 88,
+  "source_report_sha256": "c24f2499bb139e33b1e1285e0a67edff6493dd08ad6d41e0936c9cc0da092b1e",
+  "traced_valid_records": 24,
+  "unique_partial_positive_presence_cases": 1,
+  "unique_unknown_label_cases": 11,
+  "verified_negative_seconds": 0
+}

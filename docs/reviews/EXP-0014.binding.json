@@ -1,0 +1,14 @@
+{
+  "registration_sha256": "77a8232578bb8db953680a41ab76ce3b4e057dc8abc0d77ce0c194ffc2665312",
+  "review_path": "docs/reviews/EXP-0014-delivery-review.md",
+  "review_sha256": "30e48736f9fe9e87b8cca8322dc8940c65e7697f315bf3b235fc2e6d330d44df",
+  "review_status": "accepted_for_comparison",
+  "reviewed_sources": {
+    "EXP-0014": {
+      "metrics_sha256": "433b932add64fb4c92e75860d13586f1cee6aa0e25b5a6ed5178eff108de1685",
+      "report_sha256": "f6c591788b3cc740f4896ca0da5328b26e4817e958e9c0892dc57e70f39d1f75"
+    }
+  },
+  "schema_version": 1,
+  "synthetic": false
+}
