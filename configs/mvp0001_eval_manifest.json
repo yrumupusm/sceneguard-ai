@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "experiment": "MVP-0001",
+  "status": "pre-inference evaluation scope; coordinator must bind this commit/hash before execution",
+  "evaluation_only": true,
+  "analyzer_access_permitted": false,
+  "source_documents_sha256": {
+    "docs/experiments/MVP-0001-plan.md": "ead197319e34b1578b41ec1b04cae39e2c3108ec57485dfcd62565dfc5a64a6b",
+    "docs/data/AIHUB_INTRUSION_USER_REVIEW.md": "35507682c35c6c2b553abd276f06b7fa5aaca8b968f891813fb9af09bfadf8ba",
+    "docs/data/AIHUB_INTRUSION_EVALUATION_PLAN.md": "7bbc393d85ae593d29e0307cf2a050a595854e7fc483691ee4c79d2013c0ec34",
+    "configs/vlm_exp0007_manifest.json": "3ff3c7ef711bc091a06d97ef83474a4916e719a3b5df529c613d48bd0167238b",
+    "configs/vlm_batch01_prompt.txt": "049ec4a6274443fcf8e3069914e53b2913aefa6f4a13ca049cc4001fa8def7a6",
+    "docs/experiments/EXP-0005-bytetrack-cache-comparison.md": "bfbf00f6af39b8682c05d73d0456fc78c22f7f1b59f4a455cc80f9f9acf5944b",
+    "docs/experiments/EXP-0006-candidate-box-consistency.md": "6aea3068b517b90cc8512a0e207c2487767b9d04d2f7b30808f5ba73f3231ea5",
+    "docs/reviews/BATCH-0001-independent-review.md": "b8ff92623b9349599b839ca224068a0080a5ba2a845c1e2c772af4c54a5bc57b"
+  },
+  "provenance_policy": {
+    "source_hashes": "Copied from existing local audit/input metadata; coordinator rehashes actual inputs before execution. No new pixel review.",
+    "labels": "Official labels remain unmodified and excluded from inference. Prior official frame base and 006 frame-count uncertainty remain.",
+    "outside_reviewed_scope": "unreviewed, never automatically negative",
+    "new_site_or_blind_test": false,
+    "verified_non_event_seconds": 0
+  },
+  "development_clips": [
+    {
+      "id": "clip01",
+      "source": "E01_007",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "selection_interval_seconds": [
+        54,
+        59
+      ],
+      "interval_semantics": "half-open input selection, not action truth",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "prior_input_json_sha256": "9d824e05b052d1027461e9726dffe01b66b18ba4399b4ca42997c4e481d584d7",
+      "actual_user_observation": "User relayed a prior ChatGPT frame observation of local box-bottom discontinuity; not a human-confirmed full-clip negative or identity label.",
+      "codex_draft": "two people approach and wait near gate",
+      "uncertainty": "occlusion; no full person-ID or event ground truth",
+      "precise_action_ground_truth": null,
+      "verified_negative": false,
+      "roi_evaluation_limitation": null
+    },
+    {
+      "id": "clip02",
+      "source": "E01_030",
+      "camera_group": "C6",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "selection_interval_seconds": [
+        88,
+        93
+      ],
+      "interval_semantics": "half-open input selection, not action truth",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "prior_input_json_sha256": "46327ae79c6c1caf7e8b5596094b9e7fd188b391b5a3bc97f2713a2f1407fca9",
+      "actual_user_observation": "User explicitly reported checking the original scene: around 84 seconds three people stand/approach; around 90 seconds three people are climbing over the gate. User also requested separating first appearance from climbing. This is an actual user action observation, not merely a Codex draft; no precise onset, confirmed identity, opposite-side completion or three distinct events is established.",
+      "codex_draft": "three people approach/raise bodies at gate",
+      "uncertainty": "overlapping bodies; individual completion not confirmed",
+      "precise_action_ground_truth": null,
+      "verified_negative": false,
+      "roi_evaluation_limitation": null,
+      "user_observation_provenance": {
+        "source": "Prior user conversation, relayed by coordinator in native message msg_5f34fa10853b during this review",
+        "original_message_date": null,
+        "reviewer_directly_read_original_message": false,
+        "coordinator_message_utc": "2026-10-28T10:38:07Z",
+        "scope": "Approximate-frame action observation only; coordinator also relayed FCOS final counts 3 at 84 seconds and 0 at 90 seconds, with cause unconfirmed. Counts are detector observations, not semantic ground truth."
+      }
+    },
+    {
+      "id": "clip03",
+      "source": "E01_006",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "selection_interval_seconds": [
+        120,
+        125
+      ],
+      "interval_semantics": "half-open input selection, not action truth",
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "prior_input_json_sha256": "5fe999aaf2ae90915c00304def951d9cbeee045536a0f5148b6a19bc6aa051f2",
+      "actual_user_observation": "User proposed approximate 119–132 seconds as passage without crossing; candidate only, not verified negative ground truth.",
+      "codex_draft": "distant people walk near boundary without crossing in prior sampled review",
+      "uncertainty": "small people; outside current CV ROI; user candidate not verified negative GT",
+      "precise_action_ground_truth": null,
+      "verified_negative": false,
+      "roi_evaluation_limitation": "Late passage is outside historical C3 ROI; abstention or no event cannot establish in-ROI normal discrimination."
+    },
+    {
+      "id": "clip04",
+      "source": "E01_007",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "selection_interval_seconds": [
+        63,
+        68
+      ],
+      "interval_semantics": "half-open input selection, not action truth",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "prior_input_json_sha256": "bca097657813e308abf67cd148687201e9287e6964749207af41842a791ff4e1",
+      "actual_user_observation": "User requested separation of first appearance and climbing; no precise person-level labels.",
+      "codex_draft": "people raise bodies at gate around 64-66 seconds",
+      "uncertainty": "pillar/people occlusion; start and completion not precise GT",
+      "precise_action_ground_truth": null,
+      "verified_negative": false,
+      "roi_evaluation_limitation": null
+    },
+    {
+      "id": "clip05",
+      "source": "E01_001",
+      "camera_group": "C1",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "selection_interval_seconds": [
+        61,
+        66
+      ],
+      "interval_semantics": "half-open input selection, not action truth",
+      "source_sha256": "0218fdc8561260a89780c29270b16d9c13d4e5a4b0098908280bc62a4d08ea71",
+      "prior_input_json_sha256": "c41cc4cb5bf88777cd91a9fbf718df673084e9ea5c9707190b1d053c8b6db44c",
+      "actual_user_observation": "User requested separation of first appearance and climbing; no precise person-level labels.",
+      "codex_draft": "people raise bodies toward gate top in prior review",
+      "uncertainty": "individual completion and precise start unconfirmed",
+      "precise_action_ground_truth": null,
+      "verified_negative": false,
+      "roi_evaluation_limitation": null
+    },
+    {
+      "id": "clip06",
+      "source": "E01_031",
+      "camera_group": "C7",
+      "site_group": "site_unknown_C7",
+      "split_role": "development",
+      "selection_interval_seconds": [
+        31,
+        36
+      ],
+      "interval_semantics": "half-open input selection, not action truth",
+      "source_sha256": "daf7b1075c21fdfad6789604bea5922f0e8bfdf34fc5fa54d822212b2ba9d37f",
+      "prior_input_json_sha256": "091a9aa901b497d154694a34cc0d49d79de7f045cd5f0269795a8a722e8757cc",
+      "actual_user_observation": "User reported approximate boundary contact around 33 seconds and not all people completed by video end; the latter is a full-video observation, not a clip-level negative.",
+      "codex_draft": "boundary vicinity, user reported contact around 33 seconds",
+      "uncertainty": "distant/car occlusion; contact not equivalent to climb; no completion claim",
+      "precise_action_ground_truth": null,
+      "verified_negative": false,
+      "roi_evaluation_limitation": null
+    }
+  ],
+  "full_sources": [
+    {
+      "id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "camera_group": "C3",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "selection": "entire source through observed EOF; no event-time argument",
+      "roi_policy": "historical PTS0 background ROI, unchanged"
+    },
+    {
+      "id": "E01_030",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "camera_group": "C6",
+      "site_group": "site_unknown_school",
+      "split_role": "development",
+      "selection": "entire source through observed EOF; no event-time argument",
+      "roi_policy": "historical PTS0 background ROI, unchanged"
+    },
+    {
+      "id": "E01_013",
+      "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+      "camera_group": "C4",
+      "site_group": "site_unknown_school",
+      "split_role": "reserved_diagnostic_validation",
+      "selection": "entire source through observed EOF; no event-time argument",
+      "roi_policy": "uncalibrated full-screen fallback; no ROI generalization claim",
+      "prior_exposure": "Scene and official interval were inspected in earlier audit; not used to choose recent settings, not blind/new-site ground truth",
+      "tuning_permitted": false
+    }
+  ],
+  "reserved_excluded_sources": [
+    {
+      "id": "E01_039",
+      "camera_group": "C4",
+      "split_role": "reserved_excluded",
+      "reason": "Same group as E01_013; no execution or tuning in this scope"
+    },
+    {
+      "id": "E01_045",
+      "camera_group": "C4",
+      "split_role": "reserved_excluded",
+      "reason": "Same group as E01_013; no execution or tuning in this scope"
+    }
+  ],
+  "camera_policy": {
+    "C1": "uncalibrated full-screen fallback",
+    "C3": "reuse historical PTS0 background ROI",
+    "C4": "uncalibrated full-screen fallback",
+    "C6": "reuse historical PTS0 background ROI",
+    "C7": "reuse historical PTS0 background ROI",
+    "site_independence": "unconfirmed; camera groups do not establish independent sites"
+  },
+  "methods": {
+    "A": "preserved FCOS/ByteTrack C cache and EXP6 reviews; no rerun and no action-classifier accuracy ranking",
+    "B": "preserved whole-frame Qwen EXP8/10 dev results; whole-source baseline may run; prior pixel-budget contrast consumes improvement",
+    "C": "same Qwen with fixed camera region; baseline and at most one globally frozen evidence-led improvement"
+  },
+  "execution_contract": {
+    "max_methods": 3,
+    "new_weights_planned": 0,
+    "max_improvements_per_method": 1,
+    "max_error_retries_per_job": 1,
+    "window_seconds": 5,
+    "stride_seconds": 2.5,
+    "sample_fps": 2,
+    "sampling": "native PTS first-at-or-after target; record actual PTS and indices, no extra sampling",
+    "causal": true,
+    "cv_gate": false,
+    "prompt": "configs/vlm_batch01_prompt.txt",
+    "common_conditions": "same prompt/parsing/generation/frame choices/PTS across whole-frame and fixed-ROI contrasts; preserve actual resize/tokens/padding metadata",
+    "crop": "fixed background region only; no GT/person/event-specific crop",
+    "eof": "retain real tail frames and actual last PTS; inadequate input stays unknown; padding is not future observation"
+  },
+  "review_rules": {
+    "behavior_categories": [
+      "consistent_with_prior_observation",
+      "partially_consistent",
+      "inconsistent",
+      "unresolved"
+    ],
+    "require_evidence_text": true,
+    "schema_or_action_word_is_semantic_success": false,
+    "completion": "requires stated observable opposite-side movement, still unverified without human confirmation",
+    "unknown_is_normal": false,
+    "dedup": "same-camera overlapping same-action review groups retain every raw window and original times; not person identity resolution",
+    "sparse_gaps": "periodic analysis avoids CV gate misses, not sub-sampling gaps; quantify actual sample spacing without inventing missed events",
+    "unmeasured_metrics": [
+      "accuracy",
+      "precision",
+      "recall",
+      "F1",
+      "false_positive_rate",
+      "false_positives_per_hour",
+      "ground_truth_detection_latency"
+    ]
+  },
+  "gates": {
+    "automated_tests": "timing/PTS/EOF/input isolation/dedup/raw retention/unknown states/queue/output preservation",
+    "functional_integration": "all three full sources reach observed EOF with windows, candidate or unknown records, local evidence, timing and reproducible command; report partial failures",
+    "action_performance": "meaningful approach vs body-rise discrimination, conservative contact/occlusion, no unsupported completion; no adoption from format or blanket abstention",
+    "delivery": "coordinator separately verifies report/metrics hashes, native assignments, queue attempts, registration, GitHub and browser"
+  },
+  "human_review_policy": "After outputs consolidate only consequential unresolved action/completion questions, especially clips02/06; no exhaustive relabeling gate for development."
+}

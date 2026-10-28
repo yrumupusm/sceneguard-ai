@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "development_clips": [
+    {
+      "clip_id": "clip01",
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "cache_dir": "outputs/vlm_exp0007/clip01"
+    },
+    {
+      "clip_id": "clip02",
+      "source_id": "E01_030",
+      "camera_id": "C6",
+      "cache_dir": "outputs/vlm_exp0007/clip02"
+    },
+    {
+      "clip_id": "clip03",
+      "source_id": "E01_006",
+      "camera_id": "C3",
+      "cache_dir": "outputs/vlm_exp0007/clip03"
+    },
+    {
+      "clip_id": "clip04",
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "cache_dir": "outputs/vlm_exp0007/clip04"
+    },
+    {
+      "clip_id": "clip05",
+      "source_id": "E01_001",
+      "camera_id": "C1",
+      "cache_dir": "outputs/vlm_exp0007/clip05"
+    },
+    {
+      "clip_id": "clip06",
+      "source_id": "E01_031",
+      "camera_id": "C7",
+      "cache_dir": "outputs/vlm_exp0007/clip06"
+    }
+  ],
+  "continuous_sources": [
+    {
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "relative_video_path": "data/TS_침입/E01_007.mp4",
+      "sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "role": "development"
+    },
+    {
+      "source_id": "E01_030",
+      "camera_id": "C6",
+      "relative_video_path": "data/TS_침입/E01_030.mp4",
+      "sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "role": "development"
+    },
+    {
+      "source_id": "E01_013",
+      "camera_id": "C4",
+      "relative_video_path": "data/TS_침입/E01_013.mp4",
+      "sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+      "role": "reserved_diagnostic"
+    }
+  ],
+  "window_seconds": 5.0,
+  "stride_seconds": 2.5,
+  "sampling_fps": 2.0,
+  "evaluation_metadata_excluded": true
+}

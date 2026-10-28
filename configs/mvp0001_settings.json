@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "generation": {
+    "seed": 0,
+    "do_sample": false,
+    "max_new_tokens": 384,
+    "repetition_penalty": 1.0,
+    "dtype": "bfloat16",
+    "attention": "sdpa",
+    "device": "cuda:0",
+    "batch_size": 1
+  },
+  "processor_size": {"shortest_edge": 16384, "longest_edge": 3584000},
+  "window_seconds": 5.0,
+  "stride_seconds": 2.5,
+  "sampling_fps": 2.0,
+  "minimum_real_frames": 2,
+  "merge_rule": "same source/camera/action and overlapping source intervals; retain all constituent windows",
+  "merge_gap_seconds": 0.0,
+  "evidence_pre_seconds": 2.0,
+  "evidence_post_seconds": 2.0,
+  "dev_timeout_seconds": 900,
+  "full_timeout_seconds": 1800,
+  "minimum_gpu_free_mib": 6144,
+  "execution_error_retries_max": 1
+}

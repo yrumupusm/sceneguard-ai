@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "scope": "MVP-0001 fixed before new inference",
+  "coordinate_space": "normalized original image xyxy",
+  "cameras": {
+    "C3": {
+      "camera_id": "C3",
+      "roi": [
+        0.6,
+        0,
+        0.9,
+        0.6
+      ],
+      "calibrated": true,
+      "selection": "manual static PTS 0 background; no prediction tuning",
+      "selection_source": "EXP-0004 preserved cache007 config",
+      "legacy_boundary_config": {
+        "version": "development-v1-pre-inference",
+        "selection": "manual static PTS 0 background; no prediction tuning",
+        "band": 0.005,
+        "dwell_seconds": 0.1,
+        "max_gap_seconds": 0.1,
+        "min_iou": 0.3,
+        "cooldown_seconds": 1.0,
+        "score_threshold": 0.5,
+        "directions": [
+          "negative_to_positive",
+          "positive_to_negative"
+        ],
+        "line": [
+          [
+            0.65625,
+            0.16667
+          ],
+          [
+            0.75417,
+            0.41111
+          ]
+        ],
+        "roi": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "boundary_id": "C3_fence",
+        "camera_group": "C3"
+      }
+    },
+    "C6": {
+      "camera_id": "C6",
+      "roi": [
+        0.28,
+        0.2,
+        0.75,
+        0.8
+      ],
+      "calibrated": true,
+      "selection": "manual static PTS 0 background; no prediction tuning",
+      "selection_source": "EXP-0004 preserved cache030 config",
+      "legacy_boundary_config": {
+        "version": "development-v1-pre-inference",
+        "selection": "manual static PTS 0 background; no prediction tuning",
+        "band": 0.005,
+        "dwell_seconds": 0.1,
+        "max_gap_seconds": 0.1,
+        "min_iou": 0.3,
+        "cooldown_seconds": 1.0,
+        "score_threshold": 0.5,
+        "directions": [
+          "negative_to_positive",
+          "positive_to_negative"
+        ],
+        "line": [
+          [
+            0.36667,
+            0.46296
+          ],
+          [
+            0.625,
+            0.58148
+          ]
+        ],
+        "roi": [
+          0.28,
+          0.2,
+          0.75,
+          0.8
+        ],
+        "boundary_id": "C6_fence",
+        "camera_group": "C6"
+      }
+    },
+    "C7": {
+      "camera_id": "C7",
+      "roi": [
+        0.43,
+        0,
+        0.78,
+        1
+      ],
+      "calibrated": true,
+      "selection": "manual static PTS 0 background; no prediction tuning",
+      "selection_source": "EXP-0004 preserved cache031 config",
+      "legacy_boundary_config": {
+        "version": "development-v1-pre-inference",
+        "selection": "manual static PTS 0 background; no prediction tuning",
+        "band": 0.005,
+        "dwell_seconds": 0.1,
+        "max_gap_seconds": 0.1,
+        "min_iou": 0.3,
+        "cooldown_seconds": 1.0,
+        "score_threshold": 0.5,
+        "directions": [
+          "negative_to_positive",
+          "positive_to_negative"
+        ],
+        "line": [
+          [
+            0.49792,
+            0.11111
+          ],
+          [
+            0.69167,
+            0.98889
+          ]
+        ],
+        "roi": [
+          0.43,
+          0,
+          0.78,
+          1
+        ],
+        "boundary_id": "C7_fence",
+        "camera_group": "C7"
+      }
+    },
+    "C1": {
+      "camera_id": "C1",
+      "roi": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "calibrated": false,
+      "selection": "full-frame fallback; no pre-existing static-background surveillance ROI; not chosen from event/person coordinates"
+    },
+    "C4": {
+      "camera_id": "C4",
+      "roi": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "calibrated": false,
+      "selection": "full-frame fallback; no pre-existing static-background surveillance ROI; not chosen from event/person coordinates"
+    }
+  }
+}
