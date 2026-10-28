@@ -42,12 +42,16 @@
 
 입력 감사·CV·VLM 실행 담당과 독립 검토자의 실제 native `worker_done`을 각각 확인했다. 마지막 VLM 담당·검토자는 모두 `succeeded`로 종료했다. 종료 후 `worker-release`는 두 터미널 모두 사용자가 인계한 `user_takeover` 보존 대상으로 응답했으므로 강제 종료하지 않았다. Run의 정리 대상 `reclaimable` 작업자는 0이다. 이미 완료된 담당자에게 보낸 후속 종료 알림 하나는 `dispatch_inactive`로 거부돼 재전송하지 않았으며 새 작업/실행을 만들지 않았다.
 
-최종 37개 GPU queue job/attempt는 모두 settled이고 추가 모델 작업·재시도·결합 PoC는 예약하지 않는다. 테스트 통과, 고정 실행 완료, 웹 전달 확인, 행동 성능 충족을 서로 구분한다. 이번에 확인된 것은 앞의 세 가지이며 새 두 모델의 기본 적용과 행동 성능 충족은 보류다.
+2026-10-28 18:57 UTC canonical queue를 읽기 전용으로 확인했다. 최종 37개 job/attempt는 성공 35·과거 실패 포함 2로 모두 settled이고 대기/실행 중 작업은 0이다. 로컬 기록은 `runtime/BATCH-0002/finalization-queue.json`, 정리 대상 0 확인은 `finalization-reclaimable.json`이다. 추가 모델 작업·재시도·결합 PoC는 예약하지 않는다. 테스트 통과, 고정 실행 완료, 웹 전달 확인, 행동 성능 충족을 서로 구분한다. 이번에 확인된 것은 앞의 세 가지이며 새 두 모델의 기본 적용과 행동 성능 충족은 보류다.
 
 ## 단계별 GitHub 게시
 
 `3e9a6bb`는 입력 감사 코드/계약, `e0dc11a`는 검토된 입력 감사·신규 모델 선정 문서·RF-DETR 실행 전 소스 고정이다. 정상 HTTPS `git push origin main`으로 `1a06f6c..e0dc11a` 게시를 확인했다. 이 커밋 시점에는 CV 실제 실행 결과와 EXP-0018 완료 등록은 아직 포함되지 않았다. 각 최종 결과의 원격 byte 확인은 해당 결과 등록 후 별도 수행한다.
 
-`d5f6406`은 입력 감사 등록·전달, `952c52f`는 Qwen4B 실행 전 사양·코드 고정, `9ee6753`은 검토된 CV 실제 결과·등록, `78ba67d`는 한 번의 논리적 retry를 제한하는 과거 VLM 입력 기록 호환성 수정이다. 모두 정상 push로 게시했고 기존 결과와 공식 라벨을 덮어쓰지 않았다. 최종 VLM 결과/등록과 총괄 종료 문서는 별도 커밋으로 게시하고 원격 내용을 다시 확인한다.
+`d5f6406`은 입력 감사 등록·전달, `952c52f`는 Qwen4B 실행 전 사양·코드 고정, `9ee6753`은 검토된 CV 실제 결과·등록, `78ba67d`는 한 번의 논리적 retry를 제한하는 과거 VLM 입력 기록 호환성 수정이다. 모두 정상 push로 게시했고 기존 결과와 공식 라벨을 덮어쓰지 않았다.
+
+최종 VLM 결과·38개 metrics·Astra 검토/binding·등록 catalog·CPU 요약 재현 코드·총괄 결론·AGENTS/HANDOFF/다음 작업을 `45513a6f7f96193c1576b2f7bb417e4bc90089ff`로 정상 push했다. 게시 직전 14개 변경 파일과 ignore 경계를 검토했고, 게시 후 검토에 묶인 여섯 파일의 checkout/Git 객체/검토 SHA-256이 일치함을 확인했다. 작업 트리는 clean이었다.
+
+2026-10-28 18:58 UTC `verify_delivery github`를 EXP-0018·0019·0020 각각 실행해 원격 `origin/main`의 정확한 위 commit과 assignment/catalog/report/metrics/review/binding byte 일치를 확인했다. 각 결과의 `input-delivery`, `cv-delivery`, `vlm-delivery` 아래 `github-final-results.json`에 별도 receipt를 남겼다. 실제 서비스와 브라우저 확인은 각 `browser-r1.json`으로 분리했다. 전달 증명 문서의 후속 커밋은 실험 소스·결과·등록 binding을 바꾸지 않는다.
 
 원본/추출 미디어·배열·raw 예측/응답·weights·환경·DB·raw log·receipt는 로컬 전용이다. `.venv-cv-batch02`와 `.venv-vlm-batch02`도 저장소 ignore에 추가했고, 기존 환경과 이전 실험은 보존했다.
