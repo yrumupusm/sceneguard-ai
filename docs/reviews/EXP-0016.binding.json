@@ -1,0 +1,14 @@
+{
+  "registration_sha256": "5cce16cc82d6ac458d2dd8407489d88642e7756f2a99c0cb2b20ff3fa0664d92",
+  "review_path": "docs/reviews/EXP-0016-final-binding-review.md",
+  "review_sha256": "7dc8f436a7fcc1ff54ac5bb363ef556ac874f9c5b863fda147351eb90651e148",
+  "review_status": "blocked",
+  "reviewed_sources": {
+    "EXP-0016": {
+      "metrics_sha256": "0ba62689f9897ee4057a07579b8ae905550b2ddc5c380f819e512fb41563a74b",
+      "report_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd"
+    }
+  },
+  "schema_version": 1,
+  "synthetic": false
+}

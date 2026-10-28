@@ -4,7 +4,7 @@
   "execution_status": "inconclusive_resource_blocked_before_enqueue",
   "behavioral_validation": "not_run",
   "adoption": "on_hold",
-  "reason": "The existing canonical queue requires at least 6144 MiB free; observed free memory was 1773 MiB at the recorded preflight. No job was enqueued and no model was loaded.",
+  "reason": "The existing canonical queue requires at least 6144 MiB free; observed free memory was 1590 MiB at the recorded preflight. No job was enqueued and no model was loaded.",
   "metrics": [
     {
       "label": "EXP-0016 MVP CPU tests passed",
@@ -13,7 +13,7 @@
       "sample_n": 107,
       "scope": "CPU contract and regression tests; not behavioral performance",
       "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
-      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "source_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
       "verification": "unittest_exit_zero"
     },
     {
@@ -23,7 +23,7 @@
       "sample_n": 14,
       "scope": "Canonical queue serialization/recovery test suite; not an inference run",
       "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
-      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "source_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
       "verification": "unittest_exit_zero"
     },
     {
@@ -33,17 +33,17 @@
       "sample_n": 4,
       "scope": "User-reviewed v01-v04: exact window timing, original PTS, frame indexes and RGB hashes verified on CPU",
       "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
-      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "source_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
       "verification": "source_and_frame_hashes_checked"
     },
     {
       "label": "Free VRAM at preflight",
-      "value": 1773,
+      "value": 1590,
       "unit": "MiB",
       "sample_n": 1,
-      "scope": "RTX 3080 snapshot at 2026-10-28 14:29 UTC; minimum queue gate is 6144 MiB",
+      "scope": "RTX 3080 snapshot at 2026-10-28 14:36 UTC; minimum queue gate is 6144 MiB",
       "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
-      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "source_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
       "verification": "nvidia_smi_snapshot"
     },
     {
@@ -53,7 +53,7 @@
       "sample_n": null,
       "scope": "No Qwen inference, queue job, or model load occurred",
       "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
-      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "source_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
       "verification": "unavailable"
     },
     {
@@ -63,7 +63,7 @@
       "sample_n": null,
       "scope": "No Qwen inference, queue job, or model load occurred",
       "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
-      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "source_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
       "verification": "unavailable"
     }
   ],

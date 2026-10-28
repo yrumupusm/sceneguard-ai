@@ -7,9 +7,15 @@
 EXP-0015에서 사용자 확인한 q02/q03/q05 접근/비사건 장면의 false candidate를 줄이면서 q04 시도/진행 후보를 보존할 수 있는지, **Qwen 공통 prompt 하나만 수정**해 비교한다. 근거와 가설/한계는 [ADR-0017](decisions/ADR-0017-qwen-temporal-evidence-prompt.md), 실험 고정값과 결과는 [EXP-0016](experiments/EXP-0016-prompt-evidence-rubric.md)에 둔다.
 
 - 완료된 준비: 실패 근거 검토, revised prompt, fixed q01–q06 두-view queue phase, CPU tests, 사용자 추가 v01–v04 라벨 수집.
-- 현재 확인: RTX 3080 10GB, 약8.5 GiB 사용/약1.4 GiB 여유, 99% utilization. 기존 MVP 최소 preflight는6144 MiB free이다.
-- 실행 여부: 새 Qwen 추론이나 GPU queue 등록 없음. 아래 모든 model outcome/cost는 미측정이다.
+- 현재 확인: 실행 담당 Sol high Task `task_305549d14771` / Dispatch `ctx_65256d02af82`가 2026-10-28 14:36 UTC에 RTX 3080 8464 MiB used / 1590 MiB free / 99% utilization을 측정하고 6144 MiB 최소 gate에서 중단했다.
+- 실행 여부: canonical GPU queue에 EXP-0016 job/attempt 0개, Qwen 추론·model load 없음. 아래 모든 model outcome/cost는 미측정이다. Dispatch `failed`는 GPU 부족으로 인한 계획된 차단이며 추론 오류/OOM이 아니다.
 - 별도 표본: E01_004 60–65초(v01 attempt/progress, completion not assessed), E01_004 0–5초(v02 non-event), E01_021 65–70초(v03 attempt/progress at adjacent gap, boundary relation ambiguous and completion not assessed), E01_021 0–5초(v04 non-event). 원본 source frame만 모델에 입력하고 prompt 기준/라벨/official timestamps는 전달하지 않는다. 기존 full-frame prompt와 revised prompt를 같은 입력으로 비교할 준비 중이다. E01_004/E01_021에 calibrated ROI가 없으므로 full-frame 하나만 쓴다.
+
+## 현재 완료 상태
+
+단일 공통 prompt 변경 코드, fixed q01–q06 및 v01–v04 경로와 CPU 검증은 구현됐다. `.venv-vlm`의 107 MVP tests와 `.venv-orca-lab`의 14 queue tests가 통과했다. 그러나 실행 담당 GPU 사전검사는 RTX 3080에서 1590 MiB free로 기존 6144 MiB gate를 통과하지 못했다. canonical queue는 EXP-0016 job/attempt 0, model load/inference 0이다. Astra는 blocked-before-inference 기록과 현재 report/metrics hash binding을 PASS했으나 행동 결과를 검토한 것은 아니다. 로컬 결과는 `inconclusive / blocked / adoption_on_hold`로 등록됐다. 기존 로컬 웹 화면에서 담당 slot3 카드, 보고서, 2개 그래프, review와 네 개 사용자 검수 원본 참고 영상의 재생/seek를 확인했다. 실제 행동 비교·비용·prompt 효과는 미측정이며 자동 채택하지 않는다.
+
+마지막 미완료 단계는 GitHub 게시/원격 검증이다. 이후 실행은 GPU free memory가 최소 6144 MiB 이상일 때만 새 attempt로 재개하며, 기존 prompt·manifest·model·queue·한도를 유지한다.
 
 ## 순서
 

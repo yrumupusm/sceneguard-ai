@@ -103,6 +103,19 @@
       "synthetic": false,
       "task_id": "task_dbf80c1a9687",
       "title": "EXP-0015 user-reviewed label revision of EXP-0013 cached outputs"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T14:36:26+00:00",
+      "dispatch_id": "ctx_65256d02af82",
+      "experiment_id": "EXP-0016",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_305549d14771",
+      "title": "EXP-0016 Qwen prompt-only comparison or resource-blocked report"
     }
   ],
   "schema_version": 1

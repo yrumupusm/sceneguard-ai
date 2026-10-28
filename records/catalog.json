@@ -966,6 +966,70 @@
       "task_id": "task_dbf80c1a9687",
       "title": "EXP-0015 user-reviewed label revision of EXP-0013 cached outputs",
       "worker_opinion": "The C candidate on q04 aligns with the user-observed crossing attempt, while B is absent. B and C also emit candidates in reviewed no-crossing windows (q02/q05 for B; q03/q05 for C). No model is recommended for automatic adoption."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T14:36:26+00:00",
+      "attempt_id": "resource-gate-blocked-r1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_65256d02af82",
+      "evaluated_model": "Existing local Qwen3-VL-2B-Instruct; no model load or inference in this attempt",
+      "evidence": [
+        {
+          "artifact_id": "exp16-v01-user-reference",
+          "kind": "video",
+          "label": "v01 user-reviewed original-only source clip; reference input, no VLM output"
+        },
+        {
+          "artifact_id": "exp16-v02-user-reference",
+          "kind": "video",
+          "label": "v02 user-reviewed original-only source clip; reference input, no VLM output"
+        },
+        {
+          "artifact_id": "exp16-v03-user-reference",
+          "kind": "video",
+          "label": "v03 user-reviewed original-only source clip; reference input, no VLM output"
+        },
+        {
+          "artifact_id": "exp16-v04-user-reference",
+          "kind": "video",
+          "label": "v04 user-reviewed original-only source clip; reference input, no VLM output"
+        }
+      ],
+      "execution_status": "inconclusive",
+      "experiment_id": "EXP-0016",
+      "limitations": [
+        "No GPU queue job/attempt, model import/load, or inference occurred.",
+        "Behavioral improvement, latency, peak VRAM, output validity, and failure rate are unmeasured.",
+        "CPU test counts and input-hash checks are software/input validation only, not behavioral evidence.",
+        "Six q windows are development regression data; v01-v04 are purposive user-reviewed windows from only two source videos, not independent statistical validation.",
+        "No accuracy, precision, recall, F1, false-positive rate, or hourly false alarms are reported.",
+        "Local videos, extracted frames, weights, raw model output, and runtime records are not published."
+      ],
+      "metric_definitions": "records/EXP-0016/metrics.json",
+      "metrics_path": "records/EXP-0016/metrics.json",
+      "metrics_sha256": "0ba62689f9897ee4057a07579b8ae905550b2ddc5c380f819e512fb41563a74b",
+      "next_step": "When the canonical GPU queue preflight reports at least 6144 MiB free, run the frozen EXP-0016 phases under a new execution attempt and review actual outputs; do not bypass the gate.",
+      "reasoning_effective": "high",
+      "registration_sha256": "5cce16cc82d6ac458d2dd8407489d88642e7756f2a99c0cb2b20ff3fa0664d92",
+      "report_path": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
+      "report_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
+      "review_binding_path": "docs/reviews/EXP-0016.binding.json",
+      "review_path": "docs/reviews/EXP-0016-final-binding-review.md",
+      "review_sha256": "7dc8f436a7fcc1ff54ac5bb363ef556ac874f9c5b863fda147351eb90651e148",
+      "review_status": "blocked",
+      "reviewed_metrics_sha256": "0ba62689f9897ee4057a07579b8ae905550b2ddc5c380f819e512fb41563a74b",
+      "reviewed_report_sha256": "a85d36404059a8ba0f0e1335d84640f0778d6349601718d72f5c5fcb4fbee7cd",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "Implemented and CPU-validated a single shared-prompt change and fixed comparison inputs, but the assigned RTX 3080 preflight measured 1590 MiB free against the canonical 6144 MiB gate. No GPU job, model load, or inference ran. Behavioral comparison, cost, and adoption remain unmeasured/on hold.",
+      "synthetic": false,
+      "task_id": "task_305549d14771",
+      "title": "EXP-0016 Qwen prompt-only comparison or resource-blocked report",
+      "worker_opinion": "The prompt-only comparison is implemented and regression-tested but cannot be behaviorally assessed until the existing queue resource gate passes. Keep adoption on hold; do not infer that the prompt improved or worsened performance."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

@@ -4,12 +4,14 @@
 
 EXP-0015 사용자 라벨과 원응답을 대조해 q02/q03/q05 false candidates의 공통 문제를 “접근/보행 서술만으로 stepping/completion 선택”으로 좁혔다. 저장 결과는 관찰된 오류 양상을 보여주지만 원인 설명은 확정할 수 없다. 개선 가설은 Qwen shared prompt 하나에 프레임 순서에 따른 신체/경계 상대 움직임을 요구하는 것이다. 모델, weights, resolution/ROI, frame sampling/PTS, generation, schema, parser/postprocess는 유지한다. [ADR-0017](decisions/ADR-0017-qwen-temporal-evidence-prompt.md), [EXP-0016](experiments/EXP-0016-prompt-evidence-rubric.md) 참고.
 
-- 담당 구현 Sol high `task_0d088b4695b4` / `ctx_d6e47aa9926b` 완료; q six-window revised prompt phase 구현. 후속 independent-v comparison Sol high `task_6eb2c3c319d6` / `ctx_ac13ea840666` 구현 중. 같은 Run `run_3d23462a014a`.
-- CPU: `.venv-vlm`에서 `tests_mvp` 92 tests 통과, `.venv-orca-lab`에서 queue suite 14 통과, 새 focused 12 통과. 기본 python은 PyAV 미설치여서 3 decoder tests skip했으나 실제 VLM venv에서는 모두 통과. 한 번의 동시 실행에서 순서 의존 queue test 실패, 단독 및 전체 재실행은 통과.
-- **실제 새 모델 실행 없음.** GPU 99% busy, 1.2–1.6 GiB free; canonical MVP preflight 6 GiB free 미달. job enqueue/model load/inference를 시작하지 않음. 기존 큐 우회나 종료, preflight 완화 금지.
+- 담당 구현 Sol high `task_0d088b4695b4` / `ctx_d6e47aa9926b` 완료; independent-v comparison Sol high `task_6eb2c3c319d6` / `ctx_ac13ea840666` 완료. 같은 Run `run_3d23462a014a`.
+- CPU: `.venv-vlm`에서 `tests_mvp` 107 tests, `.venv-orca-lab`에서 queue suite 14 tests 통과. 새 prompt 12 / independent path 15를 포함. 기본 system Python에서는 PyAV 미설치로 decoder 3개가 skip됐으나 VLM 환경에서 통과. 한 번의 queue attempt-order 테스트 실패는 isolated 및 전체 재실행 통과로 보고서에 보존.
+- **실제 새 모델 실행 없음.** EXP-0016 실행 사전검사 Sol high Task `task_305549d14771` / Dispatch `ctx_65256d02af82`가 14:36 UTC GPU 8464 MiB used / 1590 MiB free / 99%를 보고하고 중단했다. canonical MVP preflight 6144 MiB free 미달. queue aggregate EXP-0016 jobs/attempts 0/0, model load/inference 0. 기존 큐 우회/종료, preflight 완화 금지.
 - 추가 사용자 라벨: v01 E01_004 60–65 attempt/progress (completion not assessed); v02 E01_004 0–5 non-event; v03 E01_021 65–70 attempt at a gap beside the door, not door passage, exact boundary association ambiguous (completion not assessed); v04 E01_021 0–5 non-event. q01–q06과 다른 source windows지만 camera/site independent blind test는 아님. 프레임에 라벨/file/event metadata를 함께 넣지 않음.
 - MVP summary의 현재 수치는 EXP-0015 기준: no-crossing 5, attempt/progress positive 1, primary positive0. q06 only E01_030 155–160 no person/event. E01_031 EOF observation is not transferred to E01_030.
-- 남음: 후속 worker code review; Astra review; resource gate 충족 시 exact queued comparison; actual per-q and v outcomes/cost; metrics binding/registration; local page and GitHub independent checks. 성능 효과는 아직 미측정이며 prompt 채택 보류.
+- 코드·CPU 테스트 및 최종 resource-gate 기록에 대한 Astra review와 report/metrics SHA addendum이 통과했다. 행동 출력/성능 검토는 아니며 inference 결과는 없다.
+- 로컬 완료 등록: EXP-0016 `inconclusive / blocked / adoption_on_hold`; report/metrics/review hash current. Astra final binding addendum PASS. 브라우저 `http://127.0.0.1:8765/`에서 slot3 카드, report, metrics 2 graphs, review 및 v01–v04 원본 참고 클립 재생/1.5초 seek/decode와 polling 유지 확인; receipt `runtime/EXP-0016/browser-local.json` (ignored). 카드 작업 상태는 resource gate에서 실패로 표시되며, 이는 추론 실패가 아니다.
+- 남음: GitHub 게시와 원격 verify. 성능 효과·모델 비용·q/v 출력은 미측정. prompt 채택 보류; GPU 여유 ≥6144 MiB인 새 실행 Task에서만 비교 재개.
 
 ## 최신 상태 — EXP-0015 사용자 검수 반영
 

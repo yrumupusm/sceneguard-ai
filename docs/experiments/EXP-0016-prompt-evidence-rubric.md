@@ -1,8 +1,8 @@
 # EXP-0016 — Qwen 시간적 행동 근거 프롬프트 비교
 
 - 날짜: 2026-10-28
-- 상태: 비교 사양·코드·CPU 테스트 준비 완료; GPU 추론/행동 비교/리뷰/등록 미완료
-- 담당: Orca Run `run_3d23462a014a`; 구현 Sol high Dispatch `ctx_d6e47aa9926b` 및 independent validation 경로 Sol high Dispatch `ctx_ac13ea840666` 완료. 결과 실행 담당 Task `task_305549d14771`은 다음 배정 대상이며 아직 실행/자원 차단 확인 전이다.
+- 상태: 비교 사양·코드·CPU 테스트 준비 완료; 실행 담당이 resource gate에서 중단해 GPU 추론/행동 비교 미실행. 코드와 최초 report/metrics 바인딩에 대한 Astra 검토는 완료했다. 새 사전검사 수치가 반영된 report/metrics의 Astra addendum, 로컬 결과 등록·화면 확인, GitHub 확인은 남았다.
+- 담당: Orca Run `run_3d23462a014a`; 구현 `gpt-6.1-sol/high` Dispatch `ctx_d6e47aa9926b`, 독립 비교 구현 `gpt-6.1-sol/high` Dispatch `ctx_ac13ea840666`, 실행 사전검사 Task `task_305549d14771` / Dispatch `ctx_65256d02af82` (`gpt-6.1-sol/high`) 완료. 마지막 Dispatch의 `failed` 상태는 resource gate 차단이며 inference failure/OOM이 아니다.
 - 결정: [ADR-0017](../decisions/ADR-0017-qwen-temporal-evidence-prompt.md)
 
 ## 가설과 목적
@@ -51,7 +51,7 @@ EXP-0015 사용자가 확인한 여섯 5초 창을 고정 manifest에서 다시 
 
 ## 실행·비용·결과
 
-2026-10-28 14:29 UTC preflight에서 RTX 3080 10 GB는 8281 MiB used, 1773 MiB free, 99% utilization이었다. 프로젝트 settings의 6144 MiB free-memory preflight를 충족하지 못한다. 기존 큐 작업을 우회하거나 gate를 낮추지 않았고, inference/model load/job enqueue는 미실행이다. 이 상태에서 latency, generation time, GPU peak memory, actual output/parse status는 **측정 불가**이며 0으로 채우지 않는다. GPU가 확보되기 전까지 행동 성능 효과는 결론낼 수 없다.
+2026-10-28 14:36 UTC 실행 담당 사전검사에서 RTX 3080 10 GB는 8464 MiB used, 1590 MiB free, 99% utilization이었다. 실행 코드는 commit `5d4a8af0f83975f430922fcda03c0aef5a34734a`에 고정했다. 기존 settings의 6144 MiB free-memory gate 미달로 담당자는 즉시 중단했다. 기존 canonical queue의 읽기 전용 집계에서 EXP-0016 job 0, attempt 0을 확인했다. 네 실행 그룹(revised q full-frame, revised q fixed-ROI, original v full-frame, revised v full-frame)은 전부 미실행이며, model import/load 및 enqueue도 없었다. queue 우회, gate 조정, process 종료 또는 resource retry는 하지 않았다. latency, generation time, peak VRAM, output/parse status는 **측정 불가**이며 0으로 채우지 않는다.
 
 | 측정 | 기준 | 변경 prompt | 상태 |
 |---|---:|---:|---|
@@ -69,7 +69,7 @@ EXP-0015 사용자가 확인한 여섯 5초 창을 고정 manifest에서 다시 
 
 ## 남은 한계와 다음 결정
 
-- GPU resource gate가 회복되지 않으면 실패·차단 상태를 기록하고 정확한 재개 조건(≥6144 MiB free)을 제시한다. 시스템 프로세스를 종료하거나 threshold를 변경하지 않는다.
+- GPU free memory가 ≥6144 MiB가 된 뒤에만 동일 코드·manifest·prompt·model 설정으로 네 job을 순차 실행한다. 시스템 프로세스를 종료하거나 threshold를 변경하지 않는다.
 - prompt change가 q02/q03/q05를 줄이고 q04를 보존하지 못하면 채택 보류다. 모든 출력을 indeterminate로 바꿔 감소한 candidate를 성공으로 계산하지 않는다.
 - v03의 위치는 gate 자체를 통과한 행위가 아니라 옆 빈틈에서의 시도라는 사용자 설명을 유지한다. 행동 종류와 boundary association은 별도다.
 - development q와 4개 추가 검수 창만으로 최종 accuracy/F1/FPR, camera/site generalization, real-time suitability는 산출하지 않는다.
