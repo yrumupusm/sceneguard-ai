@@ -1113,6 +1113,64 @@
       "task_id": "task_032ba4cbc816",
       "title": "EXP-0017 resumed Qwen prompt-only comparison",
       "worker_opinion": "실행/평가 기능은 완료. 프롬프트 개선 효과는 확인되지 않았으며 원래 구성도 성능 부족이다. 후보 감소를 성공으로 해석하지 않는다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T16:23:18.646061+00:00",
+      "attempt_id": "cpu-audit-r1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_f0c0eef8ed14",
+      "evaluated_model": "No new inference; stored Qwen3-VL-2B processor inputs and original CCTV metadata",
+      "evidence": [
+        {
+          "artifact_id": "exp0018-input-q04",
+          "kind": "video",
+          "label": "q04 원본 샘플 / B 전체화면 / C 고정 영역"
+        },
+        {
+          "artifact_id": "exp0018-input-v01",
+          "kind": "video",
+          "label": "v01 원본 샘플 / 실제 입력: 반대편 이동 사용자 관찰"
+        },
+        {
+          "artifact_id": "exp0018-input-v03",
+          "kind": "video",
+          "label": "v03 원본 샘플 / 실제 입력: 바위 올라섬, 경계 연결 불확실"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0018",
+      "limitations": [
+        "10개 창은 개발 자료이며 독립 성능 검증이 아니다.",
+        "과거 q processor RGB 미저장으로 역사적 pixel 동등성은 확정할 수 없다.",
+        "v01 신규 완료 관찰은 기존 미평가 이력을 덮어쓰지 않는다. v03 바위 올라섬을 경계 넘기로 확정하지 않는다.",
+        "등록 영상은 2fps의 샘플 표시 자료이며 원본의 전체 프레임 재생과 다르다.",
+        "정확도/F1/오탐률은 계산하지 않았다."
+      ],
+      "metric_definitions": "records/EXP-0018/metrics.json",
+      "metrics_path": "records/EXP-0018/metrics.json",
+      "metrics_sha256": "55f773bf2ed100132664f123aedbac1c1471bc90dfc8b27a39d9ff57a4c86cce",
+      "next_step": "동일 입력·원본 prompt를 유지한 제한된 검출기/VLM 비교 후 독립 검토한다. 자동 채택하지 않는다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "9f2e6a35d9595d95190150c2e0b6b12913d5d71b048b59f04c62363df46e8d64",
+      "report_path": "docs/experiments/EXP-0018-input-audit.md",
+      "report_sha256": "69f3682f0dcb4237ce5856452a6189aa2c2c20cad734f495c5023e4547414656",
+      "review_binding_path": "docs/reviews/EXP-0018.binding.json",
+      "review_path": "docs/reviews/EXP-0018-independent-review.md",
+      "review_sha256": "8bd8ca095f432dbb7bfc664396c608248a367b17f10262eeb07531405a7fe4e5",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "55f773bf2ed100132664f123aedbac1c1471bc90dfc8b27a39d9ff57a4c86cce",
+      "reviewed_report_sha256": "69f3682f0dcb4237ce5856452a6189aa2c2c20cad734f495c5023e4547414656",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot1",
+      "summary": "10개 개발창·20개 입력 변형·103개 고유 원본 프레임의 출처와 형상을 검증했다. 사용자 관찰을 별도로 반영해 조건부 모델 비교를 진행하며 입력별 충분성·행동 성능은 미확정이다.",
+      "synthetic": false,
+      "task_id": "task_806f089dde4f",
+      "title": "BATCH-0002 input sufficiency audit",
+      "worker_opinion": "원본 PTS와 저장 RGB·crop·resize 출처는 확인됐다. q04의 발 올림과 v01 반대편 이동은 사용자 관찰이며 q04 B/C별 충분성과 v03 경계 연결은 미확정이다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
