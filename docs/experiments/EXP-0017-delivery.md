@@ -34,6 +34,18 @@
 
 ## GitHub 및 로컬 전용 파일
 
-사용자의 GitHub 인증 완료 후 정상 HTTPS `git push origin main`이 성공했다. 기존 누적 main을 `64ab297`까지 fast-forward 게시했으며 로컬 작업을 reset/stash/강제 push하지 않았다. EXP-0017 새 결과 게시와 원격 파일 검증은 검토·등록 후 별도로 기록한다.
+사용자의 GitHub 인증 완료 후 정상 HTTPS `git push origin main`이 성공했다. 기존 누적 main을 `64ab297`까지 fast-forward 게시했으며 로컬 작업을 reset/stash/강제 push하지 않았다. EXP-0017 코드/문서/공개 요약 17개 파일을 commit `622e360de27329777a0964dde11c76333acac2ed`로 정상 push했다. fetch 후 `verify_delivery github`에서 원격 main, assignment/catalog와 report/metrics/review/binding byte 해시 일치가 통과했다. 로컬 receipt는 `runtime/EXP-0017/github-result.json`이다. 이 게시 완료 사실을 기록하는 후속 문서 커밋도 정상 push하고 별도 최종 receipt로 원격 HEAD를 확인한다. 바인딩된 report/metrics/review는 변경하지 않는다.
 
 게시 대상은 평가 코드·테스트·문서·공개 가능한 요약/metrics·assignment/catalog/binding이다. 원본/참고 영상·이미지·weights·raw response·processor RGB·raw predictions·artifact manifest·runtime DB/log/receipt·인증정보는 로컬에만 보존한다. 완료 후 추가 GPU 작업/자동 튜닝/웹 확장은 시작하지 않는다.
+
+## 완료 구분
+
+| 항목 | 최종 상태 |
+| --- | --- |
+| 코드/CPU 검증 | 저장 출력 평가기와 회귀 테스트21개 통과 |
+| 실제 GPU 실행 | 기존 queue의4개 job·20개 응답 성공, 오류/OOM/retry0 |
+| 행동 평가 | q/v 사용자 라벨 대비 완료; 목표한 개선 확인 실패, 독립 일반화 검증 부족 |
+| 독립 검토 | Astra high PASS for comparison; 성능 승인/기본 채택 아님 |
+| 기존 웹 등록/실제 화면 | 담당3·보고서·14측정값/2그래프·검토·8원본 참고 영상 재생/seek 확인 |
+| GitHub | 정상 HTTPS push와 원격 파일 해시 검증 통과; 미디어/runtime 제외 |
+| 적용/후속 | 수정 prompt 기본 적용 보류, 기존 설정도 성능 부족. 추가 작업 자동 예약 없음 |

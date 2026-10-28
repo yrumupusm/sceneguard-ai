@@ -8,7 +8,7 @@
 - [비교 결과](experiments/EXP-0017-prompt-evidence-results.md): q 비시도 5창의 candidate B 2→3, C 2→2. q04 C 후보 유지와 완료 과장 공존, B 누락 지속. v 양성 후보 1→0, 음성 후보 1→1. 수정 prompt 기본 적용 보류; 기존 구성도 성능 부족이다.
 - [평가 코드/노트](experiments/EXP-0017-evaluation-notes.md): 21개 CPU 테스트,131개 실제 파일 대조. q 과거 processor RGB/확장 prompt 미저장 한계, v 2 source group·완료 미평가를 보존한다. 정확도/F1/오탐률은 null.
 - [전달 기록](experiments/EXP-0017-delivery.md)에 독립 검토·등록·실제 브라우저와 GitHub 증거를 따로 기록한다. 실행 중 담당3 카드 표시는 확인했다. 종료 이후 새 GPU 작업/튜닝은 자동 시작하지 않는다.
-- Astra 독립 검토 PASS와 immutable binding/등록 완료. 실제 브라우저 담당3 → EXP-0017에서 보고서·14 metrics/2 graphs·review와 기존 원본 참고 클립8개 재생/seek/poll 보존 통과. 공개 모델 raw 답변/UI 기능 추가는 하지 않았다. GitHub 새 결과 게시 검증은 전달 기록의 최종 항목을 따른다.
+- Astra 독립 검토 PASS와 immutable binding/등록 완료. 실제 브라우저 담당3 → EXP-0017에서 보고서·14 metrics/2 graphs·review와 기존 원본 참고 클립8개 재생/seek/poll 보존 통과. 공개 모델 raw 답변/UI 기능 추가는 하지 않았다. GitHub commit `622e360de27329777a0964dde11c76333acac2ed`의 정상 push 및 원격 assignment/catalog/report/metrics/review/binding byte 검증 통과. 후속 전달 문서 커밋의 최종 HEAD 검증은 로컬 receipt에 남긴다.
 - 아래 EXP-0016의 미실행·인증 차단은 당시 이력이며 EXP-0017의 현재 상태로 읽지 않는다. 영상/프레임/가중치/raw 응답/runtime/receipts는 로컬 전용이다.
 
 ## 최신 상태 — EXP-0016 단일 프롬프트 변경 (2026-10-28)
