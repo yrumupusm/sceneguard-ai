@@ -99,7 +99,526 @@
       "metric_definitions": "records/EXP-0003/metrics.json",
       "metrics_path": "records/EXP-0003/metrics.json",
       "metrics_sha256": "062d343f73c9556b9f2c15c4f4411556b485bf2d1dacf463b71d81e1286d3b82",
-      "next_step": "계측 시간이 추가…6242 tokens truncated…26140db2b80978e1c65a9b9b64ba762d8a35f7d5124a9e9ff7",
+      "next_step": "계측 시간이 추가돼 기존 추론 속도와 직접 비교하지 않는다.",
+      "reasoning_effective": null,
+      "report_path": "docs/experiments/EXP-0003-fcos-candidate-diagnostics.md",
+      "report_sha256": "89b532fcc70025b82fc921b38ce665e5b938f840085517f95a2fda077f0fe715",
+      "review_binding_path": "docs/reviews/ORCA-SETUP-historical-import.binding.json",
+      "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
+      "review_status": "AI_draft",
+      "role": "historical_import",
+      "run_id": "historical-EXP-0003",
+      "schema_version": 1,
+      "slot": "unassigned",
+      "summary": "90초 사람 위치에 낮은 점수 후보가 있었다. 시각적 원인은 미확정이다.",
+      "task_id": null,
+      "timestamp_scope": "record import time; not experiment start or completion time",
+      "title": "FCOS 누락 단계 진단",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
+      "worker_opinion": "90초 사람 위치에 낮은 점수 후보가 있었다. 시각적 원인은 미확정이다."
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": null,
+      "attempt_id": null,
+      "code_sha": null,
+      "config_hash": null,
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "data_manifest_hash": null,
+      "decision_status": "adoption_on_hold",
+      "evaluated_model": "FCOS 저장 캐시 / IoU",
+      "evidence": [],
+      "execution_status": "completed_with_recorded_limitations",
+      "experiment_id": "EXP-0004",
+      "limitations": [
+        "개발 표본이며 독립 테스트 아님",
+        "정밀 정답·카메라 독립성 미확정",
+        "과거 agent model/effort·통합 run 해시가 없는 필드는 null; 측정 원천별 해시는 metrics에 보존"
+      ],
+      "metric_definitions": "records/EXP-0004/metrics.json",
+      "metrics_path": "records/EXP-0004/metrics.json",
+      "metrics_sha256": "f891ab5e82aba37cde7b7c0b5816bdc558b5ef0bc37fc4cfdc3b3a7e5d0303b5",
+      "next_step": "점수 기준 하향 채택 보류. 이 캐시 재생은 모델 추론 속도가 아니다.",
+      "reasoning_effective": null,
+      "report_path": "docs/experiments/EXP-0004-fcos-score-threshold-comparison.md",
+      "report_sha256": "3f4212fd685f20ce1b7894e50dc51ffb7cc6a36b1f0bd29736fb01414b81552f",
+      "review_binding_path": "docs/reviews/ORCA-SETUP-historical-import.binding.json",
+      "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
+      "review_status": "AI_draft",
+      "role": "historical_import",
+      "run_id": "historical-EXP-0004",
+      "schema_version": 1,
+      "slot": "unassigned",
+      "summary": "기준 하향으로 일부 사람을 복원했으나 중복·배경 의심도 증가했다.",
+      "task_id": null,
+      "timestamp_scope": "record import time; not experiment start or completion time",
+      "title": "최종 사람 점수 비교",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
+      "worker_opinion": "기준 하향으로 일부 사람을 복원했으나 중복·배경 의심도 증가했다."
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": null,
+      "attempt_id": null,
+      "code_sha": null,
+      "config_hash": null,
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "data_manifest_hash": null,
+      "decision_status": "adoption_on_hold",
+      "evaluated_model": "FCOS 캐시 / IoU·ByteTrack",
+      "evidence": [
+        {
+          "artifact_id": "exp5-007",
+          "kind": "video",
+          "label": "007 원본/B/C 정상→0.25배속"
+        },
+        {
+          "artifact_id": "exp5-030",
+          "kind": "video",
+          "label": "030 원본/B/C 정상→0.25배속"
+        }
+      ],
+      "execution_status": "completed_with_recorded_limitations",
+      "experiment_id": "EXP-0005",
+      "limitations": [
+        "개발 표본이며 독립 테스트 아님",
+        "정밀 정답·카메라 독립성 미확정",
+        "과거 agent model/effort·통합 run 해시가 없는 필드는 null; 측정 원천별 해시는 metrics에 보존"
+      ],
+      "metric_definitions": "records/EXP-0005/metrics.json",
+      "metrics_path": "records/EXP-0005/metrics.json",
+      "metrics_sha256": "94f3cd4f5efe39eab5cb9655c1640112650808df1bc27829284cd9a0fffd4399",
+      "next_step": "기본 추적기 교체 보류. ID 수·후보 수는 실제 사람 수나 성공 건수가 아니다.",
+      "reasoning_effective": null,
+      "report_path": "docs/experiments/EXP-0005-bytetrack-cache-comparison.md",
+      "report_sha256": "bfbf00f6af39b8682c05d73d0456fc78c22f7f1b59f4a455cc80f9f9acf5944b",
+      "review_binding_path": "docs/reviews/ORCA-SETUP-historical-import.binding.json",
+      "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
+      "review_status": "AI_draft",
+      "role": "historical_import",
+      "run_id": "historical-EXP-0005",
+      "schema_version": 1,
+      "slot": "unassigned",
+      "summary": "국소 연결 개선과 중복·배경·부분 신체 문제가 공존했다.",
+      "task_id": null,
+      "timestamp_scope": "record import time; not experiment start or completion time",
+      "title": "ByteTrack 캐시 비교",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
+      "worker_opinion": "국소 연결 개선과 중복·배경·부분 신체 문제가 공존했다."
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": null,
+      "attempt_id": null,
+      "code_sha": null,
+      "config_hash": null,
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "data_manifest_hash": null,
+      "decision_status": "adoption_on_hold",
+      "evaluated_model": "EXP-0005 C 저장 관측",
+      "evidence": [
+        {
+          "artifact_id": "exp6-007",
+          "kind": "video",
+          "label": "007 원본/후보/검토"
+        },
+        {
+          "artifact_id": "exp6-030",
+          "kind": "video",
+          "label": "030 원본/후보/검토"
+        }
+      ],
+      "execution_status": "completed_with_recorded_limitations",
+      "experiment_id": "EXP-0006",
+      "limitations": [
+        "개발 표본이며 독립 테스트 아님",
+        "정밀 정답·카메라 독립성 미확정",
+        "과거 agent model/effort·통합 run 해시가 없는 필드는 null; 측정 원천별 해시는 metrics에 보존"
+      ],
+      "metric_definitions": "records/EXP-0006/metrics.json",
+      "metrics_path": "records/EXP-0006/metrics.json",
+      "metrics_sha256": "df8cfd45383b23ffbe561c5ac5a39aacf45ed2f8e61b91d1baf3e82efb4be742",
+      "next_step": "기본 적용 보류. 0.2초 대기는 실제 경보 전달 지연을 추가한다.",
+      "reasoning_effective": null,
+      "report_path": "docs/experiments/EXP-0006-candidate-box-consistency.md",
+      "report_sha256": "6aea3068b517b90cc8512a0e207c2487767b9d04d2f7b30808f5ba73f3231ea5",
+      "review_binding_path": "docs/reviews/ORCA-SETUP-historical-import.binding.json",
+      "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
+      "review_status": "AI_draft",
+      "role": "historical_import",
+      "run_id": "historical-EXP-0006",
+      "schema_version": 1,
+      "slot": "unassigned",
+      "summary": "007은 근거 부족, 030은 판단 유보로 남아 유용한 후보도 함께 막았다.",
+      "task_id": null,
+      "timestamp_scope": "record import time; not experiment start or completion time",
+      "title": "박스 일관성 후보 검토",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
+      "worker_opinion": "007은 근거 부족, 030은 판단 유보로 남아 유용한 후보도 함께 막았다."
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": null,
+      "attempt_id": null,
+      "code_sha": null,
+      "config_hash": null,
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "data_manifest_hash": null,
+      "decision_status": "adoption_on_hold",
+      "evaluated_model": "Qwen3-VL-2B-Instruct",
+      "evidence": [
+        {
+          "artifact_id": "exp7-clip01",
+          "kind": "image",
+          "label": "clip01 실제 모델 입력 검수 시트"
+        },
+        {
+          "artifact_id": "exp7-clip02",
+          "kind": "image",
+          "label": "clip02 실제 모델 입력 검수 시트"
+        },
+        {
+          "artifact_id": "exp7-clip03",
+          "kind": "image",
+          "label": "clip03 실제 모델 입력 검수 시트"
+        },
+        {
+          "artifact_id": "exp7-clip04",
+          "kind": "image",
+          "label": "clip04 실제 모델 입력 검수 시트"
+        },
+        {
+          "artifact_id": "exp7-clip05",
+          "kind": "image",
+          "label": "clip05 실제 모델 입력 검수 시트"
+        },
+        {
+          "artifact_id": "exp7-clip06",
+          "kind": "image",
+          "label": "clip06 실제 모델 입력 검수 시트"
+        }
+      ],
+      "execution_status": "completed_with_recorded_limitations",
+      "experiment_id": "EXP-0007",
+      "limitations": [
+        "개발 표본이며 독립 테스트 아님",
+        "정밀 정답·카메라 독립성 미확정",
+        "과거 agent model/effort·통합 run 해시가 없는 필드는 null; 측정 원천별 해시는 metrics에 보존"
+      ],
+      "metric_definitions": "records/EXP-0007/metrics.json",
+      "metrics_path": "records/EXP-0007/metrics.json",
+      "metrics_sha256": "270fd6fcba459880a8e31e30f5058fb048858298aad8d8be124ca5fc59f4fc6d",
+      "next_step": "기본 연동 보류. 실제 입력의 행동과 설명을 사람과 검수한 뒤 다음 대조를 설계한다.",
+      "reasoning_effective": null,
+      "report_path": "docs/experiments/EXP-0007-local-vlm-action-analysis.md",
+      "report_sha256": "6e0547b4c298de232cac9532e1abebd315c9e6c1f6d9b1c3dee37c235317eda7",
+      "review_binding_path": "docs/reviews/ORCA-SETUP-historical-import.binding.json",
+      "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
+      "review_status": "AI_draft",
+      "role": "historical_import",
+      "run_id": "historical-EXP-0007",
+      "schema_version": 1,
+      "slot": "unassigned",
+      "summary": "통행 일부는 설명했으나 넘기 누락·문 열기 환각·반복·JSON 파싱 실패가 남았다.",
+      "task_id": null,
+      "timestamp_scope": "record import time; not experiment start or completion time",
+      "title": "독립 로컬 VLM 행동 분석",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
+      "worker_opinion": "통행 일부는 설명했으나 넘기 누락·문 열기 환각·반복·JSON 파싱 실패가 남았다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T08:44:12.571516+00:00",
+      "attempt_id": "8b93c06304724009b8ca5a0d15a28288",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_c9acf995dc40",
+      "evaluated_model": "Qwen/Qwen3-VL-2B-Instruct",
+      "evidence": [
+        {
+          "artifact_id": "exp8-clip02-source",
+          "kind": "video",
+          "label": "clip02 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp8-clip02-actual",
+          "kind": "image",
+          "label": "clip02 · 실제 Qwen 입력 시트"
+        },
+        {
+          "artifact_id": "exp8-clip06-source",
+          "kind": "video",
+          "label": "clip06 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp8-clip06-actual",
+          "kind": "image",
+          "label": "clip06 · 실제 Qwen 입력 시트"
+        },
+        {
+          "artifact_id": "exp8-clip01-source",
+          "kind": "video",
+          "label": "clip01 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp8-clip01-actual",
+          "kind": "image",
+          "label": "clip01 · 실제 Qwen 입력 시트"
+        },
+        {
+          "artifact_id": "exp8-clip03-source",
+          "kind": "video",
+          "label": "clip03 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp8-clip03-actual",
+          "kind": "image",
+          "label": "clip03 · 실제 Qwen 입력 시트"
+        },
+        {
+          "artifact_id": "exp8-clip04-source",
+          "kind": "video",
+          "label": "clip04 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp8-clip04-actual",
+          "kind": "image",
+          "label": "clip04 · 실제 Qwen 입력 시트"
+        },
+        {
+          "artifact_id": "exp8-clip05-source",
+          "kind": "video",
+          "label": "clip05 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp8-clip05-actual",
+          "kind": "image",
+          "label": "clip05 · 실제 Qwen 입력 시트"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0008",
+      "limitations": [
+        "기존6개 개발 클립; 독립 테스트·확정 정답 아님",
+        "원문2/6·펜스 제거6/6은 행동 정확도가 아님",
+        "새 CCTV 픽셀 검수 없이 기존 초안과 텍스트를 대조"
+      ],
+      "metric_definitions": "records/EXP-0008/metrics.json",
+      "metrics_path": "records/EXP-0008/metrics.json",
+      "metrics_sha256": "c3e4601b8e4f22184046f638e7625b2c1d0c1feab70e84050e6562c4999d7c53",
+      "next_step": "사전 고정 EXP-0010 대조 한 번 및 02/06 로컬 사람 확인.",
+      "reasoning_effective": "high",
+      "registration_sha256": "d4dc380f67c655fccc3f939fb6bbc29c5bde8946da175b530e864b49a6cd3244",
+      "report_path": "docs/experiments/EXP-0008-qwen-batch01.md",
+      "report_sha256": "23e7ecd38efe894bc82e0db241ef4f010273654be17750c5c0d4708bedf9e7dd",
+      "review_binding_path": "docs/reviews/EXP-0008.binding.json",
+      "review_path": "docs/reviews/EXP-0008-coordinator-review.md",
+      "review_sha256": "99cd5e633b6057adc6c38a198bcdd4863d114d28108e54185d6fd7901879d08d",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "c3e4601b8e4f22184046f638e7625b2c1d0c1feab70e84050e6562c4999d7c53",
+      "reviewed_report_sha256": "23e7ecd38efe894bc82e0db241ef4f010273654be17750c5c0d4708bedf9e7dd",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot1",
+      "summary": "6클립 생성 완료. 형식과 행동 이해를 분리: 완료 근거 부족·넘기 누락이 남아 채택 보류.",
+      "synthetic": false,
+      "task_id": "task_0bfc2bc3eafc",
+      "title": "Qwen3-VL-2B 기준 실행",
+      "worker_opinion": "실행 가능하지만 행동 구분 근거가 부족하다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T08:44:12.571596+00:00",
+      "attempt_id": "ef353740b07d46d79ddb030e8d22ecd5",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_b06f6387b019",
+      "evaluated_model": "HuggingFaceTB/SmolVLM2-2.2B-Instruct",
+      "evidence": [
+        {
+          "artifact_id": "exp9-clip02-source",
+          "kind": "video",
+          "label": "clip02 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip02-actual",
+          "kind": "image",
+          "label": "clip02 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip06-source",
+          "kind": "video",
+          "label": "clip06 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip06-actual",
+          "kind": "image",
+          "label": "clip06 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip01-source",
+          "kind": "video",
+          "label": "clip01 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip01-actual",
+          "kind": "image",
+          "label": "clip01 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip03-source",
+          "kind": "video",
+          "label": "clip03 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip03-actual",
+          "kind": "image",
+          "label": "clip03 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip04-source",
+          "kind": "video",
+          "label": "clip04 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip04-actual",
+          "kind": "image",
+          "label": "clip04 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip05-source",
+          "kind": "video",
+          "label": "clip05 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip05-actual",
+          "kind": "image",
+          "label": "clip05 · 실제 Smol 입력 시트"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0009",
+      "limitations": [
+        "동일6개 개발 클립; 독립 테스트·확정 정답 아님",
+        "형식·비용과 행동 이해는 별도이며 최종 정확도/F1 미산출",
+        "현재 에이전트의 새 픽셀 검수 없이 기존 초안과 응답 근거 대조"
+      ],
+      "metric_definitions": "records/EXP-0009/metrics.json",
+      "metrics_path": "records/EXP-0009/metrics.json",
+      "metrics_sha256": "933d5598f37860e04b7aacaa669e4459ab7b3af789ec22380760a9935b9851a7",
+      "next_step": "배치 종료. 02/06 로컬 사람 확인 후 별도 후속 범위 결정; 추가 자동 실행 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "0f152b90001a1462dda4e50acb61ea042810387c407ae793134f20128febf14f",
+      "report_path": "docs/experiments/EXP-0009-smol-batch01.md",
+      "report_sha256": "14b2e95f45a07e34c6ad555350adf1ac5948862556bf58edfb0c29f142af69f0",
+      "review_binding_path": "docs/reviews/EXP-0009.binding.json",
+      "review_path": "docs/reviews/EXP-0009-coordinator-review.md",
+      "review_sha256": "1d914e4c01b179ef871d2cdd4c0089ec92c7920b56f059ac5b75e54512ff450b",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "933d5598f37860e04b7aacaa669e4459ab7b3af789ec22380760a9935b9851a7",
+      "reviewed_report_sha256": "14b2e95f45a07e34c6ad555350adf1ac5948862556bf58edfb0c29f142af69f0",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot2",
+      "summary": "6클립 생성·원문 형식 통과. 선택지 반복·근거 모순·넘기 누락으로 채택 보류.",
+      "synthetic": false,
+      "task_id": "task_e56ab41484b8",
+      "title": "SmolVLM2-2.2B 기준 실행",
+      "worker_opinion": "짧은 생성 시간·형식 준수는 확인했으나 행동 이해의 효용은 확인 못함."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T09:05:07.192448+00:00",
+      "attempt_id": "c0fd8f0c63154c5d837d5c149bf948b5",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_735ddbea9bba",
+      "evaluated_model": "Qwen/Qwen3-VL-2B-Instruct",
+      "evidence": [
+        {
+          "artifact_id": "exp10-clip02-source",
+          "kind": "video",
+          "label": "clip02 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip02-actual",
+          "kind": "image",
+          "label": "clip02 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip06-source",
+          "kind": "video",
+          "label": "clip06 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip06-actual",
+          "kind": "image",
+          "label": "clip06 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip01-source",
+          "kind": "video",
+          "label": "clip01 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip01-actual",
+          "kind": "image",
+          "label": "clip01 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip03-source",
+          "kind": "video",
+          "label": "clip03 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip03-actual",
+          "kind": "image",
+          "label": "clip03 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip04-source",
+          "kind": "video",
+          "label": "clip04 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip04-actual",
+          "kind": "image",
+          "label": "clip04 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip05-source",
+          "kind": "video",
+          "label": "clip05 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip05-actual",
+          "kind": "image",
+          "label": "clip05 · 실제 Qwen 큰 입력 입력 시트"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0010",
+      "limitations": [
+        "동일6개 개발 클립; 독립 테스트·확정 정답 아님",
+        "형식·비용과 행동 이해는 별도이며 최종 정확도/F1 미산출",
+        "현재 에이전트의 새 픽셀 검수 없이 기존 초안과 응답 근거 대조"
+      ],
+      "metric_definitions": "records/EXP-0010/metrics.json",
+      "metrics_path": "records/EXP-0010/metrics.json",
+      "metrics_sha256": "5709e9b0163e8f61613191f082299f77d93ad699ce869e26d5aa408a0d7ead41",
+      "next_step": "배치 종료. 02/06 로컬 사람 확인 후 별도 후속 범위 결정; 추가 자동 실행 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "9836859a9ab21cc81742dd6f6302c04039832376a0ed6e769c47c43218aa68ae",
+      "report_path": "docs/experiments/EXP-0010-qwen-high-pixels.md",
+      "report_sha256": "1fca3eb7f7dce826140db2b80978e1c65a9b9b64ba762d8a35f7d5124a9e9ff7",
+      "review_binding_path": "docs/reviews/EXP-0010.binding.json",
+      "review_path": "docs/reviews/EXP-0010-coordinator-review.md",
+      "review_sha256": "eeb5c7e1d96d2ac9a04eddc677ff665553dbc595f292f02e30524ff4450db91a",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "5709e9b0163e8f61613191f082299f77d93ad699ce869e26d5aa408a0d7ead41",
+      "reviewed_report_sha256": "1fca3eb7f7dce826140db2b80978e1c65a9b9b64ba762d8a35f7d5124a9e9ff7",
       "role": "experiment_worker",
       "run_id": "run_3d23462a014a",
       "schema_version": 1,

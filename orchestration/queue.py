@@ -289,7 +289,160 @@ class Queue:
             if row is None:
                 db.commit()
                 return None
-     …2539 tokens truncated…                signal.pidfd_send_signal(pidfd, signal.SIGKILL)
+            job = dict(row)
+            number = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job["job_id"],)).fetchone()[0] + 1
+            now, attempt = time.time(), uuid.uuid4().hex
+            db.execute("INSERT INTO attempts (attempt_id,job_id,attempt_no,owner,status,"
+                       "supervisor_pid,supervisor_identity,started_at,heartbeat,timeout) "
+                       "VALUES (?,?,?,?,'running',?,?,?,?,?)",
+                       (attempt, job["job_id"], number, job["owner"], os.getpid(),
+                        process_identity(os.getpid()), now, now, job["timeout"]))
+            db.execute("UPDATE jobs SET status='running' WHERE job_id=?", (job["job_id"],))
+            db.commit()
+            return job, attempt
+
+    def _finish(self, attempt, status, exit_code, reason):
+        with self.connection() as db:
+            row = dict(db.execute("SELECT * FROM attempts WHERE attempt_id=?", (attempt,)).fetchone())
+            job = dict(db.execute("SELECT * FROM jobs WHERE job_id=?", (row["job_id"],)).fetchone())
+            manifest = self.runtime / "attempts" / attempt / "manifest.json"
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            finished = time.time()
+            real = job['command'] == 'vlm-batch01'
+            mvp = job['command'] == 'mvp-0001'
+            if real:
+                from orchestration.vlm_command import ASSETS, MODELS, output_path
+                adapter = json.loads(job['config_json'])['adapter']
+            if mvp:
+                from orchestration.mvp_command import INTERPRETER, output_path as mvp_output_path
+                mvp_config = json.loads(job['config_json'])
+            atomic_json(manifest, {"schema_version": 1, "synthetic": not (real or mvp),
+                        "execution_status": status,
+                        "registration": {"command": job['command'],
+                                         "script": str(ROOT / 'mvp/runner.py') if mvp else (str(ROOT / 'vlm_batch/run.py') if real else str(MOCK)),
+                                         "cwd": str(ROOT), "interpreter": str(INTERPRETER) if mvp else (str(ASSETS / MODELS[adapter][1]) if real else sys.executable)},
+                        "job": {**job, "status": status}, "attempt": {**row, "status": status,
+                        "exit_code": exit_code, "finished_at": finished, "reason": reason},
+                        "result": str(mvp_output_path(mvp_config['phase'], attempt)) if mvp else (str(output_path(adapter, attempt)) if real else str(manifest.with_name("mock-result.json"))),
+                        "mock_result": None if real or mvp else str(manifest.with_name("mock-result.json")),
+                        "limitations": ["Queue exit alone does not establish model quality"] if real or mvp else
+                                        ["CPU mock timing only; no GPU/model performance measured"]})
+            db.execute("BEGIN IMMEDIATE")
+            db.execute("UPDATE attempts SET status=?,exit_code=?,finished_at=?,heartbeat=?,"
+                       "result_manifest=?,reason=? WHERE attempt_id=?",
+                       (status, exit_code, finished, finished, str(manifest), reason, attempt))
+            db.execute("UPDATE jobs SET status=? WHERE job_id=?", (status, row["job_id"]))
+            db.commit()
+
+    def _recover_locked(self):
+        with self.connection() as db:
+            rows = db.execute("SELECT * FROM attempts WHERE status IN ('running','unknown')").fetchall()
+        results = []
+        for row in rows:
+            states = [process_state(row["supervisor_pid"], row["supervisor_identity"])]
+            if row["child_pid"] is not None:
+                states.append(process_state(row["child_pid"], row["child_identity"]))
+            if "unknown" in states:
+                state = "unknown"
+            elif "live" in states:
+                state = "running"
+            else:
+                state = "interrupted"
+            if state != "running":
+                self._finish(row["attempt_id"], state, None,
+                             "process identity unverifiable" if state == "unknown"
+                             else "supervisor and recorded child exited without final receipt")
+            results.append({"attempt_id": row["attempt_id"], "status": state})
+        return results
+
+    def recover(self):
+        with self.gpu_lock(blocking=False) as lock:
+            if lock is None:
+                return {"status": "busy", "reason": "reservation held; no mutation or signal sent"}
+            return {"status": "checked", "attempts": self._recover_locked()}
+
+    def retry(self, job_id):
+        with self.gpu_lock(blocking=False) as lock:
+            if lock is None:
+                raise ValueError("reservation is held; retry refused")
+            self._recover_locked()
+            with self.connection() as db:
+                db.execute("BEGIN IMMEDIATE")
+                row = db.execute("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
+                count = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job_id,)).fetchone()[0]
+                if row is None or row["status"] not in RETRYABLE or count != 1:
+                    raise ValueError("one explicit retry allowed only after a known failed/cancelled/interrupted attempt")
+                db.execute("UPDATE jobs SET status='queued',cancel_requested=0 WHERE job_id=?", (job_id,))
+                db.commit()
+        return {"job_id": job_id, "status": "queued", "explicit_retry": True}
+
+    def cancel(self, job_id):
+        with self.connection() as db:
+            db.execute("BEGIN IMMEDIATE")
+            row = db.execute("SELECT status FROM jobs WHERE job_id=?", (job_id,)).fetchone()
+            if row is None or row[0] not in {"queued", "running"}:
+                raise ValueError("only queued/running jobs can be cancelled")
+            db.execute("UPDATE jobs SET cancel_requested=1,status=? WHERE job_id=?",
+                       ("cancelled" if row[0] == "queued" else "running", job_id))
+            db.commit()
+        return {"job_id": job_id, "cancel_requested": True}
+
+    def supervise_once(self):
+        # Fail before claiming if this Linux runtime cannot bind signals to PIDs.
+        if not callable(getattr(signal, "pidfd_send_signal", None)):
+            raise ValueError("this runtime requires signal.pidfd_send_signal")
+        probe = os.pidfd_open(os.getpid())
+        os.close(probe)
+        # The supervisor owns this lock before claim and throughout child lifetime.
+        with self.gpu_lock() as lock:
+            self._recover_locked()
+            claimed = self._claim()
+            if claimed is None:
+                return {"status": "idle_or_unresolved"}
+            job, attempt = claimed
+            directory = self.runtime / "attempts" / attempt
+            directory.mkdir(parents=True)
+            child = None
+            deadline = time.monotonic() + job['timeout']
+            try:
+                config = json.loads(job['config_json'])
+                if job["source_hash"] != source_hash(job['command'], config):
+                    raise ValueError("registered source changed since enqueue")
+                if digest(json.loads(job["input_json"])) != job["input_hash"] or digest(json.loads(job["config_json"])) != job["config_hash"]:
+                    raise ValueError("stored input/config hash mismatch")
+                config = json.loads(job["config_json"])
+                if job['command'] == 'mvp-0001':
+                    from orchestration.mvp_command import command
+                    argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
+                elif job['command'] == 'vlm-batch01':
+                    from orchestration.vlm_command import command
+                    argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
+                elif job['command'] == 'cpu-mock':
+                    argv = [sys.executable, "-I", str(MOCK), "--seconds", str(config["seconds"]),
+                            "--exit-code", str(config["exit_code"]), "--result",
+                            str(directory / "mock-result.json"), "--lock-fd", str(lock.fileno())]
+                else:
+                    raise ValueError('unregistered command in stored job')
+                with (directory / "child.log").open("ab") as output:
+                    child = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL,
+                                             stdout=output, stderr=subprocess.STDOUT,
+                                             pass_fds=(lock.fileno(),), start_new_session=True)
+                identity = process_identity(child.pid)
+                with self.connection() as db:
+                    db.execute("UPDATE attempts SET child_pid=?,child_identity=? WHERE attempt_id=?",
+                               (child.pid, identity, attempt))
+                # pidfd binds timeout/cancel signals to this exact process incarnation.
+                pidfd = os.pidfd_open(child.pid)
+                try:
+                    status, reason = None, None
+                    while child.poll() is None:
+                        with self.connection() as db:
+                            cancelled = db.execute("SELECT cancel_requested FROM jobs WHERE job_id=?", (job["job_id"],)).fetchone()[0]
+                            db.execute("UPDATE attempts SET heartbeat=? WHERE attempt_id=?", (time.time(), attempt))
+                        if cancelled or time.monotonic() >= deadline:
+                            status, reason = ("cancelled", "explicit cancellation") if cancelled else ("failed", "timeout")
+                            try:
+                                signal.pidfd_send_signal(pidfd, signal.SIGKILL)
                             except ProcessLookupError:
                                 pass  # Exact child exited between poll and signal.
                             break
