@@ -40,6 +40,17 @@ REPORTS = [
 
 
 def export(source: Path, destination: Path) -> dict:
+    # This importer is only for the historical setup snapshot. Refuse before
+    # reading local experiment sources or writing any metrics/index files.
+    from orchestration.complete import optional, rows
+    assignments = optional(destination / "records/assignments.json", {"schema_version": 1, "assignments": []})
+    if rows(assignments, "assignments"):
+        raise ValueError("Historical importer cannot overwrite a repository with active assignments")
+    existing = optional(destination / "records/catalog.json", None)
+    if existing is not None:
+        if any(row.get("role") != "historical_import" or row.get("experiment_id") not in
+               {f"EXP-{i:04d}" for i in range(1, 8)} for row in rows(existing, "experiments")):
+            raise ValueError("Historical importer cannot overwrite nonhistorical results")
     experiments = []
     imported_at = dt.datetime.now(dt.timezone.utc).isoformat()
     for number, (filename, title, model, summary, next_step) in enumerate(REPORTS, 1):
