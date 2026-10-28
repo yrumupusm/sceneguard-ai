@@ -426,6 +426,208 @@
       "task_id": "task_0bfc2bc3eafc",
       "title": "Qwen3-VL-2B 기준 실행",
       "worker_opinion": "실행 가능하지만 행동 구분 근거가 부족하다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T08:44:12.571596+00:00",
+      "attempt_id": "ef353740b07d46d79ddb030e8d22ecd5",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_b06f6387b019",
+      "evaluated_model": "HuggingFaceTB/SmolVLM2-2.2B-Instruct",
+      "evidence": [
+        {
+          "artifact_id": "exp9-clip02-source",
+          "kind": "video",
+          "label": "clip02 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip02-actual",
+          "kind": "image",
+          "label": "clip02 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip06-source",
+          "kind": "video",
+          "label": "clip06 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip06-actual",
+          "kind": "image",
+          "label": "clip06 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip01-source",
+          "kind": "video",
+          "label": "clip01 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip01-actual",
+          "kind": "image",
+          "label": "clip01 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip03-source",
+          "kind": "video",
+          "label": "clip03 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip03-actual",
+          "kind": "image",
+          "label": "clip03 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip04-source",
+          "kind": "video",
+          "label": "clip04 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip04-actual",
+          "kind": "image",
+          "label": "clip04 · 실제 Smol 입력 시트"
+        },
+        {
+          "artifact_id": "exp9-clip05-source",
+          "kind": "video",
+          "label": "clip05 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp9-clip05-actual",
+          "kind": "image",
+          "label": "clip05 · 실제 Smol 입력 시트"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0009",
+      "limitations": [
+        "동일6개 개발 클립; 독립 테스트·확정 정답 아님",
+        "형식·비용과 행동 이해는 별도이며 최종 정확도/F1 미산출",
+        "현재 에이전트의 새 픽셀 검수 없이 기존 초안과 응답 근거 대조"
+      ],
+      "metric_definitions": "records/EXP-0009/metrics.json",
+      "metrics_path": "records/EXP-0009/metrics.json",
+      "metrics_sha256": "933d5598f37860e04b7aacaa669e4459ab7b3af789ec22380760a9935b9851a7",
+      "next_step": "배치 종료. 02/06 로컬 사람 확인 후 별도 후속 범위 결정; 추가 자동 실행 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "0f152b90001a1462dda4e50acb61ea042810387c407ae793134f20128febf14f",
+      "report_path": "docs/experiments/EXP-0009-smol-batch01.md",
+      "report_sha256": "14b2e95f45a07e34c6ad555350adf1ac5948862556bf58edfb0c29f142af69f0",
+      "review_binding_path": "docs/reviews/EXP-0009.binding.json",
+      "review_path": "docs/reviews/EXP-0009-coordinator-review.md",
+      "review_sha256": "1d914e4c01b179ef871d2cdd4c0089ec92c7920b56f059ac5b75e54512ff450b",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "933d5598f37860e04b7aacaa669e4459ab7b3af789ec22380760a9935b9851a7",
+      "reviewed_report_sha256": "14b2e95f45a07e34c6ad555350adf1ac5948862556bf58edfb0c29f142af69f0",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot2",
+      "summary": "6클립 생성·원문 형식 통과. 선택지 반복·근거 모순·넘기 누락으로 채택 보류.",
+      "synthetic": false,
+      "task_id": "task_e56ab41484b8",
+      "title": "SmolVLM2-2.2B 기준 실행",
+      "worker_opinion": "짧은 생성 시간·형식 준수는 확인했으나 행동 이해의 효용은 확인 못함."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T09:05:07.192448+00:00",
+      "attempt_id": "c0fd8f0c63154c5d837d5c149bf948b5",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_735ddbea9bba",
+      "evaluated_model": "Qwen/Qwen3-VL-2B-Instruct",
+      "evidence": [
+        {
+          "artifact_id": "exp10-clip02-source",
+          "kind": "video",
+          "label": "clip02 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip02-actual",
+          "kind": "image",
+          "label": "clip02 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip06-source",
+          "kind": "video",
+          "label": "clip06 · 사람 확인 우선 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip06-actual",
+          "kind": "image",
+          "label": "clip06 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip01-source",
+          "kind": "video",
+          "label": "clip01 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip01-actual",
+          "kind": "image",
+          "label": "clip01 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip03-source",
+          "kind": "video",
+          "label": "clip03 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip03-actual",
+          "kind": "image",
+          "label": "clip03 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip04-source",
+          "kind": "video",
+          "label": "clip04 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip04-actual",
+          "kind": "image",
+          "label": "clip04 · 실제 Qwen 큰 입력 입력 시트"
+        },
+        {
+          "artifact_id": "exp10-clip05-source",
+          "kind": "video",
+          "label": "clip05 · 원본 연속/2fps 입력 표본 비교"
+        },
+        {
+          "artifact_id": "exp10-clip05-actual",
+          "kind": "image",
+          "label": "clip05 · 실제 Qwen 큰 입력 입력 시트"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0010",
+      "limitations": [
+        "동일6개 개발 클립; 독립 테스트·확정 정답 아님",
+        "형식·비용과 행동 이해는 별도이며 최종 정확도/F1 미산출",
+        "현재 에이전트의 새 픽셀 검수 없이 기존 초안과 응답 근거 대조"
+      ],
+      "metric_definitions": "records/EXP-0010/metrics.json",
+      "metrics_path": "records/EXP-0010/metrics.json",
+      "metrics_sha256": "5709e9b0163e8f61613191f082299f77d93ad699ce869e26d5aa408a0d7ead41",
+      "next_step": "배치 종료. 02/06 로컬 사람 확인 후 별도 후속 범위 결정; 추가 자동 실행 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "9836859a9ab21cc81742dd6f6302c04039832376a0ed6e769c47c43218aa68ae",
+      "report_path": "docs/experiments/EXP-0010-qwen-high-pixels.md",
+      "report_sha256": "1fca3eb7f7dce826140db2b80978e1c65a9b9b64ba762d8a35f7d5124a9e9ff7",
+      "review_binding_path": "docs/reviews/EXP-0010.binding.json",
+      "review_path": "docs/reviews/EXP-0010-coordinator-review.md",
+      "review_sha256": "eeb5c7e1d96d2ac9a04eddc677ff665553dbc595f292f02e30524ff4450db91a",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "5709e9b0163e8f61613191f082299f77d93ad699ce869e26d5aa408a0d7ead41",
+      "reviewed_report_sha256": "1fca3eb7f7dce826140db2b80978e1c65a9b9b64ba762d8a35f7d5124a9e9ff7",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot1",
+      "summary": "전체 화면 픽셀 예산 대조 6클립 완료. 비용이 늘었고 행동 개선은 입증되지 않아 채택 보류.",
+      "synthetic": false,
+      "task_id": "task_be6c4ddef130",
+      "title": "Qwen3-VL-2B 픽셀 예산 대조",
+      "worker_opinion": "큰 입력에서도 넘기 누락·완료 근거 부족이 남음."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
