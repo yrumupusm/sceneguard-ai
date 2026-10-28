@@ -1,0 +1,660 @@
+{
+  "schema_version": 1,
+  "experiment": "EXP-0020",
+  "rubric": {
+    "candidate": "any climbing_attempt_or_in_progress or stepping_over_boundary action",
+    "indeterminate": "indeterminate action, separately from parse failure",
+    "other": "valid parsed response without candidate/indeterminate",
+    "completion": "crossing_completion observed reported separately; q04 observed is unsupported",
+    "raw_schema": "strict original JSON schema independently of common outer-fence removal",
+    "common_fence_removal": "existing vlm_batch.common.parse_pair; no semantic repair",
+    "evidence_consistency": "manual local review of saved exact input required; unreviewed is null",
+    "cost": "load/prepare/generate/queue/output tokens/memory separately; no speed or cost invented",
+    "reference_views": "retain original references and separate new sampled-input review; v03 boundary truth unestablished"
+  },
+  "planned_conditions": 16,
+  "completed_conditions": 0,
+  "results": [
+    {
+      "condition_id": "q01_B",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "observed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "67958ee700942f4d0e0ef8971761f5b87b5dcb215f77e8ef6302a53ce32f9cd9",
+      "baseline_timing": {
+        "generation_seconds": 3.009868749999441,
+        "prepare_seconds": 0.12219349198858254
+      },
+      "baseline_output_tokens": 68,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664007168,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": false,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q01_C",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "not_confirmed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "df28a5e05630076f6cd79c88143aed1d8ef1af19a8082c9f8d057c718008f16c",
+      "baseline_timing": {
+        "generation_seconds": 3.579281226004241,
+        "prepare_seconds": 0.06745181797305122
+      },
+      "baseline_output_tokens": 103,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4649967616,
+        "peak_reserved_bytes": 4802478080
+      },
+      "negative_false_candidate_baseline": false,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q02_B",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": true,
+        "indeterminate": false,
+        "other": false,
+        "completion": "observed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "3cc1483e3998e707dba14454b2fd248a531ae9f061653128249d49980e772ef3",
+      "baseline_timing": {
+        "generation_seconds": 2.4814980429946445,
+        "prepare_seconds": 0.11005722999107093
+      },
+      "baseline_output_tokens": 82,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": true,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q02_C",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "observed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "5baaf5a165e38ec1e93f8103b78c405364d6870842175d0bb057a0ebda7718e5",
+      "baseline_timing": {
+        "generation_seconds": 2.7612635340192355,
+        "prepare_seconds": 0.04997833599918522
+      },
+      "baseline_output_tokens": 96,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4651324416,
+        "peak_reserved_bytes": 4802478080
+      },
+      "negative_false_candidate_baseline": false,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q03_B",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "observed",
+        "strict_schema": false,
+        "common_schema": true,
+        "postprocessing": "outer_json_fence_removed",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "90241fcf2c7768256de5fbb98be0fe3e420047ead5e3ac494c87e5a8df80929e",
+      "baseline_timing": {
+        "generation_seconds": 2.638122335978551,
+        "prepare_seconds": 0.09903355699498206
+      },
+      "baseline_output_tokens": 91,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": false,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q03_C",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": true,
+        "indeterminate": false,
+        "other": false,
+        "completion": "observed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "3a6d8ccf41f2bf07935b8b76cec185c76dfe3ece4d1ca6ad2bc1bf1863d402f2",
+      "baseline_timing": {
+        "generation_seconds": 3.076075937016867,
+        "prepare_seconds": 0.04303445998812094
+      },
+      "baseline_output_tokens": 101,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4651324416,
+        "peak_reserved_bytes": 4802478080
+      },
+      "negative_false_candidate_baseline": true,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q04_B",
+      "reference": {
+        "prior": "attempt_progress; completion not observed",
+        "sampled_input": "holding gate / foot raising; B/C individually unconfirmed",
+        "boundary_candidate_reference": true,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "not_confirmed",
+        "strict_schema": false,
+        "common_schema": true,
+        "postprocessing": "outer_json_fence_removed",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "ed8ad4a1f6e76bf9bb31bfc0e3f27cc48b1c8382b6ee6d3fed443a5c0af98270",
+      "baseline_timing": {
+        "generation_seconds": 3.11173076601699,
+        "prepare_seconds": 0.10821944900089875
+      },
+      "baseline_output_tokens": 102,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": null,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q04_C",
+      "reference": {
+        "prior": "attempt_progress; completion not observed",
+        "sampled_input": "holding gate / foot raising; B/C individually unconfirmed",
+        "boundary_candidate_reference": true,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": true,
+        "indeterminate": false,
+        "other": false,
+        "completion": "indeterminate",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "b29df253c9682a7b5173098b32740f11612bff80e6823e0f7425145216f54000",
+      "baseline_timing": {
+        "generation_seconds": 3.447762668976793,
+        "prepare_seconds": 0.04586679601925425
+      },
+      "baseline_output_tokens": 123,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4651324416,
+        "peak_reserved_bytes": 4802478080
+      },
+      "negative_false_candidate_baseline": null,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q05_B",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": true,
+        "indeterminate": false,
+        "other": false,
+        "completion": "observed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "cddc8004dcfecc2e4a04c0888f11be8d23d733a3987a3af380af9a8fbb15ad0a",
+      "baseline_timing": {
+        "generation_seconds": 2.397994867002126,
+        "prepare_seconds": 0.10996682901168242
+      },
+      "baseline_output_tokens": 85,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4665041408,
+        "peak_reserved_bytes": 5026873344
+      },
+      "negative_false_candidate_baseline": true,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q05_C",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": true,
+        "indeterminate": false,
+        "other": false,
+        "completion": "observed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "2b6c18d9347dbde6f32d289825e4c288c9db82b36aa0fb1667d921c6c6a2e555",
+      "baseline_timing": {
+        "generation_seconds": 2.9377848909934983,
+        "prepare_seconds": 0.05025335497339256
+      },
+      "baseline_output_tokens": 94,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4659583488,
+        "peak_reserved_bytes": 4984930304
+      },
+      "negative_false_candidate_baseline": true,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q06_B",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "not_confirmed",
+        "strict_schema": false,
+        "common_schema": true,
+        "postprocessing": "outer_json_fence_removed",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "5b9486cf4a5bb4ebfaf1fc7e84c8155da17ff6cee20f2cc754ebdf9e13af2ce0",
+      "baseline_timing": {
+        "generation_seconds": 3.2532326520013157,
+        "prepare_seconds": 0.10624484700383618
+      },
+      "baseline_output_tokens": 103,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4665041408,
+        "peak_reserved_bytes": 5026873344
+      },
+      "negative_false_candidate_baseline": false,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "q06_C",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "not_confirmed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "b71d801c3f96d4d8edc0354962dd0730e665bdabd259a81b25c2f80f0d854672",
+      "baseline_timing": {
+        "generation_seconds": 2.330835237982683,
+        "prepare_seconds": 0.050920412002597004
+      },
+      "baseline_output_tokens": 76,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4659583488,
+        "peak_reserved_bytes": 4984930304
+      },
+      "negative_false_candidate_baseline": false,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "v01_full_frame",
+      "reference": {
+        "prior": "attempt_progress; completion previously unassessed",
+        "sampled_input": "rope/line crossed then standing opposite; not exhaustive per person",
+        "boundary_candidate_reference": true,
+        "completion_support": "visible reviewed action only"
+      },
+      "baseline": {
+        "candidate": true,
+        "indeterminate": false,
+        "other": false,
+        "completion": "observed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "b71258684b299542f32f2a76dd3fc39c4c684ac5e8927adcb73c3efc1a75e679",
+      "baseline_timing": {
+        "generation_seconds": 3.9782733930042014,
+        "prepare_seconds": 0.08102996600791812
+      },
+      "baseline_output_tokens": 119,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": null,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "v02_full_frame",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "not_confirmed",
+        "strict_schema": true,
+        "common_schema": true,
+        "postprocessing": "none",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "3c152da06e86cf4ec78dd62e9cd4b70fd9fb255dac749d03ec861606f36ff550",
+      "baseline_timing": {
+        "generation_seconds": 5.047238611994544,
+        "prepare_seconds": 0.09072561998618767
+      },
+      "baseline_output_tokens": 119,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664007168,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": false,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "v03_full_frame",
+      "reference": {
+        "prior": "adjacent-gap attempt_progress; boundary relation ambiguous; completion unassessed",
+        "sampled_input": "rock ascent beside gate; boundary crossing not established",
+        "boundary_candidate_reference": null,
+        "completion_support": null,
+        "candidate_absence_definitive_boundary_miss": false
+      },
+      "baseline": {
+        "candidate": false,
+        "indeterminate": false,
+        "other": true,
+        "completion": "not_confirmed",
+        "strict_schema": false,
+        "common_schema": true,
+        "postprocessing": "outer_json_fence_removed",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "2740525a97e01e608999997044482ddd5c0dab38f8c6a09649bcc05ecf3d2979",
+      "baseline_timing": {
+        "generation_seconds": 2.419670657021925,
+        "prepare_seconds": 0.10997630999190733
+      },
+      "baseline_output_tokens": 76,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": null,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    },
+    {
+      "condition_id": "v04_full_frame",
+      "reference": {
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review",
+        "boundary_candidate_reference": false,
+        "completion_support": false
+      },
+      "baseline": {
+        "candidate": true,
+        "indeterminate": false,
+        "other": false,
+        "completion": "observed",
+        "strict_schema": false,
+        "common_schema": true,
+        "postprocessing": "outer_json_fence_removed",
+        "evidence_consistency": null,
+        "parse_failure": false
+      },
+      "candidate": null,
+      "baseline_result_sha256": "2037143fa5f5f5eb14660de97e13b3ece693d6475dbb617a1cf3596802effe4b",
+      "baseline_timing": {
+        "generation_seconds": 3.208524314017268,
+        "prepare_seconds": 0.12678494700230658
+      },
+      "baseline_output_tokens": 75,
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "negative_false_candidate_baseline": true,
+      "negative_false_candidate_4b": null,
+      "q04_candidate_retained": null,
+      "timing": null,
+      "output_tokens": null,
+      "gpu_memory": null,
+      "evidence_consistency_review": "pending local human review",
+      "cost": null
+    }
+  ],
+  "status": "awaiting_execution",
+  "final_metrics": {
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "F1": null,
+    "FPR": null
+  },
+  "adoption": "hold; bounded development comparison and independent review required",
+  "limitations": [
+    "capacity and quantization changed together",
+    "historical q processor RGB/expanded prompt unavailable",
+    "q04 B/C visibility unconfirmed",
+    "v03 rock ascent does not establish boundary crossing",
+    "seven negative windows are diagnostic; no final accuracy/F1/FPR"
+  ]
+}
