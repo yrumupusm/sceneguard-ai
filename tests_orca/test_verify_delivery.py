@@ -3,6 +3,7 @@ import io
 import json
 from pathlib import Path
 import tempfile
+import subprocess
 import unittest
 from unittest.mock import patch
 
@@ -77,6 +78,19 @@ class SeparateAcceptance(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'loopback'):
                 verify_browser(self.config,'TEST-VERIFY','page','https://example.com','orca-ide')
             request.assert_not_called()
+
+    def test_browser_cli_failure_keeps_its_reason(self):
+        api = {**self.item, 'review_integrity':'current',
+               'source_integrity':{'report_match':True,'metrics_match':True}}
+        js = (Path(__file__).resolve().parents[1] / 'webapp/app.js').read_bytes()
+        def response(url, **kwargs):
+            return io.BytesIO(js if url.endswith('.js') else json.dumps(api).encode())
+        failure = subprocess.CalledProcessError(1, ['orca-ide'],
+            output=b'{"ok":false,"error":{"code":"browser_tab_not_found","message":"Page absent"}}')
+        with patch('orchestration.verify_delivery.urllib.request.urlopen', side_effect=response), \
+             patch('orchestration.verify_delivery.subprocess.check_output', side_effect=failure):
+            with self.assertRaisesRegex(ValueError,'browser_tab_not_found: Page absent'):
+                verify_browser(self.config,'TEST-VERIFY','fixture-page','http://127.0.0.1:8766','orca-ide',0)
 
 
 if __name__ == '__main__':

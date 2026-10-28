@@ -90,6 +90,7 @@ BROWSER_JS = r'''(async()=>{
  expected.metrics=expected.metrics.map(([k,v])=>[k,v===null?'미측정':String(v)]);
  const wait=async(test,label,ms=6000)=>{const end=Date.now()+ms;while(Date.now()<end){if(test())return;await new Promise(r=>setTimeout(r,30));}throw Error(label);};
  if(location.origin!==expected.origin)throw Error('Wrong browser origin');
+ await refresh();
  const slot=[...document.querySelectorAll('.slot')].find(x=>x.dataset.slot===expected.slot);
  if(!slot)throw Error('Slot card absent');slot.click();
  await wait(()=>[...document.querySelectorAll('button[data-id]')].some(x=>x.dataset.id===expected.id),'Result button absent');
@@ -148,7 +149,17 @@ def verify_browser(config, experiment, page, url, cli, poll_wait_ms=16500):
                 'graphs': min(2,len(groups)), 'videos': videos, 'poll_wait_ms': poll_wait_ms}
     # Numeric formatting is performed by JavaScript in both UI and probe.
     expression = BROWSER_JS.replace('EXPECTED', json.dumps(expected, ensure_ascii=False), 1)
-    receipt = json.loads(subprocess.check_output([cli,'eval','--page',page,'--expression',expression,'--json'],timeout=55))
+    try:
+        raw = subprocess.check_output([cli,'eval','--page',page,'--expression',expression,'--json'],timeout=55)
+    except subprocess.CalledProcessError as error:
+        # Preserve the actual CLI error instead of echoing the entire probe command.
+        try:
+            failure = json.loads(error.output).get('error', {})
+            detail = str(failure.get('code', 'unknown')) + ': ' + str(failure.get('message', 'operation failed'))
+        except (ValueError, TypeError, AttributeError):
+            detail = 'CLI exit ' + str(error.returncode)
+        raise ValueError('Browser operation failed: ' + detail) from None
+    receipt = json.loads(raw)
     if receipt.get('ok') is not True:
         raise ValueError('Browser operation failed')
     observed = json.loads(receipt['result']['result'])
