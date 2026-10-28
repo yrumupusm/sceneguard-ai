@@ -1,0 +1,5 @@
+# Independent batch environment; existing .venv and .venv-vlm remain untouched.
+# Use --extra-index-url https://download.pytorch.org/whl/cu124 when installing.
+-r requirements-vlm-lock.txt
+docopt==0.6.2
+num2words==0.5.14
