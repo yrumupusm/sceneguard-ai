@@ -118,8 +118,15 @@ def get_catalog():
     try:
         data = catalog(c)
         data['roles'] = read_json(c['repo_root'], 'records/roles.json')
+        try:
+            assignments = read_json(c['repo_root'], 'records/assignments.json')
+        except FileNotFoundError:
+            assignments = {'schema_version': 1, 'assignments': []}
+        if assignments.get('schema_version') != 1 or not isinstance(assignments.get('assignments'), list):
+            raise ValueError('invalid assignments')
+        data['assignments'] = assignments['assignments']
         return data
-    except (OSError, ValueError, KeyError):
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
         raise HTTPException(503, 'catalog unavailable')
 
 @app.get('/api/experiments/{experiment_id}')

@@ -105,6 +105,18 @@ class ViewerTests(unittest.TestCase):
         path.write_text(json.dumps({'observed_at':'2000-01-01T00:00:00Z','connected':True,'stale_after_seconds':45}))
         self.assertEqual(self.client.get('/api/status').json()['state'], 'stale')
 
+    def test_optional_assignments_and_safe_read(self):
+        self.assertEqual(self.client.get('/api/catalog').json()['assignments'], [])
+        path = self.root / 'records/assignments.json'
+        row = {'experiment_id': 'TEST-1', 'slot': 'slot1', 'synthetic': True}
+        path.write_text(json.dumps({'schema_version': 1, 'assignments': [row]}))
+        self.assertEqual(self.client.get('/api/catalog').json()['assignments'], [row])
+        path.write_text('{}')
+        self.assertEqual(self.client.get('/api/catalog').status_code, 503)
+        path.unlink()
+        path.symlink_to(self.root / 'config.json')
+        self.assertEqual(self.client.get('/api/catalog').status_code, 503)
+
     def test_reimport_does_not_refresh_review_binding(self):
         review = self.root / self.item['review_path']
         metric_path = self.root / self.item['metrics_path']
