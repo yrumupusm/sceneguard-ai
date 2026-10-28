@@ -1,0 +1,304 @@
+{
+  "based_on_exp": "EXP-0013",
+  "behavioral_validation": "descriptive_reviewed_window_comparison_only_adoption_hold",
+  "confirmed_negative_cases": 5,
+  "counting_formula": "For each method/group, candidate + candidate_absent + unavailable = denominator (unique scheduled windows, not B/C records or independent videos). Partial d030_90 is excluded from all six reviewed counts.",
+  "diagnostic_reviewed_negative_denominator": 2,
+  "diagnostic_reviewed_positive_denominator": 1,
+  "evaluation_extraction_complete": true,
+  "evaluation_id": "EXP-0015",
+  "execution_scope": "CPU-only label revision of two frozen JSON inputs; no media, raw answers, cache, weights, official annotations or GPU opened",
+  "experiment_id": "EXP-0015",
+  "frozen_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+  "full_window_confirmed_positive_cases": 1,
+  "implementation_sha256": "cd502405a6911356aea0143665e27fe34a78bc47c1019285043de378fe65fb39",
+  "invalid_or_missing_records": 0,
+  "item_results_sha256": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+  "labels_revision": "EXP-0015-LABEL-R1",
+  "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+  "limits": [
+    "User labels cover only scheduled 5-second windows and visible attempt/progress; access rights, intent, later events and whole-video normality are not labeled.",
+    "q04 contains attempt/progress; completion was not observed before clip end. Other completion references are not assessed, not negative completion labels.",
+    "B candidates on q02/q05 and C candidates on q03/q05 conflict with reviewed no-crossing labels; B is absent on q04. These failures remain visible.",
+    "d030_90 remains a partial positive and five other cases remain unknown; 031 observations never transfer to 030.",
+    "Four C fallback records reuse B and remain unknown; they are not independent ROI evidence.",
+    "Parent completion/model text claims, form diagnostics, boundary alignment and explanation factuality are preserved historical evidence, not promoted to user-verified facts.",
+    "No new inference, timing, cost, completion score, FPR or model adoption claim is made."
+  ],
+  "manifest_verification": "Frozen manifest SHA is checked against the label binding and pinned constant; manifest file is not reopened",
+  "metrics": [
+    {
+      "label": "B: primary_reviewed candidate outputs (descriptive count)",
+      "sample_n": 3,
+      "scope": "EXP-0015 primary_reviewed; outcome-aware development windows; candidate count only; no accuracy/F1/FPR/generalization inference",
+      "source": "records/EXP-0015/window_reviews.json",
+      "source_sha256": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+      "unit": "window",
+      "value": 2,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B: diagnostic_reviewed candidate outputs (descriptive count)",
+      "sample_n": 3,
+      "scope": "EXP-0015 diagnostic_reviewed; outcome-aware development windows; candidate count only; no accuracy/F1/FPR/generalization inference",
+      "source": "records/EXP-0015/window_reviews.json",
+      "source_sha256": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+      "unit": "window",
+      "value": 0,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B: all_reviewed candidate outputs (descriptive count)",
+      "sample_n": 6,
+      "scope": "EXP-0015 all_reviewed; outcome-aware development windows; candidate count only; no accuracy/F1/FPR/generalization inference",
+      "source": "records/EXP-0015/window_reviews.json",
+      "source_sha256": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+      "unit": "window",
+      "value": 2,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C: primary_reviewed candidate outputs (descriptive count)",
+      "sample_n": 3,
+      "scope": "EXP-0015 primary_reviewed; outcome-aware development windows; candidate count only; no accuracy/F1/FPR/generalization inference",
+      "source": "records/EXP-0015/window_reviews.json",
+      "source_sha256": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+      "unit": "window",
+      "value": 1,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C: diagnostic_reviewed candidate outputs (descriptive count)",
+      "sample_n": 3,
+      "scope": "EXP-0015 diagnostic_reviewed; outcome-aware development windows; candidate count only; no accuracy/F1/FPR/generalization inference",
+      "source": "records/EXP-0015/window_reviews.json",
+      "source_sha256": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+      "unit": "window",
+      "value": 2,
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C: all_reviewed candidate outputs (descriptive count)",
+      "sample_n": 6,
+      "scope": "EXP-0015 all_reviewed; outcome-aware development windows; candidate count only; no accuracy/F1/FPR/generalization inference",
+      "source": "records/EXP-0015/window_reviews.json",
+      "source_sha256": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+      "unit": "window",
+      "value": 3,
+      "verification": "source_json_sha256_checked"
+    }
+  ],
+  "output_presence_tables": [
+    {
+      "candidate": 4,
+      "candidate_absent": 8,
+      "denominator": 12,
+      "group": "all_selected",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 5
+    },
+    {
+      "candidate": 2,
+      "candidate_absent": 1,
+      "denominator": 3,
+      "group": "primary_reviewed",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 0,
+      "candidate_absent": 3,
+      "denominator": 3,
+      "group": "diagnostic_reviewed",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 2,
+      "candidate_absent": 4,
+      "denominator": 6,
+      "group": "all_reviewed",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 2,
+      "candidate_absent": 3,
+      "denominator": 5,
+      "group": "reviewed_no_crossing",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 0,
+      "candidate_absent": 1,
+      "denominator": 1,
+      "group": "reviewed_attempt_positive",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 0,
+      "denominator": 1,
+      "group": "partial_positive_presence",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 4,
+      "denominator": 5,
+      "group": "unknown",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 5
+    },
+    {
+      "candidate": 0,
+      "candidate_absent": 4,
+      "denominator": 4,
+      "group": "fallback_diagnostic",
+      "method": "B",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 4
+    },
+    {
+      "candidate": 5,
+      "candidate_absent": 7,
+      "denominator": 12,
+      "group": "all_selected",
+      "method": "C",
+      "reused_count": 4,
+      "unavailable": 0,
+      "unknown_label_count": 5
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 2,
+      "denominator": 3,
+      "group": "primary_reviewed",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 2,
+      "candidate_absent": 1,
+      "denominator": 3,
+      "group": "diagnostic_reviewed",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 3,
+      "candidate_absent": 3,
+      "denominator": 6,
+      "group": "all_reviewed",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 2,
+      "candidate_absent": 3,
+      "denominator": 5,
+      "group": "reviewed_no_crossing",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 0,
+      "denominator": 1,
+      "group": "reviewed_attempt_positive",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 0,
+      "denominator": 1,
+      "group": "partial_positive_presence",
+      "method": "C",
+      "reused_count": 0,
+      "unavailable": 0,
+      "unknown_label_count": 0
+    },
+    {
+      "candidate": 1,
+      "candidate_absent": 4,
+      "denominator": 5,
+      "group": "unknown",
+      "method": "C",
+      "reused_count": 4,
+      "unavailable": 0,
+      "unknown_label_count": 5
+    },
+    {
+      "candidate": 0,
+      "candidate_absent": 4,
+      "denominator": 4,
+      "group": "fallback_diagnostic",
+      "method": "C",
+      "reused_count": 4,
+      "unavailable": 0,
+      "unknown_label_count": 4
+    }
+  ],
+  "parent_evaluation": "EXP-0014",
+  "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+  "performance_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "fpr": null,
+    "hourly_false_alarms": null,
+    "precision": null,
+    "recall": null
+  },
+  "performance_null_reason": "Primary positives are zero; the sole full-window positive q04 is an outcome-aware diagnostic anchor. Six retrospective, dependent development windows do not support formal performance or generalization estimates.",
+  "primary_fully_confirmed_negative_denominator": 3,
+  "primary_fully_confirmed_positive_denominator": 0,
+  "reviewed_no_crossing_scheduled_seconds": 25.0,
+  "schema_version": 1,
+  "selected_case_count": 12,
+  "selected_pair_records": 24,
+  "source_files_verified_unchanged": 2,
+  "traced_valid_records": 24,
+  "unchanged_records": 12,
+  "unique_partial_positive_presence_cases": 1,
+  "unique_unknown_label_cases": 5,
+  "updated_label_records": 12,
+  "user_label_provenance": {
+    "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+    "recorded_date": "2026-10-28",
+    "reviewer": "user",
+    "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+    "source": "user response after viewing the six original-only review clips"
+  },
+  "user_reviewed_cases": 6
+}

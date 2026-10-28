@@ -1,5 +1,15 @@
 # SceneGuard — 다음 작업과 대화 인수인계
 
+## 최신 상태 — EXP-0015 사용자 검수 반영
+
+2026-10-28. 사용자는 EXP-0014에서 만든 원본 전용 q01–q06을 직접 확인해 다음과 같이 한정된 창 라벨을 제공했다: q01 차량만 통행, q02 접근 후 종료, q03 접근만, q04 넘기 시도/진행은 보이나 완료 전 종료, q05 세 명 중 한 명 접근, q06 사람/사건 없음. 이를 저장 응답에 별도 EXP-0015 revision으로 반영했다. EXP-0014 parent records와 EXP-0013 원문/공식 라벨은 불변이다.
+
+- 결과: primary 3개는 모두 비사건이며 후보 B 2/3, C 1/3. 진단 q03/q04/q06은 후보 B 0/3, C 2/3. 6개 전체는 B 2/6, C 3/6. 확인된 비사건 5개에서 양쪽 각각 2개 후보가 남고, 유일한 시도 양성 q04에서는 B가 놓치고 C가 후보를 냈다. 이는 작은 개발 표본 진단이지 오류율/정확도 추정이 아니다.
+- 미확정 5개는 unknown으로 유지하고, d030_90은 독립된 부분 양성으로 보존했다. primary 양성 0이므로 정확도·precision·recall·F1·FPR·시간당 오탐은 null. 모델/구성 자동 채택 보류다.
+- 담당 Sol high Task `task_dbf80c1a9687` / Dispatch `ctx_f36ccf3479f0`, 독립 검토 Astra high Task `task_ff0208b63e32` / Dispatch `ctx_155bbf7a2164`; 기존 Run을 재사용했다. 16개 focused CPU tests와 metrics validator 통과. 등록은 담당3에 연결됐다.
+- 기존 화면 `http://127.0.0.1:8765/`에서 실제 slot3 카드, report/reviewer, 6 metrics·2 graphs, q01–q06 영상 재생/seek를 확인했다. GitHub 게시 확인과 브라우저 확인은 별도다. 완료 커밋은 이 handoff 갱신 뒤 기록한다.
+- 새 추론/모델/GPU/web 개발 없음. 로컬 미디어·runtime receipt는 Git 제외. 다음 작업은 독립 카메라/세션을 평가 단위로 하는 사전 고정 검증 계획이다. [EXP-0015](experiments/EXP-0015-user-label-revision.md), [다음 작업](CODEX_NEXT_TASK.md), [전달 기록](orchestration/MVP-0001_DELIVERY.md).
+
 ## 최신 상태 — EXP-0014 저장 출력 평가 (2026-10-28)
 
 - 최신 사용자 지침 commit `c73d217`을 fast-forward로 가져왔다. local 작업 상태를 확인·보존했으며, 평가 전에는 frozen manifest 이외의 미커밋 파일이 없었다.

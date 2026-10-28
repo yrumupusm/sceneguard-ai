@@ -7,12 +7,12 @@
 | 영역 | 확인된 결과 | 상태 |
 |---|---|---|
 | 기능 통합 | 전체화면/고정 ROI Qwen 구성에서 원본 007·030·013을 끝까지 처리하고 시간창, 후보/판단 불가, 겹치는 후보 정리, 근거 구간을 기록했다. | 프로토타입 동작 확인 |
-| 자동 검증 | MVP 코드 검증은 EXP-0013에 기록. EXP-0014 재현 평가와 runtime-state 회귀 포함 CPU 테스트 21개 통과. | 해당 범위 통과 |
+| 자동 검증 | MVP 코드 검증은 EXP-0013에 기록. EXP-0014 테스트 21개 및 EXP-0015 label revision focused CPU 테스트 16개 통과. | 해당 범위 통과 |
 | 저장 결과 평가 | EXP-0013의 고정 12개 창, B/C 24개 출력 레코드를 CPU만으로 추적·비교. 24/24 연결 및 88개 소비 파일의 불변성 확인. | 재현 가능한 추출 완료 |
 | 행동 정답 평가 | 030 87.5–92.5초 한 창에서만 사용자가 말한 약90초 넘기 행동 존재를 부분 양성으로 연결. 전체 창 라벨은 아님. 확정 음성 창은 0개. | 미완료·점수 산출 불가 |
-| 게시/화면 | EXP-0014는 기존 결과 화면에 등록됐고 실제 브라우저에서 카드·보고서·metrics 그래프·검토·6개 영상 재생/seek를 확인했다. GitHub `main` 게시와 report/metrics/review/binding 원격 해시도 별도 확인했다. | 등록·로컬 화면·GitHub 확인 통과 |
+| 게시/화면 | EXP-0015는 기존 결과 화면에 등록됐고 실제 브라우저에서 담당 카드·보고서·metrics 그래프·검토·6개 영상 재생/seek를 확인했다. GitHub `main` 게시와 report/metrics/review/binding 원격 해시도 별도 확인했다. | 등록·로컬 화면·GitHub 확인 통과 |
 
-상세 비교는 [EXP-0013](EXP-0013-mvp-comparison.md), 기존 출력 소규모 평가 [EXP-0014](EXP-0014-mvp-small-evaluation.md), [고정 manifest](../../configs/mvp_small_eval_manifest.json)에 있다. EXP-0011/12의 자원 차단 기록과 EXP-0013 원문·공식 라벨은 보존한다. EXP-0014 표본은 추론·집계 공개 후 itemized 결과를 열기 전에 고정했지만, 완전한 사전 등록·독립 테스트는 아니다.
+상세 비교는 [EXP-0013](EXP-0013-mvp-comparison.md), 저장 출력 평가 [EXP-0014](EXP-0014-mvp-small-evaluation.md), 사용자 라벨 revision [EXP-0015](EXP-0015-user-label-revision.md), [고정 manifest](../../configs/mvp_small_eval_manifest.json)에 있다. EXP-0011/12의 자원 차단 기록과 EXP-0013 원문·공식 라벨은 보존한다. 해당 표본은 개발/진단이며 완전한 사전 등록·독립 테스트가 아니다.
 
 ## B/C 출력 비교 — 정답 성능으로 읽지 않기
 
@@ -36,4 +36,4 @@ python3 scripts/evaluate_mvp_small.py
 python3 -m unittest tests_mvp.test_events tests_mvp.test_small_evaluation -v
 ```
 
-이 개발 표본은 반복 카메라/세션이 포함되고, 013은 과거 노출된 C4 전체화면 fallback이다. 어느 숫자도 새 CCTV 일반화 성능이나 실시간 관제 성공을 나타내지 않는다. 다음 단계는 기존 여섯 개 이하의 짧은 원본 창을 한 번에 사람 확인해 EXP-0014 라벨 revision을 추가하고 CPU 집계를 다시 하는 것이다. 사람 검수 완료 이후에도 독립 카메라 검증 전까지 범용 성능 주장을 하지 않는다. 새 추론은 필요하지 않다.
+사용자 확인 후 EXP-0015는 primary 음성 3개에서 B 2개/C 1개 후보, 진단 3개에서 B 0개/C 2개 후보를 기록했다. q04는 유일한 시도/진행 양성으로 C 후보, B 누락이다. 확인 비사건 다섯 개 중 두 방법 모두 두 개의 후보를 남겼다. 다섯 unknown과 별도 부분 양성 d030_90은 음성으로 취급하지 않았다. primary 양성 0이므로 정확도·precision·recall·F1·FPR·시간당 오탐은 null이다. 이 결과는 사람 확인을 반영한 소규모 개발 진단이며 성능 충족이나 채택 근거가 아니다. 다음 단계는 독립 카메라/세션을 평가 단위로 하는 사전 고정 평가 계획이다. 새 추론은 필요하지 않다.

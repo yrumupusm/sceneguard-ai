@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "label_revision_id": "EXP-0015-LABEL-R1",
+  "based_on_experiment": "EXP-0013",
+  "parent_evaluation": "EXP-0014",
+  "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+  "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+  "provenance": {
+    "reviewer": "user",
+    "source": "user response after viewing the six original-only review clips",
+    "recorded_date": "2026-10-28",
+    "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+    "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed."
+  },
+  "labels": [
+    {
+      "review_clip_id": "q01",
+      "case_id": "s007_early",
+      "source_id": "E01_007",
+      "window_id": "w000001",
+      "interval_seconds": [0.0, 5.0],
+      "reference_label": "no_climbing_observed",
+      "label_status": "human_confirmed_for_window",
+      "observed_behavior": "A vehicle passes outside the door; no person is seen attempting or progressing across the boundary in this window.",
+      "completion_reference": "not_assessed"
+    },
+    {
+      "review_clip_id": "q02",
+      "case_id": "s007_preevent",
+      "source_id": "E01_007",
+      "window_id": "w000020",
+      "interval_seconds": [47.5, 52.5],
+      "reference_label": "no_climbing_observed",
+      "label_status": "human_confirmed_for_window",
+      "observed_behavior": "People approach near the door; no crossing attempt or progress is visible before this clip ends.",
+      "completion_reference": "not_assessed"
+    },
+    {
+      "review_clip_id": "q03",
+      "case_id": "d007_boxchange",
+      "source_id": "E01_007",
+      "window_id": "w000022",
+      "interval_seconds": [52.5, 57.5],
+      "reference_label": "no_climbing_observed",
+      "label_status": "human_confirmed_for_window",
+      "observed_behavior": "The people seen approaching near the door do not visibly attempt or progress across the boundary in this window.",
+      "completion_reference": "not_assessed"
+    },
+    {
+      "review_clip_id": "q04",
+      "case_id": "d007_official",
+      "source_id": "E01_007",
+      "window_id": "w000026",
+      "interval_seconds": [62.5, 67.5],
+      "reference_label": "climbing_present",
+      "label_status": "human_confirmed_for_window",
+      "observed_behavior": "A door-crossing attempt is visible; the clip ends just before the person has fully crossed.",
+      "completion_reference": "not_observed_clip_ends_before_complete"
+    },
+    {
+      "review_clip_id": "q05",
+      "case_id": "s030_time",
+      "source_id": "E01_030",
+      "window_id": "w000021",
+      "interval_seconds": [50.0, 55.0],
+      "reference_label": "no_climbing_observed",
+      "label_status": "human_confirmed_for_window",
+      "observed_behavior": "Of three people, one approaches the door; no crossing attempt or progress is visible in this window.",
+      "completion_reference": "not_assessed"
+    },
+    {
+      "review_clip_id": "q06",
+      "case_id": "d030_eof",
+      "source_id": "E01_030",
+      "window_id": "w000063",
+      "interval_seconds": [155.0, 160.0],
+      "reference_label": "no_climbing_observed",
+      "label_status": "human_confirmed_for_window",
+      "observed_behavior": "No person or event appears in this window.",
+      "completion_reference": "not_assessed_no_visible_person"
+    }
+  ]
+}

@@ -893,6 +893,79 @@
       "task_id": "task_509c15597c5b",
       "title": "MVP-0001 기존 출력 소규모 행동 평가",
       "worker_opinion": "출력 연결·집계·등록 형식을 검증했으나 라벨 불충분으로 실제 행동 성능과 B/C 채택은 판단할 수 없다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T13:32:08+00:00",
+      "attempt_id": "cpu-user-label-r1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_f36ccf3479f0",
+      "evaluated_model": "EXP-0013 cached B/C Qwen3-VL-2B-Instruct outputs; no new inference",
+      "evidence": [
+        {
+          "artifact_id": "exp15-q01-source",
+          "kind": "video",
+          "label": "q01 original-only user-reviewed source window"
+        },
+        {
+          "artifact_id": "exp15-q02-source",
+          "kind": "video",
+          "label": "q02 original-only user-reviewed source window"
+        },
+        {
+          "artifact_id": "exp15-q03-source",
+          "kind": "video",
+          "label": "q03 original-only user-reviewed source window"
+        },
+        {
+          "artifact_id": "exp15-q04-source",
+          "kind": "video",
+          "label": "q04 original-only user-reviewed source window"
+        },
+        {
+          "artifact_id": "exp15-q05-source",
+          "kind": "video",
+          "label": "q05 original-only user-reviewed source window"
+        },
+        {
+          "artifact_id": "exp15-q06-source",
+          "kind": "video",
+          "label": "q06 original-only user-reviewed source window"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0015",
+      "limitations": [
+        "Six outcome-aware development windows only; q04 is the sole full-window attempt-positive and is diagnostic, with zero primary positives.",
+        "Five other cases remain unknown and d030_90 remains a separate partial positive.",
+        "No accuracy, precision, recall, F1, FPR, hourly false-alarm rate, completion score, cost estimate or generalization claim is supported.",
+        "Candidate presence does not certify the explanation, boundary alignment, crossing completion, intent, access rights or legal status.",
+        "All original media and question clips remain local-only; publication contains only sanitized code, labels, counts and documentation."
+      ],
+      "metric_definitions": "records/EXP-0015/metrics.json",
+      "metrics_path": "records/EXP-0015/metrics.json",
+      "metrics_sha256": "e950fb042ad919f64346908e8b7bcfc64953c17e39c81c3c3ae0576dba1e7a14",
+      "next_step": "Retain adoption hold. If more behavior evaluation is authorized, use independently reviewed windows from separate camera/session groups with both positive and negative examples; do not re-run inference for this label revision.",
+      "reasoning_effective": "high",
+      "registration_sha256": "98e82dda79f383de3c145e49013c9f63780895677b795d5ddb4da85574aa8f00",
+      "report_path": "docs/experiments/EXP-0015-user-label-revision.md",
+      "report_sha256": "f203c8948aff7c882a2428c52b5d7c4e79c9eef92e37d2141672da370a77c3ee",
+      "review_binding_path": "docs/reviews/EXP-0015.binding.json",
+      "review_path": "docs/reviews/EXP-0015-independent-review.md",
+      "review_sha256": "94ac95c73e406c74e28ef758179b7866eb04fb08127f6f6fda8b82c109b07eac",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "e950fb042ad919f64346908e8b7bcfc64953c17e39c81c3c3ae0576dba1e7a14",
+      "reviewed_report_sha256": "f203c8948aff7c882a2428c52b5d7c4e79c9eef92e37d2141672da370a77c3ee",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "Applied the user’s six scoped five-second window observations to a separate CPU-only revision of EXP-0014 sanitized cached outputs. The window counts expose candidate misses and candidates on reviewed no-crossing windows; the purposive sample is too small and has no primary positive for formal performance claims.",
+      "synthetic": false,
+      "task_id": "task_dbf80c1a9687",
+      "title": "EXP-0015 user-reviewed label revision of EXP-0013 cached outputs",
+      "worker_opinion": "The C candidate on q04 aligns with the user-observed crossing attempt, while B is absent. B and C also emit candidates in reviewed no-crossing windows (q02/q05 for B; q03/q05 for C). No model is recommended for automatic adoption."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

@@ -90,6 +90,19 @@
       "synthetic": false,
       "task_id": "task_509c15597c5b",
       "title": "MVP-0001 기존 출력 소규모 행동 평가"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T13:32:08+00:00",
+      "dispatch_id": "ctx_f36ccf3479f0",
+      "experiment_id": "EXP-0015",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_dbf80c1a9687",
+      "title": "EXP-0015 user-reviewed label revision of EXP-0013 cached outputs"
     }
   ],
   "schema_version": 1

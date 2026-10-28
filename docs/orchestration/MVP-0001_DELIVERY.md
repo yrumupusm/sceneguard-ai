@@ -1,5 +1,14 @@
 # MVP-0001 전달 — CPU 준비 완료, 실제 모델 실행 차단
 
+## 사용자 라벨 revision 전달 — EXP-0015
+
+2026-10-28. EXP-0014의 원본·B/C 저장 출력만 사용해, 사용자가 로컬 원본 q01–q06에서 제공한 5초 창 관찰을 별도 EXP-0015 revision으로 반영했다. GPU 추론, 모델/가중치 변경, CV/VLM 재실행, 웹 코드 변경은 없다.
+
+- 담당 Sol high: Task `task_dbf80c1a9687`, Dispatch `ctx_f36ccf3479f0`, 기존 Run `run_3d23462a014a`; 독립 검토 Astra high: Task `task_ff0208b63e32`, Dispatch `ctx_155bbf7a2164`. 총괄은 report/metrics/review hash를 확인했다.
+- 16개 focused CPU test와 metrics validator 통과. 사용자 라벨 범위, q04 시도와 미관찰 완료의 구분, 부모 기록 보존은 [EXP-0015 보고서](../experiments/EXP-0015-user-label-revision.md) 및 [독립 검토](../reviews/EXP-0015-independent-review.md)에 있다. 행동 성능·모델 채택은 보류다.
+- 완료 CLI 등록 후 로컬 실제 페이지 `http://127.0.0.1:8765/`에서 담당3 상태, 보고서, 6 metrics·2 graphs, Astra review, q01–q06 여섯 영상의 재생·seek를 확인했다. Browser receipt는 로컬 전용 `runtime/EXP-0015/browser-verification-local.json`이다.
+- GitHub 원격 게시와 원격 해시 검증은 브라우저 결과와 별도 단계다. 최종 commit/ref를 게시 후 이 전달 기록과 최종 응답에서 보고한다. 로컬 영상·runtime receipt·DB/log는 제외한다.
+
 > **최신 후속 전달 상태:** 이 문서는 EXP-0011/12 자원 차단 당시의 상태를 보존한다. 차단 해소 후 실제 실행은 새 결과 ID [EXP-0013](../experiments/EXP-0013-mvp-comparison.md)로 완료했다. 보고서·측정 요약 등록, GitHub 게시 및 실제 브라우저 화면 검증 결과는 아래 후속 기록을 우선한다.
 
 2026-10-28. [종합 결과](../experiments/MVP-0001-summary.md)를 먼저 읽는다. **MVP 미완료**이며 코드 구현·실제 모델 실행·결과 등록·GitHub 게시·실제 서비스 확인을 구분한다. 웹 코드/디자인/새 기능은 변경하지 않았다.

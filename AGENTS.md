@@ -2,11 +2,11 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
-## 최신 범위 — EXP-0014 평가와 MVP 정리 (2026-10-28)
+## 최신 범위 — EXP-0015 사용자 라벨 개정 (2026-10-28)
 
-사용자는 최신 지침 `c73d217`에서 기존 EXP-0013 출력만 사용한 평가·정리, 기존 웹 등록 및 GitHub 반영을 승인했다. [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md), [MVP_SMALL_EVALUATION_PLAN](docs/data/MVP_SMALL_EVALUATION_PLAN.md), [EXP-0013 observation errata](docs/data/EXP-0013-observation-errata.md)를 따른다. 평가는 최대12개 고정 창의 저장 B/C 답변만 CPU로 대조한다. 새 GPU 추론·모델·웹 기능은 금지다.
+사용자는 최신 지침 `c73d217`에서 기존 EXP-0013 출력만 사용한 평가·정리, 기존 웹 등록 및 GitHub 반영을 승인했다. [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md), [MVP_SMALL_EVALUATION_PLAN](docs/data/MVP_SMALL_EVALUATION_PLAN.md), [EXP-0013 observation errata](docs/data/EXP-0013-observation-errata.md)를 따랐다. 평가는 최대12개 고정 창의 저장 B/C 답변만 CPU로 대조하고, 사용자 제공 q01–q06 검수를 EXP-0015 라벨 revision으로 반영했다. 새 GPU 추론·모델·웹 기능은 금지였으며 실행하지 않았다.
 
-현재 EXP-0014는 24개 cached pair 추적, 평가기와 기존 runtime-state regression 포함 21개 focused CPU test, source immutability를 확인했다. 두 번의 Astra high 독립 리뷰가 최종 report/metrics hash를 묶었고 등록 validator·완료 등록·GitHub 게시/원격 해시 확인·실제 로컬 브라우저 확인까지 통과했다. 행동 성능은 partial positive 한 개와 full-window confirmed negative 0개라 미검증이며 모든 정량 성능 점수 null이다. 030 약90초 행동 존재는 부분 사용자 관찰이며 completion은 미정, 031의 종료 관찰은 030에 적용하지 않는다. 007 박스 변화는 ChatGPT 시각 초안이다. 남은 것은 핵심 구간의 한 번에 묶은 사용자 확인이다. 결과·라벨·기존 report binding은 덮어쓰지 않는다.
+EXP-0015는 EXP-0014의 저장 기록과 EXP-0013의 B/C 출력을 불변으로 유지하며, q01–q06의 사용자 확인을 별도 revision에 적용했다. 16개 CPU 테스트, 기존 metrics validator, Astra high 독립 검토, 완료 등록, 실제 로컬 브라우저 확인이 통과했다. 행동 평가의 주 양성은 여전히 0이고 accuracy/precision/recall/F1/FPR/시간당 오탐은 null이다. 성능 입증과 자동 채택은 보류다. 별도 검증 카메라 작업을 계획하기 전까지 새 추론은 하지 않는다. 결과·공식 라벨·기존 report binding은 덮어쓰지 않는다.
 
 검수 질문용 원본 클립은 `outputs/mvp0001_evaluation/EXP-0014/question_clips/`에 로컬만 둔다. Git에는 코드·문서·식별 가능한 개인 정보가 없는 창별 요약만 포함할 수 있다. 원본 영상, 프레임, 가중치, raw 응답, artifact manifest, runtime DB/log/receipt는 제외한다.
 

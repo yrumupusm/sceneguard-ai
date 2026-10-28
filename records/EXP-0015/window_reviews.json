@@ -1,0 +1,2929 @@
+[
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      0,
+      7680,
+      15360,
+      23040,
+      30720,
+      38400,
+      46080,
+      53760,
+      61440,
+      69120
+    ],
+    "actual_sampled_pts_seconds": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0,
+      4.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s007_early",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c",
+    "evaluation_role": "primary",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 5.0,
+    "last_input_pts": 4.5,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": true,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "687f8ec1b343e32c0c5ce0d88a602d867984806fbcd184fda0ba97830e8b9115",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "89658b740dfcde8d7da497659a20c1d061ba37916b59c7f42d56bb8c476b6a4e",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "67958ee700942f4d0e0ef8971761f5b87b5dcb215f77e8ef6302a53ce32f9cd9",
+      "selected_log_line_sha256": "0f1d1354a26cfa4cc835eb355c8442d159e89e6e23b801b4e26a0b49f9f7aef6",
+      "semantic_input_sha256": "9d69e85f5efba7169376adc9471477a543c4424905aa10fe3b3b5814f1251a35",
+      "source_run_metadata_sha256": "421d790f564a20f45dfce09c9545d75b7d3b097e64ba0585ba33038cbb780e7f",
+      "window_file_sha256": "ad3a6fd96532eac556561861b52dd7900c3dfa3c46f3d61b09210520a90de1ed",
+      "windows_log_file_sha256": "2df9dbc628b807019df9809d7854e2f8545458a2ad2e0da18f7f67f82290a92a"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      0.0,
+      5.0
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_absent_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "s007_early",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          0.0,
+          5.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A vehicle passes outside the door; no person is seen attempting or progressing across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q01",
+        "source_id": "E01_007",
+        "window_id": "w000001"
+      }
+    },
+    "window_id": "w000001"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      729600,
+      737280,
+      744960,
+      752640,
+      760320,
+      768000,
+      775680,
+      783360,
+      791040,
+      798720
+    ],
+    "actual_sampled_pts_seconds": [
+      47.5,
+      48.0,
+      48.5,
+      49.0,
+      49.5,
+      50.0,
+      50.5,
+      51.0,
+      51.5,
+      52.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s007_preevent",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703",
+    "evaluation_role": "primary",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 52.5,
+    "last_input_pts": 52.0,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "no_climbing_motion_described",
+      "actions": [
+        "passage_or_waiting",
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "9e977ceedeeddebd0fc7b638dab85fcf70d4c0cf8dd92e2a63766d87e8be90ac",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "fb013ebf45ddee277467f1d36bd6f17a4597015f8751f08863a1064868a7a0fa",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "3cc1483e3998e707dba14454b2fd248a531ae9f061653128249d49980e772ef3",
+      "selected_log_line_sha256": "f81df8475a7a09543be4d1175f2acdd34692f9c80dc9ad97ee604d0ec053632f",
+      "semantic_input_sha256": "640a52d9871a9d7d8452662b6139ce287134ee7c59d8d197d6b5ba4c455db1d9",
+      "source_run_metadata_sha256": "421d790f564a20f45dfce09c9545d75b7d3b097e64ba0585ba33038cbb780e7f",
+      "window_file_sha256": "9e1a71b8d34493f040f818f458f30f6de84436d0e69473e0bde1891db9cbc37c",
+      "windows_log_file_sha256": "2df9dbc628b807019df9809d7854e2f8545458a2ad2e0da18f7f67f82290a92a"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      47.5,
+      52.5
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "s007_preevent",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          47.5,
+          52.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "People approach near the door; no crossing attempt or progress is visible before this clip ends.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q02",
+        "source_id": "E01_007",
+        "window_id": "w000020"
+      }
+    },
+    "window_id": "w000020"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      806400,
+      814080,
+      821760,
+      829440,
+      837120,
+      844800,
+      852480,
+      860160,
+      867840,
+      875520
+    ],
+    "actual_sampled_pts_seconds": [
+      52.5,
+      53.0,
+      53.5,
+      54.0,
+      54.5,
+      55.0,
+      55.5,
+      56.0,
+      56.5,
+      57.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d007_boxchange",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 57.5,
+    "last_input_pts": 57.0,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": true,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "7587d838875a0bb95f740c5ed051ac217244ff1f10e4759ae6934dfd3b02b1c4",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "9115c2e1bee6e34a999d4a0c01049cfe4a35a6fb7c1d9e19e1ea65d005175071",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "90241fcf2c7768256de5fbb98be0fe3e420047ead5e3ac494c87e5a8df80929e",
+      "selected_log_line_sha256": "728d23b533fa2b29214ee7139ff51528a2e9c9733150eb484591743c1bfd4885",
+      "semantic_input_sha256": "3d64db910fcd0a7978bc32dd81c70d8d27b273882c016253918c8d98a49f4a43",
+      "source_run_metadata_sha256": "421d790f564a20f45dfce09c9545d75b7d3b097e64ba0585ba33038cbb780e7f",
+      "window_file_sha256": "505ad565fee9a816c6c1a84fac37c51d52a5112b9e4676adbfaf6bc470f8c867",
+      "windows_log_file_sha256": "2df9dbc628b807019df9809d7854e2f8545458a2ad2e0da18f7f67f82290a92a"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      52.5,
+      57.5
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "ai_visual_review_partial",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_absent_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "d007_boxchange",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          52.5,
+          57.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "The people seen approaching near the door do not visibly attempt or progress across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q03",
+        "source_id": "E01_007",
+        "window_id": "w000022"
+      }
+    },
+    "window_id": "w000022"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      960000,
+      967680,
+      975360,
+      983040,
+      990720,
+      998400,
+      1006080,
+      1013760,
+      1021440,
+      1029120
+    ],
+    "actual_sampled_pts_seconds": [
+      62.5,
+      63.0,
+      63.5,
+      64.0,
+      64.5,
+      65.0,
+      65.5,
+      66.0,
+      66.5,
+      67.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d007_official",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_positive_presence",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 67.5,
+    "last_input_pts": 67.0,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": true,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "bb866875fd4c8a8b50667f481a3e4483cf467c25af87f73c4c1957eed26b1120",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "0e2a57481c842f95b96f3649c6bbb6c5efb8e32bdc21462309d1688341c57de0",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "ed8ad4a1f6e76bf9bb31bfc0e3f27cc48b1c8382b6ee6d3fed443a5c0af98270",
+      "selected_log_line_sha256": "8726d13ba579ec22c72feda7d68d5d1301c292d45ad1b4438b5c9c789eb3e082",
+      "semantic_input_sha256": "152c07d6d7b2150855dc166e7eaf8c4b46ccefa796c8c29396ce48170de961e3",
+      "source_run_metadata_sha256": "421d790f564a20f45dfce09c9545d75b7d3b097e64ba0585ba33038cbb780e7f",
+      "window_file_sha256": "ed4bddd509d4ecccd50430d4e8ff9543bc6078a0e55177ec70a8971e9c12056b",
+      "windows_log_file_sha256": "2df9dbc628b807019df9809d7854e2f8545458a2ad2e0da18f7f67f82290a92a"
+    },
+    "reference_label": "climbing_present",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      62.5,
+      67.5
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "official_annotation_reference",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_absent_on_reviewed_attempt_positive",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "d007_official",
+        "completion_reference": "not_observed_clip_ends_before_complete",
+        "interval_seconds": [
+          62.5,
+          67.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A door-crossing attempt is visible; the clip ends just before the person has fully crossed.",
+        "reference_label": "climbing_present",
+        "review_clip_id": "q04",
+        "source_id": "E01_007",
+        "window_id": "w000026"
+      }
+    },
+    "window_id": "w000026"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      768000,
+      775680,
+      783360,
+      791040,
+      798720,
+      806400,
+      814080,
+      821760,
+      829440,
+      837120
+    ],
+    "actual_sampled_pts_seconds": [
+      50.0,
+      50.5,
+      51.0,
+      51.5,
+      52.0,
+      52.5,
+      53.0,
+      53.5,
+      54.0,
+      54.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s030_time",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b",
+    "evaluation_role": "primary",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 55.0,
+    "last_input_pts": 54.5,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "climbing_motion_described_claim_only",
+      "actions": [
+        "passage_or_waiting",
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": true,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "4385b25d40e57b5a2f06bd89d5b44c851c8323f2aa7c23f13b4f11c08ca4e4ad",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "f16f5d353e9144aa48685165f7a411df5ed1c1b9a41dc3605f86292d77422353",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "cddc8004dcfecc2e4a04c0888f11be8d23d733a3987a3af380af9a8fbb15ad0a",
+      "selected_log_line_sha256": "14151df1a34477ca6d8690ad51538df4c4bc86f2085541df8fa4cf3bd620a009",
+      "semantic_input_sha256": "41b215f048d1e8e30812ab256b8b18a7e3637a29d6ce4b877d493d0303a34f74",
+      "source_run_metadata_sha256": "6a1b23bd4b527322ebc7d73cba66b006008fe08bbe6f51328ce8b70752292429",
+      "window_file_sha256": "012a4d85575cb8ec7eb935895174c14dc75bb2d853504894695e28e7fcb572ee",
+      "windows_log_file_sha256": "ae7a0758e2884b1352d12c07c410904e66e59ed244212579cf52957f7698d4ed"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      50.0,
+      55.0
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "s030_time",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          50.0,
+          55.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "Of three people, one approaches the door; no crossing attempt or progress is visible in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q05",
+        "source_id": "E01_030",
+        "window_id": "w000021"
+      }
+    },
+    "window_id": "w000021"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      1267200,
+      1274880,
+      1282560,
+      1290240,
+      1297920,
+      1305600,
+      1313280,
+      1320960,
+      1328640,
+      1336320
+    ],
+    "actual_sampled_pts_seconds": [
+      82.5,
+      83.0,
+      83.5,
+      84.0,
+      84.5,
+      85.0,
+      85.5,
+      86.0,
+      86.5,
+      87.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d030_84",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "2146ccde04ca47b3a19d350916e5bdf6dfebe80264a81fcaf3d4b4ee78e6d4fe",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "unknown",
+    "label_status": "human_observation_partial",
+    "last_arrived_pts": 87.5,
+    "last_input_pts": 87.0,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "explicit_motion_denial",
+      "actions": [
+        "passage_or_waiting",
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": true,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "870c51786d1d67e52d110318b8b2a69b29c8e11d3588100460b77f162900c25b",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "1f144381d0e13357e9d212293253c9dc549c5bd3a17ba39b1e43f98b2d9a6e25",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "d5030777fa424cb00aa5d109cb172c11e14dbddd7ed392d6aa0f0d3227deb567",
+      "selected_log_line_sha256": "0385fb985ed49ee503590aca94d3b2c6be8a31254e55c02854ae2340a6197754",
+      "semantic_input_sha256": "76ac13dca37e43cd360c207bab178a1ad1fbe1a45e3d34ab5d69ac2ca94a7e39",
+      "source_run_metadata_sha256": "6a1b23bd4b527322ebc7d73cba66b006008fe08bbe6f51328ce8b70752292429",
+      "window_file_sha256": "74620e73076f71af48ff372c14e565b47c85caa2377f9906dcadb4e5ce28cc80",
+      "windows_log_file_sha256": "ae7a0758e2884b1352d12c07c410904e66e59ed244212579cf52957f7698d4ed"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      82.5,
+      87.5
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "window_id": "w000034"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      1344000,
+      1351680,
+      1359360,
+      1367040,
+      1374720,
+      1382400,
+      1390080,
+      1397760,
+      1405440,
+      1413120
+    ],
+    "actual_sampled_pts_seconds": [
+      87.5,
+      88.0,
+      88.5,
+      89.0,
+      89.5,
+      90.0,
+      90.5,
+      91.0,
+      91.5,
+      92.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d030_90",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "e130773095f3d6c875dfe31f7d4b4203ec5db187c6a20a0127d03d47eb419b08",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "partial_positive_presence",
+    "label_status": "human_observation_partial",
+    "last_arrived_pts": 92.5,
+    "last_input_pts": 92.0,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "climbing_motion_described_claim_only",
+      "actions": [
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": true,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "382f0118eab722ac1ee4b6e28b0d6b8ce4a1e7eb69d8e5f40039658d32dc72db",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "partial_positive_only",
+    "provenance": {
+      "input_file_sha256": "253a2b26bada2a83d2b01be7930c1dfd8fe8dfe98ae9ddce7d42cf212708cc24",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "3364d6b60193102792a8f61afbbbc371ac864266a3618b2cb5bd923f016cb428",
+      "selected_log_line_sha256": "a6f56c0ea473839ac4a370990e4cb30ef0e3782c099b10eb19f88264db889580",
+      "semantic_input_sha256": "1923f75a65b9193ecb215d7fea855f84880c9907700a5fe234dcdf86cfdd7d83",
+      "source_run_metadata_sha256": "6a1b23bd4b527322ebc7d73cba66b006008fe08bbe6f51328ce8b70752292429",
+      "window_file_sha256": "583c6148303f7b62cc5779fa8c3ef8e4af95bf00e3ccef4408d7d2ac7e4e188f",
+      "windows_log_file_sha256": "ae7a0758e2884b1352d12c07c410904e66e59ed244212579cf52957f7698d4ed"
+    },
+    "reference_label": "climbing_present",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      87.5,
+      92.5
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "window_id": "w000036"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      2380800,
+      2388480,
+      2396160,
+      2403840,
+      2411520,
+      2419200,
+      2426880,
+      2434560,
+      2442240,
+      2449920
+    ],
+    "actual_sampled_pts_seconds": [
+      155.0,
+      155.5,
+      156.0,
+      156.5,
+      157.0,
+      157.5,
+      158.0,
+      158.5,
+      159.0,
+      159.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d030_eof",
+    "completion_reference_provenance": "no_030_completion_label_from_031",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 160.0,
+    "last_input_pts": 159.5,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": true,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "1abd15a59c71e3cee2de08c28bdb6fb34a71983ebcf5c5c59cfba4df110c50b2",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "5c81e2c35be196466846a072ab5d1749ebc62b51bf40709ed2f612e1671869d9",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "5b9486cf4a5bb4ebfaf1fc7e84c8155da17ff6cee20f2cc754ebdf9e13af2ce0",
+      "selected_log_line_sha256": "dda467fa3bf2935801132f0ae456f63b4029f9c919c43b5b94e7d75291fa09cd",
+      "semantic_input_sha256": "4f7d1d54b13b356778dc12ad6d828d5eb191c2fc098f272dd8d9b64843e13092",
+      "source_run_metadata_sha256": "6a1b23bd4b527322ebc7d73cba66b006008fe08bbe6f51328ce8b70752292429",
+      "window_file_sha256": "f71af1a59349d82f1ce9b6e4af57dceded3de2cf3bc05752f14f830be4986e2c",
+      "windows_log_file_sha256": "ae7a0758e2884b1352d12c07c410904e66e59ed244212579cf52957f7698d4ed"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      155.0,
+      160.0
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_absent_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "d030_eof",
+        "completion_reference": "not_assessed_no_visible_person",
+        "interval_seconds": [
+          155.0,
+          160.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "No person or event appears in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q06",
+        "source_id": "E01_030",
+        "window_id": "w000063"
+      }
+    },
+    "window_id": "w000063"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      0,
+      7680,
+      15360,
+      23040,
+      30720,
+      38400,
+      46080,
+      53760,
+      61440,
+      69120
+    ],
+    "actual_sampled_pts_seconds": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0,
+      4.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s013_early",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "a80444f36bca987298ee7e40505c12896ea04abcba823fff41f0ff4c7839a0bf",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "needs_human_review",
+    "last_arrived_pts": 5.0,
+    "last_input_pts": 4.5,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": true,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "91ab8b45d073bbb1e03b57d6c7bbe09d730d47ef0b487e21d4ac0094c950b94a",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "742f552315f5145ca264480b6a864ac183ba98c812dfc6b8c669bb9a746e02a9",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "518e6ed87263b78cae941cae1314154208d8b8165f1b3369185c2691cfafd32c",
+      "selected_log_line_sha256": "22acee57727ef3ecfd160044a46def8dd6180ae25efb37e0ece8f08d2d08395e",
+      "semantic_input_sha256": "f3b1ebf8fe77b71c1ab1be8ce6e690c0b17bb3150c8fb1e1801235f3336ff0cb",
+      "source_run_metadata_sha256": "056dd675988413833892f2740081c0250f16598e97424d1d93e5400faf95e519",
+      "window_file_sha256": "a3b77be804a234f1103d7319a5ec8742a69b0100bd6692e6eede71c1d2316376",
+      "windows_log_file_sha256": "7afe0a340de6f37d1ec7d7151ba7e526c958c6e3c8d1e151fe396a36bb25dbe0"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      0.0,
+      5.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000001"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      614400,
+      622080,
+      629760,
+      637440,
+      645120,
+      652800,
+      660480,
+      668160,
+      675840,
+      683520
+    ],
+    "actual_sampled_pts_seconds": [
+      40.0,
+      40.5,
+      41.0,
+      41.5,
+      42.0,
+      42.5,
+      43.0,
+      43.5,
+      44.0,
+      44.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s013_mid",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "b41a51eee08dad41d404984ae7c4df514f271c219433292a325df433c185005a",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "needs_human_review",
+    "last_arrived_pts": 45.0,
+    "last_input_pts": 44.5,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": true,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "b498b2d32f0d8ce5e58e2c1fba2a36e7a66db1235b0d999caadd441f326b56b5",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "5536471906f7209a02f68698efeed5571692c74ef079a00429cf755b75cfc194",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "0e6caaee5a5fdf414bd5a25dad407dc4c678d227c676882a433a83b85ca4069e",
+      "selected_log_line_sha256": "3306ac0140936a1aa7c95dfe3ded5ac5a7089b8309a9c451a2b7a90d3d5cfe0a",
+      "semantic_input_sha256": "47be748c3e50b4cbdf844b989b83f77115e46c75a9bdca3045adc2d95bc1825c",
+      "source_run_metadata_sha256": "056dd675988413833892f2740081c0250f16598e97424d1d93e5400faf95e519",
+      "window_file_sha256": "e9d883d1f3a270a759e825fe6b44793d0a870ff33a1c4ced8cec8cb783c8f166",
+      "windows_log_file_sha256": "7afe0a340de6f37d1ec7d7151ba7e526c958c6e3c8d1e151fe396a36bb25dbe0"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      40.0,
+      45.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000017"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      921600,
+      929280,
+      936960,
+      944640,
+      952320,
+      960000,
+      967680,
+      975360,
+      983040,
+      990720
+    ],
+    "actual_sampled_pts_seconds": [
+      60.0,
+      60.5,
+      61.0,
+      61.5,
+      62.0,
+      62.5,
+      63.0,
+      63.5,
+      64.0,
+      64.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d013_official",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "209677be9a495e46d8609e55d3eb3ad3713dbce795761595e7e5c2ceeb25db59",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "official_annotation_reference",
+    "last_arrived_pts": 65.0,
+    "last_input_pts": 64.5,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": true,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "4ad9e9b5de7f9b66898fcd3b127c9c4c6cbfa3f56fe0f93687f66c5123a9c8f0",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "59ed5c5b88bf566587f984047afa0913d28ac905ef3c96fc83f1301ebb173d7e",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "6d102d8a7270c9a3b8e53e0e959d2ca0f8bc384470b5915217759bdcb50f08db",
+      "selected_log_line_sha256": "032c94ed3278a5e8e95627d34877fb5f92bfcfd668938e9dc1a87119c5f8c89a",
+      "semantic_input_sha256": "090fe78785d40f555d9a0a92b083665bd7ca0d82fb9a66354fbf134b262c47a9",
+      "source_run_metadata_sha256": "056dd675988413833892f2740081c0250f16598e97424d1d93e5400faf95e519",
+      "window_file_sha256": "a4a6f46c7575011939c1b8f60783db336ce6da5c49b5b5986d23e407f6bcb72e",
+      "windows_log_file_sha256": "7afe0a340de6f37d1ec7d7151ba7e526c958c6e3c8d1e151fe396a36bb25dbe0"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      60.0,
+      65.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000025"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      1843200,
+      1850880,
+      1858560,
+      1866240,
+      1873920,
+      1881600,
+      1889280,
+      1896960,
+      1904640,
+      1912320
+    ],
+    "actual_sampled_pts_seconds": [
+      120.0,
+      120.5,
+      121.0,
+      121.5,
+      122.0,
+      122.5,
+      123.0,
+      123.5,
+      124.0,
+      124.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s013_late",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "6b05059a7008eb81c3e4a8d1d25587233abcf7e48b508b7c81c354b36e23f026",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "needs_human_review",
+    "last_arrived_pts": 125.0,
+    "last_input_pts": 124.5,
+    "method": "B",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "7fb9ec0252c21a1310fd9107bab0dac2d6fa52451adfdbc282e96b25a794e3df",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "d91e481842cf5d4c42e7d7e89ea38ed2978adcc83cded3ccd1bc2bbea2ac449c",
+      "loading_metadata_sha256": "c32384b573322a3a12cee4b918fe8a8586986be3af1dc314539e852fb71aa555",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "4aab57f5a16063ee53f2deee745339531cb1db3f6255b8a7ef3cdf2718166fc7",
+      "selected_log_line_sha256": "60ffe96feebbaec739ef32d241fedf96a21198890b7c30d5389f2b1875c6fe09",
+      "semantic_input_sha256": "4c702be0ef4920ae9187a543c728bd5a8be649f1ee358bf42caf8b501b684469",
+      "source_run_metadata_sha256": "056dd675988413833892f2740081c0250f16598e97424d1d93e5400faf95e519",
+      "window_file_sha256": "96c86d07ec1b68b735886731cc7ac6d9e7a29468b040313598e70fe5562c4388",
+      "windows_log_file_sha256": "7afe0a340de6f37d1ec7d7151ba7e526c958c6e3c8d1e151fe396a36bb25dbe0"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      120.0,
+      125.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000049"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      0,
+      7680,
+      15360,
+      23040,
+      30720,
+      38400,
+      46080,
+      53760,
+      61440,
+      69120
+    ],
+    "actual_sampled_pts_seconds": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0,
+      4.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s007_early",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c",
+    "evaluation_role": "primary",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 5.0,
+    "last_input_pts": 4.5,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "9b27dbdcd2b66fe35da1d54540a08c63272b2e646337e425be24ee04ad5f2d6c",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "89658b740dfcde8d7da497659a20c1d061ba37916b59c7f42d56bb8c476b6a4e",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "df28a5e05630076f6cd79c88143aed1d8ef1af19a8082c9f8d057c718008f16c",
+      "selected_log_line_sha256": "e226f16edc5584e22fd5982db420171f61b42ee88e47b936c3abade170e57582",
+      "semantic_input_sha256": "0dfc52fd8118a0fed8d42624164ad8a00b7b0ba677813c15ab4521b499f4b57f",
+      "source_run_metadata_sha256": "1162e114d282dc9e2d6a1fedd64357ee8a535219bf330aa1461ff8980b7f98b9",
+      "window_file_sha256": "815719f6652f9abefb39bcb556b05b320a195d128b8e074900110af4f55d7e53",
+      "windows_log_file_sha256": "edda512d293418862ce5b5b3561f06a4764cc6ae7b565296cad299aabef22fe7"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      0.0,
+      5.0
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_absent_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "s007_early",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          0.0,
+          5.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A vehicle passes outside the door; no person is seen attempting or progressing across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q01",
+        "source_id": "E01_007",
+        "window_id": "w000001"
+      }
+    },
+    "window_id": "w000001"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      729600,
+      737280,
+      744960,
+      752640,
+      760320,
+      768000,
+      775680,
+      783360,
+      791040,
+      798720
+    ],
+    "actual_sampled_pts_seconds": [
+      47.5,
+      48.0,
+      48.5,
+      49.0,
+      49.5,
+      50.0,
+      50.5,
+      51.0,
+      51.5,
+      52.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s007_preevent",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703",
+    "evaluation_role": "primary",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 52.5,
+    "last_input_pts": 52.0,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": true,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "687701f0defe70ae2a0e3cb35f5c9ff700362b70ac69c8fa4271a0b6086e8016",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "fb013ebf45ddee277467f1d36bd6f17a4597015f8751f08863a1064868a7a0fa",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "5baaf5a165e38ec1e93f8103b78c405364d6870842175d0bb057a0ebda7718e5",
+      "selected_log_line_sha256": "d123ca02fabfc4ea19e7ea95ace78f90b5aa22e17da8dc494131b2ceed7f7569",
+      "semantic_input_sha256": "afe1435f43f6fe5e46627b3b6da28659a75ad18b85cb9da79730d0cf16f6b818",
+      "source_run_metadata_sha256": "1162e114d282dc9e2d6a1fedd64357ee8a535219bf330aa1461ff8980b7f98b9",
+      "window_file_sha256": "91cf88a519b87e478a6a8a438c3561df7386c15e547b94fa690abb40d9d0f6d2",
+      "windows_log_file_sha256": "edda512d293418862ce5b5b3561f06a4764cc6ae7b565296cad299aabef22fe7"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      47.5,
+      52.5
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_absent_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "s007_preevent",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          47.5,
+          52.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "People approach near the door; no crossing attempt or progress is visible before this clip ends.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q02",
+        "source_id": "E01_007",
+        "window_id": "w000020"
+      }
+    },
+    "window_id": "w000020"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      806400,
+      814080,
+      821760,
+      829440,
+      837120,
+      844800,
+      852480,
+      860160,
+      867840,
+      875520
+    ],
+    "actual_sampled_pts_seconds": [
+      52.5,
+      53.0,
+      53.5,
+      54.0,
+      54.5,
+      55.0,
+      55.5,
+      56.0,
+      56.5,
+      57.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d007_boxchange",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 57.5,
+    "last_input_pts": 57.0,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "climbing_motion_described_claim_only",
+      "actions": [
+        "passage_or_waiting",
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": true,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "1b726ceec4ba9daee1d78a08ccb61506e2e919dfcfd6eab6c986710ec7a7d360",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "9115c2e1bee6e34a999d4a0c01049cfe4a35a6fb7c1d9e19e1ea65d005175071",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "3a6d8ccf41f2bf07935b8b76cec185c76dfe3ece4d1ca6ad2bc1bf1863d402f2",
+      "selected_log_line_sha256": "6827619118633ab40ca207b23480d65d23bebbe9278dd0847f94c3e41fd32736",
+      "semantic_input_sha256": "fe7fecffec2047208f922a8aff414c7ca51403c0c91853b83667ec79b91cca9d",
+      "source_run_metadata_sha256": "1162e114d282dc9e2d6a1fedd64357ee8a535219bf330aa1461ff8980b7f98b9",
+      "window_file_sha256": "42977c88bedec181d5a5323a4e2563e313d630590c4bd4c2a6fbdc3ad261e001",
+      "windows_log_file_sha256": "edda512d293418862ce5b5b3561f06a4764cc6ae7b565296cad299aabef22fe7"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      52.5,
+      57.5
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "ai_visual_review_partial",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "d007_boxchange",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          52.5,
+          57.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "The people seen approaching near the door do not visibly attempt or progress across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q03",
+        "source_id": "E01_007",
+        "window_id": "w000022"
+      }
+    },
+    "window_id": "w000022"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      960000,
+      967680,
+      975360,
+      983040,
+      990720,
+      998400,
+      1006080,
+      1013760,
+      1021440,
+      1029120
+    ],
+    "actual_sampled_pts_seconds": [
+      62.5,
+      63.0,
+      63.5,
+      64.0,
+      64.5,
+      65.0,
+      65.5,
+      66.0,
+      66.5,
+      67.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d007_official",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_positive_presence",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 67.5,
+    "last_input_pts": 67.0,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "climbing_motion_described_claim_only",
+      "actions": [
+        "passage_or_waiting",
+        "climbing_attempt_or_in_progress"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": true,
+      "completion_claim": "indeterminate",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": true,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "ba04702a0132ea6a3ab7620c9342e1ce10f616133552935c998b77e7945ddbba",
+      "runtime_states": [
+        [
+          "candidate",
+          "climbing_attempt_or_in_progress"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "0e2a57481c842f95b96f3649c6bbb6c5efb8e32bdc21462309d1688341c57de0",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "b29df253c9682a7b5173098b32740f11612bff80e6823e0f7425145216f54000",
+      "selected_log_line_sha256": "2a70c938768530e33283e859467d6978c738374ffa4e5e8c5b24ca7ee7a050e0",
+      "semantic_input_sha256": "851e04193db4c89f177c5186200fa87b728e06fe1712e089023a3551cb96a8f3",
+      "source_run_metadata_sha256": "1162e114d282dc9e2d6a1fedd64357ee8a535219bf330aa1461ff8980b7f98b9",
+      "window_file_sha256": "6b377ef5013d53138a787a7d9fdaca0cd5b9eb7bd0796f3cdd75656811ac1fb0",
+      "windows_log_file_sha256": "edda512d293418862ce5b5b3561f06a4764cc6ae7b565296cad299aabef22fe7"
+    },
+    "reference_label": "climbing_present",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      62.5,
+      67.5
+    ],
+    "source_id": "E01_007",
+    "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "official_annotation_reference",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_on_reviewed_attempt_positive",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "d007_official",
+        "completion_reference": "not_observed_clip_ends_before_complete",
+        "interval_seconds": [
+          62.5,
+          67.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A door-crossing attempt is visible; the clip ends just before the person has fully crossed.",
+        "reference_label": "climbing_present",
+        "review_clip_id": "q04",
+        "source_id": "E01_007",
+        "window_id": "w000026"
+      }
+    },
+    "window_id": "w000026"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      768000,
+      775680,
+      783360,
+      791040,
+      798720,
+      806400,
+      814080,
+      821760,
+      829440,
+      837120
+    ],
+    "actual_sampled_pts_seconds": [
+      50.0,
+      50.5,
+      51.0,
+      51.5,
+      52.0,
+      52.5,
+      53.0,
+      53.5,
+      54.0,
+      54.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s030_time",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b",
+    "evaluation_role": "primary",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 55.0,
+    "last_input_pts": 54.5,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "climbing_motion_described_claim_only",
+      "actions": [
+        "passage_or_waiting",
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": true,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "0aeb7d15c14447b0c87a379108774112e5dd53372f9890c2d667b779d2f39c36",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "f16f5d353e9144aa48685165f7a411df5ed1c1b9a41dc3605f86292d77422353",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "2b6c18d9347dbde6f32d289825e4c288c9db82b36aa0fb1667d921c6c6a2e555",
+      "selected_log_line_sha256": "463d567204d84f4df4c95ece9dd71e132bc83b87a340e6a42ce0839dc591925a",
+      "semantic_input_sha256": "672a717ff7707cfffa2bff4ed172bb30858fbee5b7b296a505c5c73ffae8a967",
+      "source_run_metadata_sha256": "5768311c6571a64506f73011f69e849c0b04b7709e45a820c1b5b84d57aa4ac7",
+      "window_file_sha256": "496a571afe20b6d67121b5f3db5d08bfe6a98cdccb4eeaef89a15232b7b8ab72",
+      "windows_log_file_sha256": "6ce830ce8b4bfeebcba4e0cf4bcbe2ee08f665100dda1ad8f10aa2d3d703a12e"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      50.0,
+      55.0
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "s030_time",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          50.0,
+          55.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "Of three people, one approaches the door; no crossing attempt or progress is visible in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q05",
+        "source_id": "E01_030",
+        "window_id": "w000021"
+      }
+    },
+    "window_id": "w000021"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      1267200,
+      1274880,
+      1282560,
+      1290240,
+      1297920,
+      1305600,
+      1313280,
+      1320960,
+      1328640,
+      1336320
+    ],
+    "actual_sampled_pts_seconds": [
+      82.5,
+      83.0,
+      83.5,
+      84.0,
+      84.5,
+      85.0,
+      85.5,
+      86.0,
+      86.5,
+      87.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d030_84",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "2146ccde04ca47b3a19d350916e5bdf6dfebe80264a81fcaf3d4b4ee78e6d4fe",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "unknown",
+    "label_status": "human_observation_partial",
+    "last_arrived_pts": 87.5,
+    "last_input_pts": 87.0,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "no_climbing_motion_described",
+      "actions": [
+        "passage_or_waiting",
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "6a1f0634d291cf90e4754ae2b0f169953879e5b1185e3d4e8b887d6033cb0dbc",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "1f144381d0e13357e9d212293253c9dc549c5bd3a17ba39b1e43f98b2d9a6e25",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "f116702e4cc8c72ae5ae2a05a8407dea03dab88464161d7878adc56c8c204cf8",
+      "selected_log_line_sha256": "072e21b0abf6631ff4bb32c0366742c29e51c6bb57d4d1bbbf9494bf24595915",
+      "semantic_input_sha256": "df1838c24ae819171fd02fe84ad2df5c755d1c5c4edb9002bfbdfd5a35b7a1dc",
+      "source_run_metadata_sha256": "5768311c6571a64506f73011f69e849c0b04b7709e45a820c1b5b84d57aa4ac7",
+      "window_file_sha256": "cd7b511175ce0dbb04a1d1b00f540e170a5046cfe9cb103334c750b65208d878",
+      "windows_log_file_sha256": "6ce830ce8b4bfeebcba4e0cf4bcbe2ee08f665100dda1ad8f10aa2d3d703a12e"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      82.5,
+      87.5
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "window_id": "w000034"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      1344000,
+      1351680,
+      1359360,
+      1367040,
+      1374720,
+      1382400,
+      1390080,
+      1397760,
+      1405440,
+      1413120
+    ],
+    "actual_sampled_pts_seconds": [
+      87.5,
+      88.0,
+      88.5,
+      89.0,
+      89.5,
+      90.0,
+      90.5,
+      91.0,
+      91.5,
+      92.0
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d030_90",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate",
+    "decoded_source_rgb_sha256": "e130773095f3d6c875dfe31f7d4b4203ec5db187c6a20a0127d03d47eb419b08",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "partial_positive_presence",
+    "label_status": "human_observation_partial",
+    "last_arrived_pts": 92.5,
+    "last_input_pts": 92.0,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "climbing_motion_described_claim_only",
+      "actions": [
+        "stepping_over_boundary"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": true,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "0bc5227bde58b51695268e0f02e5609a6ae5a7cde2e6e492c3d0436a8e0fcb4d",
+      "runtime_states": [
+        [
+          "candidate",
+          "stepping_over_boundary"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "partial_positive_only",
+    "provenance": {
+      "input_file_sha256": "253a2b26bada2a83d2b01be7930c1dfd8fe8dfe98ae9ddce7d42cf212708cc24",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "ef15e5547ba80f4e2b18d591a82704a35530d17f7b082482e304f13ef0be488c",
+      "selected_log_line_sha256": "4a692dc4b4a4e8a918d964fd842c3f1682d35027ccaa00f2f426217d2b3dff3d",
+      "semantic_input_sha256": "d78107a5551b42b3eef2aa6ff7d4d0f2efa6994fa6ca6a5002f807f783d8c0c0",
+      "source_run_metadata_sha256": "5768311c6571a64506f73011f69e849c0b04b7709e45a820c1b5b84d57aa4ac7",
+      "window_file_sha256": "49d385d5cd8bd0b4ca20196e1440e47a4fb8f8be3c5cd97c1fd70687f19debe6",
+      "windows_log_file_sha256": "6ce830ce8b4bfeebcba4e0cf4bcbe2ee08f665100dda1ad8f10aa2d3d703a12e"
+    },
+    "reference_label": "climbing_present",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      87.5,
+      92.5
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "window_id": "w000036"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      2380800,
+      2388480,
+      2396160,
+      2403840,
+      2411520,
+      2419200,
+      2426880,
+      2434560,
+      2442240,
+      2449920
+    ],
+    "actual_sampled_pts_seconds": [
+      155.0,
+      155.5,
+      156.0,
+      156.5,
+      157.0,
+      157.5,
+      158.0,
+      158.5,
+      159.0,
+      159.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d030_eof",
+    "completion_reference_provenance": "no_030_completion_label_from_031",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b",
+    "evaluation_role": "diagnostic",
+    "fallback_diagnostic": false,
+    "label_scope": "full_window_no_climbing_observed",
+    "label_status": "human_confirmed_for_window",
+    "last_arrived_pts": 160.0,
+    "last_input_pts": 159.5,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "none",
+      "raw_response_present": true,
+      "raw_response_sha256": "8fb43fc73b756b84f097887d7a8b12d98ba1b011292a640ed13ea297bb6016f9",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": true,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "5c81e2c35be196466846a072ab5d1749ebc62b51bf40709ed2f612e1671869d9",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "b71d801c3f96d4d8edc0354962dd0730e665bdabd259a81b25c2f80f0d854672",
+      "selected_log_line_sha256": "752139bf459866a81d6c86641da2fb853d2c6f9ef06529f8b662c1517da5c57a",
+      "semantic_input_sha256": "590458bc99763c757385dc68b65f7effb743aed4549c724a518a48cad239fb2f",
+      "source_run_metadata_sha256": "5768311c6571a64506f73011f69e849c0b04b7709e45a820c1b5b84d57aa4ac7",
+      "window_file_sha256": "b4076bf783066a1ed94aff2e123568a2883ec6e7c87a12e584b14d1955d05a8e",
+      "windows_log_file_sha256": "6ce830ce8b4bfeebcba4e0cf4bcbe2ee08f665100dda1ad8f10aa2d3d703a12e"
+    },
+    "reference_label": "no_climbing_observed",
+    "reuse_verified": null,
+    "reused": false,
+    "scheduled_interval_seconds": [
+      155.0,
+      160.0
+    ],
+    "source_id": "E01_030",
+    "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+    "target_boundary_alignment": "unverified",
+    "user_label_revision": {
+      "historical_fields_rule": "Parent prediction, provenance, consistency and completion fields remain unchanged; this block supplies the revised reference interpretation.",
+      "label_revision_id": "EXP-0015-LABEL-R1",
+      "labels_sha256": "9f2deedaebe137250f1926bc07d0ef4213a6590249718f4be785594be7640bcd",
+      "parent_evaluation": "EXP-0014",
+      "parent_items_sha256": "427d59cd0d8092a5fb69c936449be9301d1d302285e21381ec7e1d0ada672b1a",
+      "parent_label_fields": {
+        "label_scope": "unknown",
+        "label_status": "needs_human_review",
+        "reference_label": "uncertain"
+      },
+      "parent_manifest_sha256": "ec293844173fe8797b2e518ba1a01b98be2720f766fd4c27bf3d5f278a7186af",
+      "presence_reference_consistency": "candidate_absent_on_reviewed_no_crossing",
+      "provenance": {
+        "completion_rule": "Attempt/progress is distinct from completing a crossing. Completion is explicitly not observed only where the user states the clip ends before completion; otherwise it is not assessed.",
+        "recorded_date": "2026-10-28",
+        "reviewer": "user",
+        "scope": "The scheduled 5-second clip only; visible boundary-crossing attempt or progress. No inference about access rights, intent, later events, or whole-video normality.",
+        "source": "user response after viewing the six original-only review clips"
+      },
+      "user_label": {
+        "case_id": "d030_eof",
+        "completion_reference": "not_assessed_no_visible_person",
+        "interval_seconds": [
+          155.0,
+          160.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "No person or event appears in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q06",
+        "source_id": "E01_030",
+        "window_id": "w000063"
+      }
+    },
+    "window_id": "w000063"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      0,
+      7680,
+      15360,
+      23040,
+      30720,
+      38400,
+      46080,
+      53760,
+      61440,
+      69120
+    ],
+    "actual_sampled_pts_seconds": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0,
+      4.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s013_early",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "a80444f36bca987298ee7e40505c12896ea04abcba823fff41f0ff4c7839a0bf",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "needs_human_review",
+    "last_arrived_pts": 5.0,
+    "last_input_pts": 4.5,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": true,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "91ab8b45d073bbb1e03b57d6c7bbe09d730d47ef0b487e21d4ac0094c950b94a",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "742f552315f5145ca264480b6a864ac183ba98c812dfc6b8c669bb9a746e02a9",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "109f6f1cfe2fed8d57441edb7627c61dc78619e71dded664b801663e5cbfa514",
+      "reuse_baseline_result_sha256": "518e6ed87263b78cae941cae1314154208d8b8165f1b3369185c2691cfafd32c",
+      "selected_log_line_sha256": "93af1b4945747e73a87a6c3149100a0d29b3273d6dedb48cd1ee1edce0673e0e",
+      "semantic_input_sha256": "f3b1ebf8fe77b71c1ab1be8ce6e690c0b17bb3150c8fb1e1801235f3336ff0cb",
+      "source_run_metadata_sha256": "544ec1929b0e04bf031f97f753d4d4cd43c7091eff7f738b96d8bf5c3406cf61",
+      "window_file_sha256": "b334f811ae9de3b92846a1456d6d41f36ffc01626bc26f5ccd51cf8d0b6f692f",
+      "windows_log_file_sha256": "99a35d4521bdfbfe62e8ae838256584fe72cbc107a06f0d5a31651faf7be6179"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": true,
+    "reused": true,
+    "scheduled_interval_seconds": [
+      0.0,
+      5.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000001"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      614400,
+      622080,
+      629760,
+      637440,
+      645120,
+      652800,
+      660480,
+      668160,
+      675840,
+      683520
+    ],
+    "actual_sampled_pts_seconds": [
+      40.0,
+      40.5,
+      41.0,
+      41.5,
+      42.0,
+      42.5,
+      43.0,
+      43.5,
+      44.0,
+      44.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s013_mid",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "b41a51eee08dad41d404984ae7c4df514f271c219433292a325df433c185005a",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "needs_human_review",
+    "last_arrived_pts": 45.0,
+    "last_input_pts": 44.5,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "observed",
+      "completion_support": "unverified",
+      "completion_without_climbing_action": true,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "b498b2d32f0d8ce5e58e2c1fba2a36e7a66db1235b0d999caadd441f326b56b5",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "5536471906f7209a02f68698efeed5571692c74ef079a00429cf755b75cfc194",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "27992b6ef74044ab0ff9e57c86b0b011b90573147ab40097d5506fce5c66cfe1",
+      "reuse_baseline_result_sha256": "0e6caaee5a5fdf414bd5a25dad407dc4c678d227c676882a433a83b85ca4069e",
+      "selected_log_line_sha256": "847c97b0eb38d9fd1f61dd5f70800fc1b10691fc4d0354c5a4ca8b2dad3b74a3",
+      "semantic_input_sha256": "47be748c3e50b4cbdf844b989b83f77115e46c75a9bdca3045adc2d95bc1825c",
+      "source_run_metadata_sha256": "544ec1929b0e04bf031f97f753d4d4cd43c7091eff7f738b96d8bf5c3406cf61",
+      "window_file_sha256": "4b3562e1401c9a97241757aaaea15a3dd972ea67c54cd8ee657fd7048ed8af7b",
+      "windows_log_file_sha256": "99a35d4521bdfbfe62e8ae838256584fe72cbc107a06f0d5a31651faf7be6179"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": true,
+    "reused": true,
+    "scheduled_interval_seconds": [
+      40.0,
+      45.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000017"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      921600,
+      929280,
+      936960,
+      944640,
+      952320,
+      960000,
+      967680,
+      975360,
+      983040,
+      990720
+    ],
+    "actual_sampled_pts_seconds": [
+      60.0,
+      60.5,
+      61.0,
+      61.5,
+      62.0,
+      62.5,
+      63.0,
+      63.5,
+      64.0,
+      64.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "d013_official",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "209677be9a495e46d8609e55d3eb3ad3713dbce795761595e7e5c2ceeb25db59",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "official_annotation_reference",
+    "last_arrived_pts": 65.0,
+    "last_input_pts": 64.5,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": true,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "4ad9e9b5de7f9b66898fcd3b127c9c4c6cbfa3f56fe0f93687f66c5123a9c8f0",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "59ed5c5b88bf566587f984047afa0913d28ac905ef3c96fc83f1301ebb173d7e",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "6a9ac3748546b66d06ec7b351f11620907b12e7498a6b34b69fffccf5ff5a0d9",
+      "reuse_baseline_result_sha256": "6d102d8a7270c9a3b8e53e0e959d2ca0f8bc384470b5915217759bdcb50f08db",
+      "selected_log_line_sha256": "431497984b104ad0fe94c94e684c107471a86fb3f564722cdd923978edace991",
+      "semantic_input_sha256": "090fe78785d40f555d9a0a92b083665bd7ca0d82fb9a66354fbf134b262c47a9",
+      "source_run_metadata_sha256": "544ec1929b0e04bf031f97f753d4d4cd43c7091eff7f738b96d8bf5c3406cf61",
+      "window_file_sha256": "6d5fd9a94f9643069a20ef045e1772084315e96a6d4dea6c7044b948249dc326",
+      "windows_log_file_sha256": "99a35d4521bdfbfe62e8ae838256584fe72cbc107a06f0d5a31651faf7be6179"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": true,
+    "reused": true,
+    "scheduled_interval_seconds": [
+      60.0,
+      65.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000025"
+  },
+  {
+    "B_C_actual_pts_equal": true,
+    "B_C_source_rgb_hash_equal": true,
+    "actual_native_pts": [
+      1843200,
+      1850880,
+      1858560,
+      1866240,
+      1873920,
+      1881600,
+      1889280,
+      1896960,
+      1904640,
+      1912320
+    ],
+    "actual_sampled_pts_seconds": [
+      120.0,
+      120.5,
+      121.0,
+      121.5,
+      122.0,
+      122.5,
+      123.0,
+      123.5,
+      124.0,
+      124.5
+    ],
+    "actual_time_base": [
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360",
+      "1/15360"
+    ],
+    "case_id": "s013_late",
+    "completion_reference_provenance": "no_completion_ground_truth",
+    "counted_output_presence": "candidate_absent",
+    "decoded_source_rgb_sha256": "6b05059a7008eb81c3e4a8d1d25587233abcf7e48b508b7c81c354b36e23f026",
+    "evaluation_role": "fallback_diagnostic",
+    "fallback_diagnostic": true,
+    "label_scope": "unknown",
+    "label_status": "needs_human_review",
+    "last_arrived_pts": 125.0,
+    "last_input_pts": 124.5,
+    "method": "C",
+    "observed_output": {
+      "action_evidence_text_consistency": "not_applicable",
+      "actions": [
+        "passage_or_waiting"
+      ],
+      "candidate_with_indeterminate_action": false,
+      "candidate_with_uncertainty_text": false,
+      "completion_claim": "not_confirmed",
+      "completion_support": "not_asserted",
+      "completion_without_climbing_action": false,
+      "evidence_explicit_motion_denial": false,
+      "evidence_mentions_climbing_motion": false,
+      "explanation_factuality": "unresolved_no_full_window_visual_review",
+      "output_presence": "candidate_absent",
+      "postprocessed_schema_valid": true,
+      "postprocessing": "outer_json_fence_removed",
+      "raw_response_present": true,
+      "raw_response_sha256": "7fb9ec0252c21a1310fd9107bab0dac2d6fa52451adfdbc282e96b25a794e3df",
+      "runtime_states": [
+        [
+          "observed_other",
+          "passage_or_waiting"
+        ]
+      ],
+      "stored_parser_matches_reparse": true,
+      "strict_form_compliant": false,
+      "text_completion_language_present": false
+    },
+    "paired_trace_valid": true,
+    "pairing_issues": [],
+    "presence_reference_consistency": "unresolved",
+    "provenance": {
+      "input_file_sha256": "d91e481842cf5d4c42e7d7e89ea38ed2978adcc83cded3ccd1bc2bbea2ac449c",
+      "loading_metadata_sha256": "731f8eaa5aa8e0681561307690530a053a5bbbbb64cb2726a81e4a8b27893ee8",
+      "model_input_binding_sha256": "c3bd766c6b4ff7707b9ac6eb75a0d76300df7984ff9b0ff86475ae9c3f98e8fe",
+      "result_file_sha256": "d02723ca3b2145209342f1db6fc5fab38dfc12dfbc41b69462ebc1a82b3f80de",
+      "reuse_baseline_result_sha256": "4aab57f5a16063ee53f2deee745339531cb1db3f6255b8a7ef3cdf2718166fc7",
+      "selected_log_line_sha256": "d76b48eab2d8bc500e336f66ceefe5a8b8618d87fa436ddfb1103c99d3d06886",
+      "semantic_input_sha256": "4c702be0ef4920ae9187a543c728bd5a8be649f1ee358bf42caf8b501b684469",
+      "source_run_metadata_sha256": "544ec1929b0e04bf031f97f753d4d4cd43c7091eff7f738b96d8bf5c3406cf61",
+      "window_file_sha256": "830ea99a5239c47faea083f6ee45963886fd9cb2202085b49b02a6925a0c54c9",
+      "windows_log_file_sha256": "99a35d4521bdfbfe62e8ae838256584fe72cbc107a06f0d5a31651faf7be6179"
+    },
+    "reference_label": "uncertain",
+    "reuse_verified": true,
+    "reused": true,
+    "scheduled_interval_seconds": [
+      120.0,
+      125.0
+    ],
+    "source_id": "E01_013",
+    "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+    "target_boundary_alignment": "not_roi_comparative",
+    "window_id": "w000049"
+  }
+]
