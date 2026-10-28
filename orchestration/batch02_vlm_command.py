@@ -53,7 +53,7 @@ def sources(config=None):
         'mvp/independent.py','vlm_batch/common.py',
         'configs/vlm_batch01_prompt.txt','configs/batch0002_vlm_manifest.json',
         'requirements-vlm-batch02-lock.txt','tests_orca/test_batch02_vlm.py',
-        'configs/batch0002_user_input_review.json']
+        'configs/batch0002_user_input_review.json','configs/batch0002_vlm_continuation.json']
     names += [str(p.relative_to(ROOT)) for p in sorted((ROOT/'batch02_vlm').glob('*.py'))]
     return {n:file_hash(ROOT/n) for n in names}
 
@@ -103,14 +103,31 @@ def input_contract(condition):
     return dict(manifest_sha256=file_hash(MANIFEST),condition_id=condition,files=pins)
 
 
+def continuation_binding():
+    import sys
+    from batch02_vlm.continuation import load
+    return load(sys.modules[__name__])
+
+
+def retry_guard(db,row):
+    import sys
+    from batch02_vlm.continuation import retry_guard as guard
+    return guard(sys.modules[__name__],db,row)
+
+
 def successful(condition):
     import sqlite3
     with sqlite3.connect(f'file:{RUNTIME/"queue.sqlite3"}?mode=ro',uri=True) as db:
         rows=db.execute("SELECT a.attempt_id,j.source_hash,j.input_json FROM attempts a JOIN jobs j USING(job_id) WHERE j.command='vlm-batch02' AND j.status='succeeded' AND a.status='succeeded' AND json_extract(j.config_json,'$.condition_id')=?",(condition,)).fetchall()
+    binding=continuation_binding()
+    retained=binding[1]['retained'].get(condition) if binding else None
     good=[]
     for attempt,stored,inputs in rows:
         path=output_path(condition,attempt)/'summary.json'
-        if stored==source_hash() and json.loads(inputs)==input_contract(condition) and path.is_file():
+        expected_source=binding[0]['original_source_hash'] if retained else source_hash()
+        if retained and attempt!=retained['attempt_id']:
+            continue
+        if stored==expected_source and json.loads(inputs)==input_contract(condition) and path.is_file():
             s=json.loads(path.read_text())
             result=path.with_name('result.json')
             if (s.get('status')=='succeeded' and s.get('condition_id')==condition and
@@ -132,7 +149,14 @@ def prior_generated_tokens(condition):
 
 
 def sequence_gate(condition):
+    binding=continuation_binding()
+    if binding and condition=='v01_full_frame':
+        import sys
+        from batch02_vlm.continuation import budget
+        budget(sys.modules[__name__],binding)
     required=() if condition==SMOKE[0] else SMOKE[:1] if condition==SMOKE[1] else SMOKE
+    if binding and condition in ('v02_full_frame','v03_full_frame','v04_full_frame'):
+        required=SMOKE+('v01_full_frame',)
     for previous in required:
         if len(successful(previous)) != 1:
             raise ValueError('one exact successful smoke required: '+previous)
@@ -157,6 +181,9 @@ def validate(config,inputs,runtime):
 def job_key(condition):
     if condition not in CONDITIONS:
         raise ValueError('unknown condition')
+    binding=continuation_binding()
+    if binding and condition=='v01_full_frame':
+        return binding[0]['correction_job_key']
     return 'batch0002-exp0020-vlm-'+condition
 
 

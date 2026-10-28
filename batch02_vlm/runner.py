@@ -68,6 +68,26 @@ def resources():
     return dict(used_mib=used,free_mib=free)
 
 
+def validate_decoded_frames(rgb,row,source):
+    """Bind both historical schemas to the same ten audited original RGB frames."""
+    expected_frames=row['source_frame_sha256']
+    if len(rgb)!=10 or len(expected_frames)!=10:
+        raise ValueError('exact ten original frames required')
+    actual_frames=[hashlib.sha256(frame.tobytes()).hexdigest() for frame in rgb]
+    if actual_frames!=expected_frames:
+        raise ValueError('per-frame original RGB differs')
+    aggregate=source.get('rgb_sha256')
+    if aggregate is None:
+        # Independent v inputs stored per-frame hashes, not the q aggregate key.
+        # Full-frame source and crop are identical, so the pinned crop digest
+        # supplies the aggregate without changing any original metadata/pixels.
+        if source.get('frame_sha256')!=expected_frames or row['roi']!=[0,0,1,1]:
+            raise ValueError('registered full-frame v RGB hash inventory required')
+        aggregate=row['expected_metadata']['crop_sha256']
+    if hashlib.sha256(rgb.tobytes()).hexdigest()!=aggregate:
+        raise ValueError('exact source RGB differs')
+
+
 def decode(row):
     import av
     import numpy as np
@@ -90,10 +110,7 @@ def decode(row):
             else:
                 raise ValueError('native PTS not decoded')
     rgb=np.stack(found)
-    if len(rgb)!=10 or hashlib.sha256(rgb.tobytes()).hexdigest()!=source['rgb_sha256']:
-        raise ValueError('exact source RGB differs')
-    if [hashlib.sha256(f.tobytes()).hexdigest() for f in rgb]!=row['source_frame_sha256']:
-        raise ValueError('per-frame original RGB differs')
+    validate_decoded_frames(rgb,row,source)
     source['last_decoded_pts']=source['pts_seconds'][-1]
     return rgb,source
 

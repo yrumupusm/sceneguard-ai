@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "experiment": "EXP-0020",
+  "reason": "v-only historical RGB metadata compatibility",
+  "original_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+  "original_source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+  "history_snapshot_sha256": "a1ffae8a95be5dee1a7628837a8cfe351a41f6f0a70892cf6aac7edcd5c25f32",
+  "failed_job_id": "0b9a0a852237499f8846aa3563f0e10f",
+  "failed_attempt_id": "c3ae75c0bcdc4ce0af2cfb4a694edd1b",
+  "correction_condition": "v01_full_frame",
+  "correction_job_key": "batch0002-exp0020-vlm-v01_full_frame-retry1",
+  "maximum_logical_attempts": 2,
+  "receipt_sha256": "af29c5cc0b9f92c8592e4097b2e1a817cdc0ef10cced4989e77a9e4ec232c425"
+}

@@ -19,6 +19,9 @@ from orchestration.queue import digest,process_identity
 
 
 class FrozenContract(unittest.TestCase):
+    def setUp(self):
+        guard=patch.object(c,'continuation_binding',return_value=None);guard.start();self.addCleanup(guard.stop)
+
     def test_matrix_smoke_and_baseline(self):
         d=c.manifest()
         self.assertEqual(len(d['conditions']),16)
@@ -163,6 +166,26 @@ class FrozenContract(unittest.TestCase):
         obj['observed_actions']=['indeterminate'];out=evaluate.classify(json.dumps(obj))
         self.assertTrue(out['indeterminate']);self.assertFalse(out['candidate']);self.assertFalse(out['other'])
 
+    def test_q_aggregate_and_v_per_frame_metadata_decode_compatibility(self):
+        import hashlib
+        class Frame:
+            def __init__(self,data):self.data=data
+            def tobytes(self):return self.data
+        class RGB(list):
+            def tobytes(self):return b''.join(frame.tobytes() for frame in self)
+        rgb=RGB(Frame(bytes([i])*12) for i in range(10))
+        frames=[hashlib.sha256(f.tobytes()).hexdigest() for f in rgb]
+        aggregate=hashlib.sha256(rgb.tobytes()).hexdigest()
+        row=dict(source_frame_sha256=frames,roi=[0,0,1,1],expected_metadata=dict(crop_sha256=aggregate))
+        runner.validate_decoded_frames(rgb,row,{'rgb_sha256':aggregate})
+        runner.validate_decoded_frames(rgb,row,{'frame_sha256':frames})
+        self.assertNotIn('torch',sys.modules)
+        for source in ({},{'frame_sha256':frames[:-1]},{'rgb_sha256':'wrong'}):
+            with self.assertRaises(ValueError):runner.validate_decoded_frames(rgb,row,source)
+        with self.assertRaises(ValueError):runner.validate_decoded_frames(rgb,{**row,'roi':[0,.2,1,1]},{'frame_sha256':frames})
+        altered=RGB(rgb);altered[0]=Frame(b'tampered')
+        with self.assertRaises(ValueError):runner.validate_decoded_frames(altered,row,{'frame_sha256':frames})
+
     def test_failure_before_construction_does_not_touch_cuda(self):
         import time
         class NoCuda:
@@ -231,6 +254,9 @@ class FrozenContract(unittest.TestCase):
 
 
 class QueueIntegration(unittest.TestCase):
+    def setUp(self):
+        guard=patch.object(c,'continuation_binding',return_value=None);guard.start();self.addCleanup(guard.stop)
+
     def test_cv_schema_additive_migration_backup_preserves_history(self):
         from orchestration.queue import Queue
         with tempfile.TemporaryDirectory() as tmp:
@@ -289,6 +315,123 @@ class QueueIntegration(unittest.TestCase):
                 self.assertEqual(receipt['result'],str(c.output_path('q04_C',attempt)))
                 with patch.object(c,'validate',side_effect=ValueError('config/input mismatch')):
                     with self.assertRaisesRegex(ValueError,'config/input'):enqueue()
+
+
+class ContinuationTests(unittest.TestCase):
+    def setUp(self):
+        import uuid
+        from batch02_vlm import continuation as m
+        from orchestration.queue import Queue
+        from orchestration.vlm_command import file_hash
+        self.m=m;self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        root=Path(self.temp.name);local=root/'local';local.mkdir();(root/'configs').mkdir()
+        runtime=root/'runtime';self.q=Queue.initialize(runtime);self.q.migrate_commands(include_vlm_batch02=True)
+        self.command=types.SimpleNamespace(ROOT=root,LOCAL=local,RUNTIME=runtime,SETTINGS=c.SETTINGS,file_hash=file_hash,
+            output_path=lambda condition,attempt:root/'outputs'/condition/attempt,source_hash=lambda:'new-source',
+            validate_assignment=lambda *args:None,same=c.same,prior_generated_tokens=lambda condition:[])
+        (local/'execution-authorization.json').write_text(json.dumps(dict(source_commit='new-commit',run_id='run',task_id='task',dispatch_id='dispatch')))
+        retained={};failed={}
+        with self.q.connection() as db:
+            for i in range(33):
+                condition=m.Q[i] if i<12 else m.CONDITION if i==12 else None
+                jobid=m.FAILED_JOB if i==12 else uuid.uuid4().hex;attempt=m.FAILED_ATTEMPT if i==12 else uuid.uuid4().hex
+                status='failed' if i==12 else 'succeeded'
+                cfg=dict(condition_id=condition,settings=c.SETTINGS) if condition else dict(seconds=0,exit_code=0)
+                inputvalue={'frozen':True}
+                db.execute('INSERT INTO jobs (job_id,job_key,run_id,task_id,dispatch_id,owner,command,input_json,config_json,input_hash,config_hash,source_hash,code_sha,timeout,status,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    (jobid,'batch0002-exp0020-vlm-'+condition if condition else 'old-'+str(i),'run','task','dispatch','fixture','vlm-batch02' if condition else 'cpu-mock',json.dumps(inputvalue),json.dumps(cfg),digest(inputvalue),digest(cfg),m.ORIGINAL_SOURCE,m.ORIGINAL_COMMIT,1800,status,float(i)))
+                db.execute('INSERT INTO attempts (attempt_id,job_id,attempt_no,owner,status,started_at,finished_at,heartbeat,timeout) VALUES (?,?,1,?,?,0,1,1,1800)',(attempt,jobid,'fixture',status))
+                if condition:
+                    folder=self.command.output_path(condition,attempt);folder.mkdir(parents=True)
+                    queue=runtime/'attempts'/attempt/'manifest.json';queue.parent.mkdir(parents=True);queue.write_text('{}')
+                    if i<12:
+                        (folder/'generated_token_ids.npy').write_bytes(b'fixture tokens')
+                        artifacts={'generated_token_ids.npy':file_hash(folder/'generated_token_ids.npy')}
+                        (folder/'result.json').write_text(json.dumps(dict(condition_id=condition,status='succeeded',artifacts=artifacts)))
+                        (folder/'summary.json').write_text(json.dumps(dict(status='succeeded',condition_id=condition,result_sha256=file_hash(folder/'result.json'))))
+                        retained[condition]=dict(job_id=jobid,attempt_id=attempt,result_sha256=file_hash(folder/'result.json'),summary_sha256=file_hash(folder/'summary.json'),queue_manifest_sha256=file_hash(queue),artifacts=artifacts)
+                    else:
+                        (folder/'failure.json').write_text('{}')
+                        failed=dict(job_id=jobid,attempt_id=attempt,artifacts={'failure.json':file_hash(folder/'failure.json')},queue_manifest_sha256=file_hash(queue))
+        snapshot=m.state(self.command)
+        hp=local/'before-metadata-correction-queue.json';hp.write_text(json.dumps(snapshot))
+        historysha=file_hash(hp);pin=patch.object(m,'HISTORY_SHA',historysha);pin.start();self.addCleanup(pin.stop)
+        self.receipt=dict(retained=retained,failed=failed);rp=local/'continuation-receipt.json';rp.write_text(json.dumps(self.receipt))
+        self.contract=dict(schema_version=1,experiment='EXP-0020',reason='v-only historical RGB metadata compatibility',original_commit=m.ORIGINAL_COMMIT,original_source_hash=m.ORIGINAL_SOURCE,history_snapshot_sha256=historysha,failed_job_id=m.FAILED_JOB,failed_attempt_id=m.FAILED_ATTEMPT,correction_condition=m.CONDITION,correction_job_key=m.RETRY_KEY,maximum_logical_attempts=2,receipt_sha256=file_hash(rp))
+        (root/'configs/batch0002_vlm_continuation.json').write_text(json.dumps(self.contract))
+
+    def correction_job(self):
+        import uuid
+        with self.q.connection() as db:
+            old=dict(db.execute('SELECT * FROM jobs WHERE job_id=?',(self.m.FAILED_JOB,)).fetchone())
+            old.update(job_id=uuid.uuid4().hex,job_key=self.m.RETRY_KEY,source_hash='new-source',code_sha='new-commit',status='queued',created_at=100)
+            db.execute('INSERT INTO jobs ('+','.join(old)+') VALUES ('+','.join('?' for _ in old)+')',tuple(old.values()))
+        return old
+
+    def test_exact_retained_successes_and_tampered_rows_artifacts_receipt(self):
+        binding=self.m.load(self.command);self.assertEqual(len(binding[1]['retained']),12)
+        with patch.object(c,'RUNTIME',self.command.RUNTIME),patch.object(c,'output_path',self.command.output_path),patch.object(c,'source_hash',return_value='new-source'),patch.object(c,'input_contract',return_value={'frozen':True}),patch.object(c,'continuation_binding',side_effect=lambda:self.m.load(self.command)):
+            self.assertEqual(c.successful('q04_C'),[self.receipt['retained']['q04_C']['attempt_id']])
+        entry=self.receipt['retained']['q04_C'];p=self.command.output_path('q04_C',entry['attempt_id'])/'generated_token_ids.npy';original=p.read_bytes();p.write_bytes(b'changed')
+        with self.assertRaisesRegex(ValueError,'artifact'):self.m.load(self.command)
+        p.write_bytes(original)
+        with self.q.connection() as db:db.execute('UPDATE jobs SET source_hash=? WHERE job_id=?',('wrong',entry['job_id']))
+        with self.assertRaisesRegex(ValueError,'immutable'):self.m.load(self.command)
+        with self.q.connection() as db:db.execute('UPDATE jobs SET source_hash=? WHERE job_id=?',(self.m.ORIGINAL_SOURCE,entry['job_id']))
+        rp=self.command.LOCAL/'continuation-receipt.json';rp.write_text('{}')
+        with self.assertRaisesRegex(ValueError,'receipt/history'):self.m.load(self.command)
+
+    def test_wrong_lineage_source_and_unsupported_contract_rejected(self):
+        p=self.command.ROOT/'configs/batch0002_vlm_continuation.json'
+        for key,value in [('failed_attempt_id','wrong'),('original_source_hash','arbitrary'),('correction_job_key','fresh-key'),('maximum_logical_attempts',3)]:
+            p.write_text(json.dumps({**self.contract,key:value}))
+            with self.assertRaises(ValueError):self.m.load(self.command)
+        p.write_text(json.dumps(self.contract))
+        entry=self.receipt['retained']['q04_C']
+        with self.q.connection() as db:db.execute('UPDATE attempts SET job_id=?,attempt_no=2 WHERE attempt_id=?',(self.m.FAILED_JOB,entry['attempt_id']))
+        with self.assertRaisesRegex(ValueError,'immutable'):self.m.load(self.command)
+
+    def test_retry_hook_preserves_history_blocks_pending_duplicates_and_third_attempt(self):
+        before=self.q.status()
+        hook=patch.object(c,'retry_guard',side_effect=lambda db,row:self.m.retry_guard(self.command,db,row));hook.start();self.addCleanup(hook.stop)
+        with self.assertRaisesRegex(ValueError,'sole logical retry'):self.q.retry(self.m.FAILED_JOB)
+        self.assertEqual(self.q.status(),before)
+        job=self.correction_job();self.m.budget(self.command,self.m.load(self.command))
+        with self.assertRaises(sqlite3.IntegrityError):self.correction_job()
+        with self.q.connection() as db:
+            db.execute("UPDATE jobs SET status='running' WHERE job_id=?",(job['job_id'],))
+            db.execute("INSERT INTO attempts (attempt_id,job_id,attempt_no,owner,status,started_at,heartbeat,timeout) VALUES (?, ?,1,'fixture','running',100,100,1800)",('f'*32,job['job_id']))
+        self.m.budget(self.command,self.m.load(self.command))
+        with self.q.connection() as db:
+            db.execute("UPDATE attempts SET status='failed' WHERE attempt_id=?",('f'*32,))
+            db.execute("UPDATE jobs SET status='failed' WHERE job_id=?",(job['job_id'],))
+        with self.assertRaisesRegex(ValueError,'sole logical retry'):self.q.retry(job['job_id'])
+        with self.assertRaisesRegex(ValueError,'exhausted'):self.m.budget(self.command,self.m.load(self.command))
+        self.assertEqual(len([a for a in self.q.status()['attempts'] if a['job_id'] in (self.m.FAILED_JOB,job['job_id'])]),2)
+        with self.q.connection() as db:
+            db.execute("INSERT INTO attempts (attempt_id,job_id,attempt_no,owner,status,started_at,heartbeat,timeout) VALUES (?, ?,2,'fixture','failed',101,101,1800)",('e'*32,job['job_id']))
+        with self.assertRaisesRegex(ValueError,'maximum two'):self.m.budget(self.command,self.m.load(self.command))
+
+    def test_concurrent_enqueue_has_one_fixed_pending_correction(self):
+        from concurrent.futures import ThreadPoolExecutor
+        expected_source=digest({'fixture':'new-source'})
+        self.command.source_hash=lambda:expected_source
+        config=dict(condition_id=self.m.CONDITION,settings=c.SETTINGS)
+        with patch.object(c,'validate',return_value=self.m.CONDITION),patch.object(c,'validate_assignment',return_value={}),patch.object(c,'job_key',return_value=self.m.RETRY_KEY),patch.object(c,'sources',return_value={'fixture':'new-source'}),patch.object(subprocess,'run',return_value=types.SimpleNamespace(stdout='new-commit')):
+            def enqueue(_):
+                return self.q.enqueue(job_key=self.m.RETRY_KEY,run_id='run',task_id='task',dispatch_id='dispatch',owner='fixture',command='vlm-batch02',config=config,input_value={'frozen':True},timeout=1800)
+            with ThreadPoolExecutor(max_workers=2) as pool:jobs=list(pool.map(enqueue,range(2)))
+        self.assertEqual(jobs[0]['job_id'],jobs[1]['job_id'])
+        binding=self.m.load(self.command);self.m.budget(self.command,binding)
+        self.assertEqual(sum(j['job_key']==self.m.RETRY_KEY for j in binding[3]['jobs']),1)
+        self.assertEqual(sum(a['job_id']==jobs[0]['job_id'] for a in binding[3]['attempts']),0)
+
+    def test_pending_wrong_source_refused_and_saved_failed_tokens_never_retry(self):
+        job=self.correction_job()
+        with self.q.connection() as db:db.execute('UPDATE jobs SET source_hash=? WHERE job_id=?',('stale',job['job_id']))
+        with self.assertRaisesRegex(ValueError,'current frozen source'):self.m.budget(self.command,self.m.load(self.command))
+        folder=self.command.output_path(self.m.CONDITION,self.m.FAILED_ATTEMPT);(folder/'generated_token_ids.npy').write_bytes(b'never repeat')
+        with self.assertRaisesRegex(ValueError,'receipt/tokens'):self.m.load(self.command)
 
 
 if __name__=='__main__':unittest.main()

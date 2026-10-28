@@ -19,7 +19,8 @@
 - 기존 완료 CLI로 [보고서](EXP-0019-cv-comparison.md), 45개 metrics, [독립 검토](../reviews/EXP-0019-independent-review.md), [binding](../reviews/EXP-0019.binding.json), 11개 원본/FCOS/RF-DETR 정지 비교와 2개 기존 참고 영상을 등록했다.
 - 2026-10-28 17:09 UTC 실제 브라우저에서 담당 2 → EXP-0019, 보고서 펼치기, 45개 측정값/2개 그래프, 검토 의견, 두 영상의 재생/1.5초 seek와 폴링 유지가 통과했다. 추가 DOM 검사에서 11개 비교 이미지 모두 2880×570으로 decode됨을 확인했다. 이미지를 AI가 시각적으로 검수했다는 뜻은 아니다.
 - 영상 하나는 기존 030:88.6–91.5 원본/B/C 추적 비교(정상·0.25배속), 다른 하나는 007:62.5–67.5 원본 참고다. 신규 RF-DETR 연속 영상으로 표기하지 않았다. 신규 검출 비교는 고정한 11개 정지 화면이다.
-- 서비스가 읽는 report/metrics/review/binding 및 JS 해시를 별도로 확인했다. 로컬 receipt는 `runtime/BATCH-0002/cv-delivery/browser-r1.json`과 `browser-images-r1.json`이다. 최종 GitHub byte 검증은 VLM의 동결 소스 실행이 끝난 뒤 커밋하여 수행한다.
+- 서비스가 읽는 report/metrics/review/binding 및 JS 해시를 별도로 확인했다. 로컬 receipt는 `runtime/BATCH-0002/cv-delivery/browser-r1.json`과 `browser-images-r1.json`이다.
+- VLM의 입력 준비 오류로 GPU 실행이 중지된 동안 검토된 CV 결과를 별도 커밋 `9ee67530cd527f6dab4cdc2e596d04368b985a7f`에 게시했다. 2026-10-28 17:46 UTC 원격 main의 assignment/catalog와 report/metrics/review/binding byte 검증을 통과했다(`github-r2.json`). 앞선 검증 호출은 전체 commit SHA 형식이 잘못돼 실행 전 거부됐으며 `github-r1.json`에 보존했다. 올바른 전체 SHA로 검증한 것이고 모델 재실행은 없다.
 
 ## 진행 중 배정 표시
 

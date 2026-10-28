@@ -427,6 +427,9 @@ class Queue:
                 count = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job_id,)).fetchone()[0]
                 if row is None or row["status"] not in RETRYABLE or count != 1:
                     raise ValueError("one explicit retry allowed only after a known failed/cancelled/interrupted attempt")
+                if row['command']=='vlm-batch02':
+                    from orchestration.batch02_vlm_command import retry_guard
+                    retry_guard(db,dict(row))
                 db.execute("UPDATE jobs SET status='queued',cancel_requested=0 WHERE job_id=?", (job_id,))
                 db.commit()
         return {"job_id": job_id, "status": "queued", "explicit_retry": True}
