@@ -22,3 +22,24 @@ assert.equal(observationText({...worker, outcome:'failed'}), '작업자 실패')
 assert.equal(observationText({outcome:'in_progress', stage:{activity:'working'}, liveness:{verdict:'live'}}), '진행 중');
 assert.equal(observationText({outcome:'in_progress', stage:{activity:'working'}, liveness:{verdict:'unverifiable'}}), '생존 상태 미확인');
 console.log('card state fixture assertions passed');
+
+// Exercise refresh itself: a failed poll must update existing card observations.
+const fs = require('node:fs');
+const vm = require('node:vm');
+const context = vm.createContext({console, fixtureAssignment:assignment, fixtureStatus:status});
+vm.runInContext(fs.readFileSync(require.resolve('../webapp/app.js'), 'utf8'), context);
+vm.runInContext(`
+ catalogData = {assignments:[fixtureAssignment], experiments:[]};
+ statusData = fixtureStatus;
+ globalThis.display = {textContent:''};
+ globalThis.document = {querySelector:()=>display};
+ globalThis.fetch = async()=>{throw Error('fixture unavailable');};
+ globalThis.rendered = [];
+ renderSlots = ()=>rendered.push(observationText(nativeObservation(fixtureAssignment,statusData)));
+ renderChoices = ()=>rendered.push('choices refreshed');
+`, context);
+vm.runInContext('refresh()', context).then(() => {
+  assert.deepEqual(Array.from(context.rendered), ['미확인','choices refreshed']);
+  assert.match(context.display.textContent, /목록 조회 실패/);
+  console.log('failed polling refresh assertions passed');
+}).catch(error => { console.error(error); process.exitCode = 1; });

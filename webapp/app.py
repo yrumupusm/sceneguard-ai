@@ -157,9 +157,14 @@ def experiment(experiment_id: str):
         # hashes describe the current import, not what an old review examined.
         binding_path = item.get('review_binding_path')
         review_state = 'unverified'
+        current_hashes = {item['report_path']: report_hash, path: metric_hash}
+        if review:
+            current_hashes[review] = hashlib.sha256(review_source.encode('utf-8')).hexdigest()
         if binding_path:
             try:
-                binding = json.loads(document(c, binding_path, 'docs/reviews/', '.json'))
+                binding_source = document(c, binding_path, 'docs/reviews/', '.json')
+                current_hashes[binding_path] = hashlib.sha256(binding_source.encode('utf-8')).hexdigest()
+                binding = json.loads(binding_source)
                 reviewed = binding['reviewed_sources'][experiment_id]
                 review_state = 'current' if (
                     binding['review_path'] == review
@@ -170,6 +175,7 @@ def experiment(experiment_id: str):
             except (OSError, ValueError, KeyError, TypeError):
                 review_state = 'unverified'
         result['review_integrity'] = review_state
+        result['current_source_sha256'] = current_hashes
         if review_state != 'current' or False in result['source_integrity'].values():
             result['review_html'] = ('<p><strong>이전 검토: 현재 원문·측정치와의 연결이 오래됐거나 미검증입니다. '
                                      '재검토가 필요하며 아래 의견은 현재 버전 승인으로 사용할 수 없습니다.</strong></p>'

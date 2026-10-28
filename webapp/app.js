@@ -79,6 +79,7 @@ async function selectReport(id) {
     const d = await response.json();
     if (request !== selectionRequest) return;
     detail.dataset.id = id; detail.dataset.result = 'registered'; detail.dataset.executionStatus = show(d.execution_status);
+    detail.dataset.sourceHashes = JSON.stringify(d.current_source_sha256);
     const assignment = (catalogData.assignments || []).find(x => x.slot === selectedSlot && x.experiment_id === id);
     detail.replaceChildren(node('p', `${d.synthetic || assignment?.synthetic ? 'TEST · ' : ''}${d.experiment_id}`, 'eyebrow'), node('h2', d.title), node('p', d.summary));
     detail.append(node('p', `실험 모델: ${show(d.evaluated_model)} · 작업자 모델: ${show(d.agent_model_effective)}`, 'muted'));
@@ -247,6 +248,11 @@ async function refresh() {
       selectSlot('unassigned');
     } else { renderSlots(); renderChoices(); refreshSelectedIfChanged(); }
   } else if (!catalogData) $('#detail').textContent = '카탈로그를 불러올 수 없습니다.';
+  else {
+    statusData = {};
+    $('#status').textContent += ' · 목록 조회 실패: 이전 목록, 작업 상태 미확인';
+    renderSlots(); renderChoices();
+  }
   if (catalogData && selectedReport && !resultFor(catalogData, selectedSlot, selectedReport)) selectPending(selectedReport);
 }
 if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFor, slotItems, observationText};

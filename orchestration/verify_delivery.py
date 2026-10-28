@@ -98,6 +98,7 @@ BROWSER_JS = r'''(async()=>{
  await wait(()=>document.querySelector('#detail')?.dataset.id===expected.id&&document.querySelector('#detail')?.dataset.result==='registered'&&document.querySelector('#detail .eyebrow'),'Selected result absent');
  const detail=document.querySelector('#detail');
  if(detail.dataset.executionStatus!==expected.execution)throw Error('Wrong execution state');
+ if(JSON.stringify(Object.entries(JSON.parse(detail.dataset.sourceHashes)).sort())!==JSON.stringify(Object.entries(expected.source_hashes).sort()))throw Error('Rendered source or review version differs');
  const rows=[...detail.querySelector('table').rows].slice(1).map(x=>[x.cells[0].textContent,x.cells[1].textContent]);
  if(JSON.stringify(rows)!==JSON.stringify(expected.metrics))throw Error('Metric table differs');
  if(detail.querySelectorAll('.graph').length!==expected.graphs)throw Error('Graphs absent or wrong groups');
@@ -125,13 +126,18 @@ def verify_browser(config, experiment, page, url, cli, poll_wait_ms=16500):
     if parsed.scheme != 'http' or parsed.hostname not in ('localhost', '127.0.0.1') or parsed.path not in ('', '/') or parsed.query or parsed.fragment or parsed.username:
         raise ValueError('Explicit loopback HTTP base URL required')
     base = url.rstrip('/')
-    item, _, files, fingerprints = snapshot(config, experiment)
+    initial = snapshot(config, experiment)
+    item, _, files, fingerprints = initial
     def fetch(path):
         with urllib.request.urlopen(base + path, timeout=5) as response:
             return response.read()
     api = json.loads(fetch('/api/experiments/' + urllib.parse.quote(experiment, safe='')))
-    if any(api.get(k) != item.get(k) for k in ('experiment_id','slot','report_sha256','metrics_sha256','execution_status')):
+    if any(api.get(k) != value for k, value in item.items() if k != 'evidence'):
         raise ValueError('Local server serves another result version')
+    if api.get('current_source_sha256') != fingerprints:
+        raise ValueError('Local server serves another source or review version')
+    if [{k:v for k,v in e.items() if k != 'available'} for e in api.get('evidence', [])] != item.get('evidence', []):
+        raise ValueError('Local server serves another evidence list')
     if api.get('review_integrity') != 'current' or any(api.get('source_integrity', {}).get(k) is not True for k in ('report_match', 'metrics_match')):
         raise ValueError('Server review/source integrity not current')
     # Check the JavaScript actually served by this URL separately from GitHub.
@@ -145,6 +151,7 @@ def verify_browser(config, experiment, page, url, cli, poll_wait_ms=16500):
     if not videos:
         raise ValueError('No registered comparison video; do not report video acceptance')
     expected = {'id': experiment, 'slot': item['slot'], 'origin': base, 'execution': item['execution_status'],
+                'source_hashes': fingerprints,
                 'metrics': [[m['label'], m['value']] for m in metrics],
                 'graphs': min(2,len(groups)), 'videos': videos, 'poll_wait_ms': poll_wait_ms}
     # Numeric formatting is performed by JavaScript in both UI and probe.
@@ -166,7 +173,7 @@ def verify_browser(config, experiment, page, url, cli, poll_wait_ms=16500):
     if observed.get('passed') is not True or observed.get('experiment_id') != experiment:
         raise ValueError('Browser receipt did not prove selected result')
     # Detect a source change during the browser operation before accepting it.
-    if snapshot(config, experiment)[3] != fingerprints:
+    if snapshot(config, experiment) != initial:
         raise ValueError('Result changed during browser check')
     return {'domain':'browser','passed':True,'url':base,'source_sha256':fingerprints,
             'viewer_js_sha256':js_hash,'observations':observed,'github_verified':False}

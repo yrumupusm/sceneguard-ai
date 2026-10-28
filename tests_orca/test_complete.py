@@ -203,6 +203,8 @@ class CompletionTests(unittest.TestCase):
             self.registry.complete(self.package, self.manifest)
         self.assertEqual((self.repo / 'records/catalog.json').read_bytes(), original_catalog)
         self.assertFalse(self.registry.status('TEST-register')['registered'])
+        # A changed attempt must not bypass the binding left by a partial write.
+        self.reject_preserved(package={**self.package, 'attempt_id': 'changed-attempt', 'summary': 'Changed payload'})
         self.registry.complete(self.package, self.manifest)
         self.assertTrue(self.registry.status('TEST-register')['registered'])
 
@@ -215,6 +217,7 @@ class CompletionTests(unittest.TestCase):
         with patch.object(module, 'atomic', side_effect=fail_config), self.assertRaises(OSError):
             self.registry.complete(self.package, self.manifest)
         self.assertFalse(self.registry.status('TEST-register')['registered'])
+        self.reject_preserved(package={**self.package, 'attempt_id': 'changed-attempt'})
         self.registry.complete(self.package, self.manifest)
 
     def test_conflicting_completed_result_and_binding_immutable(self):

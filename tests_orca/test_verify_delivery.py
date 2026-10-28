@@ -64,6 +64,7 @@ class SeparateAcceptance(unittest.TestCase):
 
     def test_http_success_is_not_browser_acceptance(self):
         api = {**self.item, 'review_integrity':'current',
+               'current_source_sha256': snapshot(self.config, 'TEST-VERIFY')[3],
                'source_integrity':{'report_match':True,'metrics_match':True}}
         js = (Path(__file__).resolve().parents[1] / 'webapp/app.js').read_bytes()
         def response(url, **kwargs):
@@ -81,6 +82,7 @@ class SeparateAcceptance(unittest.TestCase):
 
     def test_browser_cli_failure_keeps_its_reason(self):
         api = {**self.item, 'review_integrity':'current',
+               'current_source_sha256': snapshot(self.config, 'TEST-VERIFY')[3],
                'source_integrity':{'report_match':True,'metrics_match':True}}
         js = (Path(__file__).resolve().parents[1] / 'webapp/app.js').read_bytes()
         def response(url, **kwargs):
@@ -91,6 +93,17 @@ class SeparateAcceptance(unittest.TestCase):
              patch('orchestration.verify_delivery.subprocess.check_output', side_effect=failure):
             with self.assertRaisesRegex(ValueError,'browser_tab_not_found: Page absent'):
                 verify_browser(self.config,'TEST-VERIFY','fixture-page','http://127.0.0.1:8766','orca-ide',0)
+
+    def test_other_server_review_is_not_local_review_acceptance(self):
+        hashes = snapshot(self.config, 'TEST-VERIFY')[3]
+        hashes[self.item['review_path']] = 'b' * 64
+        api = {**self.item, 'review_integrity':'current', 'current_source_sha256':hashes,
+               'source_integrity':{'report_match':True,'metrics_match':True}}
+        with patch('orchestration.verify_delivery.urllib.request.urlopen', return_value=io.BytesIO(json.dumps(api).encode())), \
+             patch('orchestration.verify_delivery.subprocess.check_output') as browser:
+            with self.assertRaisesRegex(ValueError,'source or review version'):
+                verify_browser(self.config,'TEST-VERIFY','fixture-page','http://127.0.0.1:8766','orca-ide',0)
+            browser.assert_not_called()
 
 
 if __name__ == '__main__':

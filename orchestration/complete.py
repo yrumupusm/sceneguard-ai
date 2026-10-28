@@ -309,7 +309,9 @@ class Registry:
                 merged[aid] = entry
             registration = digest(encoded({'assignment': assigned, 'package': package, 'artifacts': manifest,
                                            'review_sha256': hashes['review_path']}))
-            binding_path = f"docs/reviews/{eid}-{package['attempt_id']}.binding.json"
+            # Stable per-result key also reserves this ID after a partial write.
+            # Changing attempt_id must not bypass an unindexed binding.
+            binding_path = f"docs/reviews/{eid}.binding.json"
             binding = {'schema_version': 1, 'review_path': package['review_path'],
                        'review_sha256': hashes['review_path'], 'review_status': package['review_status'],
                        'synthetic': assigned['synthetic'], 'registration_sha256': registration,
