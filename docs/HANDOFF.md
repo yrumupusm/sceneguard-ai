@@ -1,5 +1,16 @@
 # SceneGuard — 다음 작업과 대화 인수인계
 
+## 최신 상태 — EXP-0017 실제 비교 종료 (2026-10-29)
+
+- 사용자가 인증을 완료한 뒤 기존 미게시 main을 정상 HTTPS git push로 `64ab297`까지 동기화했다. 강제 push/reset/stash는 하지 않았다.
+- GPU 최초 여유 8129 MiB, 각 runner gate 8015–8026 MiB로 고정 최소 6144 MiB를 통과했다. 기존 Run/단일 queue에서 4개 job·20개 새 응답 완료, 오류/OOM/retry 0. 원래 EXP-0016 저장 namespace의 새 attempt들을 EXP-0017로 별도 기록했다.
+- 실행 Sol high Task `task_032ba4cbc816` / Dispatch `ctx_65e6cdf6b6f4`, CPU 평가 Sol high `task_92a58bc9727e` / `ctx_cce6645f155d`, 독립 Astra high `task_deaaa68f6feb` / `ctx_027c0ebf6c1f`. 실제 launch receipt로 model/effort를 확인했다.
+- [비교 결과](experiments/EXP-0017-prompt-evidence-results.md): q 비시도 5창의 candidate B 2→3, C 2→2. q04 C 후보 유지와 완료 과장 공존, B 누락 지속. v 양성 후보 1→0, 음성 후보 1→1. 수정 prompt 기본 적용 보류; 기존 구성도 성능 부족이다.
+- [평가 코드/노트](experiments/EXP-0017-evaluation-notes.md): 21개 CPU 테스트,131개 실제 파일 대조. q 과거 processor RGB/확장 prompt 미저장 한계, v 2 source group·완료 미평가를 보존한다. 정확도/F1/오탐률은 null.
+- [전달 기록](experiments/EXP-0017-delivery.md)에 독립 검토·등록·실제 브라우저와 GitHub 증거를 따로 기록한다. 실행 중 담당3 카드 표시는 확인했다. 종료 이후 새 GPU 작업/튜닝은 자동 시작하지 않는다.
+- Astra 독립 검토 PASS와 immutable binding/등록 완료. 실제 브라우저 담당3 → EXP-0017에서 보고서·14 metrics/2 graphs·review와 기존 원본 참고 클립8개 재생/seek/poll 보존 통과. 공개 모델 raw 답변/UI 기능 추가는 하지 않았다. GitHub 새 결과 게시 검증은 전달 기록의 최종 항목을 따른다.
+- 아래 EXP-0016의 미실행·인증 차단은 당시 이력이며 EXP-0017의 현재 상태로 읽지 않는다. 영상/프레임/가중치/raw 응답/runtime/receipts는 로컬 전용이다.
+
 ## 최신 상태 — EXP-0016 단일 프롬프트 변경 (2026-10-28)
 
 EXP-0015 사용자 라벨과 원응답을 대조해 q02/q03/q05 false candidates의 공통 문제를 “접근/보행 서술만으로 stepping/completion 선택”으로 좁혔다. 저장 결과는 관찰된 오류 양상을 보여주지만 원인 설명은 확정할 수 없다. 개선 가설은 Qwen shared prompt 하나에 프레임 순서에 따른 신체/경계 상대 움직임을 요구하는 것이다. 모델, weights, resolution/ROI, frame sampling/PTS, generation, schema, parser/postprocess는 유지한다. [ADR-0017](decisions/ADR-0017-qwen-temporal-evidence-prompt.md), [EXP-0016](experiments/EXP-0016-prompt-evidence-rubric.md) 참고.

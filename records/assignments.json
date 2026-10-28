@@ -116,6 +116,19 @@
       "synthetic": false,
       "task_id": "task_305549d14771",
       "title": "EXP-0016 Qwen prompt-only comparison or resource-blocked report"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T15:04:31.033036+00:00",
+      "dispatch_id": "ctx_65e6cdf6b6f4",
+      "experiment_id": "EXP-0017",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_032ba4cbc816",
+      "title": "EXP-0017 resumed Qwen prompt-only comparison"
     }
   ],
   "schema_version": 1

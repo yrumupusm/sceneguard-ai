@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0017",
+  "execution_status": "succeeded",
+  "behavioral_validation": "regression_targets_not_met",
+  "adoption": "on_hold",
+  "metrics": [
+    {
+      "label": "q reviewed no-attempt: B old candidate windows",
+      "value": 2,
+      "unit": "windows",
+      "sample_n": 5,
+      "scope": "Five user-reviewed development no-attempt windows; diagnostic count, not false-positive rate. Indeterminate is not confirmed negative.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "q reviewed no-attempt: B new candidate windows",
+      "value": 3,
+      "unit": "windows",
+      "sample_n": 5,
+      "scope": "Five user-reviewed development no-attempt windows; diagnostic count, not false-positive rate. Indeterminate is not confirmed negative.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "q reviewed no-attempt: C old candidate windows",
+      "value": 2,
+      "unit": "windows",
+      "sample_n": 5,
+      "scope": "Five user-reviewed development no-attempt windows; diagnostic count, not false-positive rate. Indeterminate is not confirmed negative.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "q reviewed no-attempt: C new candidate windows",
+      "value": 2,
+      "unit": "windows",
+      "sample_n": 5,
+      "scope": "Five user-reviewed development no-attempt windows; diagnostic count, not false-positive rate. Indeterminate is not confirmed negative.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "v reviewed attempt-positive: old candidate windows",
+      "value": 1,
+      "unit": "windows",
+      "sample_n": 2,
+      "scope": "Two purposive windows; four v windows share two source groups. No generalization or completion assessment.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "v reviewed attempt-positive: new candidate windows",
+      "value": 0,
+      "unit": "windows",
+      "sample_n": 2,
+      "scope": "Two purposive windows; four v windows share two source groups. No generalization or completion assessment.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "v reviewed non-event: old candidate windows",
+      "value": 1,
+      "unit": "windows",
+      "sample_n": 2,
+      "scope": "Two purposive windows; four v windows share two source groups. No generalization or completion assessment.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "v reviewed non-event: new candidate windows",
+      "value": 1,
+      "unit": "windows",
+      "sample_n": 2,
+      "scope": "Two purposive windows; four v windows share two source groups. No generalization or completion assessment.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "q_full_frame old mean generation",
+      "value": 2.815407902332178,
+      "unit": "seconds/window",
+      "sample_n": 6,
+      "scope": "Matched selected windows only; old q timings are historical. Excludes load/decode/queue overhead; not end-to-end FPS or causal speed improvement.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "q_full_frame new mean generation",
+      "value": 3.9287253101695874,
+      "unit": "seconds/window",
+      "sample_n": 6,
+      "scope": "Matched selected windows only; old q timings are historical. Excludes load/decode/queue overhead; not end-to-end FPS or causal speed improvement.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "q_fixed_roi old mean generation",
+      "value": 3.022167249165553,
+      "unit": "seconds/window",
+      "sample_n": 6,
+      "scope": "Matched selected windows only; old q timings are historical. Excludes load/decode/queue overhead; not end-to-end FPS or causal speed improvement.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "q_fixed_roi new mean generation",
+      "value": 3.68065729450124,
+      "unit": "seconds/window",
+      "sample_n": 6,
+      "scope": "Matched selected windows only; old q timings are historical. Excludes load/decode/queue overhead; not end-to-end FPS or causal speed improvement.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "v_full_frame old mean generation",
+      "value": 3.6634267440094845,
+      "unit": "seconds/window",
+      "sample_n": 4,
+      "scope": "Matched selected windows only; old q timings are historical. Excludes load/decode/queue overhead; not end-to-end FPS or causal speed improvement.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    },
+    {
+      "label": "v_full_frame new mean generation",
+      "value": 4.049517459257913,
+      "unit": "seconds/window",
+      "sample_n": 4,
+      "scope": "Matched selected windows only; old q timings are historical. Excludes load/decode/queue overhead; not end-to-end FPS or causal speed improvement.",
+      "source": "records/EXP-0017/comparison.json",
+      "source_sha256": "a4003df7447b70fc591dfabb4251e0704de0b3f53a5ef183b9211c1ded8a9b3c",
+      "verification": "saved_output_cpu_evaluator_and_coordinator_check"
+    }
+  ],
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "hourly_false_alarms": null
+  },
+  "scope": "One frozen prompt change, four sequential jobs, 20 new outputs; diagnostic development comparison only."
+}

@@ -1030,6 +1030,89 @@
       "task_id": "task_305549d14771",
       "title": "EXP-0016 Qwen prompt-only comparison or resource-blocked report",
       "worker_opinion": "The prompt-only comparison is implemented and regression-tested but cannot be behaviorally assessed until the existing queue resource gate passes. Keep adoption on hold; do not infer that the prompt improved or worsened performance."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T15:04:31.033036+00:00",
+      "attempt_id": "frozen-prompt-resume-r1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_65e6cdf6b6f4",
+      "evaluated_model": "Qwen3-VL-2B-Instruct (frozen original/revised prompt; BF16, local CUDA0)",
+      "evidence": [
+        {
+          "artifact_id": "exp0017-reference-q02",
+          "kind": "video",
+          "label": "q02 원본: 접근만, B 잘못된 후보 지속"
+        },
+        {
+          "artifact_id": "exp0017-reference-q03",
+          "kind": "video",
+          "label": "q03 원본: 시도 없음, B 새 후보/C 기존 후보"
+        },
+        {
+          "artifact_id": "exp0017-reference-q04",
+          "kind": "video",
+          "label": "q04 원본: 시도·진행, C 후보 유지·완료 과장"
+        },
+        {
+          "artifact_id": "exp0017-reference-q05",
+          "kind": "video",
+          "label": "q05 원본: 접근만, B/C 잘못된 후보 지속"
+        },
+        {
+          "artifact_id": "exp0017-reference-q06",
+          "kind": "video",
+          "label": "q06 원본: 사람·사건 없음, C 판단 유보"
+        },
+        {
+          "artifact_id": "exp0017-reference-v01",
+          "kind": "video",
+          "label": "v01 원본: 시도·진행, 수정 응답 후보 소실"
+        },
+        {
+          "artifact_id": "exp0017-reference-v03",
+          "kind": "video",
+          "label": "v03 원본: 문 옆 틈에서 시도, 양쪽 누락"
+        },
+        {
+          "artifact_id": "exp0017-reference-v04",
+          "kind": "video",
+          "label": "v04 원본: 비사건, 양쪽 잘못된 후보"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0017",
+      "limitations": [
+        "q 6개는 개발 회귀 세트, v 4개는 두 원본 그룹이며 독립 카메라/장소 맹검 검증이 아니다.",
+        "과거 q processor RGB/확장 질문 미저장으로 byte 동등성은 확정 불가.",
+        "candidate는 모델 주장이다. q04 완료 과장, v01/v03 완료 미평가 및 v03 문 옆 틈의 시도를 구분한다.",
+        "정확도/F1/오탐률 없음. 생성시간은 선택 창 비용이며 연속 탐지 지연이나 전체 처리 FPS가 아니다.",
+        "등록 영상은 기존 사용자 검수 원본 참고 입력이며 모델 답변 오버레이/비교영상은 아니다."
+      ],
+      "metric_definitions": "records/EXP-0017/metrics.json",
+      "metrics_path": "records/EXP-0017/metrics.json",
+      "metrics_sha256": "2b78c499bbb055bffa5d1cbe026bf4d894dcc228a4bd987002165cd70fbf07a4",
+      "next_step": "기본 설정을 유지하고 이번 비교를 종료한다. 후속은 시각적 행동 근거 확보 방안을 별도 계획할 때만 진행한다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "ec422372b561cdad9245c3c58571f54db9c6dc0326ba2407b39890eae1323413",
+      "report_path": "docs/experiments/EXP-0017-prompt-evidence-results.md",
+      "report_sha256": "03971787b3d7ffffb633f7c7dbcfa92ef497e071f042766cab7ac6c47d5f34b5",
+      "review_binding_path": "docs/reviews/EXP-0017.binding.json",
+      "review_path": "docs/reviews/EXP-0017-independent-review.md",
+      "review_sha256": "4dc0de52ea001c7ce9f48b06c9364f842ee0c15cd1bed24b102e709842985482",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "2b78c499bbb055bffa5d1cbe026bf4d894dcc228a4bd987002165cd70fbf07a4",
+      "reviewed_report_sha256": "03971787b3d7ffffb633f7c7dbcfa92ef497e071f042766cab7ac6c47d5f34b5",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "4개 GPU 작업·20개 응답 실행 완료. 접근/대기 오후보 감소 실패, q04 ROI 후보 유지와 완료 과장 공존, 별도 양성 v01 후보 소실. 수정 프롬프트 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_032ba4cbc816",
+      "title": "EXP-0017 resumed Qwen prompt-only comparison",
+      "worker_opinion": "실행/평가 기능은 완료. 프롬프트 개선 효과는 확인되지 않았으며 원래 구성도 성능 부족이다. 후보 감소를 성공으로 해석하지 않는다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

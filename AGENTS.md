@@ -2,7 +2,15 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
-## 최신 범위 — EXP-0016 단일 프롬프트 개선 비교 (2026-10-28)
+## 최신 결과 — EXP-0017 프롬프트 비교 실행 종료 (2026-10-29)
+
+사용자의 GPU 재확인·재개 지시로 기존 EXP-0016 사양을 새 결과 ID EXP-0017에서 실행했다. [실제 비교 보고서](docs/experiments/EXP-0017-prompt-evidence-results.md), [전달 기록](docs/experiments/EXP-0017-delivery.md), [다음 작업](docs/CODEX_NEXT_TASK.md)을 우선한다. 기존 단일 Run/queue와 Sol high 담당을 재사용했고, free VRAM 8015–8026 MiB가 기존 6144 MiB gate를 통과했다. 4개 직렬 작업·20개 생성 완료, 오류/OOM/retry 0이다. EXP-0016의 차단 보고서/등록과 이전 결과는 불변으로 보존한다.
+
+**기능 실행 완료와 행동 성능 실패를 구분한다.** q 비시도 5개에서 잘못된 후보 창은 B 2→3, C 2→2이며 q04 C 후보는 유지됐으나 완료를 과장했다. 별도 사용자 검수 v 양성 2개에서 후보는 1→0, 음성 2개에서는 1→1이다. 수정 prompt의 기본 적용을 보류하고 기존 설정을 유지한다. 기존 설정도 성능 부족/채택 보류다. v 네 창은 두 source group이며 카메라/장소 독립 최종 테스트가 아니다. accuracy/F1/오탐률을 만들지 않는다.
+
+이번 단일 개선 한도는 종료했다. 추가 prompt 튜닝·모델·GPU 작업을 자동 시작하지 않는다. 모델·가중치·ROI·샘플링·후처리·웹 기능은 바꾸지 않았다. 원본/영상/프레임/raw 응답/weights/runtime은 로컬 전용이다. 아래 EXP-0016 미실행 상태는 과거 차단 이력이다.
+
+## 이전 범위 — EXP-0016 단일 프롬프트 개선 비교 (2026-10-28)
 
 사용자가 EXP-0015, 독립 검토, MVP 요약과 기존 작업 지침을 읽고 단일 개선 구현·비교, q01–q06 회귀 확인, 최대6개 별도 확인창, Astra 검토, 기존 웹 등록 및 GitHub 기록을 승인했다. 최신 상세는 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md), [EXP-0016 사양/결과](docs/experiments/EXP-0016-prompt-evidence-rubric.md), [ADR-0017](docs/decisions/ADR-0017-qwen-temporal-evidence-prompt.md)이다. 이 범위에서 변경하는 축은 Qwen 공통 prompt 하나뿐이다. 모델/가중치/processor/generation/parser/후처리/ROI/windows를 조합해 바꾸지 않는다. 재학습·외부 API·가중치 다운로드·웹 기능 확장은 금지다.
 
