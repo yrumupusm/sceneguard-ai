@@ -43,3 +43,16 @@ GitHub push 성공만으로 화면 갱신을 완료 처리하지 않는다. HTTP
 **첫 실제 실험은 위 전체 흐름의 실행 중 상태와 완료 후 클릭/그래프/비교 영상까지 확인한다.** 현재 새 실험은 미실행이며, TEST 등록/모의 상태의 검증은 실제 실험 검증과 별도로 표시한다. 테스트 자료는 Git 제외 격리 fixture에만 만들고 실제 EXP 번호/원본 라벨/기존 보고서로 위장하지 않는다. 실패 실험도 실패 보고서를 남기며, 영상이 없으면 부재와 이유를 표시하고 영상 확인을 통과 처리하지 않는다.
 
 완료 메시지는 `코드 구현`, `실제 실험 실행`, `GitHub 게시`, `로컬 화면 확인` 네 항목을 분리한다. 모델 채택과 사용자 확정 정답은 이 절차 완료와 별도다.
+
+## 게시와 화면의 별도 확인 명령
+
+로컬 config의 `repo_root`와 실제 서버의 저장소가 같은 검토 버전을 가리키는지 먼저 확인한다. 현재 시작·중지·복구 명령은 [DELIVERY_VALIDATION](DELIVERY_VALIDATION.md)을 따른다. 아래 대문자 인수는 해당 실험의 실제 값으로 대체한다. 출력 receipt는 항상 Git 제외 경로의 새 파일로 지정한다.
+
+```sh
+python -m orchestration.verify_delivery --config LOCAL_CONFIG --experiment EXPERIMENT_ID --output LOCAL_GITHUB_RECEIPT github --expected-commit FULL_REMOTE_COMMIT
+python -m orchestration.verify_delivery --config LOCAL_CONFIG --experiment EXPERIMENT_ID --output LOCAL_BROWSER_RECEIPT browser --page ACTUAL_BROWSER_PAGE_ID --url http://127.0.0.1:8765/
+```
+
+GitHub 검사는 게시 후 fetch한 원격 commit 객체와 현재 원격 main을 대조한다. 게시 자체를 실행하지 않는다. 화면 검사는 설치된 Orca의 `tab list --worktree all --json`에서 확인한 **현재 `browserPageId`**를 사용한다. 선택·원문 펼침·같은 측정값과 그래프·영상 재생/seek·주기 갱신 중 영상 유지·검토 버전을 확인한다. 영상 없는 실험은 이 검사의 영상 확인을 통과 처리할 수 없다. 실패 receipt를 덮어쓰지 않고 원인을 해결한 뒤 새 receipt에 다시 확인한다.
+
+코드/서비스를 갱신했다면 새 코드가 실행되도록 소유한 서비스만 재시작한다. 단순 보고서 등록은 15초 목록 갱신에 반영된다. 자료 수정 후 과거 승인/receipt를 재사용하지 않는다. 원본/측정/검토를 변경해야 하는 실험은 기존 완료 ID를 자동 덮어쓰지 않고 재검토 및 별도 실험 기록을 결정한다.

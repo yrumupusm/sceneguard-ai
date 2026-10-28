@@ -2,7 +2,17 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
-## 최신 사용자 승인 — Orca 세팅 (2026-10-28)
+## 최신 사용자 운영 지시 — 실험 전달 완료 절차 (2026-10-28)
+
+앞으로 승인된 실험은 **담당 에이전트 배정 → 실행 → 보고서·측정값 저장 → 총괄 검토 → 웹 등록 → GitHub 게시 확인 + 로컬 화면 확인**까지 한 작업이다. [EXPERIMENT_DELIVERY](docs/orchestration/EXPERIMENT_DELIVERY.md), [완료 CLI](docs/orchestration/COMPLETE_CLI.md), [실제 검증 기록](docs/orchestration/DELIVERY_VALIDATION.md)을 따른다.
+
+- 실제 Orca Run/Task/Dispatch와 담당 슬롯을 `orchestration.complete assign`으로 연결한다. 실효 모델은 세션 증거로 확인한다. 작업 상태는 정확히 일치하는 최근 native 관측만 사용하고, 단절·오래됨·다른 dispatch이면 미확인이다.
+- 작업자는 자기 보고서/metrics/로컬 artifact 목록을 제출한다. 총괄이 별도 검토와 원문·측정치 SHA256을 작성한 뒤 `complete`로 등록한다. worker_done, 코드 구현, 실험 성공, 검토 판정, 채택은 서로 다른 사실이다.
+- `verify_delivery github`와 `verify_delivery browser`로 원격 커밋과 실제 화면을 **각각** 확인한다. 등록 또는 HTTP 200만으로 완료 선언하지 않는다. 첫 실제 실험은 진행 중 담당 카드와 완료 후 보고서 펼치기·그래프·등록 비교 영상 재생/seek·총괄 검토까지 확인하고 로컬 receipt를 남긴다.
+- 실패/미측정/영상 부재도 기록한다. TEST 모의 검증을 실제 실험 성공으로 표현하지 않는다. 현재 실제 실험 배정은 비어 있으며 새 모델 배치 실행 승인은 추가되지 않았다.
+- 코드·문서·공개 가능한 측정 요약만 게시한다. 영상·이미지·가중치·원시 응답·로컬 artifact 경로·DB·로그·receipt·인증정보는 Git 제외다. 같은 runtime/환경을 재사용하며 자동 재실험/자동 채택을 추가하지 않는다.
+
+## 이전 승인 — Orca 세팅 (2026-10-28)
 
 현재 우선 작업은 **Orca 총괄·역할별 작업자 + 단일 GPU 실행 큐 + 읽기 전용 로컬 결과 페이지 세팅**이다. `docs/CODEX_NEXT_TASK.md`, `docs/orchestration/SETUP_ORCA.md`, `docs/orchestration/AGENT_ROLES.md`, `configs/orchestration/model_policy.json`을 따른다. 이 범위의 UI/서버·역할 설정·최소 환경 설치는 승인됐으며, 아래 과거 실험 단계의 UI/서버/새 아키텍처 금지를 이 범위에 한해 대체한다.
 

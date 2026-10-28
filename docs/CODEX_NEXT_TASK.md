@@ -1,6 +1,15 @@
-# Codex 다음 작업 — Orca 세팅 결과 인계와 다음 배치 준비
+# Codex 다음 작업 — 실험 배정부터 화면 확인까지
 
-2026-10-28. Orca 로컬 기능 검증을 수행했다. 독립 재검토 R1~R4 해결과 실제 명령·게시 내역은 [LOCAL_SETUP_REPORT](orchestration/LOCAL_SETUP_REPORT.md)를 먼저 읽는다. 이 파일은 새 모델 실험 실행 승인이 아니다.
+2026-10-28. 재사용 가능한 배정/완료 등록과 별도 게시·화면 확인 절차를 구현했다. [DELIVERY_VALIDATION](orchestration/DELIVERY_VALIDATION.md)에서 코드 테스트와 실제 브라우저 확인의 범위를 먼저 확인한다. 이번 작업은 새 CV/VLM 실험 실행 승인이 아니다.
+
+## 다음 승인된 실험의 필수 완료 조건
+
+1. [EXPERIMENT_DELIVERY](orchestration/EXPERIMENT_DELIVERY.md), [COMPLETE_CLI](orchestration/COMPLETE_CLI.md), [ADR-0014](decisions/ADR-0014-experiment-delivery.md), 최초 독립 검토 및 재검토를 읽는다. 기존 지침과 실행 예산은 유지한다.
+2. 총괄 하나/공통 GPU 큐를 유지하며 native Task/Dispatch를 배정한다. 실효 작업자 모델/effort를 확인하고 `assign`으로 해당 EXP와 담당 1·2·3 중 하나를 연결한다. **첫 실제 실험에서 진행 중 카드 표시를 실제 브라우저로 확인한다.** 모의 상태로 대신하지 않는다.
+3. 승인된 실행 후 보고서·측정값·로컬 비교 영상을 저장한다. 실패·미측정·비교 불가도 보존한다. 작업자 완료 메시지 후 총괄이 별도 검토문에 report/metrics SHA256과 의견을 기록한다.
+4. `complete`로 원문/측정치/검토/로컬 artifact allowlist를 연결하고 `status`로 근거 버전을 확인한다. 동일 재시도만 허용하며 다른 내용의 완료 ID를 덮어쓰지 않는다. 과거 전용 importer로 새 배정을 지우지 않는다.
+5. 코드·공개 요약을 커밋·푸시한 원격 SHA와 실제 서비스가 읽는 저장소 버전을 따로 확인한다. `verify_delivery github`와 `browser`의 별도 receipt를 보존한다. 담당 카드 선택→해당 보고서 펼치기→측정 표/그래프→등록 영상 재생·seek→총괄 검토까지 확인해야 화면 완료다.
+6. 완료 메시지에서 **코드 구현 / 실제 실험 실행 / GitHub 게시 / 로컬 화면 확인**을 분리한다. 이번 TEST 성공이나 과거 EXP5 재생을 첫 실제 새 실험 검증으로 세지 않는다. 필요한 자료가 없거나 브라우저가 실패하면 해당 항목은 미완료로 남긴다.
 
 ## 반드시 읽을 것
 
