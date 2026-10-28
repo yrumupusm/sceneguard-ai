@@ -4,6 +4,8 @@
 
 ## 최신 사용자 운영 지시 — 실험 전달 완료 절차 (2026-10-28)
 
+**추가 승인: 첫 실제 VLM 비교 배치(2026-10-28).** 기존 Qwen3-VL-2B 포함 최대3후보/신규최대2, 후보당 baseline1+총괄 결정 improvement최대1, 실행 오류 job당 retry최대1. 이번 배치는 Qwen3-VL-2B와 SmolVLM2-2.2B 두 후보로 시작한다. 기존 6개 개발 클립, 실행 전 공통 질문·평가 고정. Sol high 담당과 Astra high 독립 검토, 기존 단일 Run/GPU 큐 사용. 최소 명령 등록·설치·추론·결과 검토·기록·웹 반영은 승인됐으며 아래 과거의 새 실험 미승인 상태를 이 배치에 한해 대체한다. 큐 우회 추론, 재학습, 외부 추론 API/새 결제/미디어 외부 전송, 새 총괄/큐/대시보드 확장은 금지. 배치 후 보고하고 멈춘다. 공통 계약은 `docs/experiments/BATCH-0001-plan.md`다.
+
 앞으로 승인된 실험은 **담당 에이전트 배정 → 실행 → 보고서·측정값 저장 → 총괄 검토 → 웹 등록 → GitHub 게시 확인 + 로컬 화면 확인**까지 한 작업이다. [EXPERIMENT_DELIVERY](docs/orchestration/EXPERIMENT_DELIVERY.md), [완료 CLI](docs/orchestration/COMPLETE_CLI.md), [실제 검증 기록](docs/orchestration/DELIVERY_VALIDATION.md)을 따른다.
 
 - 실제 Orca Run/Task/Dispatch와 담당 슬롯을 `orchestration.complete assign`으로 연결한다. 실효 모델은 세션 증거로 확인한다. 작업 상태는 정확히 일치하는 최근 native 관측만 사용하고, 단절·오래됨·다른 dispatch이면 미확인이다.
