@@ -1,0 +1,629 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0008",
+  "comparison_group": "BATCH-0001-baseline",
+  "cross_experiment_comparable": false,
+  "comparison_note": "같은6클립·영어질문을 사용하나 모델별 전처리와 시각 토큰 예산은 다름",
+  "attempt_id": "8b93c06304724009b8ca5a0d15a28288",
+  "input_summary": {
+    "clips": 6,
+    "frames_per_clip": 10,
+    "source_shape": [
+      1080,
+      1920,
+      3
+    ],
+    "actual_resized_shape": [
+      10,
+      3,
+      448,
+      768
+    ],
+    "video_grid_thw": [
+      5,
+      28,
+      48
+    ],
+    "input_tokens_per_clip": 1943,
+    "visual_tokens_per_clip": 1680,
+    "extra_sampling": false,
+    "temporal_padding_frames": 0
+  },
+  "metrics": [
+    {
+      "label": "모델·processor 로드",
+      "value": 2.4939531619893387,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "한 프로세스, 로컬 파일 로딩부터 CUDA 동기화까지; 최초 다운로드 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/summary.json",
+      "source_pointer": [
+        "load_seconds"
+      ],
+      "source_sha256": "2f95196f47fb44b9541e30a7ffb3766ac67a9af5c58bd1caa645b9be5787871f",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 생성",
+      "value": 2.8656866550009,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "선택된 5초 클립의 10프레임, generate+CUDA동기화; 캐시 읽기·전처리·저장·큐대기 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip01/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "06b3c5234eb227ee747da11a477e4bad11d6d0ca12d7941657e2b34dd5764d42",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 전처리",
+      "value": 0.08365550499001984,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "processor와 CUDA 전송·동기화; RGB cache 로드·검수 시트 저장 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip01/result.json",
+      "source_pointer": [
+        "prepare_seconds"
+      ],
+      "source_sha256": "06b3c5234eb227ee747da11a477e4bad11d6d0ca12d7941657e2b34dd5764d42",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 RGB cache 읽기",
+      "value": 0.013103606004733592,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "기존 npy 로드만; 원본 영상 디코딩 시간이 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip01/result.json",
+      "source_pointer": [
+        "npy_load_seconds"
+      ],
+      "source_sha256": "06b3c5234eb227ee747da11a477e4bad11d6d0ca12d7941657e2b34dd5764d42",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 출력 토큰",
+      "value": 73,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "신규 생성 tensor 길이; 특수 종료 토큰 포함 가능, 텍스트 단어 수 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip01/result.json",
+      "source_pointer": [
+        "output_tokens"
+      ],
+      "source_sha256": "06b3c5234eb227ee747da11a477e4bad11d6d0ca12d7941657e2b34dd5764d42",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 GPU 할당 최고",
+      "value": 4.342104434967041,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak allocated; 모델 포함, 장치 전체 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip01/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "06b3c5234eb227ee747da11a477e4bad11d6d0ca12d7941657e2b34dd5764d42",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 GPU 예약 최고",
+      "value": 4.51171875,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak reserved; 모델 포함, allocator 캐시 포함",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip01/result.json",
+      "source_pointer": [
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "06b3c5234eb227ee747da11a477e4bad11d6d0ca12d7941657e2b34dd5764d42",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 생성",
+      "value": 2.1356688989908434,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "선택된 5초 클립의 10프레임, generate+CUDA동기화; 캐시 읽기·전처리·저장·큐대기 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip02/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "653ca466d89ebfe7b380ff199c174bd824b6802db03eb08cd2d188c312c1d8f2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 전처리",
+      "value": 0.09126305500103626,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "processor와 CUDA 전송·동기화; RGB cache 로드·검수 시트 저장 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip02/result.json",
+      "source_pointer": [
+        "prepare_seconds"
+      ],
+      "source_sha256": "653ca466d89ebfe7b380ff199c174bd824b6802db03eb08cd2d188c312c1d8f2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 RGB cache 읽기",
+      "value": 0.0074194350017933175,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "기존 npy 로드만; 원본 영상 디코딩 시간이 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip02/result.json",
+      "source_pointer": [
+        "npy_load_seconds"
+      ],
+      "source_sha256": "653ca466d89ebfe7b380ff199c174bd824b6802db03eb08cd2d188c312c1d8f2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 출력 토큰",
+      "value": 69,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "신규 생성 tensor 길이; 특수 종료 토큰 포함 가능, 텍스트 단어 수 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip02/result.json",
+      "source_pointer": [
+        "output_tokens"
+      ],
+      "source_sha256": "653ca466d89ebfe7b380ff199c174bd824b6802db03eb08cd2d188c312c1d8f2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 GPU 할당 최고",
+      "value": 4.342409610748291,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak allocated; 모델 포함, 장치 전체 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip02/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "653ca466d89ebfe7b380ff199c174bd824b6802db03eb08cd2d188c312c1d8f2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 GPU 예약 최고",
+      "value": 4.51171875,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak reserved; 모델 포함, allocator 캐시 포함",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip02/result.json",
+      "source_pointer": [
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "653ca466d89ebfe7b380ff199c174bd824b6802db03eb08cd2d188c312c1d8f2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 생성",
+      "value": 3.430297184997471,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "선택된 5초 클립의 10프레임, generate+CUDA동기화; 캐시 읽기·전처리·저장·큐대기 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip03/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "30c2fa23818585774f6b5959183759005ada8af5cf4324b3eb4f1f1698648b91",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 전처리",
+      "value": 0.0801081470126519,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "processor와 CUDA 전송·동기화; RGB cache 로드·검수 시트 저장 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip03/result.json",
+      "source_pointer": [
+        "prepare_seconds"
+      ],
+      "source_sha256": "30c2fa23818585774f6b5959183759005ada8af5cf4324b3eb4f1f1698648b91",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 RGB cache 읽기",
+      "value": 0.006278001994360238,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "기존 npy 로드만; 원본 영상 디코딩 시간이 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip03/result.json",
+      "source_pointer": [
+        "npy_load_seconds"
+      ],
+      "source_sha256": "30c2fa23818585774f6b5959183759005ada8af5cf4324b3eb4f1f1698648b91",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 출력 토큰",
+      "value": 106,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "신규 생성 tensor 길이; 특수 종료 토큰 포함 가능, 텍스트 단어 수 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip03/result.json",
+      "source_pointer": [
+        "output_tokens"
+      ],
+      "source_sha256": "30c2fa23818585774f6b5959183759005ada8af5cf4324b3eb4f1f1698648b91",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 GPU 할당 최고",
+      "value": 4.342409610748291,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak allocated; 모델 포함, 장치 전체 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip03/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "30c2fa23818585774f6b5959183759005ada8af5cf4324b3eb4f1f1698648b91",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 GPU 예약 최고",
+      "value": 4.51171875,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak reserved; 모델 포함, allocator 캐시 포함",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip03/result.json",
+      "source_pointer": [
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "30c2fa23818585774f6b5959183759005ada8af5cf4324b3eb4f1f1698648b91",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 생성",
+      "value": 2.5067236659961054,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "선택된 5초 클립의 10프레임, generate+CUDA동기화; 캐시 읽기·전처리·저장·큐대기 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip04/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "4b04ba3d59f483ff301f6e9320d4475d8cce1d88d2ad4e7eee244d9d07a23bc2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 전처리",
+      "value": 0.07291209099639673,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "processor와 CUDA 전송·동기화; RGB cache 로드·검수 시트 저장 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip04/result.json",
+      "source_pointer": [
+        "prepare_seconds"
+      ],
+      "source_sha256": "4b04ba3d59f483ff301f6e9320d4475d8cce1d88d2ad4e7eee244d9d07a23bc2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 RGB cache 읽기",
+      "value": 0.004600836997269653,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "기존 npy 로드만; 원본 영상 디코딩 시간이 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip04/result.json",
+      "source_pointer": [
+        "npy_load_seconds"
+      ],
+      "source_sha256": "4b04ba3d59f483ff301f6e9320d4475d8cce1d88d2ad4e7eee244d9d07a23bc2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 출력 토큰",
+      "value": 85,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "신규 생성 tensor 길이; 특수 종료 토큰 포함 가능, 텍스트 단어 수 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip04/result.json",
+      "source_pointer": [
+        "output_tokens"
+      ],
+      "source_sha256": "4b04ba3d59f483ff301f6e9320d4475d8cce1d88d2ad4e7eee244d9d07a23bc2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 GPU 할당 최고",
+      "value": 4.342409610748291,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak allocated; 모델 포함, 장치 전체 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip04/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "4b04ba3d59f483ff301f6e9320d4475d8cce1d88d2ad4e7eee244d9d07a23bc2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 GPU 예약 최고",
+      "value": 4.51171875,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak reserved; 모델 포함, allocator 캐시 포함",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip04/result.json",
+      "source_pointer": [
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "4b04ba3d59f483ff301f6e9320d4475d8cce1d88d2ad4e7eee244d9d07a23bc2",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 생성",
+      "value": 2.6246953279915033,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "선택된 5초 클립의 10프레임, generate+CUDA동기화; 캐시 읽기·전처리·저장·큐대기 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip05/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "92eff97ff9d8f16315743bf5058774067acc05d80410f3267b17b1e6b0162833",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 전처리",
+      "value": 0.07403964399418328,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "processor와 CUDA 전송·동기화; RGB cache 로드·검수 시트 저장 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip05/result.json",
+      "source_pointer": [
+        "prepare_seconds"
+      ],
+      "source_sha256": "92eff97ff9d8f16315743bf5058774067acc05d80410f3267b17b1e6b0162833",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 RGB cache 읽기",
+      "value": 0.014979938991018571,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "기존 npy 로드만; 원본 영상 디코딩 시간이 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip05/result.json",
+      "source_pointer": [
+        "npy_load_seconds"
+      ],
+      "source_sha256": "92eff97ff9d8f16315743bf5058774067acc05d80410f3267b17b1e6b0162833",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 출력 토큰",
+      "value": 94,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "신규 생성 tensor 길이; 특수 종료 토큰 포함 가능, 텍스트 단어 수 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip05/result.json",
+      "source_pointer": [
+        "output_tokens"
+      ],
+      "source_sha256": "92eff97ff9d8f16315743bf5058774067acc05d80410f3267b17b1e6b0162833",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 GPU 할당 최고",
+      "value": 4.342409610748291,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak allocated; 모델 포함, 장치 전체 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip05/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "92eff97ff9d8f16315743bf5058774067acc05d80410f3267b17b1e6b0162833",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 GPU 예약 최고",
+      "value": 4.51171875,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak reserved; 모델 포함, allocator 캐시 포함",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip05/result.json",
+      "source_pointer": [
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "92eff97ff9d8f16315743bf5058774067acc05d80410f3267b17b1e6b0162833",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 생성",
+      "value": 2.5901068310049595,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "선택된 5초 클립의 10프레임, generate+CUDA동기화; 캐시 읽기·전처리·저장·큐대기 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip06/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "80a184d3f9b67d26ee25f0621782264b067680f62cf2a520e95e2fa99c39b2ae",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 전처리",
+      "value": 0.06571335799526423,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "processor와 CUDA 전송·동기화; RGB cache 로드·검수 시트 저장 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip06/result.json",
+      "source_pointer": [
+        "prepare_seconds"
+      ],
+      "source_sha256": "80a184d3f9b67d26ee25f0621782264b067680f62cf2a520e95e2fa99c39b2ae",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 RGB cache 읽기",
+      "value": 0.009568259993102401,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "기존 npy 로드만; 원본 영상 디코딩 시간이 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip06/result.json",
+      "source_pointer": [
+        "npy_load_seconds"
+      ],
+      "source_sha256": "80a184d3f9b67d26ee25f0621782264b067680f62cf2a520e95e2fa99c39b2ae",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 출력 토큰",
+      "value": 80,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "신규 생성 tensor 길이; 특수 종료 토큰 포함 가능, 텍스트 단어 수 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip06/result.json",
+      "source_pointer": [
+        "output_tokens"
+      ],
+      "source_sha256": "80a184d3f9b67d26ee25f0621782264b067680f62cf2a520e95e2fa99c39b2ae",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 GPU 할당 최고",
+      "value": 4.342409610748291,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak allocated; 모델 포함, 장치 전체 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip06/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "80a184d3f9b67d26ee25f0621782264b067680f62cf2a520e95e2fa99c39b2ae",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 GPU 예약 최고",
+      "value": 4.51171875,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "클립별 reset 이후 torch peak reserved; 모델 포함, allocator 캐시 포함",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/clip06/result.json",
+      "source_pointer": [
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "80a184d3f9b67d26ee25f0621782264b067680f62cf2a520e95e2fa99c39b2ae",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "생성 완료 클립",
+      "value": 6,
+      "unit": "clip",
+      "sample_n": 6,
+      "scope": "실행 성공 개수; 행동 판정 성공 개수 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "generated_clips"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "엄격한 JSON 파싱",
+      "value": 2,
+      "unit": "clip",
+      "sample_n": 6,
+      "scope": "전체 응답을 수정 없이 공통 schema로 검사",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "strict_parse_count"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "허용 후처리 후 파싱",
+      "value": 6,
+      "unit": "clip",
+      "sample_n": 6,
+      "scope": "공백/전체 단일 펜스만 제거; 의미 수정 없음",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "postprocessed_parse_count"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "출력 토큰 상한 도달",
+      "value": 0,
+      "unit": "clip",
+      "sample_n": 6,
+      "scope": "384 신규 토큰 상한 도달 개수",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "token_limit_count"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "CUDA OOM",
+      "value": 0,
+      "unit": "clip",
+      "sample_n": 6,
+      "scope": "저장된 클립 결과의 OOM 개수",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "oom_count"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "클립 생성 평균",
+      "value": 2.692196427330297,
+      "unit": "s",
+      "sample_n": 6,
+      "scope": "6개 서로 다른 개발 클립의 산술평균, 반복 성능시험 아님",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "generation_mean_seconds"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "전체 장치 관측 최고",
+      "value": 6457.0,
+      "unit": "MiB",
+      "sample_n": 37,
+      "scope": "로딩부터 종료까지 0.5초 간격 nvidia-smi 관측; 다른 프로세스 포함, 순간 최고 보장 없음",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "gpu_max_used_mib"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "큐 attempt 경과",
+      "value": 23.854036331176758,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "claim부터 완료 영수증 시각까지; 자산 재검증·프로세스 시작·저장 포함, 대기 제외",
+      "source": "outputs/vlm_batch01/EXP-0008/8b93c06304724009b8ca5a0d15a28288/worker-analysis.json",
+      "source_pointer": [
+        "queue_wall_seconds"
+      ],
+      "source_sha256": "d543ad985f6ae824abc940bcd1541f86a0fb3eb1ff7715cf589ca5eaa6c87421",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "확정 독립 정답 부재; 기존 6개 개발 관찰 초안 비교만 가능",
+      "source": "docs/experiments/BATCH-0001-plan.md",
+      "source_sha256": null,
+      "verification": "not_measured"
+    }
+  ]
+}
