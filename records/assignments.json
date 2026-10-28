@@ -142,6 +142,32 @@
       "synthetic": false,
       "task_id": "task_806f089dde4f",
       "title": "BATCH-0002 input sufficiency audit"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T16:35:22.471217+00:00",
+      "dispatch_id": "ctx_0578048b13d3",
+      "experiment_id": "EXP-0019",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot2",
+      "synthetic": false,
+      "task_id": "task_5dbd99e6ff9a",
+      "title": "BATCH-0002 native CV comparison"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T16:42:47.196834+00:00",
+      "dispatch_id": "ctx_0d176c9c2889",
+      "experiment_id": "EXP-0020",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_cf14cc142ed2",
+      "title": "BATCH-0002 Qwen4B comparison"
     }
   ],
   "schema_version": 1

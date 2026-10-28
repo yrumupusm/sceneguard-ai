@@ -1,0 +1,414 @@
+{
+  "batch": "BATCH-0002",
+  "environment": {
+    "file_index": "runtime/BATCH-0002/cv/environment-files.local.json",
+    "files": {
+      ".venv-cv-batch02/bin/python": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      ".venv-cv-batch02/pyvenv.cfg": "db6c8a96f25493eda9f74f23f0b5f248a8b50a5b469b15c5ee7313875b416364",
+      "requirements-cv-batch02-lock.txt": "2f424298d36573ad0e066a627dc7fa83cd1c67db4ace639982255c97438275c3",
+      "runtime/BATCH-0002/cv/checkpoint-verification.json": "55896fa3e78d3bdc3e01223746f0896ba18d70be94d59abbe09151b4528bf1b7",
+      "runtime/BATCH-0002/cv/cpu-import-check.json": "9765fd39c4e4aeba6a695b243c94311de41ea21e8061bb3317f9811c9ea2e7c0",
+      "runtime/BATCH-0002/cv/environment-files.local.json": "5d320de24c21ab9bf52388ee3ea0774a861f6f72b0cc202422229d8312451315",
+      "runtime/BATCH-0002/cv/environment-inventory.json": "1916998bd79752278ad81bc7c8b73a52b475232e7f46f1b598bf260741036739",
+      "runtime/BATCH-0002/cv/official-source-parity.json": "dbf01a17651c9ee7b3d4bdb5a0eda7a000cbe7fea5daaaf8c565a5874397ad7e"
+    },
+    "packages": {
+      "Jinja2": "3.1.6",
+      "MarkupSafe": "3.0.3",
+      "PyYAML": "6.0.3",
+      "Pygments": "2.21.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "av": "16.0.1",
+      "certifi": "2026.10.23",
+      "charset-normalizer": "3.5.2",
+      "click": "8.5.0",
+      "contourpy": "1.3.2",
+      "cycler": "0.12.1",
+      "defusedxml": "0.7.1",
+      "exceptiongroup": "1.3.1",
+      "filelock": "4.1.0",
+      "fonttools": "4.65.0",
+      "fsspec": "2026.9.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.7.1",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "huggingface_hub": "1.33.0",
+      "idna": "3.20",
+      "kiwisolver": "1.5.1",
+      "markdown-it-py": "4.2.0",
+      "matplotlib": "3.10.9",
+      "mdurl": "0.1.2",
+      "mpmath": "1.3.0",
+      "networkx": "3.4.2",
+      "numpy": "2.2.6",
+      "nvidia-cublas-cu12": "12.4.5.8",
+      "nvidia-cuda-cupti-cu12": "12.4.127",
+      "nvidia-cuda-nvrtc-cu12": "12.4.127",
+      "nvidia-cuda-runtime-cu12": "12.4.127",
+      "nvidia-cudnn-cu12": "9.1.0.70",
+      "nvidia-cufft-cu12": "11.2.1.3",
+      "nvidia-curand-cu12": "10.3.5.147",
+      "nvidia-cusolver-cu12": "11.6.1.9",
+      "nvidia-cusparse-cu12": "12.3.1.170",
+      "nvidia-nccl-cu12": "2.21.5",
+      "nvidia-nvjitlink-cu12": "12.4.127",
+      "nvidia-nvtx-cu12": "12.4.127",
+      "opencv-python": "5.0.0.93",
+      "packaging": "26.3",
+      "pillow": "12.3.0",
+      "pip": "22.0.2",
+      "pyDeprecate": "0.9.0",
+      "pydantic": "2.14.1",
+      "pydantic_core": "2.50.1",
+      "pyparsing": "3.3.3",
+      "python-dateutil": "3.0.0",
+      "regex": "2026.9.29",
+      "requests": "2.34.2",
+      "rfdetr": "1.11.2",
+      "rich": "15.0.0",
+      "safetensors": "0.8.0",
+      "scipy": "1.15.3",
+      "setuptools": "59.6.0",
+      "shellingham": "1.5.4",
+      "six": "1.17.0",
+      "supervision": "0.29.0",
+      "sympy": "1.13.1",
+      "tokenizers": "0.22.2",
+      "tomli": "2.5.0",
+      "torch": "2.5.1+cu124",
+      "torchvision": "0.20.1+cu124",
+      "tqdm": "4.70.1",
+      "transformers": "5.1.0",
+      "triton": "3.1.0",
+      "typer": "0.27.3",
+      "typer-slim": "0.24.0",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.6",
+      "urllib3": "2.8.0"
+    }
+  },
+  "excluded": "v native pose exact-frame unreviewed; no automatic FCOS rerun; no tracker/ROI/event/PoC changes",
+  "experiment": "EXP-0019",
+  "frames": [
+    {
+      "cache_path": "outputs/cv_phase2d/cache030/person_cache.jsonl",
+      "fcos_person_count": 3,
+      "frame_id": "030_084",
+      "native_pts": 1290240,
+      "pts_seconds": 84.0,
+      "requested_seconds": 84,
+      "rgb_bytes_sha256": "013bc46ccb8962a2f42aa81a7a5ed7188c16f294dfd38baef54f55b05ba17ace",
+      "rgb_path": "outputs/batch0002/cv/inputs/030_084.npy",
+      "rgb_sha256": "88b5a7899b20cdf464aefafc3787b0ffadf869c7b4de33cba2107b9557e16b1d",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_030",
+      "source_path": "data/TS_\uce68\uc785/E01_030.mp4",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache030/person_cache.jsonl",
+      "fcos_person_count": 0,
+      "frame_id": "030_090",
+      "native_pts": 1382400,
+      "pts_seconds": 90.0,
+      "requested_seconds": 90,
+      "rgb_bytes_sha256": "41f2bb0bd075b02cd15a53f1d411da6c46eaa882febf547abb99ceb49e54126f",
+      "rgb_path": "outputs/batch0002/cv/inputs/030_090.npy",
+      "rgb_sha256": "fb8277b3114f3e18f1c0295f5238a6be66604842b526c133678e6ab28ad211c9",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_030",
+      "source_path": "data/TS_\uce68\uc785/E01_030.mp4",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache030/person_cache.jsonl",
+      "fcos_person_count": 0,
+      "frame_id": "030_094",
+      "native_pts": 1443840,
+      "pts_seconds": 94.0,
+      "requested_seconds": 94,
+      "rgb_bytes_sha256": "d7100a03cdfeb415031cba0c97923d75c9e271c593beec5c425b134710a39d3f",
+      "rgb_path": "outputs/batch0002/cv/inputs/030_094.npy",
+      "rgb_sha256": "6c87e2f0ea8ad11140e1a82001d19ed95568ab69679502aaee6b596248f8b6a3",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_030",
+      "source_path": "data/TS_\uce68\uc785/E01_030.mp4",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache007/person_cache.jsonl",
+      "fcos_person_count": 2,
+      "frame_id": "007_052",
+      "native_pts": 798720,
+      "pts_seconds": 52.0,
+      "requested_seconds": 52,
+      "rgb_bytes_sha256": "18fc4dd490048bed6c08ffd7b4e61f4199ce5cdcbc1145c797802ce2275b71e4",
+      "rgb_path": "outputs/batch0002/cv/inputs/007_052.npy",
+      "rgb_sha256": "cc54f2be7b912bfa0226f81c5ece4ca86e63ddbb629f6fc6c5abcdbcce68271c",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_007",
+      "source_path": "data/TS_\uce68\uc785/E01_007.mp4",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache007/person_cache.jsonl",
+      "fcos_person_count": 3,
+      "frame_id": "007_064",
+      "native_pts": 983040,
+      "pts_seconds": 64.0,
+      "requested_seconds": 64,
+      "rgb_bytes_sha256": "972d23c38c9b2b8ee9e0fc7813144cfebed1a2a308fc4a93a90d3772682a7bee",
+      "rgb_path": "outputs/batch0002/cv/inputs/007_064.npy",
+      "rgb_sha256": "550ff8c74522a4f7f8f1603182819eda6a1522c2e5cb0cb0faa022d05625dcc7",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_007",
+      "source_path": "data/TS_\uce68\uc785/E01_007.mp4",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache007/person_cache.jsonl",
+      "fcos_person_count": 1,
+      "frame_id": "007_066",
+      "native_pts": 1013760,
+      "pts_seconds": 66.0,
+      "requested_seconds": 66,
+      "rgb_bytes_sha256": "d1697bde0f8e43721ec57cfe9680e3058f725a9f0f6a7648a8d271b21d1c2f5f",
+      "rgb_path": "outputs/batch0002/cv/inputs/007_066.npy",
+      "rgb_sha256": "e79409174487940485651d2139b976e1631e25456f82f8f775ae69b2ab24f575",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_007",
+      "source_path": "data/TS_\uce68\uc785/E01_007.mp4",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache031/person_cache.jsonl",
+      "fcos_person_count": 2,
+      "frame_id": "031_032",
+      "native_pts": 491520,
+      "pts_seconds": 32.0,
+      "requested_seconds": 32,
+      "rgb_bytes_sha256": "6dccac8acd204f29b2e039adacd4143121dec7883186779571ccd00413c5a0eb",
+      "rgb_path": "outputs/batch0002/cv/inputs/031_032.npy",
+      "rgb_sha256": "202ac6fef6d4b2cf7b9b4e93a3af8265bb937854460d5b806a80ef1277fe7eb6",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_031",
+      "source_path": "data/TS_\uce68\uc785/E01_031.mp4",
+      "source_sha256": "daf7b1075c21fdfad6789604bea5922f0e8bfdf34fc5fa54d822212b2ba9d37f",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache031/person_cache.jsonl",
+      "fcos_person_count": 0,
+      "frame_id": "031_040",
+      "native_pts": 614400,
+      "pts_seconds": 40.0,
+      "requested_seconds": 40,
+      "rgb_bytes_sha256": "c9e5c4eb1d51899b124e2a6605a992b9a0ee3635cb70dc569cf7fdfa2d432959",
+      "rgb_path": "outputs/batch0002/cv/inputs/031_040.npy",
+      "rgb_sha256": "e1864ab48992bfbc8b7c2dec43f1850219772b73ad8318c3e4144f6db9ec320b",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_031",
+      "source_path": "data/TS_\uce68\uc785/E01_031.mp4",
+      "source_sha256": "daf7b1075c21fdfad6789604bea5922f0e8bfdf34fc5fa54d822212b2ba9d37f",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache006/person_cache.jsonl",
+      "fcos_person_count": 2,
+      "frame_id": "006_119",
+      "native_pts": 10708698,
+      "pts_seconds": 118.98553333333334,
+      "requested_seconds": 119,
+      "rgb_bytes_sha256": "f974f2e8e04139f2941f36baa3276dbbcdc3bddec98fbcd85559b0a5ab6b6f3a",
+      "rgb_path": "outputs/batch0002/cv/inputs/006_119.npy",
+      "rgb_sha256": "a677dacf595f947aa8c31059f883b36559c736659a427e114d344d2a63006a95",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_006",
+      "source_path": "data/TS_\uce68\uc785/E01_006.mp4",
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/90000"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache006/person_cache.jsonl",
+      "fcos_person_count": 0,
+      "frame_id": "006_125",
+      "native_pts": 11249238,
+      "pts_seconds": 124.99153333333334,
+      "requested_seconds": 125,
+      "rgb_bytes_sha256": "2fcd395a2c43ec34c26a917a3771b2f65de13abda57a2381e1a8fe9e4131742e",
+      "rgb_path": "outputs/batch0002/cv/inputs/006_125.npy",
+      "rgb_sha256": "34e7abf9af6c41e203e528b01613655e5446af3583c14e0e070c98f137003741",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_006",
+      "source_path": "data/TS_\uce68\uc785/E01_006.mp4",
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/90000"
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache006/person_cache.jsonl",
+      "fcos_person_count": 2,
+      "frame_id": "006_131",
+      "native_pts": 11789778,
+      "pts_seconds": 130.99753333333334,
+      "requested_seconds": 131,
+      "rgb_bytes_sha256": "31966b2ce71cb634fa0332acc5a202882ef70627823ff6c9661755a1a14be0cc",
+      "rgb_path": "outputs/batch0002/cv/inputs/006_131.npy",
+      "rgb_sha256": "942a3f34ed15eb94c088f14ea0f1a05a84bed675f8de85dc9fcee8a3a6d47d84",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_006",
+      "source_path": "data/TS_\uce68\uc785/E01_006.mp4",
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/90000"
+    }
+  ],
+  "historical_pins": {
+    "outputs/cv_phase2c/review_locations.json": "325978fdea2a0540fed193f041aa552e1ed22fdf0e39df67b9a5c06208cfcb46",
+    "outputs/cv_phase2d/cache006/frames.jsonl": "75d0f79e3c3796f8e9ff742bad9fc5d9f05e7544e455c094f3498bd20b2411f3",
+    "outputs/cv_phase2d/cache006/person_cache.jsonl": "45beed27fcb513f93a880a8f05693ede4feffe204aa256dab6adf206f370baaf",
+    "outputs/cv_phase2d/cache006/run.json": "4683d4255bf50c945a4c2e01d0b1dbed0caa08815fc24be054f1767742a52a7f",
+    "outputs/cv_phase2d/cache007/frames.jsonl": "2a1e841c3e26edeee4336006f5edefd701431cebaeab70d35a0ceea07653f016",
+    "outputs/cv_phase2d/cache007/person_cache.jsonl": "ecb55d37b8d15806366453263d33df8fb096b5293e18d3c5144e7d3789e4753b",
+    "outputs/cv_phase2d/cache007/run.json": "63adea541d95ef0854ca7765f116961228674ff8057dc556ec73b2eef2ed5c0c",
+    "outputs/cv_phase2d/cache030/frames.jsonl": "bd1d3a0df25a44c0f7783030a642c48aa715935fe3f021eb641a9c81b0cf8285",
+    "outputs/cv_phase2d/cache030/person_cache.jsonl": "20ccd053814f8777d46765892881e4872687bb62c0222904ad6f5bcb72f76687",
+    "outputs/cv_phase2d/cache030/run.json": "a0acd57e806bf7fff408af947354864194dd788852c9109f4dce26e097729bb7",
+    "outputs/cv_phase2d/cache031/frames.jsonl": "ac41788eeb75a0d0b3e5da4df4639c245eecf9e62b73b802a6c83f70ca2ccbe3",
+    "outputs/cv_phase2d/cache031/person_cache.jsonl": "07e0b1e6add33ffb2769a4e065b51bd1e7db78cbfdc73ab249721bae4422d8e4",
+    "outputs/cv_phase2d/cache031/run.json": "b19d21e814406186b0a79d87fb5dd0a3c3571bfe48b7b331932dff21ccc0e788",
+    "outputs/cv_phase2d/review006/review_manifest.json": "35009f52fe6b3df36d82f11dc79e5829d139045328ebb825e33b56deb00d12a0",
+    "outputs/cv_phase2d/review007/review_manifest.json": "5bdaf62dba035184b8c98aa8f33c18e87a5f0552104fce1f45022de3b26accf8",
+    "outputs/cv_phase2d/review030/review_manifest.json": "e77285427fff5dfb98077a291022033f58cdd76d6217dab42ebe06661b9c90ad",
+    "outputs/cv_phase2d/review031/review_manifest.json": "23b8b0c79308a4acd49a32af5b8a0c3f9cbc343632bd5294d17fa897aa202ec1"
+  },
+  "model": {
+    "bytes": 404992918,
+    "license": "Apache-2.0",
+    "md5": "7223f764a87b863f02eb8d52bf0ce2ee",
+    "name": "RF-DETR Medium",
+    "release": "1.11.2",
+    "sha256": "749ff6071828aaffac63e204c4f4135ed3d6cdae4d702e086c360edc3b5768c8",
+    "tag_commit": "7433d5919d0f7e72cc6cb78663e0a731afd499e0",
+    "url": "https://storage.googleapis.com/rfdetr/medium_coco/checkpoint_best_regular.pth"
+  },
+  "native_review_gate": "prior user03084 approaching3 and03090 climbing3; exact native PTS bound; no bbox GT",
+  "sampled_vlm_input_gate": "separate human review record; no CV output establishes sampled-input sufficiency",
+  "schema_version": 1,
+  "settings": {
+    "batch_size": 1,
+    "compile": false,
+    "device": "cuda:0",
+    "dtype": "float32",
+    "execution_error_retries_max": 1,
+    "minimum_gpu_free_mib": 6144,
+    "model": "RFDETRMedium",
+    "nms": null,
+    "num_queries": 300,
+    "num_select": 300,
+    "resolution": [
+      576,
+      576
+    ],
+    "rfdetr": "1.11.2",
+    "threshold": 0.5,
+    "threshold_operator": ">",
+    "warmup_frames": 0
+  }
+}

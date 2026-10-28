@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0018",
+  "execution_status": "succeeded",
+  "metrics": [
+    {
+      "label": "Audited development windows",
+      "value": 10,
+      "unit": "windows",
+      "sample_n": 10,
+      "scope": "CPU provenance/geometry inventory only; not behavior performance or independent test samples",
+      "source": "records/EXP-0018/input_audit.json",
+      "source_sha256": "3a7daf37e36cc2c01694a2d859e5246a0dd31ba7973f53ef4aea6db8694ab5e1",
+      "verification": "exact_source_pts_rgb_and_saved_artifact_audit"
+    },
+    {
+      "label": "Saved input variants",
+      "value": 20,
+      "unit": "variants",
+      "sample_n": 20,
+      "scope": "CPU provenance/geometry inventory only; not behavior performance or independent test samples",
+      "source": "records/EXP-0018/input_audit.json",
+      "source_sha256": "3a7daf37e36cc2c01694a2d859e5246a0dd31ba7973f53ef4aea6db8694ab5e1",
+      "verification": "exact_source_pts_rgb_and_saved_artifact_audit"
+    },
+    {
+      "label": "Unique selected native frames",
+      "value": 103,
+      "unit": "frames",
+      "sample_n": 103,
+      "scope": "CPU provenance/geometry inventory only; not behavior performance or independent test samples",
+      "source": "records/EXP-0018/input_audit.json",
+      "source_sha256": "3a7daf37e36cc2c01694a2d859e5246a0dd31ba7973f53ef4aea6db8694ab5e1",
+      "verification": "exact_source_pts_rgb_and_saved_artifact_audit"
+    },
+    {
+      "label": "Saved processor frame observations",
+      "value": 200,
+      "unit": "frames",
+      "sample_n": 200,
+      "scope": "CPU provenance/geometry inventory only; not behavior performance or independent test samples",
+      "source": "records/EXP-0018/input_audit.json",
+      "source_sha256": "3a7daf37e36cc2c01694a2d859e5246a0dd31ba7973f53ef4aea6db8694ab5e1",
+      "verification": "exact_source_pts_rgb_and_saved_artifact_audit"
+    }
+  ],
+  "semantic_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null
+  },
+  "input_gate": "conditional_go_after_separate_user_input_review; q04_per_view_and_v03_boundary_uncertain",
+  "model_inference_count": 0
+}

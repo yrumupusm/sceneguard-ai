@@ -1,0 +1,5027 @@
+{
+  "batch_id": "BATCH-0002",
+  "diagnostic_instants": [
+    {
+      "action_visible": null,
+      "actual_input_human_review": "not_performed",
+      "exact_actual_processor_RGB": "q04 B/C EXP17 saved",
+      "manual_location_projections": [],
+      "native_pts": 983040,
+      "prior_review_reference": "EXP-0002/0003 diagnostic only; no GT or input selection by model boxes",
+      "pts_seconds": 64,
+      "source_id": "E01_007",
+      "time_base": "1/15360"
+    },
+    {
+      "action_visible": null,
+      "actual_input_human_review": "not_performed",
+      "exact_actual_processor_RGB": "q04 B/C EXP17 saved",
+      "manual_location_projections": [],
+      "native_pts": 1013760,
+      "prior_review_reference": "EXP-0002/0003 diagnostic only; no GT or input selection by model boxes",
+      "pts_seconds": 66,
+      "source_id": "E01_007",
+      "time_base": "1/15360"
+    },
+    {
+      "action_visible": null,
+      "actual_input_human_review": "not_performed",
+      "exact_actual_processor_RGB": "not_saved",
+      "manual_location_projections": [
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "left",
+          "method": "B",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            36.0,
+            70.51851851851852
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            90.0,
+            170.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "rear_right",
+          "method": "B",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            36.0,
+            74.66666666666667
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            90.0,
+            180.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "front",
+          "method": "B",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            36.0,
+            91.25925925925925
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            90.0,
+            220.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "left",
+          "method": "C",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            70.16611295681064,
+            125.92592592592592
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            90.0,
+            170.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "rear_right",
+          "method": "C",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            70.16611295681064,
+            133.33333333333334
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            90.0,
+            180.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "front",
+          "method": "C",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            70.16611295681064,
+            162.96296296296296
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            90.0,
+            220.0
+          ]
+        }
+      ],
+      "native_pts": 1290240,
+      "prior_review_reference": "EXP-0002/0003 diagnostic only; no GT or input selection by model boxes",
+      "pts_seconds": 84,
+      "source_id": "E01_030",
+      "time_base": "1/15360"
+    },
+    {
+      "action_visible": null,
+      "actual_input_human_review": "not_performed",
+      "exact_actual_processor_RGB": "not_saved",
+      "manual_location_projections": [
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "left",
+          "method": "B",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            64.0,
+            78.81481481481481
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            160.0,
+            190.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "rear_middle",
+          "method": "B",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            44.0,
+            66.37037037037037
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            110.0,
+            160.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "front_right",
+          "method": "B",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            52.0,
+            74.66666666666667
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            130.0,
+            180.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "left",
+          "method": "C",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            124.73975636766335,
+            140.74074074074073
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            160.0,
+            190.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "rear_middle",
+          "method": "C",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            85.75858250276855,
+            118.51851851851852
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            110.0,
+            160.0
+          ]
+        },
+        {
+          "interpretation": "approximate prior Codex manual review region, not user-provided person bbox, not GT",
+          "location_alias": "front_right",
+          "method": "C",
+          "prior_author": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth",
+          "prior_coordinate_space": "960x540 existing original preview; no inference crop",
+          "projected_visible_rectangle_wh": [
+            101.35105204872647,
+            133.33333333333334
+          ],
+          "rectangle_area_retained_fraction": 1.0,
+          "source_rectangle_wh": [
+            130.0,
+            180.0
+          ]
+        }
+      ],
+      "native_pts": 1382400,
+      "prior_review_reference": "EXP-0002/0003 diagnostic only; no GT or input selection by model boxes",
+      "pts_seconds": 90,
+      "source_id": "E01_030",
+      "time_base": "1/15360"
+    },
+    {
+      "action_visible": null,
+      "actual_input_human_review": "not_performed",
+      "exact_actual_processor_RGB": "not_saved",
+      "manual_location_projections": [],
+      "native_pts": 1443840,
+      "prior_review_reference": "EXP-0002/0003 diagnostic only; no GT or input selection by model boxes",
+      "pts_seconds": 94,
+      "source_id": "E01_030",
+      "time_base": "1/15360"
+    }
+  ],
+  "environment": {
+    "av": "16.0.1",
+    "ffmpeg_libraries": {
+      "libavcodec": [
+        62,
+        11,
+        100
+      ],
+      "libavdevice": [
+        62,
+        1,
+        100
+      ],
+      "libavfilter": [
+        11,
+        4,
+        100
+      ],
+      "libavformat": [
+        62,
+        3,
+        100
+      ],
+      "libavutil": [
+        60,
+        8,
+        100
+      ],
+      "libswresample": [
+        6,
+        1,
+        100
+      ],
+      "libswscale": [
+        9,
+        1,
+        100
+      ]
+    },
+    "numpy": "2.2.6",
+    "pillow": "12.3.0",
+    "python": "3.10.12"
+  },
+  "experiment_id": "EXP-0018",
+  "gate_recommendation": {
+    "coordinator_owns_final_gate": true,
+    "exact_inputs_distinguish_action_from_approach": "unknown",
+    "human_check": {
+      "bundled_request_count": 1,
+      "instruction": "View local source-versus-actual saved-input sheets for q04 B/C and v01/v03 full-frame. For each, say whether actual samples show body lift/leg-over or boundary-relative progress distinct from approach, or insufficient/uncertain; list visible PTS if clear. Do not re-label the original clips or infer completion; v03 boundary relation remains ambiguous.",
+      "review_ids": [
+        "q04",
+        "v01",
+        "v03"
+      ]
+    },
+    "metadata_proves": "source/native PTS, saved RGB, crop, resize, tokens and sampling only",
+    "sampling_or_scale_caused_failures": "not_established",
+    "status": "hold_semantic_input_sufficiency_pending_small_human_check"
+  },
+  "inputs": [
+    {
+      "condition": "q_B_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "s007_early",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          0.0,
+          5.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A vehicle passes outside the door; no person is seen attempting or progressing across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q01",
+        "source_id": "E01_007",
+        "window_id": "w000001"
+      },
+      "recorded_crop_RGB_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c",
+      "recorded_source_aggregate_RGB_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c",
+      "review_id": "q01",
+      "saved_input_metadata_file_sha256": "2087ec35a34ebe89f991491dc677ff3723f5753721d8b214e576766822bdfbbd",
+      "saved_processor_file_sha256": "f9b83be9bfa5ec4e45b82872e893536eb5814c10568e13ea788857950d987cc6",
+      "saved_processor_frame_sha256": [
+        "a77b2705b114e575c3dbdbf11af02c124b8a7bd8066ad24425d526b71c34ccbf",
+        "e32a74cf3f12e2f69b5945527b513b8b5dc8ff02ac98403c20ebfe82ec60ba24",
+        "e80624f21346c6f1fd0a39bf193a13c5f62bea1a64451bc0734337930b59a410",
+        "81dbfff6cf26dcf34aa239557eeb830688a7408b0c2fb747f17df3d7d806b3d1",
+        "b309ec91507b0a72e2bf1f6f56881e85eef47795d8a47c5c0e2c3aa7c61a3049",
+        "9dd9e5e9f662b4fa2c3c49ad41582d2059c6301fb7616d169d0948f918ee1eb5",
+        "fdafc8fa947c7c4e748a9ce328b48ac211b209d4bfef6f52f2f4c000e1ac6cc9",
+        "433d0855a7052771f85210843eae2056ec5eed5d2c0047e7a1ac2d8e46fbabc7",
+        "532e8bc603b46dab861a0249e56c641fcb28816d93e0bdeaa60ce607a1c43ed5",
+        "712ec8d69bdebea01da75990b55f738073fb8057bc90f7ceb3864408629cfaf7"
+      ],
+      "saved_processor_payload_sha256": "2b8721376fb4cf72e25740202aaea221767f9f494b32d27c7ffc83f2c4334269",
+      "saved_result_metadata_file_sha256": "83cf10197d42cf9e2da04b9b1d95c4627d5a960a567b62f5189d4f2ac9a64792",
+      "source_frame_sha256": [
+        "bdb669379d590e1dd6fd5e2837afd312a3b8eed1d8897fdc7f7703557abb3c8d",
+        "aa3c383374b4bbef4d8e8297568359f9b47f49966555ddba74afda1334ddc33d",
+        "e1cfe0566d37f7a0dd8365c2acdc05c292246d6788c48e7a7ee415357a195746",
+        "81dc72f569c44801ac09c30ab09a8a4994af673c00c0ac4dde81a41ea6aefc00",
+        "3b1ae4a046ed0fc9e5ad4bf5103ab7e3494e657e4c5ddb72836954653ec67089",
+        "315711dc9ce13232c7d365e969592f8562ee14742af1ab68b0e1aa9b59b5094a",
+        "5f4dd534800eb244fcb064f1107f4437d478ff9d2fa1fb8b6908110bcbd6c4b0",
+        "7b97947fe18986eaab5bca962b59107a2dbd75bb61643be3ed4b191ac4ab732b",
+        "1a044e3e16f945b1191b1af3aa2cfb0682871d977dd3c68e1f1cbbc5e5f5b048",
+        "5d6c42ad91e957973c64e83bcc410d2cb46e74ae5297154e675f10f567900c39"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          0,
+          7680,
+          15360,
+          23040,
+          30720,
+          38400,
+          46080,
+          53760,
+          61440,
+          69120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5
+        ],
+        "scheduled_seconds": [
+          0.0,
+          5.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000001"
+    },
+    {
+      "condition": "q_B_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "s007_preevent",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          47.5,
+          52.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "People approach near the door; no crossing attempt or progress is visible before this clip ends.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q02",
+        "source_id": "E01_007",
+        "window_id": "w000020"
+      },
+      "recorded_crop_RGB_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703",
+      "recorded_source_aggregate_RGB_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703",
+      "review_id": "q02",
+      "saved_input_metadata_file_sha256": "36bbf6d0524e2860387d0715d5a99ff1936e0cafa70bf05010bf042e5575f2da",
+      "saved_processor_file_sha256": "ed1621a806fab27bd3389c9e74af06e3e8af7c5ad8e8ceb82426dbaae17742ee",
+      "saved_processor_frame_sha256": [
+        "f4a4c3a51032dd9f2c90650b0fec219d1f7d8d1e3c0b1041fa0f8c3a0b607fdf",
+        "e4d349f644f18f2b50a39d3f0d08753d44187d2bc8af76eb7097573194895950",
+        "f15f50c144bf0e259245807ef64c13bae7113b1e9699bef7cc85ea78ba32c697",
+        "fd096082ee39da7fb9cd9a656d57d9c0e715eb66c826dc348ce4a665d3fb9c36",
+        "bfb468270b7620bc2dc32b3e0881521b5c4464a7b97444e32b5a147a4b99afbc",
+        "553460ab7dda406ad1bd1d187ca87aeb93f0094b248dece68edf9cc098a3ba15",
+        "918846c22e14aa09796ad57a0c86e9ad7dd4e0fee0804f72d79f47ebf6618f1c",
+        "1633465cab1acce3c5c5c239580ae633bcda92a31a923db7e0981c3befe1d4b3",
+        "75c7db0e900526cf0973fd76686e7707adb4cf80dad6dbb0a1e29d6780c29ce6",
+        "de88996f94b102dc236f890974170daabfb64811cdc4b42578e7006135ab79d5"
+      ],
+      "saved_processor_payload_sha256": "8626d0b81186b6268025170a8c24976402210d0120c9eaab86be1f6d42c42c08",
+      "saved_result_metadata_file_sha256": "3765aeb43e65c21ff1429f0650c2f25af52241d0856507c243a7482b0a78c5e9",
+      "source_frame_sha256": [
+        "3d80d933fea957b33dc8ea6d29d9cbdc79a870877ea828e4a1e1d5eec9fccaf0",
+        "712acb24d694e8a2368c051cdbd4fdd81f2837878fe442527e4e436ecc2b8a43",
+        "247c47bc9e17c4d367cf5c807b9ec1dfdd3450ce9b46199a635c03edfec9c248",
+        "059d6fdc3d5a8e41d271016f800f432af902f2f2dfde702fc750e555a8341d0f",
+        "f5ebd94a1ea10b276bcb3479225f4ca0c0f15a826f9aa1dad2cfb9594582b09f",
+        "9bb171c652500e6742a32d11161db97dfd9742cd1888a90753d3edec8f1617cf",
+        "e9c560aa0d894d01ef015fe9ee147a83d854b94178d0eb9c500434b46a4830c4",
+        "fb90bb150d345db7f0107133d80303be3fca39e16f5c06113c05f507e25c6648",
+        "d5d920fc07e2bd62ed2b09bb8ad447dcb3c281cc12db44fc112edb3e04ff939a",
+        "18fc4dd490048bed6c08ffd7b4e61f4199ce5cdcbc1145c797802ce2275b71e4"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          729600,
+          737280,
+          744960,
+          752640,
+          760320,
+          768000,
+          775680,
+          783360,
+          791040,
+          798720
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          47.5,
+          48.0,
+          48.5,
+          49.0,
+          49.5,
+          50.0,
+          50.5,
+          51.0,
+          51.5,
+          52.0
+        ],
+        "scheduled_seconds": [
+          47.5,
+          52.5
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000020"
+    },
+    {
+      "condition": "q_B_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "d007_boxchange",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          52.5,
+          57.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "The people seen approaching near the door do not visibly attempt or progress across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q03",
+        "source_id": "E01_007",
+        "window_id": "w000022"
+      },
+      "recorded_crop_RGB_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c",
+      "recorded_source_aggregate_RGB_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c",
+      "review_id": "q03",
+      "saved_input_metadata_file_sha256": "2b7df1ac42cd659c0f41eb06bf49d34babd2016e0d93d6b465caaf8fbd2cae12",
+      "saved_processor_file_sha256": "c5a7f994ce8c69357ff4986960c08dd01a273c9b3fe6e341992dfd8983cdd98c",
+      "saved_processor_frame_sha256": [
+        "efaf86678afa51f59ca9056a5197e254de8948ae911d01be56265176c43f4805",
+        "ebfab851ce7d13dbefb01736da500bb601df4e87ea06ec94512341b64b720cc3",
+        "aab959dda289550fbc7a8f5ed15c4d1bb10f9c5079e940eda059e163eb6202c1",
+        "b5a9e1c65a0c7afc2467e283a6c2881a77b876ccb32e3bc86a8007f5e8c453d1",
+        "7dea8a721c49e1839dc581c5c014292032ce89902894f54cc7b02ca690f5fe7b",
+        "07bd025ead02dd3c330a23a3d0e7ff6a6ea301c4606a53e72bc6c8229f1790d0",
+        "b838aaa52a6c02594e3302de550c9e1fb9fdf493bdd18a7ec6c2d1c8e9b9b099",
+        "4521fbc721560da5fdf8754849b45d83e234e12c01ffa8f1b3f6573fb7a45aab",
+        "abf3eceba780399b725cd243209e46e2f3aaced78980f930ee297609b9e11d33",
+        "59860bf406b49089f4f6bf918bf671dc92c5018bf119811a624b8b219354e846"
+      ],
+      "saved_processor_payload_sha256": "40b7ddcb5c90c54c563488a678791b00df46b9b48f476db48af2a752faec8224",
+      "saved_result_metadata_file_sha256": "6964b4f55e72c767132cef1ad0d64a2208570096b5c513e417e69e34a1a69347",
+      "source_frame_sha256": [
+        "d843357d9d7af10e1059d6822aff3ea286166fed7659ce886840737ce12bffb2",
+        "6ba5d70dc7a79e4b9555d941c9ab4bbd4af6f773f22ec84344830cd8b9169f1d",
+        "d2b149048edda9313c937668ccaba39d4d3948425af049669af41eab9ec78039",
+        "1fe2cbb613121ccf825ac719c26af37500adbe12934efd0e9cf9295254c69591",
+        "1895cbd2c19734bc2f342692cbcdc2b184eccfa5faafb1406f21c194dd099a40",
+        "71e6bb389dbaa3f99858957ea130280a3fabc409ad9978746ef3769fae1f6978",
+        "7354b9c61a75a40902863c25230337057ba03ca8f3e5b3aad57318e0bb093660",
+        "6ca8b0dbbaf29300c774ea0686b4cce80cc900b0dc8adc6e10770a2c6b56f958",
+        "2e76660796eb484c74b7d0aa310ed9a8a9b37669bb13d1ea9913dfc721d85554",
+        "f127aabd44b2b344db2ab1ea6432efbf7fbdb8dfffc76f3a16c8ec06e2a322e9"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          806400,
+          814080,
+          821760,
+          829440,
+          837120,
+          844800,
+          852480,
+          860160,
+          867840,
+          875520
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          52.5,
+          53.0,
+          53.5,
+          54.0,
+          54.5,
+          55.0,
+          55.5,
+          56.0,
+          56.5,
+          57.0
+        ],
+        "scheduled_seconds": [
+          52.5,
+          57.5
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000022"
+    },
+    {
+      "condition": "q_B_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "d007_official",
+        "completion_reference": "not_observed_clip_ends_before_complete",
+        "interval_seconds": [
+          62.5,
+          67.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A door-crossing attempt is visible; the clip ends just before the person has fully crossed.",
+        "reference_label": "climbing_present",
+        "review_clip_id": "q04",
+        "source_id": "E01_007",
+        "window_id": "w000026"
+      },
+      "recorded_crop_RGB_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512",
+      "recorded_source_aggregate_RGB_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512",
+      "review_id": "q04",
+      "saved_input_metadata_file_sha256": "09c0d79af53c4e8dbeb61c417c425416e15a2ccaf17e48000cf2464938a854c8",
+      "saved_processor_file_sha256": "b7ff8f427ba5792611d436fb1a256a3a6ff87e79dcd1a7224d97efdd6bcb91ee",
+      "saved_processor_frame_sha256": [
+        "35862d822a4d0cdf8aff7955a55a973d99ac5eda7e9d126bbdc4d599208630aa",
+        "587bd786cf5289afde716abff4e8c9624827380e760f5a14532d8caab4379418",
+        "a78a1ecd2f8721158d9c4c57f94529fcdc9cd0c126d3bb46db8753209f7d9c8e",
+        "26085b81af810019e0aaba2d06a185decc82da0e3d428f3d075fce29ab54b439",
+        "77bf965b7a58ec3e548dc1168c90fdb8d8c606e7aaaabc3afcd094451ec1a5e5",
+        "f29b3fe515bd668fa4f12fe0bf61dd223a892177bdbd5ade86b2b54383a992bc",
+        "931fba8a92bd83cae0e8b3d69489e4c189eae5512a6bb2b568027042586a12da",
+        "a16cf2397c1fa016ee11a973c686cd011b946b03a4c71e1bd67c5e1b2db4bb7e",
+        "b0882b4243248df5cdc8c4725d217f77b95c99caa6326ca5768738e664159e72",
+        "08270ae643891ce8169f0e9fae418ae60834b7d66478e82aaabf19fa0e662e7f"
+      ],
+      "saved_processor_payload_sha256": "68d45df4eecb6f92998cbcce2dd130ffc98d36ebf3d011dc529ad5321eb69eb5",
+      "saved_result_metadata_file_sha256": "8fa6c7bda94fcc7b9641be344eff87eeea44637e81db22eb8052bf75b43b53ea",
+      "source_frame_sha256": [
+        "b10dce331e1aa9afcf71f67fb1b6af65271ed2d4203504d46690e8d1b9363097",
+        "0ead4d9fda6b2cb6d2714a123a0d5241b2e0670cc5856548ceb9e14d62419536",
+        "a4b032ad1a3c19b998fba26ed165f74c3d6203dc49e6c89953eb384b3ef82b64",
+        "972d23c38c9b2b8ee9e0fc7813144cfebed1a2a308fc4a93a90d3772682a7bee",
+        "564c86141867f11203bfce677c3c4a84a5dfa72814d45e197ff6517337e96c54",
+        "45e79823f88cf4394089bd1e3d27da4c451bd4f1050b67c32bfaef2c13465fa1",
+        "faefa85af2cc069dd45ad5f5dfd765e2112ef0b665f73ce5143cb3e9e7e3a6e8",
+        "d1697bde0f8e43721ec57cfe9680e3058f725a9f0f6a7648a8d271b21d1c2f5f",
+        "a52fecf74f960395b1e4391e3345db43d43ed84c92e80fafd417d31c07030e18",
+        "53319088bb3355cdef00ed787fe9563752262d1d449b9cb721a21228a8a999d9"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          960000,
+          967680,
+          975360,
+          983040,
+          990720,
+          998400,
+          1006080,
+          1013760,
+          1021440,
+          1029120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          62.5,
+          63.0,
+          63.5,
+          64.0,
+          64.5,
+          65.0,
+          65.5,
+          66.0,
+          66.5,
+          67.0
+        ],
+        "scheduled_seconds": [
+          62.5,
+          67.5
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000026"
+    },
+    {
+      "condition": "q_B_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "s030_time",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          50.0,
+          55.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "Of three people, one approaches the door; no crossing attempt or progress is visible in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q05",
+        "source_id": "E01_030",
+        "window_id": "w000021"
+      },
+      "recorded_crop_RGB_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b",
+      "recorded_source_aggregate_RGB_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b",
+      "review_id": "q05",
+      "saved_input_metadata_file_sha256": "19ce827089ca668cb1ee349ce73c5e5edce62a8150d9ba968e5c1670cbc782ed",
+      "saved_processor_file_sha256": "2704d3c702a1b778fe3207ec2bac8936bd4ec5eee1789e6e01e04bf355830599",
+      "saved_processor_frame_sha256": [
+        "a986df6ce627e2b0a0acefe967e05fab538ca228bf6d7f7ff488897160f6dc8b",
+        "2fdc53351595cc5361b70fb6db5e8ec1db4bbdbb06b76d45d0952b4992028d36",
+        "14b879775c3acd04f221eec2de62954fbd4ff598ad580116c4a14ed212eced53",
+        "118a7fa3d6c9d34ea7ca47d59077b8eaa88fc930c2c995326888204e35f9a1bd",
+        "d548b7b277a19d09cbc4ac627f8353322ee6ff9fe65f2f3c75ed17a670e1269f",
+        "1a5d4152922b65721c7c8129cac9f1e45ca280234a0741fa5bc54ee0dd646cfe",
+        "dad12c5cb8f1dd41eca90c96655820aceef8b5e29b6088aabf3a5821c833a656",
+        "d0dc8ef713e7b298706e2f1adf64fd179869d876685225a86b59bb6e95dff950",
+        "68a5452b7a24a522e86c85f9d7dd5333578eeabcb00cc8ec857da78a22b3877b",
+        "b591a96045d94826e56d78c5f7e517f687af15dca29d211d785024058762ca57"
+      ],
+      "saved_processor_payload_sha256": "0903ed065676fe46e0f0e50490a609861111bb846440dfd981fa4492a2e4b0b0",
+      "saved_result_metadata_file_sha256": "e169f792c43434760d6a67ab502bd1e24b8997b63f86ce4ad06ace91e80ec4a6",
+      "source_frame_sha256": [
+        "484e43c918eb419ddf403b6668374c39bd301e280d3bd3c06d139fe02ebe40b1",
+        "599c3931fb95fc2bba3aada3c6c209b24fdcdf3d607332ce9a1daded3ef67a06",
+        "01d3c98c96bc263bcf8e995f2fefaa9a4729122753097dc8048465e952a93a64",
+        "98fe6a5957143edd3e37215fcb9b8b64853ff6b2214cba81990ecdb0698ab35e",
+        "56c93837cf0ad0340c5ac3d0baf0a28c9b971487dc54b8dc61dfe3fdbe68eb56",
+        "5b0ef1753ee6078593b95d7241b7161d4d45644825dfb3edbcab2c6e51e85054",
+        "45fe4f649023ff28aef420e77508ccf475651a0deb97a2c21877830586687f02",
+        "c1cb3eef7129766f66e01f1a646daae080e52c30db938c7a5a859d8d5b63c80f",
+        "122565df53b4cbe5e212962e000d6d73f26d7944a7d168797c5db202c6fb5543",
+        "8daec9b968c6e83be19935adc98546546b9b0216070d5b70503cc144bf497d7c"
+      ],
+      "source_id": "E01_030",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          768000,
+          775680,
+          783360,
+          791040,
+          798720,
+          806400,
+          814080,
+          821760,
+          829440,
+          837120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          50.0,
+          50.5,
+          51.0,
+          51.5,
+          52.0,
+          52.5,
+          53.0,
+          53.5,
+          54.0,
+          54.5
+        ],
+        "scheduled_seconds": [
+          50.0,
+          55.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000021"
+    },
+    {
+      "condition": "q_B_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "d030_eof",
+        "completion_reference": "not_assessed_no_visible_person",
+        "interval_seconds": [
+          155.0,
+          160.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "No person or event appears in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q06",
+        "source_id": "E01_030",
+        "window_id": "w000063"
+      },
+      "recorded_crop_RGB_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b",
+      "recorded_source_aggregate_RGB_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b",
+      "review_id": "q06",
+      "saved_input_metadata_file_sha256": "c97cf4272c6aca7d8d82e28e7b2dc34a6d9b18248a4566785192434f68a01154",
+      "saved_processor_file_sha256": "58697eb881249147e959d6c7650f9ecdf09d5ac632427cbdd893949079083143",
+      "saved_processor_frame_sha256": [
+        "379558faca4879ee9e195c705a20fbede02b208a447e55689fa9114e5fae7677",
+        "ad48290e722e59f08d5f2f0810be6ced5fbebb1d26fcb131925e083e49887882",
+        "122866f91e1d689d2eaebdb33f97f7feca2e0f3fbd044666ea26b98ba7f5a2a4",
+        "ec0617a3c1f9899e5d36aa2b5cd599de115fbe38ee5864464c03e80db33e4ef4",
+        "64cdc34ef61b5b4aed4069697446580ddb3619c12766f3429e2c7ffc35d5cf18",
+        "a7d834bc92e280d02d5ac87ceb2d591d55b52212955ad3f7d2c5c9b398d9bbce",
+        "e68c62dbc2d52a15e222012493bf8f7041f329281864e20fa3e37665a9150991",
+        "a96752bf98be4b0c26b05d6049a932aad86d88366ba8d014587f81b061732f1b",
+        "41f5daa87b1669a9b8681d36bf7b59935a5a854a75448d39743fbeb0510d6b64",
+        "3080d9a82cac1d9bc58ea59115e471335826d84167105390aa5914534c334001"
+      ],
+      "saved_processor_payload_sha256": "740987e9feaf4b28d96073276f4dd671f5cce5015c1f50a2245b7d63e9a75adb",
+      "saved_result_metadata_file_sha256": "24160744444db421af8a70588533e71952ee943d75de15756b97f0af7b3fba9e",
+      "source_frame_sha256": [
+        "c572e4cccd6d48c4358adfed4dce3be073188e36d17c568e25aebbdc6b057f60",
+        "deea293cb69ee2ab9cd972f0e49bc4c748a9d8898266e926294e67076652fae6",
+        "464fc1d18dda5c3304de7f701e237c37baaf015ed473e52acd75d394a8d6f87f",
+        "56cb57e124eaa760b59499d68ea67854b1b2ebd2f2b81c47693fb47a6b4f4b3c",
+        "9a4c05b65ebd7b3a667b9a9715a2d9b3069e822273594abfd9536d65ca91f8c9",
+        "3823050005c9b82f32c2e256e7fb1ad8d852549c62d05adaf45e66a242cdfc2f",
+        "a7b4637e4f698e4e7d12e1b99332e611622a76808e246a94d275ced8a9f4d154",
+        "db7f4b87f21f94175f380b3fbfbf460344090ee6d678a19227447f3d5feef8a9",
+        "7d80a69964f617dd312d57ebb60fa5cd60031a0c34dd4694a0350c5742ef6b47",
+        "843a7201fee1954f5eb2ed9bc473e0bf082f3c847a860e7e0d25adad1d1e9943"
+      ],
+      "source_id": "E01_030",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          2380800,
+          2388480,
+          2396160,
+          2403840,
+          2411520,
+          2419200,
+          2426880,
+          2434560,
+          2442240,
+          2449920
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          155.0,
+          155.5,
+          156.0,
+          156.5,
+          157.0,
+          157.5,
+          158.0,
+          158.5,
+          159.0,
+          159.5
+        ],
+        "scheduled_seconds": [
+          155.0,
+          160.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000063"
+    },
+    {
+      "condition": "q_C_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          1152,
+          0,
+          1728,
+          648
+        ],
+        "crop_wh": [
+          576,
+          648
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2008,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.9444444444444444,
+          0.9382716049382716
+        ],
+        "roi_normalized": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "saved_processor_wh": [
+          544,
+          608
+        ],
+        "source_area_retained_fraction": 0.18,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "s007_early",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          0.0,
+          5.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A vehicle passes outside the door; no person is seen attempting or progressing across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q01",
+        "source_id": "E01_007",
+        "window_id": "w000001"
+      },
+      "recorded_crop_RGB_sha256": "2491e3ca4ed061c8d3d126a9c1617d6f4610dc2f47bf5a3c0f269f2efb9be8ad",
+      "recorded_source_aggregate_RGB_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c",
+      "review_id": "q01",
+      "saved_input_metadata_file_sha256": "45f7aface1f5c2d24923b4079037639d47319b9437f7249dfcfba816798d2e88",
+      "saved_processor_file_sha256": "c08f9736106aa1ead3df468d587217d4cb31e0841ed93e5788c2c579a2a775b0",
+      "saved_processor_frame_sha256": [
+        "3af9d4c63842f9f35240e80f96c6effeb847c8582793f8556935c1d49e27c0f9",
+        "ad5c553375c30bc49d76b009c5389cc402a0d2a506f67a4ebaa60bc30a3a305b",
+        "dc694cdee6755196ae055d92d22024f9d74354b1604c7e5e0d726e0daca0a671",
+        "37ef6459764a927bdec47bf1e59bbd2b9947cdacd6f7fd1bedaac9ed22ac41a5",
+        "dc787471649dc7d3414b0f21afa0e73439da2e272eeacd44d3e7611fabf6d295",
+        "61a8107eeb2726198a5b1757b8af447f14755b24c8f4ec38a03381363314042d",
+        "29297b06640b8d046b0f4e883618e08a97f5ab10f430b6fa6898dc9a20c61959",
+        "24bb8976d268e6c415c8cea9f63f29658a5149df73d5f3d831d5b72df4c57547",
+        "7658060e0100d84a0c4db62297fea272bc0284e76990ad773768b0d2b7d58fc6",
+        "7f1b8aa00a8594fd42652267f4b1d67643965e9b00dde7d2ff9eb17cf098f7f5"
+      ],
+      "saved_processor_payload_sha256": "d90cd160b25faffa55ca04b82caf7c8667483293fe9f180970bf4f200fc6e23e",
+      "saved_result_metadata_file_sha256": "d5a7d40404125d71a4876098c9a67b4e5994751945a048e71348e459b29755b9",
+      "source_frame_sha256": [
+        "bdb669379d590e1dd6fd5e2837afd312a3b8eed1d8897fdc7f7703557abb3c8d",
+        "aa3c383374b4bbef4d8e8297568359f9b47f49966555ddba74afda1334ddc33d",
+        "e1cfe0566d37f7a0dd8365c2acdc05c292246d6788c48e7a7ee415357a195746",
+        "81dc72f569c44801ac09c30ab09a8a4994af673c00c0ac4dde81a41ea6aefc00",
+        "3b1ae4a046ed0fc9e5ad4bf5103ab7e3494e657e4c5ddb72836954653ec67089",
+        "315711dc9ce13232c7d365e969592f8562ee14742af1ab68b0e1aa9b59b5094a",
+        "5f4dd534800eb244fcb064f1107f4437d478ff9d2fa1fb8b6908110bcbd6c4b0",
+        "7b97947fe18986eaab5bca962b59107a2dbd75bb61643be3ed4b191ac4ab732b",
+        "1a044e3e16f945b1191b1af3aa2cfb0682871d977dd3c68e1f1cbbc5e5f5b048",
+        "5d6c42ad91e957973c64e83bcc410d2cb46e74ae5297154e675f10f567900c39"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          0,
+          7680,
+          15360,
+          23040,
+          30720,
+          38400,
+          46080,
+          53760,
+          61440,
+          69120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5
+        ],
+        "scheduled_seconds": [
+          0.0,
+          5.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000001"
+    },
+    {
+      "condition": "q_C_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          1152,
+          0,
+          1728,
+          648
+        ],
+        "crop_wh": [
+          576,
+          648
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2008,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.9444444444444444,
+          0.9382716049382716
+        ],
+        "roi_normalized": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "saved_processor_wh": [
+          544,
+          608
+        ],
+        "source_area_retained_fraction": 0.18,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "s007_preevent",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          47.5,
+          52.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "People approach near the door; no crossing attempt or progress is visible before this clip ends.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q02",
+        "source_id": "E01_007",
+        "window_id": "w000020"
+      },
+      "recorded_crop_RGB_sha256": "9558e68779da5cf1b19bb097a208be0f537668403ad0c6253764bb1171055a68",
+      "recorded_source_aggregate_RGB_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703",
+      "review_id": "q02",
+      "saved_input_metadata_file_sha256": "710f7e7eb575a55bee1ee454af2ac634831e44f758a79f36447a1929f25b116d",
+      "saved_processor_file_sha256": "38e4c0ee0c7657c9d56dc5d0d6f37c7ec50c643bc71391d9f5ebb6f1f845522d",
+      "saved_processor_frame_sha256": [
+        "b38dd9373697cf007740f25bf965d117b942e202ba344456f5938ee1885e6e93",
+        "8011d93e8cd93c8e6a9f8aad0e6bc57293ee691221135dce163673d34829b86c",
+        "50126233b44d6fb3a1bc250432635f7e86ad46580ef4f8ab2697fa7cedf18d8a",
+        "165c3765c3ed1d47a46061ebabbf02d2633c0575d1ca0730daaf052f090f3d98",
+        "cd315a97a901621c674476e86b2a9bc25432ca9414a43ad80c3388a49c965f8e",
+        "d8c85c413edf7242a80a756bdbe54190edd173d4bb1af27263619e6de204443e",
+        "5e7bde1a55ca1ee3a5e06b27b7ec3916dc7c0ac33da5225cc043bac502ec66de",
+        "23a523950513de141612cbae1be5e629b6de9319dff29b07fd8b901a3176511b",
+        "acda5222f344f45ee85b467c4fbabff188edef0b0ffac7b09e446a3cb0f1f8a2",
+        "4b82069be905809235f72c1ed38dc2cb0f433b4fddcca74fa020c6a040318050"
+      ],
+      "saved_processor_payload_sha256": "0d76526c6a3dc2ca166d1d2e42b37c306ef1591ed9f656c0fd37f7ffd29ed436",
+      "saved_result_metadata_file_sha256": "830d40f3146d200d8b1b83f97936db40d9ef84c6491269e8c022a778ecc1b276",
+      "source_frame_sha256": [
+        "3d80d933fea957b33dc8ea6d29d9cbdc79a870877ea828e4a1e1d5eec9fccaf0",
+        "712acb24d694e8a2368c051cdbd4fdd81f2837878fe442527e4e436ecc2b8a43",
+        "247c47bc9e17c4d367cf5c807b9ec1dfdd3450ce9b46199a635c03edfec9c248",
+        "059d6fdc3d5a8e41d271016f800f432af902f2f2dfde702fc750e555a8341d0f",
+        "f5ebd94a1ea10b276bcb3479225f4ca0c0f15a826f9aa1dad2cfb9594582b09f",
+        "9bb171c652500e6742a32d11161db97dfd9742cd1888a90753d3edec8f1617cf",
+        "e9c560aa0d894d01ef015fe9ee147a83d854b94178d0eb9c500434b46a4830c4",
+        "fb90bb150d345db7f0107133d80303be3fca39e16f5c06113c05f507e25c6648",
+        "d5d920fc07e2bd62ed2b09bb8ad447dcb3c281cc12db44fc112edb3e04ff939a",
+        "18fc4dd490048bed6c08ffd7b4e61f4199ce5cdcbc1145c797802ce2275b71e4"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          729600,
+          737280,
+          744960,
+          752640,
+          760320,
+          768000,
+          775680,
+          783360,
+          791040,
+          798720
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          47.5,
+          48.0,
+          48.5,
+          49.0,
+          49.5,
+          50.0,
+          50.5,
+          51.0,
+          51.5,
+          52.0
+        ],
+        "scheduled_seconds": [
+          47.5,
+          52.5
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000020"
+    },
+    {
+      "condition": "q_C_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          1152,
+          0,
+          1728,
+          648
+        ],
+        "crop_wh": [
+          576,
+          648
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2008,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.9444444444444444,
+          0.9382716049382716
+        ],
+        "roi_normalized": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "saved_processor_wh": [
+          544,
+          608
+        ],
+        "source_area_retained_fraction": 0.18,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "d007_boxchange",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          52.5,
+          57.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "The people seen approaching near the door do not visibly attempt or progress across the boundary in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q03",
+        "source_id": "E01_007",
+        "window_id": "w000022"
+      },
+      "recorded_crop_RGB_sha256": "f4a3334b45ab5e329232b4d42cc2702021efb7fa8b4dd6acbefdaf3b45b7094e",
+      "recorded_source_aggregate_RGB_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c",
+      "review_id": "q03",
+      "saved_input_metadata_file_sha256": "315c56e0f6750572f442804e4dc06c61d6ffcdb41143381e585c952b14dade92",
+      "saved_processor_file_sha256": "cfcb0cd26e61fffa193254bacb9166981a4931e85a2b1ac26e316e5044f66591",
+      "saved_processor_frame_sha256": [
+        "bb030fd6e7e2fed8fb785955642fb06dd7868e8f750a16a94625b58f95d18d5b",
+        "51cf3608eb2bdb8cf678bd4d813b3c87b5868740d2889f8e7b761d1d23d107c5",
+        "56e769e569943c01f84d93edf4e75be0468d04f11d0270751f4858e8df6c4642",
+        "12299198c362985e7df0b44bdaca6542e1c7eab31033c5b518bdeeca48fea201",
+        "20dd4e44524e20d70feb80d0ed930c0d95df88b7ae77a92b4c1b489c8e4d8d69",
+        "0ee8f9448841d3a2145ba6ca8b47c915f843da1f1362d72821e16c6b3515536b",
+        "578b2767be158e0e39faff9fea8c0031d49115bec13653ac4479e40ae8651b61",
+        "933cf91001aa9e0ecd53280ee80ae46c5aa30f927661bd1141af2c5592ea6c79",
+        "fba3976ca00aad9c9701f909919034a7ef12fcb730b498729714e40e77aeea7c",
+        "e3e84f591189d7a02612699895c38399b8d81484d5fff48808d0df6027e5bd02"
+      ],
+      "saved_processor_payload_sha256": "f0bdbea047f07e0120bfca95f8086a414545a61cb4212c7ed8767de94adba791",
+      "saved_result_metadata_file_sha256": "7f40a850687d625ecac9496fd0402fc2d789213c801e3e613c37dbd118b46e53",
+      "source_frame_sha256": [
+        "d843357d9d7af10e1059d6822aff3ea286166fed7659ce886840737ce12bffb2",
+        "6ba5d70dc7a79e4b9555d941c9ab4bbd4af6f773f22ec84344830cd8b9169f1d",
+        "d2b149048edda9313c937668ccaba39d4d3948425af049669af41eab9ec78039",
+        "1fe2cbb613121ccf825ac719c26af37500adbe12934efd0e9cf9295254c69591",
+        "1895cbd2c19734bc2f342692cbcdc2b184eccfa5faafb1406f21c194dd099a40",
+        "71e6bb389dbaa3f99858957ea130280a3fabc409ad9978746ef3769fae1f6978",
+        "7354b9c61a75a40902863c25230337057ba03ca8f3e5b3aad57318e0bb093660",
+        "6ca8b0dbbaf29300c774ea0686b4cce80cc900b0dc8adc6e10770a2c6b56f958",
+        "2e76660796eb484c74b7d0aa310ed9a8a9b37669bb13d1ea9913dfc721d85554",
+        "f127aabd44b2b344db2ab1ea6432efbf7fbdb8dfffc76f3a16c8ec06e2a322e9"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          806400,
+          814080,
+          821760,
+          829440,
+          837120,
+          844800,
+          852480,
+          860160,
+          867840,
+          875520
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          52.5,
+          53.0,
+          53.5,
+          54.0,
+          54.5,
+          55.0,
+          55.5,
+          56.0,
+          56.5,
+          57.0
+        ],
+        "scheduled_seconds": [
+          52.5,
+          57.5
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000022"
+    },
+    {
+      "condition": "q_C_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          1152,
+          0,
+          1728,
+          648
+        ],
+        "crop_wh": [
+          576,
+          648
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2008,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.9444444444444444,
+          0.9382716049382716
+        ],
+        "roi_normalized": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "saved_processor_wh": [
+          544,
+          608
+        ],
+        "source_area_retained_fraction": 0.18,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "d007_official",
+        "completion_reference": "not_observed_clip_ends_before_complete",
+        "interval_seconds": [
+          62.5,
+          67.5
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "A door-crossing attempt is visible; the clip ends just before the person has fully crossed.",
+        "reference_label": "climbing_present",
+        "review_clip_id": "q04",
+        "source_id": "E01_007",
+        "window_id": "w000026"
+      },
+      "recorded_crop_RGB_sha256": "2bf89c3b590d71e2ee9bcc39ba5ac0d647597443f17f915614746a74fd74f9b0",
+      "recorded_source_aggregate_RGB_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512",
+      "review_id": "q04",
+      "saved_input_metadata_file_sha256": "a45b295cf5f60d9a77132351b30eff0303339f85e73c6cf4979dd97e9af21079",
+      "saved_processor_file_sha256": "461a37581b3bcd648ce0f418a2b2eb27efd9380e3ced5df38e5ec3ba142c421b",
+      "saved_processor_frame_sha256": [
+        "a45cdcc82284526eaafa2829e583b06af01b2d35a3e3b5d45f9fc9912699f00a",
+        "a2f6ad9df0594f78abf568f249e73b64211801fdd7677f95f11477482f18be08",
+        "dab7f1202dbdc663a4cd9901142bd43cb1bc2a7a1e14ff0599133c1e7cabe8b5",
+        "d196c0539c58f71bcb82b2a923efa61eea3b3335c7f0233caefc96b7fe46e7b2",
+        "00a2611c6b7efef05bfa681285c65b9701f72c0f554868da1063b0287110cd7e",
+        "5ed8708f557947b3f0f8f366ff9557173d6ceae72e8205df6ec73754e3702339",
+        "45ba794f4a951593d97315b6d5931ff5450b50ab817035a334a13fb961576738",
+        "4872a9b8e1a1fcb22fd3a8260f73a05b9d52ebd36c41eac8ef66892d80694281",
+        "ac13c76254d489a45c09d1ce3ac7c43b7c7f66d09428defc9e84900f1762b648",
+        "745da84606d00f0133b321569a1f8454c4b400a03622ec4f16fcab8d9ffe2836"
+      ],
+      "saved_processor_payload_sha256": "de75c319c14a4d6aaed0319c50b3fe92ae08bbfd697560c94d4763407efcf9a6",
+      "saved_result_metadata_file_sha256": "63bc4a5d35710ea5521eb3f1f7f55edf5dd683985adf54b03c1369e416750d22",
+      "source_frame_sha256": [
+        "b10dce331e1aa9afcf71f67fb1b6af65271ed2d4203504d46690e8d1b9363097",
+        "0ead4d9fda6b2cb6d2714a123a0d5241b2e0670cc5856548ceb9e14d62419536",
+        "a4b032ad1a3c19b998fba26ed165f74c3d6203dc49e6c89953eb384b3ef82b64",
+        "972d23c38c9b2b8ee9e0fc7813144cfebed1a2a308fc4a93a90d3772682a7bee",
+        "564c86141867f11203bfce677c3c4a84a5dfa72814d45e197ff6517337e96c54",
+        "45e79823f88cf4394089bd1e3d27da4c451bd4f1050b67c32bfaef2c13465fa1",
+        "faefa85af2cc069dd45ad5f5dfd765e2112ef0b665f73ce5143cb3e9e7e3a6e8",
+        "d1697bde0f8e43721ec57cfe9680e3058f725a9f0f6a7648a8d271b21d1c2f5f",
+        "a52fecf74f960395b1e4391e3345db43d43ed84c92e80fafd417d31c07030e18",
+        "53319088bb3355cdef00ed787fe9563752262d1d449b9cb721a21228a8a999d9"
+      ],
+      "source_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          960000,
+          967680,
+          975360,
+          983040,
+          990720,
+          998400,
+          1006080,
+          1013760,
+          1021440,
+          1029120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          62.5,
+          63.0,
+          63.5,
+          64.0,
+          64.5,
+          65.0,
+          65.5,
+          66.0,
+          66.5,
+          67.0
+        ],
+        "scheduled_seconds": [
+          62.5,
+          67.5
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000026"
+    },
+    {
+      "condition": "q_C_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          537,
+          216,
+          1440,
+          864
+        ],
+        "crop_wh": [
+          903,
+          648
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2043,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.7796234772978959,
+          0.7407407407407407
+        ],
+        "roi_normalized": [
+          0.28,
+          0.2,
+          0.75,
+          0.8
+        ],
+        "saved_processor_wh": [
+          704,
+          480
+        ],
+        "source_area_retained_fraction": 0.2821875,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            30,
+            44
+          ]
+        ],
+        "visual_tokens": 1650
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "s030_time",
+        "completion_reference": "not_assessed",
+        "interval_seconds": [
+          50.0,
+          55.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "Of three people, one approaches the door; no crossing attempt or progress is visible in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q05",
+        "source_id": "E01_030",
+        "window_id": "w000021"
+      },
+      "recorded_crop_RGB_sha256": "06a47f60c8ff0cfb23b85e46b7b0df86ba41c241ee5d9e98406e37e5129a4ef1",
+      "recorded_source_aggregate_RGB_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b",
+      "review_id": "q05",
+      "saved_input_metadata_file_sha256": "b6bb0244623731d6adf8c893ff878e139ef6870a4d7d145c1ae1fe6e32304a76",
+      "saved_processor_file_sha256": "9d2c239fb176f4b8d4317f52977d6946871ad0da176b9cfe1e28cf899a3ec39a",
+      "saved_processor_frame_sha256": [
+        "a34d100560b92cd24a334228eefc1f1f3de02fe61872cb4c135b6e2f8aaf56ad",
+        "f828efdd4a2714c264d692c6205760d4d3cfa2bc93d102a1970658b7ea03e207",
+        "7ba40d7e625f57ee5a96b2f88b73169e0bcc83d259610b68627145d486b3f60d",
+        "06f06e72ba12615e26f3e8b9dfb7b17eb51add42690bd5613eda0d1976adbd68",
+        "127e99157a0c583bb1a1709f4e03f41b555fb6bac0d7078adbbce294ce0ccfcd",
+        "0bd7f61e6eb6c54d8ea0cc9f9a4d27568521af1d8e4dfd57e872fa2627d92ab9",
+        "11cea826ca15143b6bfbc396a6dc9129ce6737e578ad88541566e497db90c067",
+        "ee98ab65c4c092db4b59f42e8b8ecadbb2731d3ce263eb05daf3fcd3eaecd367",
+        "1a4901a1c8d1d0927fd04585a0465db1160967e444252fb5ce76d8facaf38ee9",
+        "c8d65675fa88482097c93b1a28377d94b6856858fc389fa5ea3505db1fb08d80"
+      ],
+      "saved_processor_payload_sha256": "1c9b3761f54927d46a73c19772dadbcd10d6a36b65ec9c2d015dabed950244a9",
+      "saved_result_metadata_file_sha256": "21f535d2b772aa1b6521e7785aedc1e54436a449d330b8fc01f496f3bf55555a",
+      "source_frame_sha256": [
+        "484e43c918eb419ddf403b6668374c39bd301e280d3bd3c06d139fe02ebe40b1",
+        "599c3931fb95fc2bba3aada3c6c209b24fdcdf3d607332ce9a1daded3ef67a06",
+        "01d3c98c96bc263bcf8e995f2fefaa9a4729122753097dc8048465e952a93a64",
+        "98fe6a5957143edd3e37215fcb9b8b64853ff6b2214cba81990ecdb0698ab35e",
+        "56c93837cf0ad0340c5ac3d0baf0a28c9b971487dc54b8dc61dfe3fdbe68eb56",
+        "5b0ef1753ee6078593b95d7241b7161d4d45644825dfb3edbcab2c6e51e85054",
+        "45fe4f649023ff28aef420e77508ccf475651a0deb97a2c21877830586687f02",
+        "c1cb3eef7129766f66e01f1a646daae080e52c30db938c7a5a859d8d5b63c80f",
+        "122565df53b4cbe5e212962e000d6d73f26d7944a7d168797c5db202c6fb5543",
+        "8daec9b968c6e83be19935adc98546546b9b0216070d5b70503cc144bf497d7c"
+      ],
+      "source_id": "E01_030",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          768000,
+          775680,
+          783360,
+          791040,
+          798720,
+          806400,
+          814080,
+          821760,
+          829440,
+          837120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          50.0,
+          50.5,
+          51.0,
+          51.5,
+          52.0,
+          52.5,
+          53.0,
+          53.5,
+          54.0,
+          54.5
+        ],
+        "scheduled_seconds": [
+          50.0,
+          55.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000021"
+    },
+    {
+      "condition": "q_C_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          537,
+          216,
+          1440,
+          864
+        ],
+        "crop_wh": [
+          903,
+          648
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2043,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.7796234772978959,
+          0.7407407407407407
+        ],
+        "roi_normalized": [
+          0.28,
+          0.2,
+          0.75,
+          0.8
+        ],
+        "saved_processor_wh": [
+          704,
+          480
+        ],
+        "source_area_retained_fraction": 0.2821875,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            30,
+            44
+          ]
+        ],
+        "visual_tokens": 1650
+      },
+      "historical_q_actual_processor_pixel_equality": "not_established",
+      "historical_q_processor_RGB": "unavailable_not_saved",
+      "historical_q_recorded_visual_metadata_equal": true,
+      "prior_user_clip_label": {
+        "case_id": "d030_eof",
+        "completion_reference": "not_assessed_no_visible_person",
+        "interval_seconds": [
+          155.0,
+          160.0
+        ],
+        "label_status": "human_confirmed_for_window",
+        "observed_behavior": "No person or event appears in this window.",
+        "reference_label": "no_climbing_observed",
+        "review_clip_id": "q06",
+        "source_id": "E01_030",
+        "window_id": "w000063"
+      },
+      "recorded_crop_RGB_sha256": "61a26891eb21c7ee985140ab85cc83fe42df0d2f32aaf1167b519b598bd08bb1",
+      "recorded_source_aggregate_RGB_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b",
+      "review_id": "q06",
+      "saved_input_metadata_file_sha256": "1bfc1b6b599e686aedc727635f907ffc34f5abb4a8b2a87c6535f853b340bb16",
+      "saved_processor_file_sha256": "530c9eae5f1ebbb2a8cfcba42de2008ed3b408a18d6e97487edc2d407256638a",
+      "saved_processor_frame_sha256": [
+        "d67434f709c2b46577a16ee1f8c0aa1d3df391f80a27bfb01c4587c63fcad354",
+        "4da72acabf7471515eac14c1d4a99504fd6528c3ad193519babc2f200bb8e676",
+        "9f389042bd834c9e853def333880484a707a795a89e87b8ef06fcda406801f25",
+        "1099332fcc3b0f1f1bdea00bc8f70f598f089fb718b6c0fd4bd23f5c57f4471a",
+        "63ec609343458cb5c711ba9ce89e7ba3bdb2508232558d8ba9cea9fdb972ceb5",
+        "e1ad37616501d626a422d157c06717a969be0e1eedf1f246711649dc601154f9",
+        "e4fd4e6852b3fed035b7391c0facd9a814d7d205da212504ea0dbb3bb98fdcc8",
+        "a1da6554b53a25f71030ad29cd473a25d3e2fc62edaff2a6d94bebb8c9149f88",
+        "20dd987099cd435727c5e18db7ec8e5cf563bf5bece7a533e36294fcfaaffecb",
+        "2702ea46b6b26a703f4315f8611a2fdcebe910c739f321b4d21197038357909b"
+      ],
+      "saved_processor_payload_sha256": "ddfddf21e7dc158f0b30bcc4c7c163e6a671b04b8d1782ce1ab69aab5b7d9519",
+      "saved_result_metadata_file_sha256": "576773e8b68d9b9c1c7fd2638d7f6d60ba18830e3414fb0279d41afc1b7a8ede",
+      "source_frame_sha256": [
+        "c572e4cccd6d48c4358adfed4dce3be073188e36d17c568e25aebbdc6b057f60",
+        "deea293cb69ee2ab9cd972f0e49bc4c748a9d8898266e926294e67076652fae6",
+        "464fc1d18dda5c3304de7f701e237c37baaf015ed473e52acd75d394a8d6f87f",
+        "56cb57e124eaa760b59499d68ea67854b1b2ebd2f2b81c47693fb47a6b4f4b3c",
+        "9a4c05b65ebd7b3a667b9a9715a2d9b3069e822273594abfd9536d65ca91f8c9",
+        "3823050005c9b82f32c2e256e7fb1ad8d852549c62d05adaf45e66a242cdfc2f",
+        "a7b4637e4f698e4e7d12e1b99332e611622a76808e246a94d275ced8a9f4d154",
+        "db7f4b87f21f94175f380b3fbfbf460344090ee6d678a19227447f3d5feef8a9",
+        "7d80a69964f617dd312d57ebb60fa5cd60031a0c34dd4694a0350c5742ef6b47",
+        "843a7201fee1954f5eb2ed9bc473e0bf082f3c847a860e7e0d25adad1d1e9943"
+      ],
+      "source_id": "E01_030",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          2380800,
+          2388480,
+          2396160,
+          2403840,
+          2411520,
+          2419200,
+          2426880,
+          2434560,
+          2442240,
+          2449920
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          155.0,
+          155.5,
+          156.0,
+          156.5,
+          157.0,
+          157.5,
+          158.0,
+          158.5,
+          159.0,
+          159.5
+        ],
+        "scheduled_seconds": [
+          155.0,
+          160.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000063"
+    },
+    {
+      "condition": "v_original_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1280,
+          720
+        ],
+        "crop_wh": [
+          1280,
+          720
+        ],
+        "extra_sampling": false,
+        "input_tokens": 1947,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.6,
+          0.6222222222222222
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1280,
+          720
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "completion": "not_assessed",
+        "label": "attempt_progress",
+        "review_clip_id": "v01",
+        "window_id": "w000001"
+      },
+      "recorded_crop_RGB_sha256": "7839c4446ab44a8f397633477550484d1c1f66f76159479d4d75fae64437cf44",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v01",
+      "saved_input_metadata_file_sha256": "043074910df48d5543d92fde2f30d123d80228b56de7776c3052e9466233d998",
+      "saved_processor_file_sha256": "47ad443ae61aa9e9c7370a503f65b87f1dbe97d22a0d7454b0f489bf0a0dc730",
+      "saved_processor_frame_sha256": [
+        "cc0000132a813879391650934df27d6a06678b5d67ace2ac30cf34599e3344e4",
+        "c126b0d9ffd37344659900be0046b761433810b164875a60dd06ea3a15ce89d0",
+        "ecfe571f608ecdcb7da84341f7d5da2822baf5fe7a9bb29a7e2b40dac104d3fd",
+        "77d24b5a39a7ebdd7957ced8abc468420cf9bfa97c6b5beea47249db845cb4a6",
+        "5114a24d3aae35380e790befc10244bb223afc88b7038687c0154989d7f5744e",
+        "1841eaa5ab9b34048ae772521ae35f1336a4f06bd7e3a6ff947db094743f2be6",
+        "418f6bec1261bbdccaf164ccbd87adbfef3ddde10f4924979d33b5d44189e301",
+        "3d29e5fe7b13138dfcdaca177638aef4b164964726f38a4cd747c8cfc4a6dbf4",
+        "1e875deaddbba32f637774f0d3f0f9d8657ad8a5197e0bdba561e96b243801a6",
+        "0d20fc24f0a0c4c118a87f8bc1a702d27898f08b68ed0cf978db469eb6a94439"
+      ],
+      "saved_processor_payload_sha256": "eee82ea88e56f4bdfa69f9d481eb313caccd2678d15e819fed29b867a7828b19",
+      "saved_result_metadata_file_sha256": "b71258684b299542f32f2a76dd3fc39c4c684ac5e8927adcb73c3efc1a75e679",
+      "source_frame_sha256": [
+        "ba46416291bc4ad29b5493e7c72798f7b699c40d91201a80877f8f5a8de67808",
+        "94eb835760885987aab2e748a0dd1325585bc4babb1b564e4427b9ab44b0acc3",
+        "a3f7bc459de7058273559ac1aa2c9b566156ad6f0209079a8c792c06aecb40f5",
+        "319bd464a8bfcfa642603a09b4211dacc4a2f8b3dc6e72f166de106493437d12",
+        "0ad55b34d1c347ac193bab0a2d3dff3c16cf81fb557e6a9064e465d82da3ab83",
+        "8e4862e8e94949d9a593d78fd81d72da9958ac8ebd462f6d8808a0f7e2d011d6",
+        "5c21524c259ad48de7d0175fe3de71f4ec8058446b64ef4fc55c19c3bc0a0efe",
+        "5a24f83bf2f7d51822abad5aa952ec693e0aada97dce1162c8b9392fdf403570",
+        "d5763735e14ae1c2399cb5a183e0b6370556dccb2955bff0c37b11fd82035d06",
+        "84a0c2875f382df3e07ccc9f9fd814e332b47c30917dc9e83ba6d59e0877b405"
+      ],
+      "source_id": "E01_004",
+      "source_sha256": "db4135a12dc61080e2e63dc94bf4163a3ecad567082691079ffbec01ed222d3c",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          921600,
+          929280,
+          936960,
+          944640,
+          952320,
+          960000,
+          967680,
+          975360,
+          983040,
+          990720
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          60.0,
+          60.5,
+          61.0,
+          61.5,
+          62.0,
+          62.5,
+          63.0,
+          63.5,
+          64.0,
+          64.5
+        ],
+        "scheduled_seconds": [
+          60.0,
+          65.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000001"
+    },
+    {
+      "condition": "v_original_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1280,
+          720
+        ],
+        "crop_wh": [
+          1280,
+          720
+        ],
+        "extra_sampling": false,
+        "input_tokens": 1947,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.6,
+          0.6222222222222222
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1280,
+          720
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "label": "non_event",
+        "review_clip_id": "v02",
+        "window_id": "w000002"
+      },
+      "recorded_crop_RGB_sha256": "2529d28310ab3f0a1511794ea6e18b2d9ac58cdeab4e3134792cc49ec5fe2bd5",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v02",
+      "saved_input_metadata_file_sha256": "dc294cbe20e683d09765425f77dd003ee58b93475e635e27d4ef81970a563c25",
+      "saved_processor_file_sha256": "eb1c9d7052188d6eb0d6c22da2a31b1c5818d9ade81102958223ddd9806d0a74",
+      "saved_processor_frame_sha256": [
+        "ac44d2cde210706c93760392d1f0b5676c22d68cd4286828ea58b707c7479b90",
+        "bbdf9135617d3263a3b08e6bfe2f16f3dd11407482555408479dfaec96c4ad9b",
+        "82d35bf6edc533c6442470f95db54484d7e3bb73a6994a03c4005d28286443e7",
+        "a6ce72aa48d64805d9fcad5c8504afe0bb8d0c5bb4e8f0b49f80765062c82ab4",
+        "3c7fcd92288071d7ceca6049a72e8afab74edd49ff354df4b73eea953b189910",
+        "b19229f80a9acb8f90f438286a59d98368140bf29720f5da369c369c169b1427",
+        "10fb70e07536fe9741923f7a1d7efa42c75648dffaa8e49c4f7eca11d9bbbf12",
+        "42a2b1272e11d34a1e1b3b181acba39893dc9f91943bd50dda0329212f4add3c",
+        "c6d13661f42b2b2d1beb587a025e22a650d70b1fefbc74fefb9cefd28e19ec21",
+        "544d3d75c633885478e66336c184cd37d383b15fe14e448084fb6655f8b20857"
+      ],
+      "saved_processor_payload_sha256": "3977ed8aede9a93185a7b2a89bb6c2330e0781401b7002049338b928ceac1f19",
+      "saved_result_metadata_file_sha256": "3c152da06e86cf4ec78dd62e9cd4b70fd9fb255dac749d03ec861606f36ff550",
+      "source_frame_sha256": [
+        "d646c10cfb3b1391ec884a84ad95631dea68999fc26fd4544b33e8639e498c5c",
+        "42337aae6aee0ef94810a32fad3b535b4f04ba04334310e06e61c00d6e1f0d61",
+        "c0fce12c3a12672998552741ad0144c9d31bffb2a67ed6dee3441095ae6d64ab",
+        "21af8ff21ac4c673961a1e9591da5a54903e70a6444bb4cd89abb06812ca09a3",
+        "abeb2382b76e8da4ebd85313f042e631b0504d4d2972da8c7f4529ea44545584",
+        "ee8fdbefa73c7cd81077a3992a49f97de7ef0ed2ce24d872b59ccb9b2616497c",
+        "369f8f68caea5da914489f6186c35344a8c9f19b649c3e3e2472466a23455d39",
+        "9165cff93700a1f72f915b0fd65ada94822802b421b737513f8fbe2351baf0a9",
+        "d9aa382e71d56425ada94c6787c5f7321cead6892199c4216fedd2d2804b0361",
+        "65bf3e84fb29f229f613edd851f61f312bb0e0fb717e47fb0af7dd4cef6d00c7"
+      ],
+      "source_id": "E01_004",
+      "source_sha256": "db4135a12dc61080e2e63dc94bf4163a3ecad567082691079ffbec01ed222d3c",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          0,
+          7680,
+          15360,
+          23040,
+          30720,
+          38400,
+          46080,
+          53760,
+          61440,
+          69120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5
+        ],
+        "scheduled_seconds": [
+          0.0,
+          5.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000002"
+    },
+    {
+      "condition": "v_original_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 1947,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "boundary_relation": "ambiguous",
+        "completion": "not_assessed",
+        "exact_location": "ambiguous",
+        "label": "attempt_progress",
+        "location": "gap beside gate, not through gate",
+        "review_clip_id": "v03",
+        "window_id": "w000003"
+      },
+      "recorded_crop_RGB_sha256": "31732880d96205a6511643c8f99d9dbaba6d0763fd075b8c10e7d656793b188f",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v03",
+      "saved_input_metadata_file_sha256": "14a1086d43219dbea133796f098931f417c768df861aea71c74ddef37f55a8eb",
+      "saved_processor_file_sha256": "9ff4a35f32b49f3cefadb46500dc5404cc866245e9262174d250e7cb82911fd5",
+      "saved_processor_frame_sha256": [
+        "3e3e0e099413aef1f1fe1374e80d669252499818830bd57575515fbcbf593cf0",
+        "1305ddbae9ef570c6f75be22b553fddd3124cd616191c4eceba62ded752a9dd5",
+        "09ff9f955a4004682c8e1efaad893a2c8c387ace264217929e5af8e7595003da",
+        "0eba3db1153a611fc5ae5a963cdda41caca7caa5073b0833d600f19a2d56a130",
+        "e35dc9c498e669ac4becb02257bbc54af2dd4ad491344b84b90d939f3d3b32cc",
+        "792180f85d44431d9e409ff73e15b86a45322e24886e788cbee18cacaa737181",
+        "0790b9641ff16336afbdd0a836027d3769837659e17513f1c2813ef9f8e5e5fc",
+        "2df32dabff1dfd6916c24e58348a4f6d6eb8d8c1f090fee581192d5d6980a7b8",
+        "8f4cc527479cb0dee0996c53c95bd9ec01b0b36bc6c159dabcfd725f5e74c3f5",
+        "83f5986985aeb6b841164adb0bf3c7e81fdf41cc28000272e275bb123c111fa0"
+      ],
+      "saved_processor_payload_sha256": "e644332a25f09650f37fe4e93125254ce2017a33536ed454c7aa961149e86316",
+      "saved_result_metadata_file_sha256": "2740525a97e01e608999997044482ddd5c0dab38f8c6a09649bcc05ecf3d2979",
+      "source_frame_sha256": [
+        "87c6843a997504c829f0da5fc74527581b6927cac5d84290c0922e2de3a71c54",
+        "44a05a1eaf85ff64e5d2e7d40239b1d235c6c13ae7b037244af233c12c8956f2",
+        "71e8f4c8918420368fa55c5f35fdde99ea4d664229dad5f99beec492564c6db9",
+        "9b2b7066430bf47eba717e22abe4153c974a2b3517b9efe56a564a9587486704",
+        "7b37f43ebcb92601f5a7611e3c36ae62c1a4e1edb3e8a9c647af1bf6613fc160",
+        "b772046ffa593f1d31a9abe18af1cabde23f4f14aa1b82f46b333dfbbe743398",
+        "4627940b3c08208ab91308ddd62d2524534affefb46cc2be794c56e8d729ae49",
+        "b5908ecdfc852e26f779b5b8d8cb5d257993fcd95c94af16cf2fbcee0c30cba4",
+        "b84a9f9bdbb88b2a17fc74e394ee8151a8f0cb36884d26b63366276dbe0d2382",
+        "e41a489934332ed71bef872bbcfd1435bb721bd4e4517efcdaded479f835947e"
+      ],
+      "source_id": "E01_021",
+      "source_sha256": "60d7a723f492cf20d69cc4338ec05069186a2ab7ab23b02f641f7dec9c5c0aa8",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          998400,
+          1006080,
+          1013760,
+          1021440,
+          1029120,
+          1036800,
+          1044480,
+          1052160,
+          1059840,
+          1067520
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          65.0,
+          65.5,
+          66.0,
+          66.5,
+          67.0,
+          67.5,
+          68.0,
+          68.5,
+          69.0,
+          69.5
+        ],
+        "scheduled_seconds": [
+          65.0,
+          70.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000003"
+    },
+    {
+      "condition": "v_original_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 1947,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "label": "non_event",
+        "review_clip_id": "v04",
+        "window_id": "w000004"
+      },
+      "recorded_crop_RGB_sha256": "bd52ce79bb31ce71a8b8e40a09cb3cf38378943d22ea4b335dd31365904fab9a",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v04",
+      "saved_input_metadata_file_sha256": "4d562a53010faeb68a1f1b960799c0ddf17f40c703f7434891c02a42e4302dec",
+      "saved_processor_file_sha256": "385e8db018219d83cb3f1a9e79d592fb53eb85b81e9e4c91a3a927e3dfa99123",
+      "saved_processor_frame_sha256": [
+        "73b2eeceb1900b1333a1f705539867d6947028f81f04ea447b35cd38d2513a3c",
+        "52b42460f8dcb6fa3b23ef989333d05aa9136748ba715584a160ab0eeca54901",
+        "3a9fced5cdf88f81f87b9f26f9828c3b7b5b7ed3387f04db3bdf7d4ba1232d3c",
+        "13d6748941543337882da9be065a52f477a712a13c709fc0a59fcedeac129df8",
+        "1a609f8973ab0c59dc03ae4fdb25191f03f7cdcbe56d96b40a208551683e8c97",
+        "29a3ef90dda690e3d161148a98bb903fa4563be97d616a9b6d01eabbde33f826",
+        "a2bf29ef009db8c5722ae03c7445546b3f3d11f44bd1bd3d5bf41e39b76eb6f3",
+        "ca1ca1a750bfab54b218a6aa1206dd1aeac49c002f433de22d1cf6a069c143ea",
+        "a28425276dc8e90212b405334cf0220b8b3beb0ac4eccf9f219401a46666eaa9",
+        "48f0ca71ecfeb16728d1bd687349e67423e2b80f240608dedacba57dee7e7f97"
+      ],
+      "saved_processor_payload_sha256": "4e109836178d6db20625bf774e36177e412c874173610e941ededee23ff3f488",
+      "saved_result_metadata_file_sha256": "2037143fa5f5f5eb14660de97e13b3ece693d6475dbb617a1cf3596802effe4b",
+      "source_frame_sha256": [
+        "3b6482297eee2cddfe627e0472ecbe3b93ed4120cf275ce89e72dc633e28577c",
+        "42f433045a2cda2d6b75ce539acb3c165342e4137d5bbf21e8d8517557fc471c",
+        "9568a38dee48c405413696a58d2d24cdd61a0d2dc18868f79e2c5de92ef1bad1",
+        "c0efae400a1a4739147e0154d8af719e52d668dfc23c41cec649236daaa1a624",
+        "4b7bdcb754253ba543eab12a32a8539d4527051752bb4a87558b366a86a64796",
+        "7ab921e6b0a0f281fcaa14fa85763d9641d2dc69e2a31adc69e597fcce1064d5",
+        "fa0eeb85783390818b4a88fc6ccfb79fd0a690c7b7360338a2366a39906fb898",
+        "287dbcbc75e7de8f7ad8b70e3ddd6ebd0be1d3ce49d6e407b69226b711052e75",
+        "5b19f89d64c2a3942f185f2a9781b59a57c37c086f82f91f8050e747b7d6de8f",
+        "553c457bee054488ca15948f7f2ac39b8d3e5ef5995b338277e9c10341ae0493"
+      ],
+      "source_id": "E01_021",
+      "source_sha256": "60d7a723f492cf20d69cc4338ec05069186a2ab7ab23b02f641f7dec9c5c0aa8",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          0,
+          7680,
+          15360,
+          23040,
+          30720,
+          38400,
+          46080,
+          53760,
+          61440,
+          69120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5
+        ],
+        "scheduled_seconds": [
+          0.0,
+          5.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000004"
+    },
+    {
+      "condition": "v_revised_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1280,
+          720
+        ],
+        "crop_wh": [
+          1280,
+          720
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.6,
+          0.6222222222222222
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1280,
+          720
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "completion": "not_assessed",
+        "label": "attempt_progress",
+        "review_clip_id": "v01",
+        "window_id": "w000001"
+      },
+      "recorded_crop_RGB_sha256": "7839c4446ab44a8f397633477550484d1c1f66f76159479d4d75fae64437cf44",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v01",
+      "saved_input_metadata_file_sha256": "505c24f392369344bd4a6004d4fdac173f46953a4212780676f265901699ce3e",
+      "saved_processor_file_sha256": "47ad443ae61aa9e9c7370a503f65b87f1dbe97d22a0d7454b0f489bf0a0dc730",
+      "saved_processor_frame_sha256": [
+        "cc0000132a813879391650934df27d6a06678b5d67ace2ac30cf34599e3344e4",
+        "c126b0d9ffd37344659900be0046b761433810b164875a60dd06ea3a15ce89d0",
+        "ecfe571f608ecdcb7da84341f7d5da2822baf5fe7a9bb29a7e2b40dac104d3fd",
+        "77d24b5a39a7ebdd7957ced8abc468420cf9bfa97c6b5beea47249db845cb4a6",
+        "5114a24d3aae35380e790befc10244bb223afc88b7038687c0154989d7f5744e",
+        "1841eaa5ab9b34048ae772521ae35f1336a4f06bd7e3a6ff947db094743f2be6",
+        "418f6bec1261bbdccaf164ccbd87adbfef3ddde10f4924979d33b5d44189e301",
+        "3d29e5fe7b13138dfcdaca177638aef4b164964726f38a4cd747c8cfc4a6dbf4",
+        "1e875deaddbba32f637774f0d3f0f9d8657ad8a5197e0bdba561e96b243801a6",
+        "0d20fc24f0a0c4c118a87f8bc1a702d27898f08b68ed0cf978db469eb6a94439"
+      ],
+      "saved_processor_payload_sha256": "eee82ea88e56f4bdfa69f9d481eb313caccd2678d15e819fed29b867a7828b19",
+      "saved_result_metadata_file_sha256": "a5592a8cb3f7b60dd8dab7f890f44d7e3c81ced176e5f7cbe08f626dc2b71180",
+      "source_frame_sha256": [
+        "ba46416291bc4ad29b5493e7c72798f7b699c40d91201a80877f8f5a8de67808",
+        "94eb835760885987aab2e748a0dd1325585bc4babb1b564e4427b9ab44b0acc3",
+        "a3f7bc459de7058273559ac1aa2c9b566156ad6f0209079a8c792c06aecb40f5",
+        "319bd464a8bfcfa642603a09b4211dacc4a2f8b3dc6e72f166de106493437d12",
+        "0ad55b34d1c347ac193bab0a2d3dff3c16cf81fb557e6a9064e465d82da3ab83",
+        "8e4862e8e94949d9a593d78fd81d72da9958ac8ebd462f6d8808a0f7e2d011d6",
+        "5c21524c259ad48de7d0175fe3de71f4ec8058446b64ef4fc55c19c3bc0a0efe",
+        "5a24f83bf2f7d51822abad5aa952ec693e0aada97dce1162c8b9392fdf403570",
+        "d5763735e14ae1c2399cb5a183e0b6370556dccb2955bff0c37b11fd82035d06",
+        "84a0c2875f382df3e07ccc9f9fd814e332b47c30917dc9e83ba6d59e0877b405"
+      ],
+      "source_id": "E01_004",
+      "source_sha256": "db4135a12dc61080e2e63dc94bf4163a3ecad567082691079ffbec01ed222d3c",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          921600,
+          929280,
+          936960,
+          944640,
+          952320,
+          960000,
+          967680,
+          975360,
+          983040,
+          990720
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          60.0,
+          60.5,
+          61.0,
+          61.5,
+          62.0,
+          62.5,
+          63.0,
+          63.5,
+          64.0,
+          64.5
+        ],
+        "scheduled_seconds": [
+          60.0,
+          65.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000001"
+    },
+    {
+      "condition": "v_revised_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1280,
+          720
+        ],
+        "crop_wh": [
+          1280,
+          720
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.6,
+          0.6222222222222222
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1280,
+          720
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "label": "non_event",
+        "review_clip_id": "v02",
+        "window_id": "w000002"
+      },
+      "recorded_crop_RGB_sha256": "2529d28310ab3f0a1511794ea6e18b2d9ac58cdeab4e3134792cc49ec5fe2bd5",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v02",
+      "saved_input_metadata_file_sha256": "361850dd69a0691968fd043a1566cf5fa7f445fafd8ba0dadc91f8e05b9968b0",
+      "saved_processor_file_sha256": "eb1c9d7052188d6eb0d6c22da2a31b1c5818d9ade81102958223ddd9806d0a74",
+      "saved_processor_frame_sha256": [
+        "ac44d2cde210706c93760392d1f0b5676c22d68cd4286828ea58b707c7479b90",
+        "bbdf9135617d3263a3b08e6bfe2f16f3dd11407482555408479dfaec96c4ad9b",
+        "82d35bf6edc533c6442470f95db54484d7e3bb73a6994a03c4005d28286443e7",
+        "a6ce72aa48d64805d9fcad5c8504afe0bb8d0c5bb4e8f0b49f80765062c82ab4",
+        "3c7fcd92288071d7ceca6049a72e8afab74edd49ff354df4b73eea953b189910",
+        "b19229f80a9acb8f90f438286a59d98368140bf29720f5da369c369c169b1427",
+        "10fb70e07536fe9741923f7a1d7efa42c75648dffaa8e49c4f7eca11d9bbbf12",
+        "42a2b1272e11d34a1e1b3b181acba39893dc9f91943bd50dda0329212f4add3c",
+        "c6d13661f42b2b2d1beb587a025e22a650d70b1fefbc74fefb9cefd28e19ec21",
+        "544d3d75c633885478e66336c184cd37d383b15fe14e448084fb6655f8b20857"
+      ],
+      "saved_processor_payload_sha256": "3977ed8aede9a93185a7b2a89bb6c2330e0781401b7002049338b928ceac1f19",
+      "saved_result_metadata_file_sha256": "f87e69774ef56c2d4efed528e908e3a294b732d1a6428ebc4987f25621f1346c",
+      "source_frame_sha256": [
+        "d646c10cfb3b1391ec884a84ad95631dea68999fc26fd4544b33e8639e498c5c",
+        "42337aae6aee0ef94810a32fad3b535b4f04ba04334310e06e61c00d6e1f0d61",
+        "c0fce12c3a12672998552741ad0144c9d31bffb2a67ed6dee3441095ae6d64ab",
+        "21af8ff21ac4c673961a1e9591da5a54903e70a6444bb4cd89abb06812ca09a3",
+        "abeb2382b76e8da4ebd85313f042e631b0504d4d2972da8c7f4529ea44545584",
+        "ee8fdbefa73c7cd81077a3992a49f97de7ef0ed2ce24d872b59ccb9b2616497c",
+        "369f8f68caea5da914489f6186c35344a8c9f19b649c3e3e2472466a23455d39",
+        "9165cff93700a1f72f915b0fd65ada94822802b421b737513f8fbe2351baf0a9",
+        "d9aa382e71d56425ada94c6787c5f7321cead6892199c4216fedd2d2804b0361",
+        "65bf3e84fb29f229f613edd851f61f312bb0e0fb717e47fb0af7dd4cef6d00c7"
+      ],
+      "source_id": "E01_004",
+      "source_sha256": "db4135a12dc61080e2e63dc94bf4163a3ecad567082691079ffbec01ed222d3c",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          0,
+          7680,
+          15360,
+          23040,
+          30720,
+          38400,
+          46080,
+          53760,
+          61440,
+          69120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5
+        ],
+        "scheduled_seconds": [
+          0.0,
+          5.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000002"
+    },
+    {
+      "condition": "v_revised_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "boundary_relation": "ambiguous",
+        "completion": "not_assessed",
+        "exact_location": "ambiguous",
+        "label": "attempt_progress",
+        "location": "gap beside gate, not through gate",
+        "review_clip_id": "v03",
+        "window_id": "w000003"
+      },
+      "recorded_crop_RGB_sha256": "31732880d96205a6511643c8f99d9dbaba6d0763fd075b8c10e7d656793b188f",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v03",
+      "saved_input_metadata_file_sha256": "52bbb42fb8c5b2f7381ec6358368e5e5c8fc47f7c3c45fab621908e2be9b14f8",
+      "saved_processor_file_sha256": "9ff4a35f32b49f3cefadb46500dc5404cc866245e9262174d250e7cb82911fd5",
+      "saved_processor_frame_sha256": [
+        "3e3e0e099413aef1f1fe1374e80d669252499818830bd57575515fbcbf593cf0",
+        "1305ddbae9ef570c6f75be22b553fddd3124cd616191c4eceba62ded752a9dd5",
+        "09ff9f955a4004682c8e1efaad893a2c8c387ace264217929e5af8e7595003da",
+        "0eba3db1153a611fc5ae5a963cdda41caca7caa5073b0833d600f19a2d56a130",
+        "e35dc9c498e669ac4becb02257bbc54af2dd4ad491344b84b90d939f3d3b32cc",
+        "792180f85d44431d9e409ff73e15b86a45322e24886e788cbee18cacaa737181",
+        "0790b9641ff16336afbdd0a836027d3769837659e17513f1c2813ef9f8e5e5fc",
+        "2df32dabff1dfd6916c24e58348a4f6d6eb8d8c1f090fee581192d5d6980a7b8",
+        "8f4cc527479cb0dee0996c53c95bd9ec01b0b36bc6c159dabcfd725f5e74c3f5",
+        "83f5986985aeb6b841164adb0bf3c7e81fdf41cc28000272e275bb123c111fa0"
+      ],
+      "saved_processor_payload_sha256": "e644332a25f09650f37fe4e93125254ce2017a33536ed454c7aa961149e86316",
+      "saved_result_metadata_file_sha256": "4ade1f9c8763f3f8944c5d9e3dedcce35f5f239be539a02cad0bfe92a3a4aa96",
+      "source_frame_sha256": [
+        "87c6843a997504c829f0da5fc74527581b6927cac5d84290c0922e2de3a71c54",
+        "44a05a1eaf85ff64e5d2e7d40239b1d235c6c13ae7b037244af233c12c8956f2",
+        "71e8f4c8918420368fa55c5f35fdde99ea4d664229dad5f99beec492564c6db9",
+        "9b2b7066430bf47eba717e22abe4153c974a2b3517b9efe56a564a9587486704",
+        "7b37f43ebcb92601f5a7611e3c36ae62c1a4e1edb3e8a9c647af1bf6613fc160",
+        "b772046ffa593f1d31a9abe18af1cabde23f4f14aa1b82f46b333dfbbe743398",
+        "4627940b3c08208ab91308ddd62d2524534affefb46cc2be794c56e8d729ae49",
+        "b5908ecdfc852e26f779b5b8d8cb5d257993fcd95c94af16cf2fbcee0c30cba4",
+        "b84a9f9bdbb88b2a17fc74e394ee8151a8f0cb36884d26b63366276dbe0d2382",
+        "e41a489934332ed71bef872bbcfd1435bb721bd4e4517efcdaded479f835947e"
+      ],
+      "source_id": "E01_021",
+      "source_sha256": "60d7a723f492cf20d69cc4338ec05069186a2ab7ab23b02f641f7dec9c5c0aa8",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          998400,
+          1006080,
+          1013760,
+          1021440,
+          1029120,
+          1036800,
+          1044480,
+          1052160,
+          1059840,
+          1067520
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          65.0,
+          65.5,
+          66.0,
+          66.5,
+          67.0,
+          67.5,
+          68.0,
+          68.5,
+          69.0,
+          69.5
+        ],
+        "scheduled_seconds": [
+          65.0,
+          70.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000003"
+    },
+    {
+      "condition": "v_revised_EXP0017_saved",
+      "decoded_source_and_crop_hashes_verified": true,
+      "geometry": {
+        "action_visible": null,
+        "action_vs_approach_distinguishable": null,
+        "actual_input_human_review": "not_performed",
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "crop_wh": [
+          1920,
+          1080
+        ],
+        "extra_sampling": false,
+        "input_tokens": 2073,
+        "person_size_pixels": null,
+        "person_size_reason": "no documented human location boxes for these exact q/v samples",
+        "processor_timestamp_coordinates": [
+          0.0,
+          15.0,
+          30.0,
+          45.0,
+          60.0,
+          75.0,
+          90.0,
+          105.0,
+          120.0,
+          135.0
+        ],
+        "processor_timestamp_quantization": "official pair averaging then captions rounded to 0.1 seconds",
+        "resize_xy_scale": [
+          0.4,
+          0.4148148148148148
+        ],
+        "roi_normalized": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "saved_processor_wh": [
+          768,
+          448
+        ],
+        "source_area_retained_fraction": 1.0,
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "temporal_padding_frames": 0,
+        "temporal_patch_frames": 2,
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "historical_q_processor_RGB": "not_applicable",
+      "prior_user_clip_label": {
+        "label": "non_event",
+        "review_clip_id": "v04",
+        "window_id": "w000004"
+      },
+      "recorded_crop_RGB_sha256": "bd52ce79bb31ce71a8b8e40a09cb3cf38378943d22ea4b335dd31365904fab9a",
+      "recorded_source_aggregate_RGB_sha256": null,
+      "review_id": "v04",
+      "saved_input_metadata_file_sha256": "02280a653406dbece789fe233dde30bd8d136f8c86b27fcc42c89019e84f8c84",
+      "saved_processor_file_sha256": "385e8db018219d83cb3f1a9e79d592fb53eb85b81e9e4c91a3a927e3dfa99123",
+      "saved_processor_frame_sha256": [
+        "73b2eeceb1900b1333a1f705539867d6947028f81f04ea447b35cd38d2513a3c",
+        "52b42460f8dcb6fa3b23ef989333d05aa9136748ba715584a160ab0eeca54901",
+        "3a9fced5cdf88f81f87b9f26f9828c3b7b5b7ed3387f04db3bdf7d4ba1232d3c",
+        "13d6748941543337882da9be065a52f477a712a13c709fc0a59fcedeac129df8",
+        "1a609f8973ab0c59dc03ae4fdb25191f03f7cdcbe56d96b40a208551683e8c97",
+        "29a3ef90dda690e3d161148a98bb903fa4563be97d616a9b6d01eabbde33f826",
+        "a2bf29ef009db8c5722ae03c7445546b3f3d11f44bd1bd3d5bf41e39b76eb6f3",
+        "ca1ca1a750bfab54b218a6aa1206dd1aeac49c002f433de22d1cf6a069c143ea",
+        "a28425276dc8e90212b405334cf0220b8b3beb0ac4eccf9f219401a46666eaa9",
+        "48f0ca71ecfeb16728d1bd687349e67423e2b80f240608dedacba57dee7e7f97"
+      ],
+      "saved_processor_payload_sha256": "4e109836178d6db20625bf774e36177e412c874173610e941ededee23ff3f488",
+      "saved_result_metadata_file_sha256": "47da744476f2d58874c54df78200ce4be869f78b04ede7f77f1a48f1872dee06",
+      "source_frame_sha256": [
+        "3b6482297eee2cddfe627e0472ecbe3b93ed4120cf275ce89e72dc633e28577c",
+        "42f433045a2cda2d6b75ce539acb3c165342e4137d5bbf21e8d8517557fc471c",
+        "9568a38dee48c405413696a58d2d24cdd61a0d2dc18868f79e2c5de92ef1bad1",
+        "c0efae400a1a4739147e0154d8af719e52d668dfc23c41cec649236daaa1a624",
+        "4b7bdcb754253ba543eab12a32a8539d4527051752bb4a87558b366a86a64796",
+        "7ab921e6b0a0f281fcaa14fa85763d9641d2dc69e2a31adc69e597fcce1064d5",
+        "fa0eeb85783390818b4a88fc6ccfb79fd0a690c7b7360338a2366a39906fb898",
+        "287dbcbc75e7de8f7ad8b70e3ddd6ebd0be1d3ce49d6e407b69226b711052e75",
+        "5b19f89d64c2a3942f185f2a9781b59a57c37c086f82f91f8050e747b7d6de8f",
+        "553c457bee054488ca15948f7f2ac39b8d3e5ef5995b338277e9c10341ae0493"
+      ],
+      "source_id": "E01_021",
+      "source_sha256": "60d7a723f492cf20d69cc4338ec05069186a2ab7ab23b02f641f7dec9c5c0aa8",
+      "timing": {
+        "adjacent_gap_seconds": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "effective_sample_fps": 2.0,
+        "first_to_last_span_seconds": 4.5,
+        "last_to_end_seconds": 0.5,
+        "maximum_gap_seconds": 0.5,
+        "native_pts": [
+          0,
+          7680,
+          15360,
+          23040,
+          30720,
+          38400,
+          46080,
+          53760,
+          61440,
+          69120
+        ],
+        "observed_frames": 10,
+        "pts_seconds": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5
+        ],
+        "scheduled_seconds": [
+          0.0,
+          5.0
+        ],
+        "start_to_first_seconds": 0.0,
+        "time_base": [
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360",
+          "1/15360"
+        ]
+      },
+      "window_id": "w000004"
+    }
+  ],
+  "limitations": [
+    "Historical q processor RGB absent: metadata equality does not establish past pixel equality.",
+    "Diagnostic030 processor pixels absent; manual-region projection is geometric, not a measured person bbox or action observation.",
+    "No documented coordinate boxes for q/v,03094,00764/66: exact person size unavailable.",
+    "Official resize is described by saved metadata; this audit does not recompute processor transforms or hidden tensors.",
+    "Display sheets rescale both panels for viewing only; exact cached RGB bytes are separately bound.",
+    "10 selected development windows, shared sources; no accuracy/F1 or generalization inference.",
+    "Seek preroll frames are decoded internally but not RGB-converted, selected or exported. 240-frame CV budget is a separate later stage."
+  ],
+  "measurements": {
+    "decoder_frames_including_repeated_seek_preroll": 11143,
+    "later_CV_comparison_frames_executed": 0,
+    "saved_processor_frame_observations": 200,
+    "saved_processor_variants": 20,
+    "unique_scheduled_windows": 10,
+    "unique_source_frames": 103
+  },
+  "native_CV_feasibility": {
+    "exact_source_SHA_and_native_PTS_bound": true,
+    "measured_here": "native RGB hashes and prior CV cache native PTS only",
+    "note": "Prior user native-frame observations support detector diagnostics independently of unknown Qwen sampled/downsized adequacy; do not treat approximate rectangles as GT.",
+    "prior_human_review": {
+      "84_seconds": "user previously confirmed three approaching people",
+      "90_seconds": "user previously confirmed three climbing people",
+      "completion": "not_established",
+      "provenance": "Existing EXP-0002/0003 diagnostics and coordinator clarification on this Dispatch; not a new view of actual processor input",
+      "source_id": "E01_030"
+    },
+    "semantic_review_here": false,
+    "status": "grounded_for_tiny_native_frame_comparison_at03084_and90"
+  },
+  "prior_locations": {
+    "file_sha256": "325978fdea2a0540fed193f041aa552e1ed22fdf0e39df67b9a5c06208cfcb46",
+    "ground_truth": false,
+    "inference_crop": false,
+    "source": "Codex visual approximation before candidate inspection, not user-provided boxes or ground truth"
+  },
+  "schema_version": 1,
+  "scope": "CPU saved-input and selected-source audit; development diagnostics only",
+  "selected_source_frame_inventory": [
+    {
+      "decoded_frames_including_seek_preroll": 1,
+      "native_pts": 0,
+      "pts_seconds": 0.0,
+      "rgb_sha256": "d646c10cfb3b1391ec884a84ad95631dea68999fc26fd4544b33e8639e498c5c",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 16,
+      "native_pts": 7680,
+      "pts_seconds": 0.5,
+      "rgb_sha256": "42337aae6aee0ef94810a32fad3b535b4f04ba04334310e06e61c00d6e1f0d61",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 31,
+      "native_pts": 15360,
+      "pts_seconds": 1.0,
+      "rgb_sha256": "c0fce12c3a12672998552741ad0144c9d31bffb2a67ed6dee3441095ae6d64ab",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 46,
+      "native_pts": 23040,
+      "pts_seconds": 1.5,
+      "rgb_sha256": "21af8ff21ac4c673961a1e9591da5a54903e70a6444bb4cd89abb06812ca09a3",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 61,
+      "native_pts": 30720,
+      "pts_seconds": 2.0,
+      "rgb_sha256": "abeb2382b76e8da4ebd85313f042e631b0504d4d2972da8c7f4529ea44545584",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 76,
+      "native_pts": 38400,
+      "pts_seconds": 2.5,
+      "rgb_sha256": "ee8fdbefa73c7cd81077a3992a49f97de7ef0ed2ce24d872b59ccb9b2616497c",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 91,
+      "native_pts": 46080,
+      "pts_seconds": 3.0,
+      "rgb_sha256": "369f8f68caea5da914489f6186c35344a8c9f19b649c3e3e2472466a23455d39",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 106,
+      "native_pts": 53760,
+      "pts_seconds": 3.5,
+      "rgb_sha256": "9165cff93700a1f72f915b0fd65ada94822802b421b737513f8fbe2351baf0a9",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 121,
+      "native_pts": 61440,
+      "pts_seconds": 4.0,
+      "rgb_sha256": "d9aa382e71d56425ada94c6787c5f7321cead6892199c4216fedd2d2804b0361",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 136,
+      "native_pts": 69120,
+      "pts_seconds": 4.5,
+      "rgb_sha256": "65bf3e84fb29f229f613edd851f61f312bb0e0fb717e47fb0af7dd4cef6d00c7",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 51,
+      "native_pts": 921600,
+      "pts_seconds": 60.0,
+      "rgb_sha256": "ba46416291bc4ad29b5493e7c72798f7b699c40d91201a80877f8f5a8de67808",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 66,
+      "native_pts": 929280,
+      "pts_seconds": 60.5,
+      "rgb_sha256": "94eb835760885987aab2e748a0dd1325585bc4babb1b564e4427b9ab44b0acc3",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 81,
+      "native_pts": 936960,
+      "pts_seconds": 61.0,
+      "rgb_sha256": "a3f7bc459de7058273559ac1aa2c9b566156ad6f0209079a8c792c06aecb40f5",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 96,
+      "native_pts": 944640,
+      "pts_seconds": 61.5,
+      "rgb_sha256": "319bd464a8bfcfa642603a09b4211dacc4a2f8b3dc6e72f166de106493437d12",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 111,
+      "native_pts": 952320,
+      "pts_seconds": 62.0,
+      "rgb_sha256": "0ad55b34d1c347ac193bab0a2d3dff3c16cf81fb557e6a9064e465d82da3ab83",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 126,
+      "native_pts": 960000,
+      "pts_seconds": 62.5,
+      "rgb_sha256": "8e4862e8e94949d9a593d78fd81d72da9958ac8ebd462f6d8808a0f7e2d011d6",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 141,
+      "native_pts": 967680,
+      "pts_seconds": 63.0,
+      "rgb_sha256": "5c21524c259ad48de7d0175fe3de71f4ec8058446b64ef4fc55c19c3bc0a0efe",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 156,
+      "native_pts": 975360,
+      "pts_seconds": 63.5,
+      "rgb_sha256": "5a24f83bf2f7d51822abad5aa952ec693e0aada97dce1162c8b9392fdf403570",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 171,
+      "native_pts": 983040,
+      "pts_seconds": 64.0,
+      "rgb_sha256": "d5763735e14ae1c2399cb5a183e0b6370556dccb2955bff0c37b11fd82035d06",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 186,
+      "native_pts": 990720,
+      "pts_seconds": 64.5,
+      "rgb_sha256": "84a0c2875f382df3e07ccc9f9fd814e332b47c30917dc9e83ba6d59e0877b405",
+      "source_id": "E01_004",
+      "source_wh": [
+        1280,
+        720
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 1,
+      "native_pts": 0,
+      "pts_seconds": 0.0,
+      "rgb_sha256": "bdb669379d590e1dd6fd5e2837afd312a3b8eed1d8897fdc7f7703557abb3c8d",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 16,
+      "native_pts": 7680,
+      "pts_seconds": 0.5,
+      "rgb_sha256": "aa3c383374b4bbef4d8e8297568359f9b47f49966555ddba74afda1334ddc33d",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 31,
+      "native_pts": 15360,
+      "pts_seconds": 1.0,
+      "rgb_sha256": "e1cfe0566d37f7a0dd8365c2acdc05c292246d6788c48e7a7ee415357a195746",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 46,
+      "native_pts": 23040,
+      "pts_seconds": 1.5,
+      "rgb_sha256": "81dc72f569c44801ac09c30ab09a8a4994af673c00c0ac4dde81a41ea6aefc00",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 61,
+      "native_pts": 30720,
+      "pts_seconds": 2.0,
+      "rgb_sha256": "3b1ae4a046ed0fc9e5ad4bf5103ab7e3494e657e4c5ddb72836954653ec67089",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 76,
+      "native_pts": 38400,
+      "pts_seconds": 2.5,
+      "rgb_sha256": "315711dc9ce13232c7d365e969592f8562ee14742af1ab68b0e1aa9b59b5094a",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 91,
+      "native_pts": 46080,
+      "pts_seconds": 3.0,
+      "rgb_sha256": "5f4dd534800eb244fcb064f1107f4437d478ff9d2fa1fb8b6908110bcbd6c4b0",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 106,
+      "native_pts": 53760,
+      "pts_seconds": 3.5,
+      "rgb_sha256": "7b97947fe18986eaab5bca962b59107a2dbd75bb61643be3ed4b191ac4ab732b",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 121,
+      "native_pts": 61440,
+      "pts_seconds": 4.0,
+      "rgb_sha256": "1a044e3e16f945b1191b1af3aa2cfb0682871d977dd3c68e1f1cbbc5e5f5b048",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 136,
+      "native_pts": 69120,
+      "pts_seconds": 4.5,
+      "rgb_sha256": "5d6c42ad91e957973c64e83bcc410d2cb46e74ae5297154e675f10f567900c39",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 176,
+      "native_pts": 729600,
+      "pts_seconds": 47.5,
+      "rgb_sha256": "3d80d933fea957b33dc8ea6d29d9cbdc79a870877ea828e4a1e1d5eec9fccaf0",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 191,
+      "native_pts": 737280,
+      "pts_seconds": 48.0,
+      "rgb_sha256": "712acb24d694e8a2368c051cdbd4fdd81f2837878fe442527e4e436ecc2b8a43",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 206,
+      "native_pts": 744960,
+      "pts_seconds": 48.5,
+      "rgb_sha256": "247c47bc9e17c4d367cf5c807b9ec1dfdd3450ce9b46199a635c03edfec9c248",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 221,
+      "native_pts": 752640,
+      "pts_seconds": 49.0,
+      "rgb_sha256": "059d6fdc3d5a8e41d271016f800f432af902f2f2dfde702fc750e555a8341d0f",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 236,
+      "native_pts": 760320,
+      "pts_seconds": 49.5,
+      "rgb_sha256": "f5ebd94a1ea10b276bcb3479225f4ca0c0f15a826f9aa1dad2cfb9594582b09f",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 1,
+      "native_pts": 768000,
+      "pts_seconds": 50.0,
+      "rgb_sha256": "9bb171c652500e6742a32d11161db97dfd9742cd1888a90753d3edec8f1617cf",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 16,
+      "native_pts": 775680,
+      "pts_seconds": 50.5,
+      "rgb_sha256": "e9c560aa0d894d01ef015fe9ee147a83d854b94178d0eb9c500434b46a4830c4",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 31,
+      "native_pts": 783360,
+      "pts_seconds": 51.0,
+      "rgb_sha256": "fb90bb150d345db7f0107133d80303be3fca39e16f5c06113c05f507e25c6648",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 46,
+      "native_pts": 791040,
+      "pts_seconds": 51.5,
+      "rgb_sha256": "d5d920fc07e2bd62ed2b09bb8ad447dcb3c281cc12db44fc112edb3e04ff939a",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 61,
+      "native_pts": 798720,
+      "pts_seconds": 52.0,
+      "rgb_sha256": "18fc4dd490048bed6c08ffd7b4e61f4199ce5cdcbc1145c797802ce2275b71e4",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 76,
+      "native_pts": 806400,
+      "pts_seconds": 52.5,
+      "rgb_sha256": "d843357d9d7af10e1059d6822aff3ea286166fed7659ce886840737ce12bffb2",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 91,
+      "native_pts": 814080,
+      "pts_seconds": 53.0,
+      "rgb_sha256": "6ba5d70dc7a79e4b9555d941c9ab4bbd4af6f773f22ec84344830cd8b9169f1d",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 106,
+      "native_pts": 821760,
+      "pts_seconds": 53.5,
+      "rgb_sha256": "d2b149048edda9313c937668ccaba39d4d3948425af049669af41eab9ec78039",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 121,
+      "native_pts": 829440,
+      "pts_seconds": 54.0,
+      "rgb_sha256": "1fe2cbb613121ccf825ac719c26af37500adbe12934efd0e9cf9295254c69591",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 136,
+      "native_pts": 837120,
+      "pts_seconds": 54.5,
+      "rgb_sha256": "1895cbd2c19734bc2f342692cbcdc2b184eccfa5faafb1406f21c194dd099a40",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 151,
+      "native_pts": 844800,
+      "pts_seconds": 55.0,
+      "rgb_sha256": "71e6bb389dbaa3f99858957ea130280a3fabc409ad9978746ef3769fae1f6978",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 166,
+      "native_pts": 852480,
+      "pts_seconds": 55.5,
+      "rgb_sha256": "7354b9c61a75a40902863c25230337057ba03ca8f3e5b3aad57318e0bb093660",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 181,
+      "native_pts": 860160,
+      "pts_seconds": 56.0,
+      "rgb_sha256": "6ca8b0dbbaf29300c774ea0686b4cce80cc900b0dc8adc6e10770a2c6b56f958",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 196,
+      "native_pts": 867840,
+      "pts_seconds": 56.5,
+      "rgb_sha256": "2e76660796eb484c74b7d0aa310ed9a8a9b37669bb13d1ea9913dfc721d85554",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 211,
+      "native_pts": 875520,
+      "pts_seconds": 57.0,
+      "rgb_sha256": "f127aabd44b2b344db2ab1ea6432efbf7fbdb8dfffc76f3a16c8ec06e2a322e9",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 126,
+      "native_pts": 960000,
+      "pts_seconds": 62.5,
+      "rgb_sha256": "b10dce331e1aa9afcf71f67fb1b6af65271ed2d4203504d46690e8d1b9363097",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 141,
+      "native_pts": 967680,
+      "pts_seconds": 63.0,
+      "rgb_sha256": "0ead4d9fda6b2cb6d2714a123a0d5241b2e0670cc5856548ceb9e14d62419536",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 156,
+      "native_pts": 975360,
+      "pts_seconds": 63.5,
+      "rgb_sha256": "a4b032ad1a3c19b998fba26ed165f74c3d6203dc49e6c89953eb384b3ef82b64",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 171,
+      "native_pts": 983040,
+      "pts_seconds": 64.0,
+      "rgb_sha256": "972d23c38c9b2b8ee9e0fc7813144cfebed1a2a308fc4a93a90d3772682a7bee",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 186,
+      "native_pts": 990720,
+      "pts_seconds": 64.5,
+      "rgb_sha256": "564c86141867f11203bfce677c3c4a84a5dfa72814d45e197ff6517337e96c54",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 201,
+      "native_pts": 998400,
+      "pts_seconds": 65.0,
+      "rgb_sha256": "45e79823f88cf4394089bd1e3d27da4c451bd4f1050b67c32bfaef2c13465fa1",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 216,
+      "native_pts": 1006080,
+      "pts_seconds": 65.5,
+      "rgb_sha256": "faefa85af2cc069dd45ad5f5dfd765e2112ef0b665f73ce5143cb3e9e7e3a6e8",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 231,
+      "native_pts": 1013760,
+      "pts_seconds": 66.0,
+      "rgb_sha256": "d1697bde0f8e43721ec57cfe9680e3058f725a9f0f6a7648a8d271b21d1c2f5f",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 246,
+      "native_pts": 1021440,
+      "pts_seconds": 66.5,
+      "rgb_sha256": "a52fecf74f960395b1e4391e3345db43d43ed84c92e80fafd417d31c07030e18",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 11,
+      "native_pts": 1029120,
+      "pts_seconds": 67.0,
+      "rgb_sha256": "53319088bb3355cdef00ed787fe9563752262d1d449b9cb721a21228a8a999d9",
+      "source_id": "E01_007",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 1,
+      "native_pts": 0,
+      "pts_seconds": 0.0,
+      "rgb_sha256": "3b6482297eee2cddfe627e0472ecbe3b93ed4120cf275ce89e72dc633e28577c",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 16,
+      "native_pts": 7680,
+      "pts_seconds": 0.5,
+      "rgb_sha256": "42f433045a2cda2d6b75ce539acb3c165342e4137d5bbf21e8d8517557fc471c",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 31,
+      "native_pts": 15360,
+      "pts_seconds": 1.0,
+      "rgb_sha256": "9568a38dee48c405413696a58d2d24cdd61a0d2dc18868f79e2c5de92ef1bad1",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 46,
+      "native_pts": 23040,
+      "pts_seconds": 1.5,
+      "rgb_sha256": "c0efae400a1a4739147e0154d8af719e52d668dfc23c41cec649236daaa1a624",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 61,
+      "native_pts": 30720,
+      "pts_seconds": 2.0,
+      "rgb_sha256": "4b7bdcb754253ba543eab12a32a8539d4527051752bb4a87558b366a86a64796",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 76,
+      "native_pts": 38400,
+      "pts_seconds": 2.5,
+      "rgb_sha256": "7ab921e6b0a0f281fcaa14fa85763d9641d2dc69e2a31adc69e597fcce1064d5",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 91,
+      "native_pts": 46080,
+      "pts_seconds": 3.0,
+      "rgb_sha256": "fa0eeb85783390818b4a88fc6ccfb79fd0a690c7b7360338a2366a39906fb898",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 106,
+      "native_pts": 53760,
+      "pts_seconds": 3.5,
+      "rgb_sha256": "287dbcbc75e7de8f7ad8b70e3ddd6ebd0be1d3ce49d6e407b69226b711052e75",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 121,
+      "native_pts": 61440,
+      "pts_seconds": 4.0,
+      "rgb_sha256": "5b19f89d64c2a3942f185f2a9781b59a57c37c086f82f91f8050e747b7d6de8f",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 136,
+      "native_pts": 69120,
+      "pts_seconds": 4.5,
+      "rgb_sha256": "553c457bee054488ca15948f7f2ac39b8d3e5ef5995b338277e9c10341ae0493",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 201,
+      "native_pts": 998400,
+      "pts_seconds": 65.0,
+      "rgb_sha256": "87c6843a997504c829f0da5fc74527581b6927cac5d84290c0922e2de3a71c54",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 216,
+      "native_pts": 1006080,
+      "pts_seconds": 65.5,
+      "rgb_sha256": "44a05a1eaf85ff64e5d2e7d40239b1d235c6c13ae7b037244af233c12c8956f2",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 231,
+      "native_pts": 1013760,
+      "pts_seconds": 66.0,
+      "rgb_sha256": "71e8f4c8918420368fa55c5f35fdde99ea4d664229dad5f99beec492564c6db9",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 246,
+      "native_pts": 1021440,
+      "pts_seconds": 66.5,
+      "rgb_sha256": "9b2b7066430bf47eba717e22abe4153c974a2b3517b9efe56a564a9587486704",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 11,
+      "native_pts": 1029120,
+      "pts_seconds": 67.0,
+      "rgb_sha256": "7b37f43ebcb92601f5a7611e3c36ae62c1a4e1edb3e8a9c647af1bf6613fc160",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 26,
+      "native_pts": 1036800,
+      "pts_seconds": 67.5,
+      "rgb_sha256": "b772046ffa593f1d31a9abe18af1cabde23f4f14aa1b82f46b333dfbbe743398",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 41,
+      "native_pts": 1044480,
+      "pts_seconds": 68.0,
+      "rgb_sha256": "4627940b3c08208ab91308ddd62d2524534affefb46cc2be794c56e8d729ae49",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 56,
+      "native_pts": 1052160,
+      "pts_seconds": 68.5,
+      "rgb_sha256": "b5908ecdfc852e26f779b5b8d8cb5d257993fcd95c94af16cf2fbcee0c30cba4",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 71,
+      "native_pts": 1059840,
+      "pts_seconds": 69.0,
+      "rgb_sha256": "b84a9f9bdbb88b2a17fc74e394ee8151a8f0cb36884d26b63366276dbe0d2382",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 86,
+      "native_pts": 1067520,
+      "pts_seconds": 69.5,
+      "rgb_sha256": "e41a489934332ed71bef872bbcfd1435bb721bd4e4517efcdaded479f835947e",
+      "source_id": "E01_021",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 1,
+      "native_pts": 768000,
+      "pts_seconds": 50.0,
+      "rgb_sha256": "484e43c918eb419ddf403b6668374c39bd301e280d3bd3c06d139fe02ebe40b1",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 16,
+      "native_pts": 775680,
+      "pts_seconds": 50.5,
+      "rgb_sha256": "599c3931fb95fc2bba3aada3c6c209b24fdcdf3d607332ce9a1daded3ef67a06",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 31,
+      "native_pts": 783360,
+      "pts_seconds": 51.0,
+      "rgb_sha256": "01d3c98c96bc263bcf8e995f2fefaa9a4729122753097dc8048465e952a93a64",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 46,
+      "native_pts": 791040,
+      "pts_seconds": 51.5,
+      "rgb_sha256": "98fe6a5957143edd3e37215fcb9b8b64853ff6b2214cba81990ecdb0698ab35e",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 61,
+      "native_pts": 798720,
+      "pts_seconds": 52.0,
+      "rgb_sha256": "56c93837cf0ad0340c5ac3d0baf0a28c9b971487dc54b8dc61dfe3fdbe68eb56",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 76,
+      "native_pts": 806400,
+      "pts_seconds": 52.5,
+      "rgb_sha256": "5b0ef1753ee6078593b95d7241b7161d4d45644825dfb3edbcab2c6e51e85054",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 91,
+      "native_pts": 814080,
+      "pts_seconds": 53.0,
+      "rgb_sha256": "45fe4f649023ff28aef420e77508ccf475651a0deb97a2c21877830586687f02",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 106,
+      "native_pts": 821760,
+      "pts_seconds": 53.5,
+      "rgb_sha256": "c1cb3eef7129766f66e01f1a646daae080e52c30db938c7a5a859d8d5b63c80f",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 121,
+      "native_pts": 829440,
+      "pts_seconds": 54.0,
+      "rgb_sha256": "122565df53b4cbe5e212962e000d6d73f26d7944a7d168797c5db202c6fb5543",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 136,
+      "native_pts": 837120,
+      "pts_seconds": 54.5,
+      "rgb_sha256": "8daec9b968c6e83be19935adc98546546b9b0216070d5b70503cc144bf497d7c",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 21,
+      "native_pts": 1290240,
+      "pts_seconds": 84.0,
+      "rgb_sha256": "013bc46ccb8962a2f42aa81a7a5ed7188c16f294dfd38baef54f55b05ba17ace",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 201,
+      "native_pts": 1382400,
+      "pts_seconds": 90.0,
+      "rgb_sha256": "41f2bb0bd075b02cd15a53f1d411da6c46eaa882febf547abb99ceb49e54126f",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 71,
+      "native_pts": 1443840,
+      "pts_seconds": 94.0,
+      "rgb_sha256": "d7100a03cdfeb415031cba0c97923d75c9e271c593beec5c425b134710a39d3f",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 151,
+      "native_pts": 2380800,
+      "pts_seconds": 155.0,
+      "rgb_sha256": "c572e4cccd6d48c4358adfed4dce3be073188e36d17c568e25aebbdc6b057f60",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 166,
+      "native_pts": 2388480,
+      "pts_seconds": 155.5,
+      "rgb_sha256": "deea293cb69ee2ab9cd972f0e49bc4c748a9d8898266e926294e67076652fae6",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 181,
+      "native_pts": 2396160,
+      "pts_seconds": 156.0,
+      "rgb_sha256": "464fc1d18dda5c3304de7f701e237c37baaf015ed473e52acd75d394a8d6f87f",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 196,
+      "native_pts": 2403840,
+      "pts_seconds": 156.5,
+      "rgb_sha256": "56cb57e124eaa760b59499d68ea67854b1b2ebd2f2b81c47693fb47a6b4f4b3c",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 211,
+      "native_pts": 2411520,
+      "pts_seconds": 157.0,
+      "rgb_sha256": "9a4c05b65ebd7b3a667b9a9715a2d9b3069e822273594abfd9536d65ca91f8c9",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 226,
+      "native_pts": 2419200,
+      "pts_seconds": 157.5,
+      "rgb_sha256": "3823050005c9b82f32c2e256e7fb1ad8d852549c62d05adaf45e66a242cdfc2f",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 241,
+      "native_pts": 2426880,
+      "pts_seconds": 158.0,
+      "rgb_sha256": "a7b4637e4f698e4e7d12e1b99332e611622a76808e246a94d275ced8a9f4d154",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 6,
+      "native_pts": 2434560,
+      "pts_seconds": 158.5,
+      "rgb_sha256": "db7f4b87f21f94175f380b3fbfbf460344090ee6d678a19227447f3d5feef8a9",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 21,
+      "native_pts": 2442240,
+      "pts_seconds": 159.0,
+      "rgb_sha256": "7d80a69964f617dd312d57ebb60fa5cd60031a0c34dd4694a0350c5742ef6b47",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    },
+    {
+      "decoded_frames_including_seek_preroll": 36,
+      "native_pts": 2449920,
+      "pts_seconds": 159.5,
+      "rgb_sha256": "843a7201fee1954f5eb2ed9bc473e0bf082f3c847a860e7e0d25adad1d1e9943",
+      "source_id": "E01_030",
+      "source_wh": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360"
+    }
+  ],
+  "semantic_review": {
+    "model_predictions_used_as_GT": false,
+    "performed": false,
+    "prior_clip_labels_are_sample_adequacy": false,
+    "raw_media_sent_to_agent_image_tools": false
+  },
+  "source_commit": "3e9a6bb415e175106b9deac55a58cfc465e26eae",
+  "source_file_sha256": {
+    "configs/batch0002_input_audit.json": "9509b8ffc309b416c9a9f7c9b72e0db5ccd71a3e4b7b4057198491311324ab37",
+    "scripts/audit_batch0002_inputs.py": "56d97861c4905ee573512db9ed9c74d9fc80920acfc6dae4a455b0c96d0d7fbb",
+    "tests_mvp/test_batch0002_input_audit.py": "7cfd88f69000e13a316d5f41c7bef7129cb453e715f2767e6d26bcce53022d51"
+  }
+}

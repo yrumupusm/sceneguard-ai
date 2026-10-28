@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "batch_id": "BATCH-0002",
+  "source": "user text reply to actual sampled-input three-clip bundle; no cloud media viewing",
+  "received_utc": "2026-10-28T16:38:52.339470+00:00",
+  "inference_input": false,
+  "original_labels_preserved": true,
+  "reviews": [
+    {
+      "review_id": "q04",
+      "user_observation_ko": "문을 잡고 발을 올리는 것 까지만 나옴",
+      "input_observation": "holding gate and raising foot visible before clip ends",
+      "completion_in_this_review": "not_observed",
+      "view_specific_scope": "user did not distinguish B/C panels; do not assert each view independently adequate",
+      "prior_reference": "attempt_progress; not_completed_before_clip_end"
+    },
+    {
+      "review_id": "v01",
+      "user_observation_ko": "줄을 넘어서 반대편에서 서있는 것 까지 나옴",
+      "input_observation": "crossing a rope/line then standing on the opposite side visible",
+      "completion_in_this_review": "observed_for_visible_action; not a per-person exhaustive label",
+      "prior_reference": "attempt_progress; completion previously not_assessed",
+      "revision_rule": "new input-review observation only; do not overwrite prior EXP16/17 references"
+    },
+    {
+      "review_id": "v03",
+      "user_observation_ko": "문 옆의 바위에 올라서면서 영상 끝남",
+      "input_observation": "stepping/climbing onto a rock beside the gate at clip end",
+      "completion_in_this_review": "boundary_crossing_not_established",
+      "boundary_relation": "prior adjacent-gap attempt reference retained; rock ascent alone does not establish boundary crossing",
+      "prior_reference": "attempt_progress adjacent_gap, boundary ambiguous, completion not_assessed"
+    }
+  ],
+  "coordinator_gate": {
+    "native_cv": "previous03084/90 exact human observations support native detector comparison; other selected frames diagnostic only",
+    "vlm": "conditional_go_for_frozen_16_conditions; q04 foot_raise and v01 crossing give observed input cues; q04 per-view adequacy and v03 boundary relation remain uncertain",
+    "integration": "not_decided; requires actual complementary model evidence",
+    "no_new_prompt_roi_or_frame_tuning": true
+  }
+}
