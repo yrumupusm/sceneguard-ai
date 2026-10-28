@@ -2,6 +2,8 @@
 
 
 class Adapter:
+    PROCESSOR_SIZE = {'shortest_edge': 16384, 'longest_edge': 3584000}
+
     def __init__(self, model_dir, settings):
         import torch
         from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
@@ -31,7 +33,7 @@ class Adapter:
                                frames_indices=source['relative_indices'], video_backend='pyav_preselected')
             inputs = processor(text=[text], videos=[rgb], video_metadata=[vm],
                                do_sample_frames=False,
-                               size={'shortest_edge': 16384, 'longest_edge': 3584000}, return_tensors='pt')
+                               size=self.PROCESSOR_SIZE.copy(), return_tensors='pt')
         finally:
             processor.video_processor.resize = original
         grid = inputs['video_grid_thw'].tolist()
@@ -42,7 +44,7 @@ class Adapter:
                         resize_calls=len(captured), extra_sampling=False, temporal_padding_frames=0,
                         visual_tokens=int((inputs.input_ids == self.model.config.video_token_id).sum()),
                         input_tokens=int(inputs.input_ids.shape[1]),
-                        processor_size={'shortest_edge': 16384, 'longest_edge': 3584000},
+                        processor_size=self.PROCESSOR_SIZE.copy(),
                         processor_do_pad=getattr(processor.video_processor, 'do_pad', None),
                         frame_order='original ten frames')
         return inputs, metadata, frames

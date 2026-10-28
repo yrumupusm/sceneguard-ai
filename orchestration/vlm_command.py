@@ -13,6 +13,7 @@ SETTINGS = dict(seed=0, do_sample=False, max_new_tokens=384, repetition_penalty=
 MODELS = {
     'qwen': ('EXP-0008', '.venv-vlm/bin/python', 'Qwen3-VL-2B-Instruct'),
     'smol': ('EXP-0009', '.venv-vlm-batch01/bin/python', 'SmolVLM2-2.2B-Instruct'),
+    'qwen_high_pixels': ('EXP-0010', '.venv-vlm/bin/python', 'Qwen3-VL-2B-Instruct'),
 }
 
 
@@ -25,11 +26,14 @@ def file_hash(path):
 
 
 def sources(adapter):
-    return {str(p.relative_to(ROOT)): file_hash(p) for p in (
+    paths = (
         ROOT / 'orchestration/queue.py', ROOT / 'orchestration/mock_job.py',
         ROOT / 'orchestration/vlm_command.py', ROOT / 'vlm_batch/__init__.py',
         ROOT / 'vlm_batch/run.py', ROOT / 'vlm_batch/common.py',
-        ROOT / f'vlm_batch/{adapter}.py', ROOT / 'configs/vlm_batch01_prompt.txt')}
+        ROOT / f'vlm_batch/{adapter}.py', ROOT / 'configs/vlm_batch01_prompt.txt')
+    if adapter == 'qwen_high_pixels':
+        paths += (ROOT / 'vlm_batch/qwen.py',)
+    return {str(p.relative_to(ROOT)): file_hash(p) for p in paths}
 
 
 def input_contract(adapter):

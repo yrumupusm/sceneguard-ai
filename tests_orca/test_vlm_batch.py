@@ -84,10 +84,10 @@ class CommandTests(unittest.TestCase):
             self.addCleanup(patch.stop)
         for adapter, (_, interpreter, model) in command.MODELS.items():
             path = self.assets / interpreter
-            path.parent.mkdir(parents=True)
+            path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(b'fixture interpreter')
             model_dir = self.assets / 'weights' / model
-            model_dir.mkdir(parents=True)
+            model_dir.mkdir(parents=True, exist_ok=True)
             (model_dir / 'model.safetensors').write_bytes(b'CPU fixture only')
         for clip in command.CLIPS:
             path = self.assets / 'outputs/vlm_exp0007' / clip
@@ -121,6 +121,37 @@ class CommandTests(unittest.TestCase):
         (self.assets / 'outputs/vlm_exp0007/clip03/rgb.npy').write_bytes(b'changed')
         with self.assertRaises(ValueError):
             command.command(self.config, self.inputs, self.runtime, 'a' * 32, 12)
+
+    def test_high_pixels_reuses_exact_qwen_assets_and_settings(self):
+        self.assertEqual(command.MODELS['qwen'],
+                         ('EXP-0008', '.venv-vlm/bin/python', 'Qwen3-VL-2B-Instruct'))
+        self.assertEqual(command.MODELS['smol'],
+                         ('EXP-0009', '.venv-vlm-batch01/bin/python', 'SmolVLM2-2.2B-Instruct'))
+        self.assertEqual(command.input_contract('qwen_high_pixels'), self.inputs)
+        config = {**self.config, 'adapter': 'qwen_high_pixels'}
+        argv = command.command(config, self.inputs, self.runtime, 'a' * 32, 12)
+        self.assertEqual(argv[0], str(self.assets / '.venv-vlm/bin/python'))
+        self.assertIn('qwen_high_pixels', argv)
+        self.assertEqual(command.output_path('qwen_high_pixels', 'a' * 32),
+                         self.assets / 'outputs/vlm_batch01/EXP-0010' / ('a' * 32))
+        self.assertNotEqual(command.output_path('qwen', 'a' * 32),
+                            command.output_path('qwen_high_pixels', 'a' * 32))
+        with self.assertRaises(ValueError):
+            command.validate({**config, 'size': 7168000}, self.inputs, self.runtime)
+
+    def test_high_pixels_hashes_adapter_and_true_base_dependency(self):
+        baseline = command.sources('qwen')
+        smol = command.sources('smol')
+        high = command.sources('qwen_high_pixels')
+        self.assertEqual(set(high) - set(baseline), {'vlm_batch/qwen_high_pixels.py'})
+        self.assertEqual(high['vlm_batch/qwen.py'], baseline['vlm_batch/qwen.py'])
+        self.assertNotIn('vlm_batch/qwen.py', smol)
+        self.assertNotIn('vlm_batch/qwen_high_pixels.py', baseline)
+        original = command.file_hash
+        with mock.patch.object(command, 'file_hash', side_effect=lambda path:
+                               'changed' if path.name == 'qwen.py' else original(path)):
+            self.assertNotEqual(command.sources('qwen_high_pixels'), high)
+            self.assertEqual(command.sources('smol'), smol)
 
     def test_vlm_timeout_cap_and_inherited_one_retry(self):
         q = Queue.initialize(self.runtime)
