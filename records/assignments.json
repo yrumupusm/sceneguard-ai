@@ -25,6 +25,19 @@
       "synthetic": false,
       "task_id": "task_e56ab41484b8",
       "title": "SmolVLM2-2.2B 기준 실행"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T09:05:07.192448+00:00",
+      "dispatch_id": "ctx_735ddbea9bba",
+      "experiment_id": "EXP-0010",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot1",
+      "synthetic": false,
+      "task_id": "task_be6c4ddef130",
+      "title": "Qwen3-VL-2B 픽셀 예산 대조"
     }
   ],
   "schema_version": 1
