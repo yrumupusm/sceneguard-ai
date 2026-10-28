@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "experiment": "EXP-0016",
+  "phase": "prompt-regression",
+  "run_id": "run_3d23462a014a",
+  "prompt": "configs/mvp_exp0016_prompt.txt",
+  "window_seconds": 5.0,
+  "stride_seconds": 2.5,
+  "sampling_fps": 2.0,
+  "windows": [
+    {
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "window_id": "w000001",
+      "start": 0.0,
+      "end": 5.0
+    },
+    {
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "window_id": "w000020",
+      "start": 47.5,
+      "end": 52.5
+    },
+    {
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "window_id": "w000022",
+      "start": 52.5,
+      "end": 57.5
+    },
+    {
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "window_id": "w000026",
+      "start": 62.5,
+      "end": 67.5
+    },
+    {
+      "source_id": "E01_030",
+      "camera_id": "C6",
+      "window_id": "w000021",
+      "start": 50.0,
+      "end": 55.0
+    },
+    {
+      "source_id": "E01_030",
+      "camera_id": "C6",
+      "window_id": "w000063",
+      "start": 155.0,
+      "end": 160.0
+    }
+  ],
+  "sources": {
+    "E01_007": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+    "E01_030": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88"
+  },
+  "rois": {
+    "C3": [
+      0.6,
+      0,
+      0.9,
+      0.6
+    ],
+    "C6": [
+      0.28,
+      0.2,
+      0.75,
+      0.8
+    ]
+  },
+  "views": [
+    "full_frame",
+    "fixed_roi"
+  ]
+}

@@ -12,7 +12,8 @@ def main(argv=None):
     actions = parser.add_subparsers(dest="action", required=True)
     actions.add_parser("status", help="read queue state without inference")
     enqueue = actions.add_parser("enqueue", help="register a frozen MVP job, without running it")
-    enqueue.add_argument("--phase", choices=["dev", "full"], required=True)
+    from orchestration.mvp_command import PHASES
+    enqueue.add_argument("--phase", choices=PHASES, required=True)
     enqueue.add_argument("--view", choices=["full_frame", "fixed_roi"], required=True)
     for field in ("job-key", "run-id", "task-id", "dispatch-id", "owner"):
         enqueue.add_argument("--" + field, required=True)
@@ -28,6 +29,7 @@ def main(argv=None):
     if args.action == "enqueue":
         if args.phase == "dev" and args.view != "fixed_roi":
             parser.error("development comparison registers only the frozen fixed_roi condition")
+        registered.validate_run(args.phase, args.run_id)
         _, _, frozen = registered.load_configs()
         config = {"phase": args.phase, "view": args.view, "settings": registered.SETTINGS.copy()}
         inputs = registered.input_contract(args.phase)
@@ -35,7 +37,8 @@ def main(argv=None):
         result = queue.enqueue(job_key=args.job_key, run_id=args.run_id, task_id=args.task_id,
                                dispatch_id=args.dispatch_id, owner=args.owner,
                                command="mvp-0001", input_value=inputs, config=config,
-                               timeout=frozen[f"{args.phase}_timeout_seconds"])
+                               timeout=frozen['full_timeout_seconds' if args.phase not in ('dev', 'full')
+                                              else f"{args.phase}_timeout_seconds"])
     elif args.action == "run-once":
         result = queue.run_once()
     else:

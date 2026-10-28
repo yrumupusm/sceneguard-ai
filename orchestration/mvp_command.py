@@ -4,12 +4,23 @@ from pathlib import Path
 import re
 
 from orchestration.vlm_command import ASSETS, RUNTIME, SETTINGS, file_hash
+from mvp.independent import PHASES as INDEPENDENT_PHASES
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_DIR = ASSETS / 'weights/Qwen3-VL-2B-Instruct'
 INTERPRETER = ASSETS / '.venv-vlm/bin/python'
 PINNED_MODEL_SHA256 = '7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0'
 CONFIG_NAMES = ('mvp0001_sources.json', 'mvp0001_cameras.json', 'mvp0001_settings.json')
+PHASES = ('dev', 'full', 'prompt-regression') + INDEPENDENT_PHASES
+REGRESSION_RUN = 'run_3d23462a014a'
+REGRESSION_MANIFEST = 'mvp_exp0016_manifest.json'
+REGRESSION_PROMPT = 'mvp_exp0016_prompt.txt'
+REGRESSION_WINDOWS = (('E01_007', 'C3', 'w000001', 0.0, 5.0),
+    ('E01_007', 'C3', 'w000020', 47.5, 52.5),
+    ('E01_007', 'C3', 'w000022', 52.5, 57.5),
+    ('E01_007', 'C3', 'w000026', 62.5, 67.5),
+    ('E01_030', 'C6', 'w000021', 50.0, 55.0),
+    ('E01_030', 'C6', 'w000063', 155.0, 160.0))
 DEVELOPMENT = (('clip01', 'E01_007', 'C3'), ('clip02', 'E01_030', 'C6'),
                ('clip03', 'E01_006', 'C3'), ('clip04', 'E01_007', 'C3'),
                ('clip05', 'E01_001', 'C1'), ('clip06', 'E01_031', 'C7'))
@@ -50,19 +61,45 @@ def load_configs():
     return source, camera, settings
 
 
-def sources():
+def load_regression_manifest():
+    manifest = json.loads((ROOT / 'configs' / REGRESSION_MANIFEST).read_text())
+    source, cameras, _ = load_configs()
+    expected = dict(schema_version=1, experiment='EXP-0016', phase='prompt-regression',
+        run_id=REGRESSION_RUN, views=['full_frame', 'fixed_roi'], prompt='configs/' + REGRESSION_PROMPT,
+        window_seconds=5.0, stride_seconds=2.5, sampling_fps=2.0,
+        windows=[dict(source_id=s, camera_id=c, window_id=w, start=a, end=b)
+                 for s, c, w, a, b in REGRESSION_WINDOWS],
+        sources={r['source_id']: r['sha256'] for r in source['continuous_sources']
+                 if r['source_id'] in ('E01_007', 'E01_030')},
+        rois={c: cameras['cameras'][c]['roi'] for c in ('C3', 'C6')})
+    if not same(manifest, expected):
+        raise ValueError('EXP-0016 frozen six-window manifest differs')
+    return manifest
+
+
+def validate_run(phase, run_id):
+    if phase in ('prompt-regression', *INDEPENDENT_PHASES) and run_id != REGRESSION_RUN:
+        raise ValueError('EXP-0016 requires the existing Orca run')
+
+
+def sources(config=None):
     names = ['orchestration/queue.py', 'orchestration/mock_job.py', 'orchestration/mvp_command.py',
              'orchestration/vlm_command.py', 'vlm_batch/common.py', 'vlm_batch/qwen.py',
              'vlm_batch/run.py', 'configs/vlm_batch01_prompt.txt']
     names += ['mvp/' + name + '.py' for name in
-              ('method', 'compare', 'runner', 'windows', 'events', 'evidence', 'pipeline', 'cli')]
+              ('method', 'compare', 'runner', 'windows', 'events', 'evidence', 'pipeline', 'cli', 'independent')]
     names += ['configs/' + name for name in CONFIG_NAMES]
+    if config and config.get('phase') == 'prompt-regression':
+        names += ['configs/' + REGRESSION_MANIFEST, 'configs/' + REGRESSION_PROMPT]
+    if config and config.get('phase') in INDEPENDENT_PHASES:
+        from mvp.independent import MANIFEST
+        names += [MANIFEST, 'configs/' + REGRESSION_PROMPT]
     return {name: file_hash(ROOT / name) for name in names}
 
 
 def input_contract(phase):
-    if phase not in ('dev', 'full'):
-        raise ValueError('fixed dev/full phase required')
+    if phase not in PHASES:
+        raise ValueError('registered MVP phase required')
     source, _, _ = load_configs()
     files = sorted(p for p in MODEL_DIR.rglob('*') if p.is_file()
                    and not any(s.startswith('.') for s in p.relative_to(MODEL_DIR).parts))
@@ -73,6 +110,10 @@ def input_contract(phase):
         raise ValueError('local Qwen weights differ from pinned revision')
     inputs = {'model_files': model,
               'configs': {name: file_hash(ROOT / 'configs' / name) for name in CONFIG_NAMES}}
+    if phase in INDEPENDENT_PHASES:
+        from mvp.independent import bind_inputs
+        inputs.update(bind_inputs())
+        return inputs
     if phase == 'dev':
         inputs['clips'] = {r['clip_id']: {name: file_hash(ASSETS / r['cache_dir'] / name)
                                         for name in ('rgb.npy', 'input.json')}
@@ -81,20 +122,28 @@ def input_contract(phase):
         from mvp.compare import baseline_paths
         inputs['baseline'] = {str(p.relative_to(ASSETS)): file_hash(p) for p in baseline_paths()}
     else:
+        manifest = load_regression_manifest() if phase == 'prompt-regression' else None
         inputs['videos'] = {r['source_id']: file_hash(ASSETS / r['relative_video_path'])
-                            for r in source['continuous_sources']}
-        if any(inputs['videos'][r['source_id']] != r['sha256'] for r in source['continuous_sources']):
+                            for r in source['continuous_sources']
+                            if manifest is None or r['source_id'] in manifest['sources']}
+        if any(inputs['videos'][r['source_id']] != r['sha256'] for r in source['continuous_sources']
+               if r['source_id'] in inputs['videos']):
             raise ValueError('original full video differs from frozen source hash')
+        if manifest is not None:
+            inputs['prompt_sha256'] = file_hash(ROOT / 'configs' / REGRESSION_PROMPT)
+            inputs['window_manifest_sha256'] = file_hash(ROOT / 'configs' / REGRESSION_MANIFEST)
     return inputs
 
 
 def validate(config, inputs, runtime):
     if not isinstance(config, dict) or set(config) != {'phase', 'view', 'settings'}:
         raise ValueError('fixed phase/view/settings config required')
-    if config['phase'] not in ('dev', 'full') or config['view'] not in ('fixed_roi', 'full_frame'):
+    if config['phase'] not in PHASES or config['view'] not in ('fixed_roi', 'full_frame'):
         raise ValueError('unregistered phase/view')
     if config['phase'] == 'dev' and config['view'] != 'fixed_roi':
         raise ValueError('development B outputs must be reused, not rerun')
+    if config['phase'] in INDEPENDENT_PHASES and config['view'] != 'full_frame':
+        raise ValueError('independent comparison permits full_frame only; no frozen camera ROI')
     if not same(config['settings'], SETTINGS):
         raise ValueError('baseline generation settings required')
     if Path(runtime).resolve() != RUNTIME:
@@ -103,6 +152,9 @@ def validate(config, inputs, runtime):
         raise ValueError('existing offline VLM interpreter unavailable')
     if inputs != input_contract(config['phase']):
         raise ValueError('registered model/input/config hashes differ')
+    if config['phase'] in INDEPENDENT_PHASES:
+        from mvp.independent import load_manifest, validate_decoder
+        validate_decoder(load_manifest())
     return config['phase'], config['view']
 
 
@@ -115,6 +167,13 @@ def command(config, inputs, runtime, attempt, lock_fd):
 
 
 def output_path(phase, attempt):
-    if phase not in ('dev', 'full') or not re.fullmatch('[0-9a-f]{32}', attempt):
+    if phase not in PHASES or not isinstance(attempt, str) or not re.fullmatch('[0-9a-f]{32}', attempt):
         raise ValueError('invalid phase or queue attempt')
-    return ASSETS / 'outputs/mvp0001' / ('EXP-0011' if phase == 'dev' else 'EXP-0012') / attempt
+    if phase in INDEPENDENT_PHASES:
+        path = ASSETS / 'outputs/mvp0001/EXP-0016/independent' / phase / attempt
+    else:
+        experiment = {'dev': 'EXP-0011', 'full': 'EXP-0012', 'prompt-regression': 'EXP-0016'}[phase]
+        path = ASSETS / 'outputs/mvp0001' / experiment / attempt
+    if phase in ('prompt-regression', *INDEPENDENT_PHASES) and path.resolve() != path:
+        raise ValueError('EXP-0016 output must be a new local attempt without symlink redirection')
+    return path

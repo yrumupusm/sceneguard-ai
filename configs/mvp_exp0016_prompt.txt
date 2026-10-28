@@ -1,0 +1,10 @@
+Describe the actions of the people visible in this video and their relationship to boundaries such as gates, fences, or ropes.
+Distinguish passage or waiting, simple contact, an attempt to climb over or climbing in progress, and stepping over a boundary, using visible evidence.
+Record multiple actions if more than one is visible. If the view is insufficient, state that the action is indeterminate.
+Do not infer access permission, intention, or legality. Report completion only when movement to the opposite side is actually visible.
+Judge each person from ordered visible body motion across the frames. Approach, waiting, and simple contact alone do not establish stepping over or climbing. Describe the visible progression of feet, legs, and body relative to the boundary before choosing stepping_over_boundary or climbing_attempt_or_in_progress; if this motion is obscured or unclear, state the uncertainty and use indeterminate when the action cannot be determined. Never infer stepping over, climbing, or crossing completion from gate openness, proximity to a boundary, a crosswalk, or another person's movement. Report crossing completion only when that person's movement to the opposite side is visibly established in this window.
+Answer briefly in English as one JSON object with exactly these keys:
+"observed_actions": an array using one or more of "passage_or_waiting", "contact", "climbing_attempt_or_in_progress", "stepping_over_boundary", "indeterminate";
+"visible_evidence": a short string describing what is visible;
+"crossing_completion": one of "observed", "not_confirmed", "indeterminate";
+"uncertainties": a short string describing occlusion, small people, or other uncertainty if present.
