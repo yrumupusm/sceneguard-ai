@@ -1,6 +1,6 @@
 # 다음 재개 지점 — MVP-0001 실제 모델 검증 자원 차단
 
-> **후속 상태 (2026-10-28):** 자원 차단은 해소되어 승인된 MVP 실행을 EXP-0013으로 완료했다. 아래는 당시 고정 계획/차단 시점의 기록이며 현재 다음 단계가 아니다. 새 GPU 실행·기능 확장은 예약하지 않는다. [EXP-0013](experiments/EXP-0013-mvp-comparison.md)와 전달 기록을 우선 확인한다.
+> **후속 상태 (2026-10-28):** 자원 차단은 해소되어 승인된 MVP 실행을 EXP-0013으로 완료했다. GitHub main `3e79749220788b8829257373ac6ebae9fe9fd246` 게시와 실제 화면 `http://127.0.0.1:8765/`도 각각 검증했다. 아래는 당시 고정 계획/차단 시점의 기록이며 현재 다음 단계가 아니다. 새 GPU 실행·기능 확장은 예약하지 않는다. [EXP-0013](experiments/EXP-0013-mvp-comparison.md)와 [전달 기록](orchestration/MVP-0001_DELIVERY.md)을 우선 확인한다.
 
 2026-10-28 새 사용자 지시가 아래 BATCH-0001 종료 후 계획보다 우선한다. [고정 계획](experiments/MVP-0001-plan.md), [평가 계약](data/MVP-0001-evaluation.md), [MVP CLI](design/MVP_LOCAL_CLI.md)를 따른다. [종합 결과](experiments/MVP-0001-summary.md)와 [전달 기록](orchestration/MVP-0001_DELIVERY.md)을 먼저 읽는다. CPU 구현·입력 준비를 마쳤으나 GPU 여유 부족으로 실제 job/attempt0, MVP 미완료 상태로 보고하고 멈췄다. 이전 승인 범위/한도는 보존하되 자동 실행은 없다.
 
