@@ -15,7 +15,7 @@ EXP-0015에서 사용자 확인한 q02/q03/q05 접근/비사건 장면의 false 
 
 단일 공통 prompt 변경 코드, fixed q01–q06 및 v01–v04 경로와 CPU 검증은 구현됐다. `.venv-vlm`의 107 MVP tests와 `.venv-orca-lab`의 14 queue tests가 통과했다. 그러나 실행 담당 GPU 사전검사는 RTX 3080에서 1590 MiB free로 기존 6144 MiB gate를 통과하지 못했다. canonical queue는 EXP-0016 job/attempt 0, model load/inference 0이다. Astra는 blocked-before-inference 기록과 현재 report/metrics hash binding을 PASS했으나 행동 결과를 검토한 것은 아니다. 로컬 결과는 `inconclusive / blocked / adoption_on_hold`로 등록됐다. 기존 로컬 웹 화면에서 담당 slot3 카드, 보고서, 2개 그래프, review와 네 개 사용자 검수 원본 참고 영상의 재생/seek를 확인했다. 실제 행동 비교·비용·prompt 효과는 미측정이며 자동 채택하지 않는다.
 
-마지막 미완료 단계는 GitHub 게시/원격 검증이다. 이후 실행은 GPU free memory가 최소 6144 MiB 이상일 때만 새 attempt로 재개하며, 기존 prompt·manifest·model·queue·한도를 유지한다.
+이번 전달은 local 결과 등록, 실제 브라우저 확인, GitHub 게시와 원격 verify까지 완료했다. 표준 WSL git push에는 인증이 없어 connected GitHub Git Data API의 fast-forward publication을 사용했다. prompt 효과는 여전히 미측정/채택 보류다. 행동 비교를 재개할 때 GPU free memory가 최소 6144 MiB 이상일 때만 새 attempt를 만들고 기존 prompt·manifest·model·queue·한도를 유지한다.
 
 ## 순서
 

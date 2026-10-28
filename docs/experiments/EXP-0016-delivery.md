@@ -22,4 +22,6 @@ Date: 2026-10-28. This note records registration and local viewer checks separat
 
 The prompt change is implemented and software-tested, but behavioral comparison, generation cost, latency, peak VRAM, q/v model responses, and formal behavior metrics remain unmeasured. Keep adoption on hold. Resume only in a new attempt after the unchanged canonical GPU memory gate is satisfied.
 
-GitHub publication and remote verification are pending at the time of this note.
+## GitHub publication
+
+The standard `git push origin main` could not authenticate in this WSL terminal. The exact local commit trees were published through the connected GitHub Git Data API using a fast-forward update guarded by the previously fetched main SHA. The remote tree matched the local final tracked tree. `verify_delivery github` then passed for remote `main`, independently checking the registered report, metrics, final review and binding SHA-256 values. Its local-only receipt is ignored at `runtime/EXP-0016/github-local-r2.json`. GitHub publication does not indicate local browser verification or behavior performance; those are reported separately above.
