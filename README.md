@@ -1,8 +1,28 @@
 # SceneGuard
 
-**CCTV 출입 경계 침범 이벤트 탐지·검토 지원 — 최소 CV 첫 실험·실패 분석 단계**
+**CCTV 행동 후보와 근거 구간을 저장하는 로컬 프로토타입 — MVP-0001 CPU 준비 완료·실제 모델 검증 차단**
 
 SceneGuard는 AI Software Engineer 직무 포트폴리오를 위한 실험 프로젝트다. 공개된 CCTV 영상에서 **사람의 출입 경계 통과/넘기 행동**을 감지하고, 카메라별 경계 설정·오탐·감지 시점·실행 비용을 재현 가능하게 평가하는 것이 첫 목표다. 법적 **무단침입이나 출입 권한을 영상만으로 확정하지 않는다.**
+
+## MVP-0001 현재 범위 (2026-10-28)
+
+기존 CV 결과와 전체 화면 Qwen을 보존하고, 같은 Qwen에 **배경 기준 고정 감시 영역**을 입력하는 구성을 비교한다. 새 가중치는 받지 않는다. 원본 처음부터 끝까지 5초 창/2.5초 간격/약2fps로 처리하며, CV 후보가 없어도 분석한다. 시간창→행동/판단 불가→겹치는 후보 묶음→원본 근거 구간 저장을 별도 `mvp/` 경로로 구현한다. 기존 CV·경계 규칙·웹 기능은 바꾸지 않는다.
+
+**원본 3개의 CPU 디코딩·시간창 생성과 기존6클립 입력 준비를 확인했지만, GPU 자원 부족으로 새 행동 분석과 전체 모델 검증은 시작하지 못했다. MVP는 미완료다.** [종합 결과](docs/experiments/MVP-0001-summary.md), [전달 기록](docs/orchestration/MVP-0001_DELIVERY.md)에서 확인 범위를 구분한다. 테스트 통과를 행동 정확도나 MVP 완성으로 표현하지 않는다. [고정 계획](docs/experiments/MVP-0001-plan.md), [평가 범위](docs/data/MVP-0001-evaluation.md), [실행 계약](docs/design/MVP_LOCAL_CLI.md), [선택 이유](docs/decisions/ADR-0016-mvp-fixed-camera-region.md)를 따른다. 방법 비교는 [EXP-0011](docs/experiments/EXP-0011-fixed-camera-input.md), 원본 전체 통합은 [EXP-0012](docs/experiments/EXP-0012-continuous-mvp.md)에 분리한다.
+
+```bash
+# 저장소 루트, 기존 환경과 공통 큐를 사용한다.
+MVP_PYTHON="$PWD/.venv-vlm/bin/python"
+MVP_QUEUE_RUNTIME="$HOME/dev/sceneguard-orca-lab/runtime/orca-lab/gpu-queue"
+"$MVP_PYTHON" -m mvp.cli --help
+"$MVP_PYTHON" -m mvp.cli --runtime "$MVP_QUEUE_RUNTIME" status
+```
+
+실제 작업 등록에는 살아 있는 기존 Orca Run/Task/Dispatch와 고유 job key가 필요하다. [CLI 문서](docs/design/MVP_LOCAL_CLI.md)의 `enqueue` 뒤 동일 큐의 `run-once`를 사용한다. GPU 여유가 고정 기준에 못 미치면 모델을 로드하지 않는다. 직접 실행·자동 반복·사건 시각 인수는 제공하지 않는다. 카메라 예시는 [mvp0001_cameras.json](configs/mvp0001_cameras.json), 입력3개는 [mvp0001_sources.json](configs/mvp0001_sources.json)이다. 이 첫 실행기는 해당 로컬 자료와 환경에 고정된 개발용이며 임의의 새 CCTV를 검증한 범용 도구가 아니다.
+
+로컬 결과는 실행별 `windows.jsonl`, `emissions.jsonl`, `events.jsonl`, 창별 원문/측정치, `evidence/` 원본 구간이다. 후보 시각·마지막 입력 PTS·최초 출력 시각·후속 병합/근거 저장 시각을 구분한다. `indeterminate`, `insufficient_data`, `parse_failed`는 정상 판정이 아니다. 모델 설명과 후보 수는 정답·성공 건수가 아니다. 모든 미디어·원시 응답·캐시는 Git에서 제외한다.
+
+이하 기존 CV 실험 이력은 보존한다.
 
 첫 로컬 CV baseline을 구현·진단했다. **SSDLite320에서 작은/가려진 사람 검출 누락이 확인돼 메인 모델 채택은 보류**한다. 결과·처리 속도·재현 명령은 [EXP-0001](docs/experiments/EXP-0001-phase2a-cv-baseline.md), 실행 방법은 [CLI 문서](docs/design/CV_BASELINE_CLI.md)에 기록했다. 최종 precision/recall/F1·시간당 오탐률은 정답 검수 전이므로 산출하지 않았다.
 

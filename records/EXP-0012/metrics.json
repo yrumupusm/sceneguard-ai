@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0012",
+  "comparison_group": "MVP-0001-continuous",
+  "cross_experiment_comparable": false,
+  "comparison_note": "CPU synthetic function validation only; original whole-video model execution awaits coordinator GO",
+  "status": "resource_blocked_unstarted",
+  "functional_validation": {
+    "synthetic_only": true,
+    "tests_passed": 22,
+    "tests_failed": 0,
+    "unittest_reported_seconds": null,
+    "test_environment": {
+      "av": "16.0.1",
+      "numpy": "2.2.6",
+      "new_install": false
+    },
+    "synthetic_8s": {
+      "decoded_frames": 80,
+      "sampled_frames": 16,
+      "windows": 4,
+      "observations_per_window": [
+        10,
+        10,
+        6,
+        1
+      ],
+      "max_buffered_samples": 10,
+      "eof_reached": true,
+      "analyzer_kind": "CPU test fake only"
+    },
+    "synthetic_evidence": {
+      "encoded_duration_seconds": 3.5,
+      "frames": 35,
+      "source_bounds_clipped": true
+    },
+    "tests_skipped": 0,
+    "measured_test_wallclock_seconds": 4.53967716099578,
+    "cuda_initialized": false,
+    "official_processor_preparation": "synthetic pipeline RGB only; no model construction or inference",
+    "cross_module_reuse": "actual pipeline-written result.json bytes pinned by read_baseline_results; mocked native successful-baseline proof in CPU fixture only"
+  },
+  "actual_execution": {
+    "started": false,
+    "whole_sources": [
+      "E01_007",
+      "E01_030",
+      "E01_013"
+    ],
+    "eof_completed": null,
+    "attempt_ids": [],
+    "reason": "Coordinator accepted bounded blocker: existing external GPU use; latest reported1561MiB free at99%utilization below frozen6144MiB minimum; no model job or attempt started",
+    "status": "resource_blocked_unstarted",
+    "jobs_started": 0,
+    "execution_error_retries_used": 0
+  },
+  "metrics": [
+    {
+      "label": "CPU synthetic tests passed",
+      "value": 22,
+      "unit": "tests",
+      "sample_n": 22,
+      "scope": "Synthetic functional tests plus official Qwen CPU preparation; no action accuracy",
+      "source": "runtime/mvp-0001/pipeline-cpu-byte-binding.json",
+      "source_sha256": "a900f0a914bd8e75c1a7a74f064a185ad4cfe30e922d83d2b61fd931d60aec85",
+      "source_pointer": [
+        "tests_run"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "CPU synthetic test wallclock",
+      "value": 4.53967716099578,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "Whole22-test CPU run, including official processor preparation; no model load or GPU inference",
+      "source": "runtime/mvp-0001/pipeline-cpu-byte-binding.json",
+      "source_sha256": "a900f0a914bd8e75c1a7a74f064a185ad4cfe30e922d83d2b61fd931d60aec85",
+      "source_pointer": [
+        "elapsed_seconds"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_007 decoded source frames",
+      "value": 4171,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_007 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        0,
+        "stats",
+        "decoded_frames"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_007 unique native samples",
+      "value": 279,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_007 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        0,
+        "stats",
+        "sampled_frames"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_007 scheduled windows",
+      "value": 56,
+      "unit": "windows",
+      "sample_n": 1,
+      "scope": "E01_007 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        0,
+        "stats",
+        "windows"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_007 peak sampled RGB buffer",
+      "value": 10,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_007 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        0,
+        "stats",
+        "max_buffered_samples"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_007 CPU decode/window wallclock",
+      "value": 13.073512080009095,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "E01_007 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        0,
+        "decode_only_seconds"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_030 decoded source frames",
+      "value": 4802,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_030 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        1,
+        "stats",
+        "decoded_frames"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_030 unique native samples",
+      "value": 321,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_030 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        1,
+        "stats",
+        "sampled_frames"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_030 scheduled windows",
+      "value": 65,
+      "unit": "windows",
+      "sample_n": 1,
+      "scope": "E01_030 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        1,
+        "stats",
+        "windows"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_030 peak sampled RGB buffer",
+      "value": 10,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_030 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        1,
+        "stats",
+        "max_buffered_samples"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_030 CPU decode/window wallclock",
+      "value": 19.88055709999753,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "E01_030 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        1,
+        "decode_only_seconds"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_013 decoded source frames",
+      "value": 3781,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_013 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        2,
+        "stats",
+        "decoded_frames"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_013 unique native samples",
+      "value": 253,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_013 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        2,
+        "stats",
+        "sampled_frames"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_013 scheduled windows",
+      "value": 51,
+      "unit": "windows",
+      "sample_n": 1,
+      "scope": "E01_013 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        2,
+        "stats",
+        "windows"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_013 peak sampled RGB buffer",
+      "value": 10,
+      "unit": "frames",
+      "sample_n": 1,
+      "scope": "E01_013 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        2,
+        "stats",
+        "max_buffered_samples"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "E01_013 CPU decode/window wallclock",
+      "value": 13.635823969001649,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "E01_013 whole source CPU decode/window preparation only; no analyzer or model; source sample count not model input success",
+      "source": "runtime/mvp-0001/source-cpu-audit.json",
+      "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+      "source_pointer": [
+        "sources",
+        2,
+        "decode_only_seconds"
+      ],
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "Whole original-video model EOF success",
+      "value": null,
+      "unit": "sources",
+      "sample_n": null,
+      "scope": "Original full-video model integration never started: accepted GPU resource blocker; CPU decode-only EOF is reported separately",
+      "source": "runtime/mvp-0001/pipeline-cpu-byte-binding.json",
+      "source_sha256": null,
+      "source_pointer": [],
+      "verification": "unavailable"
+    }
+  ],
+  "final_accuracy": null,
+  "precision": null,
+  "recall": null,
+  "f1": null,
+  "false_alarms_per_hour": null,
+  "realtime_latency_seconds": null,
+  "action_quality": "not_evaluated_resource_blocked",
+  "adoption": "on_hold_no_new_model_evidence",
+  "delivery": {
+    "independent_review": "pending",
+    "coordinator_review": "pending",
+    "web_registration": false,
+    "github_verified": false,
+    "browser_verified": false,
+    "coordinator_resource_blocker_accepted": true
+  },
+  "source_decode_only_audit": {
+    "scope": "CPU native source/window preparation only; no analyzer or model invoked",
+    "code_sha": "d6bf473bf4cb0095964240981a47167e6312b775",
+    "source_sha256": "2f4dd388fdc0a8d4bdb4ea679cba103d97da66e951166906b6c3d748952cdc9b",
+    "sources": [
+      {
+        "source_id": "E01_007",
+        "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+        "decode_only_seconds": 13.073512080009095,
+        "stats": {
+          "decoded_frames": 4171,
+          "sampled_frames": 279,
+          "windows": 56,
+          "max_buffered_samples": 10,
+          "eof_reached": true,
+          "first_decoded_pts": 0.0,
+          "last_decoded_pts": 139.0,
+          "source_fps": 30.0,
+          "source_size": [
+            1920,
+            1080
+          ],
+          "time_base": "1/15360",
+          "source_end_seconds": 139.03333333333333
+        },
+        "insufficient_windows": 0
+      },
+      {
+        "source_id": "E01_030",
+        "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+        "decode_only_seconds": 19.88055709999753,
+        "stats": {
+          "decoded_frames": 4802,
+          "sampled_frames": 321,
+          "windows": 65,
+          "max_buffered_samples": 10,
+          "eof_reached": true,
+          "first_decoded_pts": 0.0,
+          "last_decoded_pts": 160.03333333333333,
+          "source_fps": 30.0,
+          "source_size": [
+            1920,
+            1080
+          ],
+          "time_base": "1/15360",
+          "source_end_seconds": 160.06666666666666
+        },
+        "insufficient_windows": 1
+      },
+      {
+        "source_id": "E01_013",
+        "source_sha256": "4682b04e4b80f59091a8ff7dd2ac78ef9dc2e1961c305dd1b7a6668b5e518453",
+        "decode_only_seconds": 13.635823969001649,
+        "stats": {
+          "decoded_frames": 3781,
+          "sampled_frames": 253,
+          "windows": 51,
+          "max_buffered_samples": 10,
+          "eof_reached": true,
+          "first_decoded_pts": 0.0,
+          "last_decoded_pts": 126.0,
+          "source_fps": 30.0,
+          "source_size": [
+            1920,
+            1080
+          ],
+          "time_base": "1/15360",
+          "source_end_seconds": 126.03333333333333
+        },
+        "insufficient_windows": 0
+      }
+    ]
+  },
+  "implementation_status": "completed_cpu_validated",
+  "resource_gate": {
+    "required_free_mib": 6144,
+    "coordinator_observation": {
+      "free_mib": 1561,
+      "utilization_percent": 99,
+      "reported_at_utc": "2026-10-28T10:55:17Z",
+      "provenance": "native coordinator message msg_f11a79c3e683; not remeasured by pipeline worker"
+    },
+    "decision": "blocker_accepted_no_inference",
+    "automatic_next_task": false
+  }
+}

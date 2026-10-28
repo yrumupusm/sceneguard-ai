@@ -1,0 +1,535 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0011",
+  "comparison_group": "MVP-0001-fixed-camera-region",
+  "execution_status": "resource_blocked_unstarted",
+  "baseline_experiment_id": "EXP-0008",
+  "cross_experiment_comparable": false,
+  "comparison_note": "CPU synthetic preparation only; actual GPU and behavior comparison not yet run",
+  "metrics": [
+    {
+      "label": "MVP 합성 CPU 검증",
+      "value": 25,
+      "unit": "test",
+      "sample_n": 1,
+      "scope": "CPU fixture execution; no model construction/inference or behavior performance",
+      "source": "runtime/mvp-method/cpu-review-final.json",
+      "source_pointer": [
+        "tests"
+      ],
+      "source_sha256": "6d02fcace60e2546e3234428ed94e02b8bcb58c309f8914aae79cb3cbd10d659",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "MVP 합성 CPU 검증 시간",
+      "value": 6.082862559997011,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "CPU fixture execution; no model construction/inference or behavior performance",
+      "source": "runtime/mvp-method/cpu-review-final.json",
+      "source_pointer": [
+        "elapsed_seconds"
+      ],
+      "source_sha256": "6d02fcace60e2546e3234428ed94e02b8bcb58c309f8914aae79cb3cbd10d659",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 실제 관측 프레임",
+      "value": 10,
+      "unit": "frame",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        0,
+        "input_metadata",
+        "observed_frames"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 시각 입력",
+      "value": 1615,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        0,
+        "input_metadata",
+        "visual_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 전체 입력",
+      "value": 1878,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        0,
+        "input_metadata",
+        "input_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 실제 관측 프레임",
+      "value": 10,
+      "unit": "frame",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        1,
+        "input_metadata",
+        "observed_frames"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 시각 입력",
+      "value": 1650,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        1,
+        "input_metadata",
+        "visual_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 전체 입력",
+      "value": 1913,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        1,
+        "input_metadata",
+        "input_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 실제 관측 프레임",
+      "value": 10,
+      "unit": "frame",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        2,
+        "input_metadata",
+        "observed_frames"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 시각 입력",
+      "value": 1615,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        2,
+        "input_metadata",
+        "visual_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 전체 입력",
+      "value": 1878,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        2,
+        "input_metadata",
+        "input_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 실제 관측 프레임",
+      "value": 10,
+      "unit": "frame",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        3,
+        "input_metadata",
+        "observed_frames"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 시각 입력",
+      "value": 1615,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        3,
+        "input_metadata",
+        "visual_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 전체 입력",
+      "value": 1878,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        3,
+        "input_metadata",
+        "input_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 실제 관측 프레임",
+      "value": 10,
+      "unit": "frame",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        4,
+        "input_metadata",
+        "observed_frames"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 시각 입력",
+      "value": 1680,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        4,
+        "input_metadata",
+        "visual_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 전체 입력",
+      "value": 1943,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        4,
+        "input_metadata",
+        "input_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 실제 관측 프레임",
+      "value": 10,
+      "unit": "frame",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        5,
+        "input_metadata",
+        "observed_frames"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 시각 입력",
+      "value": 1610,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        5,
+        "input_metadata",
+        "visual_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 전체 입력",
+      "value": 1873,
+      "unit": "token",
+      "sample_n": 1,
+      "scope": "Official CPU video preparation only; no GPU generation or behavioral accuracy",
+      "source": "runtime/mvp-method/actual-input-preparation-v2/summary.json",
+      "source_pointer": [
+        "clips",
+        5,
+        "input_metadata",
+        "input_tokens"
+      ],
+      "source_sha256": "48a886df988373a5c09ed52491b6d5682f8da2b242e869b02c35d1527fc60fd3",
+      "verification": "source_json_checked"
+    }
+  ],
+  "final_accuracy": null,
+  "limitations": [
+    "Actual C model comparison and full-video model execution were not started because coordinator resource gate remained blocked",
+    "CPU tests/input volumes do not establish action accuracy, inference speed, GPU memory cost, or adoption",
+    "Existing development clips contain camera duplication and no precise independent action ground truth",
+    "First CPU preparation failure and one corrected six-clip preparation pass are retained locally"
+  ],
+  "cpu_preparation_status": "completed",
+  "model_load_seconds": null,
+  "gpu_generation_seconds": null,
+  "newly_generated_clips": 0,
+  "reused_clips": 0,
+  "attempt_id": null,
+  "job_id": null,
+  "cpu_actual_input_preparation": "completed_six_clips_without_inference",
+  "action_quality": "not_evaluated",
+  "model_constructed": false,
+  "inference_calls": 0,
+  "input_summary": {
+    "clips": [
+      {
+        "clip_id": "clip01",
+        "camera_id": "C3",
+        "observed_frames": 10,
+        "source_size": [
+          1920,
+          1080
+        ],
+        "roi": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "crop_bounds_xyxy": [
+          1152,
+          0,
+          1728,
+          648
+        ],
+        "resized_shape": [
+          10,
+          3,
+          608,
+          544
+        ],
+        "visual_tokens": 1615,
+        "input_tokens": 1878,
+        "temporal_padding_frames": 0
+      },
+      {
+        "clip_id": "clip02",
+        "camera_id": "C6",
+        "observed_frames": 10,
+        "source_size": [
+          1920,
+          1080
+        ],
+        "roi": [
+          0.28,
+          0.2,
+          0.75,
+          0.8
+        ],
+        "crop_bounds_xyxy": [
+          537,
+          216,
+          1440,
+          864
+        ],
+        "resized_shape": [
+          10,
+          3,
+          480,
+          704
+        ],
+        "visual_tokens": 1650,
+        "input_tokens": 1913,
+        "temporal_padding_frames": 0
+      },
+      {
+        "clip_id": "clip03",
+        "camera_id": "C3",
+        "observed_frames": 10,
+        "source_size": [
+          1920,
+          1080
+        ],
+        "roi": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "crop_bounds_xyxy": [
+          1152,
+          0,
+          1728,
+          648
+        ],
+        "resized_shape": [
+          10,
+          3,
+          608,
+          544
+        ],
+        "visual_tokens": 1615,
+        "input_tokens": 1878,
+        "temporal_padding_frames": 0
+      },
+      {
+        "clip_id": "clip04",
+        "camera_id": "C3",
+        "observed_frames": 10,
+        "source_size": [
+          1920,
+          1080
+        ],
+        "roi": [
+          0.6,
+          0,
+          0.9,
+          0.6
+        ],
+        "crop_bounds_xyxy": [
+          1152,
+          0,
+          1728,
+          648
+        ],
+        "resized_shape": [
+          10,
+          3,
+          608,
+          544
+        ],
+        "visual_tokens": 1615,
+        "input_tokens": 1878,
+        "temporal_padding_frames": 0
+      },
+      {
+        "clip_id": "clip05",
+        "camera_id": "C1",
+        "observed_frames": 10,
+        "source_size": [
+          1920,
+          1080
+        ],
+        "roi": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "crop_bounds_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "resized_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "visual_tokens": 1680,
+        "input_tokens": 1943,
+        "temporal_padding_frames": 0
+      },
+      {
+        "clip_id": "clip06",
+        "camera_id": "C7",
+        "observed_frames": 10,
+        "source_size": [
+          1920,
+          1080
+        ],
+        "roi": [
+          0.43,
+          0,
+          0.78,
+          1
+        ],
+        "crop_bounds_xyxy": [
+          825,
+          0,
+          1498,
+          1080
+        ],
+        "resized_shape": [
+          10,
+          3,
+          736,
+          448
+        ],
+        "visual_tokens": 1610,
+        "input_tokens": 1873,
+        "temporal_padding_frames": 0
+      }
+    ],
+    "new_inference_calls": 0,
+    "cuda_initialized": false
+  },
+  "c1_fallback_cpu_parity": {
+    "verified": true,
+    "scope": "CPU input equivalence proof; no EXP11 execution or result reuse",
+    "source": "runtime/mvp-method/c1-tensor-parity.json",
+    "source_sha256": "798cd73fd25a8ef8c7dca0d535ae9e523156f357ea4ba0d9d2fe251b151068df"
+  }
+}
