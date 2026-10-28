@@ -1,0 +1,57 @@
+{
+  "coordinator": {
+    "label": "총괄",
+    "model": "gpt-6-astra",
+    "effort": "max",
+    "status": "verified_current_session",
+    "note": "실제 thread 메타데이터 확인. 별도 총괄 생성 없음"
+  },
+  "slots": [
+    {
+      "id": "slot1",
+      "label": "담당 1",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "status": "unassigned",
+      "note": "향후 실험 슬롯; 현재 비교 실험 미배정"
+    },
+    {
+      "id": "slot2",
+      "label": "담당 2",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "status": "unassigned",
+      "note": "향후 실험 슬롯; 현재 비교 실험 미배정"
+    },
+    {
+      "id": "slot3",
+      "label": "담당 3",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "status": "unassigned",
+      "note": "향후 실험 슬롯; 현재 비교 실험 미배정"
+    }
+  ],
+  "setup_workers": [
+    {
+      "role": "infra_builder",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "status": "verified_invocation",
+      "note": "Codex thread metadata + Orca transcript tool calls verified; setup result pending"
+    },
+    {
+      "role": "web_builder",
+      "model": "gpt-6.1-terra",
+      "effort": "high",
+      "status": "verified_invocation",
+      "note": "Codex thread metadata + Orca transcript tool calls verified; setup result pending"
+    },
+    {
+      "role": "reviewer",
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "status": "catalog_only"
+    }
+  ]
+}

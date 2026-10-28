@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0002",
+  "comparison_group": "EXP-0002",
+  "cross_experiment_comparable": false,
+  "metrics": [
+    {
+      "label": "006 프레임 루프 처리량",
+      "value": 15.967070517772525,
+      "unit": "frame/s",
+      "sample_n": 500,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2b/fcos006/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "d71295e9acd1d13f99769d75de43daa3a1b5d968eb1e8deeebd83c3e86fa226a",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 프레임 루프 처리량",
+      "value": 15.323707029427958,
+      "unit": "frame/s",
+      "sample_n": 600,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2b/fcos007/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "9bb1a3aa0f2126d10fd84ed1d30028fe0b682dd89cb62891145727f1efce9221",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 프레임 루프 처리량",
+      "value": 15.29872152706062,
+      "unit": "frame/s",
+      "sample_n": 480,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2b/fcos030/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "4f732086de45f58a99671078ebe50b3eb218b8006a17a5c39b954b94d96549d6",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 프레임 루프 처리량",
+      "value": 15.28509954338099,
+      "unit": "frame/s",
+      "sample_n": 480,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2b/fcos031/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "042dea902116b29f8a492e39b7d827d8594981f46dba412385a4985b45914505",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 검수 정답 부족으로 미측정",
+      "source": "docs/experiments/EXP-0002-fcos-detector-comparison.md",
+      "source_sha256": "8c80edb8a720204b57a8097c54c42f4695eca1f534c7e086d8edf40b8db98bce",
+      "verification": "not_measured"
+    }
+  ]
+}

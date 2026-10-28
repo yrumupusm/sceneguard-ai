@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0004",
+  "comparison_group": "EXP-0004",
+  "cross_experiment_comparable": false,
+  "metrics": [
+    {
+      "label": "006 t050 박스",
+      "value": 387,
+      "unit": "box",
+      "sample_n": 500,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay006/t050/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "bb093a5a08b6536be914ea3422f54aa05ee3271b09c6a3cf4ae414090e47cc1f",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 t050 박스",
+      "value": 1120,
+      "unit": "box",
+      "sample_n": 600,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay007/t050/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "04272f6c8a6236a6992254a9f2aa77c1cee41ee49c668f37b8718cd4657b3cc0",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 t050 박스",
+      "value": 597,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay030/t050/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "80b0e14af8c46d29d93787e30b54f935ea9bbd494549418a408d244df8fff6dd",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 t050 박스",
+      "value": 318,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay031/t050/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "1e1330de9558bfad5d6b415569ecff5ae2ac0901dc2b6437e193df1572b08770",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "006 t040 박스",
+      "value": 488,
+      "unit": "box",
+      "sample_n": 500,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay006/t040/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "0a0bd9213c44a8d4515713cd187456211f3a262026fedbc401edabf1238335d6",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 t040 박스",
+      "value": 1355,
+      "unit": "box",
+      "sample_n": 600,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay007/t040/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "ad137b5e83b5dd406057d7cd6cf393d70cfcce27c6f2d9c121d145e183ea0baf",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 t040 박스",
+      "value": 853,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay030/t040/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "b5f1911b449d5b8b8dc7f8adf7225cd2acb50a84e67f3a2d8e627b9acb05560a",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 t040 박스",
+      "value": 984,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay031/t040/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "270678bb74cead542f60391d122c1e3bca58079bbc33628ef746ce5d82a57e65",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "006 t030 박스",
+      "value": 894,
+      "unit": "box",
+      "sample_n": 500,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay006/t030/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "2ae1db4be500a09df86318f23d56fad9d8d6ee2005e8fbc58a0ba0f0d7ee51c4",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 t030 박스",
+      "value": 2499,
+      "unit": "box",
+      "sample_n": 600,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay007/t030/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "c865aed5472459f32afcda7ee6b43117292451cdcbdf96093aff40ee954acaaf",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 t030 박스",
+      "value": 1715,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay030/t030/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "772c2284102865c60a5edcb2fe26036d7f24114aab864b49f86e337c665ae6c0",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 t030 박스",
+      "value": 2528,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay031/t030/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "512536736ef551557b1290c2c0b7013fb2332550c9672662eb2014dfe4b9e17e",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "006 t025 박스",
+      "value": 1639,
+      "unit": "box",
+      "sample_n": 500,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay006/t025/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "c3e721f124d082384dbbb41d2b9f8eac624203f8a2ce848d4f2d8a2d855e5ce1",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 t025 박스",
+      "value": 4041,
+      "unit": "box",
+      "sample_n": 600,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay007/t025/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "bdcf0dc517dff70f54a3f164c77e071c7adcc74d735c80cfe58efa75e1257bc1",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 t025 박스",
+      "value": 2837,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay030/t025/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "bb6e807c1bd23389d7be317fff4e653142551ae12d128f6656f921d4e7ba8245",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 t025 박스",
+      "value": 4479,
+      "unit": "box",
+      "sample_n": 480,
+      "scope": "진단 집계: 사람 수/정확도 아님. 같은 캐시에 최종 기준만 적용",
+      "source": "outputs/cv_phase2d/replay031/t025/summary.json",
+      "source_pointer": [
+        "person_boxes"
+      ],
+      "source_sha256": "3a5c1f18ec8f55ba9710d31fbef9442fe470f3b99fce05114ef076013d3f9c72",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 검수 정답 부족으로 미측정",
+      "source": "docs/experiments/EXP-0004-fcos-score-threshold-comparison.md",
+      "source_sha256": "3f4212fd685f20ce1b7894e50dc51ffb7cc6a36b1f0bd29736fb01414b81552f",
+      "verification": "not_measured"
+    }
+  ]
+}

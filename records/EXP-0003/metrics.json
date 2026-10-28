@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0003",
+  "comparison_group": "EXP-0003",
+  "cross_experiment_comparable": false,
+  "metrics": [
+    {
+      "label": "동일 최종 출력 확인 프레임",
+      "value": 361,
+      "unit": "frame",
+      "sample_n": 361,
+      "scope": "030 84~96초, 최종 검출 불변 진단",
+      "source": "outputs/cv_phase2c/diagnostic030/diagnostic_config.json",
+      "source_pointer": [
+        "frames_verified"
+      ],
+      "source_sha256": "dda32a33422df52ce0eb1ad3a8a981c500a235ceef7e8c975d6e60659df98477",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 검수 정답 부족으로 미측정",
+      "source": "docs/experiments/EXP-0003-fcos-candidate-diagnostics.md",
+      "source_sha256": "89b532fcc70025b82fc921b38ce665e5b938f840085517f95a2fda077f0fe715",
+      "verification": "not_measured"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0001",
+  "comparison_group": "EXP-0001",
+  "cross_experiment_comparable": false,
+  "metrics": [
+    {
+      "label": "006 프레임 루프 처리량",
+      "value": 8.936618534875773,
+      "unit": "frame/s",
+      "sample_n": 500,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2a/smoke006/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "0dfccde6154852b777fb1e1a8075114bdf928b8337b627bb758d44883aeae8f3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 프레임 루프 처리량",
+      "value": 11.316600404289586,
+      "unit": "frame/s",
+      "sample_n": 600,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2a/smoke007/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "4ad6535c302958a4be29131df6a917b23873989a3b75a68f8e3b0b6c202f706b",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 프레임 루프 처리량",
+      "value": 9.042677219763974,
+      "unit": "frame/s",
+      "sample_n": 480,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2a/smoke030/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "61a94cca1114c95c8655e0519daf93c5ae02f3bc1e4f7210ba10c49183fbaa3f",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 프레임 루프 처리량",
+      "value": 11.42819574486819,
+      "unit": "frame/s",
+      "sample_n": 480,
+      "scope": "워밍업 후 decode~출력·flush; 초기 로딩/preroll 제외. 최종 감지 성능 아님",
+      "source": "outputs/cv_phase2a/smoke031/run.json",
+      "source_pointer": [
+        "throughput_fps"
+      ],
+      "source_sha256": "0f3e2c2e7c7ea889a5d5005fdab97c1d5991ee31bce085efc6a2ba1ad73a5ed3",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 검수 정답 부족으로 미측정",
+      "source": "docs/experiments/EXP-0001-phase2a-cv-baseline.md",
+      "source_sha256": "1398be451890f1a79be2c53da7346753f7368f70a558f73ce5792221b0a64cb6",
+      "verification": "not_measured"
+    }
+  ]
+}

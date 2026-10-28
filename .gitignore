@@ -240,3 +240,7 @@ __marimo__/
 
 # Isolated local VLM environment
 /.venv-vlm/
+
+# Orca lab: local environments, state, logs and receipts
+.venv-orca-lab/
+runtime/

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0007",
+  "comparison_group": "EXP-0007",
+  "cross_experiment_comparable": false,
+  "metrics": [
+    {
+      "label": "clip01 생성",
+      "value": 3.526007409003796,
+      "unit": "s",
+      "sample_n": 10,
+      "scope": "5초 선택 클립, 입력10프레임. generate+GPU동기화, 전처리·decode·저장 제외; 탐지 지연 아님",
+      "source": "outputs/vlm_exp0007/run02/clip01/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "17b7745176520d6cee345253d279829a1c900ab9bb137c7c4bb6a7f796f98b8b",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip01 GPU 할당 최고",
+      "value": 4.345463275909424,
+      "unit": "GiB",
+      "sample_n": 10,
+      "scope": "PyTorch 프로세스 peak allocated, 모델 포함, 전체 장치 메모리 아님",
+      "source": "outputs/vlm_exp0007/run02/clip01/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "17b7745176520d6cee345253d279829a1c900ab9bb137c7c4bb6a7f796f98b8b",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 생성",
+      "value": 10.59493184700841,
+      "unit": "s",
+      "sample_n": 10,
+      "scope": "5초 선택 클립, 입력10프레임. generate+GPU동기화, 전처리·decode·저장 제외; 탐지 지연 아님",
+      "source": "outputs/vlm_exp0007/run02/clip02/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "3f4248943dd16fd9b4c89ddca5bf7706cf72c865781174ca22b07145fef075f4",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip02 GPU 할당 최고",
+      "value": 4.345768451690674,
+      "unit": "GiB",
+      "sample_n": 10,
+      "scope": "PyTorch 프로세스 peak allocated, 모델 포함, 전체 장치 메모리 아님",
+      "source": "outputs/vlm_exp0007/run02/clip02/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "3f4248943dd16fd9b4c89ddca5bf7706cf72c865781174ca22b07145fef075f4",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 생성",
+      "value": 3.071344024006976,
+      "unit": "s",
+      "sample_n": 10,
+      "scope": "5초 선택 클립, 입력10프레임. generate+GPU동기화, 전처리·decode·저장 제외; 탐지 지연 아님",
+      "source": "outputs/vlm_exp0007/run02/clip03/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "c30b98e133eb93bd53a842d9f30ab6ea6c1d31c2674cc7eea78035a6a2b83342",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip03 GPU 할당 최고",
+      "value": 4.345768451690674,
+      "unit": "GiB",
+      "sample_n": 10,
+      "scope": "PyTorch 프로세스 peak allocated, 모델 포함, 전체 장치 메모리 아님",
+      "source": "outputs/vlm_exp0007/run02/clip03/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "c30b98e133eb93bd53a842d9f30ab6ea6c1d31c2674cc7eea78035a6a2b83342",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 생성",
+      "value": 3.6109691470046528,
+      "unit": "s",
+      "sample_n": 10,
+      "scope": "5초 선택 클립, 입력10프레임. generate+GPU동기화, 전처리·decode·저장 제외; 탐지 지연 아님",
+      "source": "outputs/vlm_exp0007/run02/clip04/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "c125422932bab048d12fd05a0315627174d829952dc567eae2ea606f0cc63804",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip04 GPU 할당 최고",
+      "value": 4.345768451690674,
+      "unit": "GiB",
+      "sample_n": 10,
+      "scope": "PyTorch 프로세스 peak allocated, 모델 포함, 전체 장치 메모리 아님",
+      "source": "outputs/vlm_exp0007/run02/clip04/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "c125422932bab048d12fd05a0315627174d829952dc567eae2ea606f0cc63804",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 생성",
+      "value": 2.804928822995862,
+      "unit": "s",
+      "sample_n": 10,
+      "scope": "5초 선택 클립, 입력10프레임. generate+GPU동기화, 전처리·decode·저장 제외; 탐지 지연 아님",
+      "source": "outputs/vlm_exp0007/run02/clip05/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "8c1af2560c92d61ec29fde11c9f8bc792d901de4d659fbd71e724ff5884daf86",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip05 GPU 할당 최고",
+      "value": 4.345768451690674,
+      "unit": "GiB",
+      "sample_n": 10,
+      "scope": "PyTorch 프로세스 peak allocated, 모델 포함, 전체 장치 메모리 아님",
+      "source": "outputs/vlm_exp0007/run02/clip05/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "8c1af2560c92d61ec29fde11c9f8bc792d901de4d659fbd71e724ff5884daf86",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 생성",
+      "value": 3.5454371249943506,
+      "unit": "s",
+      "sample_n": 10,
+      "scope": "5초 선택 클립, 입력10프레임. generate+GPU동기화, 전처리·decode·저장 제외; 탐지 지연 아님",
+      "source": "outputs/vlm_exp0007/run02/clip06/result.json",
+      "source_pointer": [
+        "generation_seconds"
+      ],
+      "source_sha256": "9404003852e367924a37a4fb2b33c374946c6d90a3ae8bb16abc54f97573b94c",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "clip06 GPU 할당 최고",
+      "value": 4.345768451690674,
+      "unit": "GiB",
+      "sample_n": 10,
+      "scope": "PyTorch 프로세스 peak allocated, 모델 포함, 전체 장치 메모리 아님",
+      "source": "outputs/vlm_exp0007/run02/clip06/result.json",
+      "source_pointer": [
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "9404003852e367924a37a4fb2b33c374946c6d90a3ae8bb16abc54f97573b94c",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 검수 정답 부족으로 미측정",
+      "source": "docs/experiments/EXP-0007-local-vlm-action-analysis.md",
+      "source_sha256": "6e0547b4c298de232cac9532e1abebd315c9e6c1f6d9b1c3dee37c235317eda7",
+      "verification": "not_measured"
+    }
+  ]
+}

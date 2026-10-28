@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0006",
+  "comparison_group": "EXP-0006",
+  "cross_experiment_comparable": false,
+  "metrics": [
+    {
+      "label": "006 보존한 원래 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 500,
+      "scope": "원래 후보 보존, 007 근거 부족2 / 030 유보2. 정확도 아님",
+      "source": "outputs/cv_phase2g/comparison/summary.json",
+      "source_pointer": [
+        "summary",
+        "006",
+        "candidates"
+      ],
+      "source_sha256": "8106dc1b56c6d69117bfa5e631837a69687ca7902226cb55d0762484febf1aa4",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 보존한 원래 후보",
+      "value": 2,
+      "unit": "candidate",
+      "sample_n": 600,
+      "scope": "원래 후보 보존, 007 근거 부족2 / 030 유보2. 정확도 아님",
+      "source": "outputs/cv_phase2g/comparison/summary.json",
+      "source_pointer": [
+        "summary",
+        "007",
+        "candidates"
+      ],
+      "source_sha256": "8106dc1b56c6d69117bfa5e631837a69687ca7902226cb55d0762484febf1aa4",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 보존한 원래 후보",
+      "value": 2,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "원래 후보 보존, 007 근거 부족2 / 030 유보2. 정확도 아님",
+      "source": "outputs/cv_phase2g/comparison/summary.json",
+      "source_pointer": [
+        "summary",
+        "030",
+        "candidates"
+      ],
+      "source_sha256": "8106dc1b56c6d69117bfa5e631837a69687ca7902226cb55d0762484febf1aa4",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 보존한 원래 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "원래 후보 보존, 007 근거 부족2 / 030 유보2. 정확도 아님",
+      "source": "outputs/cv_phase2g/comparison/summary.json",
+      "source_pointer": [
+        "summary",
+        "031",
+        "candidates"
+      ],
+      "source_sha256": "8106dc1b56c6d69117bfa5e631837a69687ca7902226cb55d0762484febf1aa4",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 검수 정답 부족으로 미측정",
+      "source": "docs/experiments/EXP-0006-candidate-box-consistency.md",
+      "source_sha256": "6aea3068b517b90cc8512a0e207c2487767b9d04d2f7b30808f5ba73f3231ea5",
+      "verification": "not_measured"
+    }
+  ]
+}

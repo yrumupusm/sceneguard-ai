@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0005",
+  "comparison_group": "EXP-0005",
+  "cross_experiment_comparable": false,
+  "metrics": [
+    {
+      "label": "006 A 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 500,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track006/A/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "11f31b446db1b2c802b5b3a4f22cdb48169ebe322c546cd33267d4a7003255f0",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 A 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 600,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track007/A/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "1ebe0f1571225149bb1f1bcb79df77380db94a656468974efc2763e57fd47d8b",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 A 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track030/A/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "e5029f00a7735d1d615f13d8547d8285d1593871ad835f1071f6f8845ee4451c",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 A 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track031/A/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "811821d6d4f99f005a96a05b3d410716d5fd952430123c94cb8d098e065d37aa",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "006 B 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 500,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track006/B/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "d425478876450b69053bd8f4d924f84671d8ca94492f11827df2b44a0b129d38",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 B 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 600,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track007/B/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "3be04c6d99d28fa9dee146d1ae328099b73ffdf839d4421697e000e05fe60144",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 B 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track030/B/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "53d5438f88ac4f72e0fcac72b75e57f5541e7ecd869ab8fd0352948c21ba3084",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 B 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track031/B/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "3322f7c1ea53318d200154856eee0b5c76ec086aa00de95b5032f6d9c3afb43d",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "006 C 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 500,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track006/C/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "bc78ea8b21eebf8f87f457ec887f24f5f1f208ce0493c816f79fb734d90919ab",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "007 C 경계 후보",
+      "value": 2,
+      "unit": "candidate",
+      "sample_n": 600,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track007/C/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "8905ab506e463b94b43cdd3aa34775931867d966a5d4ec3752edd0f4711577fd",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "030 C 경계 후보",
+      "value": 2,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track030/C/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "5620ce6b8a421feb30687eedcd8e6150a7165559abcea80f5cc6ead49cf7c2bf",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "031 C 경계 후보",
+      "value": 0,
+      "unit": "candidate",
+      "sample_n": 480,
+      "scope": "진단 집계: 실제 침입/사람 통과 성공 아님",
+      "source": "outputs/cv_phase2e/track031/C/summary.json",
+      "source_pointer": [
+        "candidates"
+      ],
+      "source_sha256": "1689bdf8f0b9284379f505c866c86069b530d9fc21532c8275aea50b527606dc",
+      "verification": "source_json_checked"
+    },
+    {
+      "label": "최종 행동 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 검수 정답 부족으로 미측정",
+      "source": "docs/experiments/EXP-0005-bytetrack-cache-comparison.md",
+      "source_sha256": "bfbf00f6af39b8682c05d73d0456fc78c22f7f1b59f4a455cc80f9f9acf5944b",
+      "verification": "not_measured"
+    }
+  ]
+}
