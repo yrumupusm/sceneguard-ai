@@ -115,6 +115,7 @@ def export(source: Path, destination: Path) -> dict:
                                   "과거 agent model/effort·통합 run 해시가 없는 필드는 null; 측정 원천별 해시는 metrics에 보존"],
                   "evidence": [], "worker_opinion": summary, "next_step": next_step,
                   "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
+                  "review_binding_path": "docs/reviews/ORCA-SETUP-historical-import.binding.json",
                   "created_at": imported_at, "updated_at": imported_at,
                   "timestamp_scope": "record import time; not experiment start or completion time"}
         if number == 5:

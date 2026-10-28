@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
+  "review_sha256": "2f6090163c1e45851f29dae5c6ad7e9beee899e0577231cdabb0e8aa25910544",
+  "reviewed_sources": {
+    "EXP-0001": {
+      "report_sha256": "1398be451890f1a79be2c53da7346753f7368f70a558f73ce5792221b0a64cb6",
+      "metrics_sha256": "178557439bf31015199fdb5eacfcef62d539935c41e746f226ffa56eb751ee03"
+    },
+    "EXP-0002": {
+      "report_sha256": "8c80edb8a720204b57a8097c54c42f4695eca1f534c7e086d8edf40b8db98bce",
+      "metrics_sha256": "abd9bf26fae2586f841a39cc8b43d9ce9abefea2ff053b909409538d02717636"
+    },
+    "EXP-0003": {
+      "report_sha256": "89b532fcc70025b82fc921b38ce665e5b938f840085517f95a2fda077f0fe715",
+      "metrics_sha256": "062d343f73c9556b9f2c15c4f4411556b485bf2d1dacf463b71d81e1286d3b82"
+    },
+    "EXP-0004": {
+      "report_sha256": "3f4212fd685f20ce1b7894e50dc51ffb7cc6a36b1f0bd29736fb01414b81552f",
+      "metrics_sha256": "f891ab5e82aba37cde7b7c0b5816bdc558b5ef0bc37fc4cfdc3b3a7e5d0303b5"
+    },
+    "EXP-0005": {
+      "report_sha256": "bfbf00f6af39b8682c05d73d0456fc78c22f7f1b59f4a455cc80f9f9acf5944b",
+      "metrics_sha256": "94f3cd4f5efe39eab5cb9655c1640112650808df1bc27829284cd9a0fffd4399"
+    },
+    "EXP-0006": {
+      "report_sha256": "6aea3068b517b90cc8512a0e207c2487767b9d04d2f7b30808f5ba73f3231ea5",
+      "metrics_sha256": "df8cfd45383b23ffbe561c5ac5a39aacf45ed2f8e61b91d1baf3e82efb4be742"
+    },
+    "EXP-0007": {
+      "report_sha256": "6e0547b4c298de232cac9532e1abebd315c9e6c1f6d9b1c3dee37c235317eda7",
+      "metrics_sha256": "270fd6fcba459880a8e31e30f5058fb048858298aad8d8be124ca5fc59f4fc6d"
+    }
+  }
+}

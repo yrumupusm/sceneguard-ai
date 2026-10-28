@@ -1,13 +1,15 @@
 import json
 import hashlib
 import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
-from webapp.app import app
+from webapp.app import app, safe_open
 
 
 class ViewerTests(unittest.TestCase):
@@ -102,6 +104,44 @@ class ViewerTests(unittest.TestCase):
         path = self.root / 'runtime/orca_projection.json'
         path.write_text(json.dumps({'observed_at':'2000-01-01T00:00:00Z','connected':True,'stale_after_seconds':45}))
         self.assertEqual(self.client.get('/api/status').json()['state'], 'stale')
+
+    def test_reimport_does_not_refresh_review_binding(self):
+        review = self.root / self.item['review_path']
+        metric_path = self.root / self.item['metrics_path']
+        binding = {'review_path': self.item['review_path'],
+                   'review_sha256': hashlib.sha256(review.read_bytes()).hexdigest(),
+                   'reviewed_sources': {'EXP-0007': {
+                       'report_sha256': hashlib.sha256(self.report.read_bytes()).hexdigest(),
+                       'metrics_sha256': hashlib.sha256(metric_path.read_bytes()).hexdigest()}}}
+        self.item['review_binding_path'] = 'docs/reviews/binding.json'
+        (self.root / self.item['review_binding_path']).write_text(json.dumps(binding))
+        self.write_catalog()
+        self.assertEqual(self.client.get('/api/experiments/EXP-0007').json()['review_integrity'], 'current')
+        self.report.write_text('new report')
+        self.item['report_sha256'] = hashlib.sha256(self.report.read_bytes()).hexdigest()
+        self.item['metrics_sha256'] = hashlib.sha256(metric_path.read_bytes()).hexdigest()
+        self.write_catalog()  # Import hashes now match, old review still must be stale.
+        with patch('webapp.app.safe_open', wraps=safe_open) as opened:
+            body = self.client.get('/api/experiments/EXP-0007').json()
+        self.assertTrue(all(body['source_integrity'].values()))
+        self.assertEqual(body['review_integrity'], 'stale')
+        self.assertIn('재검토', body['review_html'])
+        self.assertIn('별도 검토', body['review_html'])
+        self.assertEqual(sum(call.args[1] == self.item['metrics_path'] for call in opened.call_args_list), 1)
+
+    def test_fifo_rejected_without_blocking(self):
+        fifo = self.root / 'outputs/fifo.mp4'
+        os.mkfifo(fifo)
+        code = ("from webapp.app import safe_open; import sys\n"
+                "try: safe_open(sys.argv[1], 'outputs/fifo.mp4')\n"
+                "except ValueError: sys.exit(0)\n"
+                "sys.exit(1)\n")
+        result = subprocess.run([sys.executable, '-c', code, str(self.root)], timeout=3, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.config['artifacts']['clip']['path'] = str(fifo)
+        self.write_config()
+        self.assertEqual(self.client.get('/artifacts/clip').status_code, 404)
+        self.assertFalse(self.client.get('/api/experiments/EXP-0007').json()['evidence'][0]['available'])
 
 
 if __name__ == '__main__':

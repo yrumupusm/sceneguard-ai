@@ -12,3 +12,7 @@ Orca가 Task/Dispatch의 원본이다. `orchestration/orca_adapter.py`는 native
 - API 상세 응답은 catalog 레코드와 `report_html`, `review_html`, `metrics` 배열, evidence별 `available`을 포함한다. 화면은 source와 hash를 접힌 기술 상세로 보여준다. reviewer 의견은 해당 report/metrics 해시를 참조하는 별도 파일이며 원문을 고치지 않는다.
 
 원천 importer는 `python -m orchestration.catalog --source EXISTING_REPO --destination CODE_REPO`다. 원본 JSON에서 선택된 숫자만 내보내며 원시 예측/응답/미디어는 복사하지 않는다. EXP-0001~0007의 모든 실측을 복구했다고 주장하지 않는다. 각 보고서 전체 표는 원문에서 확인할 수 있다.
+
+## 검토 버전 연결
+
+`review_binding_path`는 importer가 갱신하지 않는 검토 소유 JSON이다. `review_path`, 검토문 자체의 `review_sha256`, experiment별 `reviewed_sources`의 report/metrics SHA256을 고정한다. 현재 catalog 해시가 갱신되어도 이 연결은 자동 갱신되지 않는다. 웹은 실제 읽은 원문·측정치·검토문과 연결을 대조하며 불일치/부재는 stale/unverified로 표시한다. 이전 검토문은 경고와 함께 보존한다. 측정 JSON은 한 번 읽은 동일 바이트로 파싱·해시한다. 연결 파일 갱신에는 실제 재검토가 필요하다.

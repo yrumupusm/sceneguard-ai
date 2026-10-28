@@ -42,7 +42,7 @@ def safe_open(root, relative):
     fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY)
     try:
         for i, part in enumerate(parts):
-            flags = os.O_RDONLY | os.O_NOFOLLOW | (os.O_DIRECTORY if i < len(parts)-1 else 0)
+            flags = os.O_RDONLY | os.O_NOFOLLOW | (os.O_DIRECTORY if i < len(parts)-1 else os.O_NONBLOCK)
             new = os.open(part, flags, dir_fd=fd)
             os.close(fd)
             fd = new
@@ -135,15 +135,38 @@ def experiment(experiment_id: str):
             if item.get('report_sha256') else None,
         }
         review = item.get('review_path')
-        result['review_html'] = markdown(document(c, review, 'docs/reviews/', '.md')) if review else ''
+        review_source = document(c, review, 'docs/reviews/', '.md') if review else ''
+        result['review_html'] = markdown(review_source)
         path = item['metrics_path']
         if not path.startswith('records/' + experiment_id + '/') or not path.endswith('.json'):
             raise ValueError('invalid metric path')
-        result['metrics'] = read_json(c['repo_root'], path)['metrics']
         with safe_open(c['repo_root'], path) as metric_file:
-            result['source_integrity']['metrics_match'] = hashlib.sha256(metric_file.read()).hexdigest() == item['metrics_sha256'] if item.get('metrics_sha256') else None
-        if False in result['source_integrity'].values():
-            result['review_html'] = '<p>원문 또는 측정치가 검토 당시와 달라 재검토가 필요합니다.</p>'
+            metric_bytes = metric_file.read()
+        result['metrics'] = json.loads(metric_bytes)['metrics']
+        metric_hash = hashlib.sha256(metric_bytes).hexdigest()
+        report_hash = hashlib.sha256(source.encode('utf-8')).hexdigest()
+        result['source_integrity']['metrics_match'] = metric_hash == item['metrics_sha256'] if item.get('metrics_sha256') else None
+        # The importer must never refresh this review-owned binding. Catalog
+        # hashes describe the current import, not what an old review examined.
+        binding_path = item.get('review_binding_path')
+        review_state = 'unverified'
+        if binding_path:
+            try:
+                binding = json.loads(document(c, binding_path, 'docs/reviews/', '.json'))
+                reviewed = binding['reviewed_sources'][experiment_id]
+                review_state = 'current' if (
+                    binding['review_path'] == review
+                    and binding['review_sha256'] == hashlib.sha256(review_source.encode('utf-8')).hexdigest()
+                    and reviewed['report_sha256'] == report_hash
+                    and reviewed['metrics_sha256'] == metric_hash
+                ) else 'stale'
+            except (OSError, ValueError, KeyError, TypeError):
+                review_state = 'unverified'
+        result['review_integrity'] = review_state
+        if review_state != 'current' or False in result['source_integrity'].values():
+            result['review_html'] = ('<p><strong>이전 검토: 현재 원문·측정치와의 연결이 오래됐거나 미검증입니다. '
+                                     '재검토가 필요하며 아래 의견은 현재 버전 승인으로 사용할 수 없습니다.</strong></p>'
+                                     + result['review_html'])
         result['evidence'] = [{**e, 'available': available(c, e)} for e in item.get('evidence', [])]
         return result
     except StopIteration:

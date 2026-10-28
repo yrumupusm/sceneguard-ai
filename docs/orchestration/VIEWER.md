@@ -21,3 +21,9 @@ SCENEGUARD_LAB_CONFIG=/absolute/path/to/local-config.json /home/jhc7484/dev/scen
 ```
 
 테스트는 임시 파일만 사용한다. 실제 자료 import와 브라우저 카드 전환·미디어 재생은 총괄이 별도로 확인해야 한다. 이 문서만으로 전체 Orca 세팅의 성공이나 실험 성능을 입증하지 않는다.
+
+## 시작 확인과 표시 보완
+
+시작 명령은 웹뿐 아니라 상태 수집 프로세스의 생존과 해당 시작의 고유 launch_id가 담긴 관측을 확인한다. 상태 수집이 중도 종료하면 partial startup 오류를 반환하고 stop에 필요한 PID 식별을 보존한다. 수집기가 살아 있어도 Orca 연락 실패이면 disconnected/degraded로 보고한다. 이전 시작의 JSON만으로 성공 처리하지 않는다. 정상 종료 직후 TIME_WAIT 연결은 SO_REUSEADDR로 허용하지만 활성 listener는 거부한다. 등록 미디어도 FIFO 등 일반 파일이 아니면 비차단 open 후 거부한다.
+
+화면의 담당1·2·3은 현재 미배정 슬롯이며, 과거 7개 실험은 미배정 카드에 모인다. 보고서 Markdown 표도 원문에서 렌더링한다. 검토문은 RESULT_CONTRACT의 별도 버전 연결로 오래된 의견과 현재 원문을 구분한다.

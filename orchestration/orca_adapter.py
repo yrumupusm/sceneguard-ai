@@ -12,7 +12,7 @@ import subprocess
 import time
 
 
-def snapshot(cli: str, run: str, output: Path):
+def snapshot(cli: str, run: str, output: Path, launch_id: str | None = None):
     now = dt.datetime.now(dt.timezone.utc).isoformat()
     workers = []
     cursor = None
@@ -37,10 +37,11 @@ def snapshot(cli: str, run: str, output: Path):
             cursor = body["page"]["nextCursor"]
         record = {"observed_at": now, "connected": True, "run_id": run, "workers": workers,
                   "authority": "Orca native Run/Task/Dispatch", "stale_after_seconds": 45}
-    except (subprocess.SubprocessError, ValueError, OSError, RuntimeError) as error:
+    except (subprocess.SubprocessError, ValueError, OSError, RuntimeError, KeyError, TypeError) as error:
         record = {"observed_at": now, "connected": False, "run_id": run, "workers": [],
                   "error": type(error).__name__, "stale_after_seconds": 45,
                   "note": "contact loss is not worker exit; no lifecycle mutation performed"}
+    record['launch_id'] = launch_id
     output.parent.mkdir(parents=True, exist_ok=True)
     temp = output.with_name(f".{output.name}.{os.getpid()}.tmp")
     temp.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -54,9 +55,10 @@ if __name__ == "__main__":
     p.add_argument("--run", required=True)
     p.add_argument("--output", required=True, type=Path)
     p.add_argument("--watch", action="store_true")
+    p.add_argument("--launch-id")
     a = p.parse_args()
     while True:
-        snapshot(a.cli, a.run, a.output)
+        snapshot(a.cli, a.run, a.output, a.launch_id)
         if not a.watch:
             break
         time.sleep(15)

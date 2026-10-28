@@ -11,6 +11,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+import uuid
 
 
 def identity(pid):
@@ -71,11 +72,13 @@ def run(config_path: Path, action: str):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             sock.bind(("127.0.0.1", int(config.get("port", 8765))))
         env = os.environ.copy(); env["SCENEGUARD_LAB_CONFIG"] = str(config_path)
+        launch_id = uuid.uuid4().hex
         argv = {
             "web": [sys.executable, "-m", "uvicorn", "webapp.app:app", "--host", "127.0.0.1",
                     "--port", str(config.get("port", 8765)), "--no-access-log"],
             "projection": [sys.executable, "-m", "orchestration.orca_adapter", "--cli", config.get("orca_cli", "orca-ide"),
-                           "--run", config["orca_run_id"], "--output", str(runtime / "orca_projection.json"), "--watch"],
+                           "--run", config["orca_run_id"], "--output", str(runtime / "orca_projection.json"),
+                           "--launch-id", launch_id, "--watch"],
         }
         for name, command in argv.items():
             with (runtime / f"{name}.log").open("ab") as log:
@@ -85,17 +88,27 @@ def run(config_path: Path, action: str):
             if state[name] is None:
                 raise RuntimeError(f"{name} exited immediately; see local log")
             save()
-        deadline = time.monotonic() + 15
+        deadline = time.monotonic() + 40
         while time.monotonic() < deadline:
-            if not matches(state["web"]):
-                raise RuntimeError("Web startup failed; inspect log and run stop to clean up projection")
+            for name, saved in state.items():
+                if not matches(saved):
+                    raise RuntimeError(f"Partial startup: {name} exited; saved ownership retained for stop")
             try:
                 with urllib.request.urlopen(url + "/api/catalog", timeout=1) as response:
                     if response.status == 200:
-                        return {"url": url, "started": list(state), "bind": "loopback only"}
-            except OSError:
-                time.sleep(.2)
-        raise RuntimeError("Web readiness timed out; inspect local logs; no second instance started")
+                        observation = json.loads((runtime / "orca_projection.json").read_text())
+                        if observation.get('launch_id') == launch_id and isinstance(observation.get('connected'), bool):
+                            if not all(matches(saved) for saved in state.values()):
+                                raise RuntimeError("Partial startup: service exited during readiness; ownership retained for stop")
+                            connected = observation['connected']
+                            return {"url": url, "started": list(state), "bind": "loopback only",
+                                    "state": "started" if connected else "degraded",
+                                    "projection_state": "connected" if connected else "disconnected",
+                                    "projection_launch_id": launch_id}
+            except (OSError, ValueError):
+                pass
+            time.sleep(.2)
+        raise RuntimeError("Service readiness timed out; current-launch projection missing or web unavailable; use status/stop")
 
 
 if __name__ == "__main__":
