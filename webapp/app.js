@@ -81,7 +81,7 @@ async function selectReport(id) {
     detail.dataset.id = id; detail.dataset.result = 'registered'; detail.dataset.executionStatus = show(d.execution_status);
     const assignment = (catalogData.assignments || []).find(x => x.slot === selectedSlot && x.experiment_id === id);
     detail.replaceChildren(node('p', `${d.synthetic || assignment?.synthetic ? 'TEST · ' : ''}${d.experiment_id}`, 'eyebrow'), node('h2', d.title), node('p', d.summary));
-    detail.append(node('p', `실험 모델: ${show(d.evaluated_model)} · 과거 작업자 모델: ${show(d.agent_model_effective)}`, 'muted'));
+    detail.append(node('p', `실험 모델: ${show(d.evaluated_model)} · 작업자 모델: ${show(d.agent_model_effective)}`, 'muted'));
     const states = {completed_with_recorded_limitations: '실행 완료 · 한계 기록', AI_draft: 'AI 검수 초안', adoption_on_hold: '기본 채택 보류'};
     detail.append(node('p', `기록된 실험 실행: ${states[d.execution_status] || show(d.execution_status)} · 검토: ${states[d.review_status] || show(d.review_status)} · 결정: ${states[d.decision_status] || show(d.decision_status)}`, 'muted'));
     if (Object.values(d.source_integrity || {}).includes(false)) {
@@ -158,8 +158,12 @@ function slotItems(data, slot) {
 }
 function observationText(observation) {
   if (!observation) return '미확인';
-  const describe = value => value && typeof value === 'object' ? JSON.stringify(value) : show(value);
-  return `단계 ${describe(observation.stage)} · 생존 ${describe(observation.liveness)} · 종료 결과 ${describe(observation.outcome)}`;
+  if (observation.outcome === 'succeeded') return '작업자 완료';
+  if (observation.outcome === 'failed') return '작업자 실패';
+  if (observation.liveness?.verdict === 'exited') return '작업자 종료 · 결과 미확인';
+  if (observation.liveness?.verdict !== 'live') return '생존 상태 미확인';
+  if (observation.outcome === 'in_progress') return observation.stage?.activity === 'working' ? '진행 중' : '응답 대기';
+  return '미확인';
 }
 function renderSlots() {
   const slots = ['slot1', 'slot2', 'slot3'].map(id => (catalogData.roles.slots || []).find(x => x.id === id) || {id, label: id});
@@ -171,6 +175,10 @@ function renderSlots() {
     button.dataset.result = String(items.filter(x => x.result).length);
     button.setAttribute('aria-pressed', String(selectedSlot === slot.id));
     button.append(node('h3', slot.label), node('p', `배정 ${items.filter(x => x.assignment).length} · 등록 결과 ${items.filter(x => x.result).length}`, 'muted'));
+    const states = [...new Set(items.filter(x => x.assignment).map(x => observationText(nativeObservation(x.assignment, statusData))))];
+    button.dataset.status = states.length ? states.join(' / ') : '미배정';
+    button.append(node('p', `작업: ${button.dataset.status}`, 'task-status'));
+    if (items.some(x => x.assignment?.synthetic || x.result?.synthetic)) button.append(node('strong', 'TEST · 합성 확인'));
     button.addEventListener('click', () => selectSlot(slot.id)); container.append(button);
   });
 }
@@ -241,7 +249,7 @@ async function refresh() {
   } else if (!catalogData) $('#detail').textContent = '카탈로그를 불러올 수 없습니다.';
   if (catalogData && selectedReport && !resultFor(catalogData, selectedSlot, selectedReport)) selectPending(selectedReport);
 }
-if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFor, slotItems};
+if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFor, slotItems, observationText};
 if (typeof document !== 'undefined') {
   document.addEventListener('pause', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh) refreshSelectedIfChanged(); }, true);
   document.addEventListener('ended', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh) refreshSelectedIfChanged(); }, true);

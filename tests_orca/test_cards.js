@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict');
-const {nativeObservation, resultFor, slotItems} = require('../webapp/app.js');
+const {nativeObservation, resultFor, slotItems, observationText} = require('../webapp/app.js');
 const now = Date.now();
 const assignment = {experiment_id: 'TEST-1', slot: 'slot1', run_id: 'r', task_id: 't', dispatch_id: 'd', synthetic: true};
 const worker = {task_id: 't', dispatch_id: 'd', stage: {state: 'done'}, liveness: {state: 'exited'}, outcome: 'succeeded'};
@@ -16,4 +16,9 @@ assert.equal(slotItems({...data, experiments:[]}, 'slot1')[0].result, null);
 assert.equal(slotItems(data, 'slot1')[0].result.experiment_id, 'TEST-1');
 assert.equal(resultFor(data, 'slot2', 'TEST-1'), null);
 assert.equal(slotItems(data, 'unassigned')[0].id, 'EXP-0007');
+assert.equal(observationText(null), '미확인');
+assert.equal(observationText(worker), '작업자 완료');
+assert.equal(observationText({...worker, outcome:'failed'}), '작업자 실패');
+assert.equal(observationText({outcome:'in_progress', stage:{activity:'working'}, liveness:{verdict:'live'}}), '진행 중');
+assert.equal(observationText({outcome:'in_progress', stage:{activity:'working'}, liveness:{verdict:'unverifiable'}}), '생존 상태 미확인');
 console.log('card state fixture assertions passed');
