@@ -23,6 +23,7 @@
       "decision_status": "adoption_on_hold",
       "metric_definitions": "records/EXP-0001/metrics.json",
       "metrics_path": "records/EXP-0001/metrics.json",
+      "metrics_sha256": "178557439bf31015199fdb5eacfcef62d539935c41e746f226ffa56eb751ee03",
       "report_path": "docs/experiments/EXP-0001-phase2a-cv-baseline.md",
       "report_sha256": "1398be451890f1a79be2c53da7346753f7368f70a558f73ce5792221b0a64cb6",
       "limitations": [
@@ -34,8 +35,8 @@
       "worker_opinion": "작은 CCTV 사람의 검출 누락이 먼저 확인됐다.",
       "next_step": "검출기 대안을 검토했고 후속 EXP-0002에 기록했다.",
       "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
-      "created_at": "2026-10-28T06:03:12.098825+00:00",
-      "updated_at": "2026-10-28T06:03:12.098825+00:00",
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
       "timestamp_scope": "record import time; not experiment start or completion time"
     },
     {
@@ -60,6 +61,7 @@
       "decision_status": "adoption_on_hold",
       "metric_definitions": "records/EXP-0002/metrics.json",
       "metrics_path": "records/EXP-0002/metrics.json",
+      "metrics_sha256": "abd9bf26fae2586f841a39cc8b43d9ce9abefea2ff053b909409538d02717636",
       "report_path": "docs/experiments/EXP-0002-fcos-detector-comparison.md",
       "report_sha256": "8c80edb8a720204b57a8097c54c42f4695eca1f534c7e086d8edf40b8db98bce",
       "limitations": [
@@ -71,8 +73,8 @@
       "worker_opinion": "사람 일부를 복원했지만 중복·배경 오검출·연결 단절도 남았다.",
       "next_step": "모델과 해상도가 함께 바뀐 비교다. 검출 개수 증가를 정확도 향상으로 해석하지 않는다.",
       "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
-      "created_at": "2026-10-28T06:03:12.098825+00:00",
-      "updated_at": "2026-10-28T06:03:12.098825+00:00",
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
       "timestamp_scope": "record import time; not experiment start or completion time"
     },
     {
@@ -97,6 +99,7 @@
       "decision_status": "adoption_on_hold",
       "metric_definitions": "records/EXP-0003/metrics.json",
       "metrics_path": "records/EXP-0003/metrics.json",
+      "metrics_sha256": "062d343f73c9556b9f2c15c4f4411556b485bf2d1dacf463b71d81e1286d3b82",
       "report_path": "docs/experiments/EXP-0003-fcos-candidate-diagnostics.md",
       "report_sha256": "89b532fcc70025b82fc921b38ce665e5b938f840085517f95a2fda077f0fe715",
       "limitations": [
@@ -108,8 +111,8 @@
       "worker_opinion": "90초 사람 위치에 낮은 점수 후보가 있었다. 시각적 원인은 미확정이다.",
       "next_step": "계측 시간이 추가돼 기존 추론 속도와 직접 비교하지 않는다.",
       "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
-      "created_at": "2026-10-28T06:03:12.098825+00:00",
-      "updated_at": "2026-10-28T06:03:12.098825+00:00",
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
       "timestamp_scope": "record import time; not experiment start or completion time"
     },
     {
@@ -134,6 +137,7 @@
       "decision_status": "adoption_on_hold",
       "metric_definitions": "records/EXP-0004/metrics.json",
       "metrics_path": "records/EXP-0004/metrics.json",
+      "metrics_sha256": "f891ab5e82aba37cde7b7c0b5816bdc558b5ef0bc37fc4cfdc3b3a7e5d0303b5",
       "report_path": "docs/experiments/EXP-0004-fcos-score-threshold-comparison.md",
       "report_sha256": "3f4212fd685f20ce1b7894e50dc51ffb7cc6a36b1f0bd29736fb01414b81552f",
       "limitations": [
@@ -145,8 +149,8 @@
       "worker_opinion": "기준 하향으로 일부 사람을 복원했으나 중복·배경 의심도 증가했다.",
       "next_step": "점수 기준 하향 채택 보류. 이 캐시 재생은 모델 추론 속도가 아니다.",
       "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
-      "created_at": "2026-10-28T06:03:12.098825+00:00",
-      "updated_at": "2026-10-28T06:03:12.098825+00:00",
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
       "timestamp_scope": "record import time; not experiment start or completion time"
     },
     {
@@ -171,6 +175,7 @@
       "decision_status": "adoption_on_hold",
       "metric_definitions": "records/EXP-0005/metrics.json",
       "metrics_path": "records/EXP-0005/metrics.json",
+      "metrics_sha256": "94f3cd4f5efe39eab5cb9655c1640112650808df1bc27829284cd9a0fffd4399",
       "report_path": "docs/experiments/EXP-0005-bytetrack-cache-comparison.md",
       "report_sha256": "bfbf00f6af39b8682c05d73d0456fc78c22f7f1b59f4a455cc80f9f9acf5944b",
       "limitations": [
@@ -193,8 +198,8 @@
       "worker_opinion": "국소 연결 개선과 중복·배경·부분 신체 문제가 공존했다.",
       "next_step": "기본 추적기 교체 보류. ID 수·후보 수는 실제 사람 수나 성공 건수가 아니다.",
       "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
-      "created_at": "2026-10-28T06:03:12.098825+00:00",
-      "updated_at": "2026-10-28T06:03:12.098825+00:00",
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
       "timestamp_scope": "record import time; not experiment start or completion time"
     },
     {
@@ -219,6 +224,7 @@
       "decision_status": "adoption_on_hold",
       "metric_definitions": "records/EXP-0006/metrics.json",
       "metrics_path": "records/EXP-0006/metrics.json",
+      "metrics_sha256": "df8cfd45383b23ffbe561c5ac5a39aacf45ed2f8e61b91d1baf3e82efb4be742",
       "report_path": "docs/experiments/EXP-0006-candidate-box-consistency.md",
       "report_sha256": "6aea3068b517b90cc8512a0e207c2487767b9d04d2f7b30808f5ba73f3231ea5",
       "limitations": [
@@ -241,8 +247,8 @@
       "worker_opinion": "007은 근거 부족, 030은 판단 유보로 남아 유용한 후보도 함께 막았다.",
       "next_step": "기본 적용 보류. 0.2초 대기는 실제 경보 전달 지연을 추가한다.",
       "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
-      "created_at": "2026-10-28T06:03:12.098825+00:00",
-      "updated_at": "2026-10-28T06:03:12.098825+00:00",
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
       "timestamp_scope": "record import time; not experiment start or completion time"
     },
     {
@@ -267,6 +273,7 @@
       "decision_status": "adoption_on_hold",
       "metric_definitions": "records/EXP-0007/metrics.json",
       "metrics_path": "records/EXP-0007/metrics.json",
+      "metrics_sha256": "270fd6fcba459880a8e31e30f5058fb048858298aad8d8be124ca5fc59f4fc6d",
       "report_path": "docs/experiments/EXP-0007-local-vlm-action-analysis.md",
       "report_sha256": "6e0547b4c298de232cac9532e1abebd315c9e6c1f6d9b1c3dee37c235317eda7",
       "limitations": [
@@ -309,8 +316,8 @@
       "worker_opinion": "통행 일부는 설명했으나 넘기 누락·문 열기 환각·반복·JSON 파싱 실패가 남았다.",
       "next_step": "기본 연동 보류. 실제 입력의 행동과 설명을 사람과 검수한 뒤 다음 대조를 설계한다.",
       "review_path": "docs/reviews/ORCA-SETUP-historical-import.md",
-      "created_at": "2026-10-28T06:03:12.098825+00:00",
-      "updated_at": "2026-10-28T06:03:12.098825+00:00",
+      "created_at": "2026-10-28T06:10:10.469768+00:00",
+      "updated_at": "2026-10-28T06:10:10.469768+00:00",
       "timestamp_scope": "record import time; not experiment start or completion time"
     }
   ],

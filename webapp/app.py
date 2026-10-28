@@ -1,5 +1,6 @@
 """Read-only local viewer; no execution or arbitrary file APIs."""
 import json
+import hashlib
 import os
 import re
 import stat
@@ -70,7 +71,7 @@ def document(c, path, prefix, suffix):
 
 
 def markdown(source):
-    md = MarkdownIt('commonmark', {'html': False, 'linkify': False})
+    md = MarkdownIt('commonmark', {'html': False, 'linkify': False}).enable('table')
     # No remote or local image requests from untrusted report text.
     md.renderer.rules['image'] = lambda tokens, idx, options, env: ''
     md.disable('link')
@@ -127,13 +128,22 @@ def experiment(experiment_id: str):
     try:
         item = next(x for x in catalog(c)['experiments'] if x['experiment_id'] == experiment_id)
         result = dict(item)
-        result['report_html'] = markdown(document(c, item['report_path'], 'docs/experiments/', '.md'))
+        source = document(c, item['report_path'], 'docs/experiments/', '.md')
+        result['report_html'] = markdown(source)
+        result['source_integrity'] = {
+            'report_match': hashlib.sha256(source.encode('utf-8')).hexdigest() == item['report_sha256']
+            if item.get('report_sha256') else None,
+        }
         review = item.get('review_path')
         result['review_html'] = markdown(document(c, review, 'docs/reviews/', '.md')) if review else ''
         path = item['metrics_path']
         if not path.startswith('records/' + experiment_id + '/') or not path.endswith('.json'):
             raise ValueError('invalid metric path')
         result['metrics'] = read_json(c['repo_root'], path)['metrics']
+        with safe_open(c['repo_root'], path) as metric_file:
+            result['source_integrity']['metrics_match'] = hashlib.sha256(metric_file.read()).hexdigest() == item['metrics_sha256'] if item.get('metrics_sha256') else None
+        if False in result['source_integrity'].values():
+            result['review_html'] = '<p>원문 또는 측정치가 검토 당시와 달라 재검토가 필요합니다.</p>'
         result['evidence'] = [{**e, 'available': available(c, e)} for e in item.get('evidence', [])]
         return result
     except StopIteration:

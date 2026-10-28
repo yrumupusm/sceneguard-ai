@@ -1,1 +1,51 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SceneGuard 결과 검토</title><link rel="stylesheet" href="/assets/style.css"><script defer src="/assets/app.js"></script></head><body><header><div class="wrap"><p class="eyebrow">SCENEGUARD · 로컬 결과 조회</p><h1>실험 결과 검토</h1><p>기록된 근거를 확인하고 다음 판단을 준비합니다.</p><p id="status" class="status">연결 상태 확인 중</p></div></header><main class="wrap"><section><h2>총괄</h2><div id="coordinator" class="card"></div></section><section><div class="section-title"><h2>향후 실험 담당</h2><span>과거 실험과 별도</span></div><div id="slots" class="grid"></div><details><summary>이번 세팅 작업자 보기</summary><div id="workers"></div></details></section><section><h2>미배정 · 기존 실험 기록</h2><p>이전 실험을 현재 담당자에게 소급 배정하지 않습니다.</p><nav id="experiments" aria-label="기존 실험 선택"></nav></section><article id="detail" aria-live="polite"><p>보고서를 불러오는 중입니다.</p></article></main><footer class="wrap">읽기 전용 · 모델 실행이나 승인 기능 없음</footer></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SceneGuard 결과 검토</title>
+<link rel="stylesheet" href="/assets/style.css">
+<script defer src="/assets/app.js">
+</script>
+</head>
+<body>
+<header>
+<div class="wrap">
+<p class="eyebrow">SCENEGUARD · 로컬 결과 조회</p>
+<h1>실험 결과 검토</h1>
+<p>기록된 근거를 확인하고 다음 판단을 준비합니다.</p>
+<p id="status" class="status">연결 상태 확인 중</p>
+</div>
+</header>
+<main class="wrap">
+<section>
+<h2>총괄</h2>
+<div id="coordinator">
+</div>
+</section>
+<section>
+<div class="section-title">
+<h2>향후 실험 담당</h2>
+<span>과거 실험과 별도</span>
+</div>
+<div id="slots" class="grid">
+</div>
+<details>
+<summary>이번 세팅 작업자 보기</summary>
+<div id="workers">
+</div>
+</details>
+</section>
+<section id="history">
+<h2>미배정 · 기존 실험 기록</h2>
+<p>이전 실험을 현재 담당자에게 소급 배정하지 않습니다.</p>
+<nav id="experiments" aria-label="기존 실험 선택">
+</nav>
+</section>
+<article id="detail" aria-live="polite">
+<p>보고서를 불러오는 중입니다.</p>
+</article>
+</main>
+<footer class="wrap">읽기 전용 · 모델 실행이나 승인 기능 없음</footer>
+</body>
+</html>

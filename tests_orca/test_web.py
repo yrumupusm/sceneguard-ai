@@ -1,4 +1,5 @@
 import json
+import hashlib
 import os
 import tempfile
 import unittest
@@ -83,6 +84,24 @@ class ViewerTests(unittest.TestCase):
         self.assertEqual(self.client.get('/api/catalog', headers={'host':'example.com'}).status_code, 400)
         self.assertIn("default-src 'self'", r.headers['content-security-policy'])
         self.assertEqual(r.headers['cross-origin-resource-policy'], 'same-origin')
+
+    def test_report_table_and_stale_review(self):
+        self.report.write_text('| 항목 | 값 |\n| --- | --- |\n| 상태 | <script>bad()</script> |\n', encoding='utf-8')
+        self.item['report_sha256'] = hashlib.sha256(self.report.read_bytes()).hexdigest()
+        self.write_catalog()
+        body = self.client.get('/api/experiments/EXP-0007').json()
+        self.assertIn('<table>', body['report_html'])
+        self.assertNotIn('<script>', body['report_html'])
+        self.assertTrue(body['source_integrity']['report_match'])
+        self.report.write_text('changed', encoding='utf-8')
+        body = self.client.get('/api/experiments/EXP-0007').json()
+        self.assertFalse(body['source_integrity']['report_match'])
+        self.assertIn('재검토', body['review_html'])
+
+    def test_projection_staleness(self):
+        path = self.root / 'runtime/orca_projection.json'
+        path.write_text(json.dumps({'observed_at':'2000-01-01T00:00:00Z','connected':True,'stale_after_seconds':45}))
+        self.assertEqual(self.client.get('/api/status').json()['state'], 'stale')
 
 
 if __name__ == '__main__':
