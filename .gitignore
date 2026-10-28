@@ -237,3 +237,6 @@ __marimo__/
 *.mkv
 *.mov
 .env.*
+
+# Isolated local VLM environment
+/.venv-vlm/

@@ -1,0 +1,13 @@
+{
+  "status": "pre-run development selection; observations are review drafts unless source says user candidate",
+  "sampling_fps": 2,
+  "duration_seconds": 5,
+  "clips": [
+    {"id":"clip01","source":"E01_007","start":54,"end":59,"camera":"C3","reason":"approach near boundary without visible climbing in prior focus review","observation":"two people approach and wait near gate","uncertainty":"occlusion; no full person-ID or event ground truth","review_status":"Codex draft"},
+    {"id":"clip02","source":"E01_030","start":88,"end":93,"camera":"C6","reason":"actual climbing movement and difficult completion judgment","observation":"three people approach/raise bodies at gate","uncertainty":"overlapping bodies; individual completion not confirmed","review_status":"Codex draft, prior user distinguished approach from climbing"},
+    {"id":"clip03","source":"E01_006","start":120,"end":125,"camera":"C3","reason":"ordinary passage in user-proposed late non-event interval","observation":"distant people walk near boundary without crossing in prior sampled review","uncertainty":"small people; outside current CV ROI; user candidate not verified negative GT","review_status":"user non-event candidate plus Codex draft"},
+    {"id":"clip04","source":"E01_007","start":63,"end":68,"camera":"C3","reason":"same camera as approach and passage but different action","observation":"people raise bodies at gate around 64-66 seconds","uncertainty":"pillar/people occlusion; start and completion not precise GT","review_status":"Codex draft; user distinguished first appearance and climbing"},
+    {"id":"clip05","source":"E01_001","start":61,"end":66,"camera":"unverified_here","reason":"another climbing case independent of CV event outputs","observation":"people raise bodies toward gate top in prior review","uncertainty":"individual completion and precise start unconfirmed","review_status":"Codex draft; user distinguished appearance and climbing"},
+    {"id":"clip06","source":"E01_031","start":31,"end":36,"camera":"C7","reason":"boundary contact and occlusion requiring uncertainty","observation":"boundary vicinity, user reported contact around 33 seconds","uncertainty":"distant/car occlusion; contact not equivalent to climb; no completion claim","review_status":"user approximate contact observation plus Codex draft"}
+  ]
+}
