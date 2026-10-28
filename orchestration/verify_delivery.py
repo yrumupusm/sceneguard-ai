@@ -102,14 +102,20 @@ BROWSER_JS = r'''(async()=>{
  const rows=[...detail.querySelector('table').rows].slice(1).map(x=>[x.cells[0].textContent,x.cells[1].textContent]);
  if(JSON.stringify(rows)!==JSON.stringify(expected.metrics))throw Error('Metric table differs');
  if(detail.querySelectorAll('.graph').length!==expected.graphs)throw Error('Graphs absent or wrong groups');
- if(!detail.querySelector('.original-report')?.textContent.trim())throw Error('Report absent');
+ const report=detail.querySelector('.original-report');
+ if(!report?.textContent.trim())throw Error('Report absent');
+ const disclosure=report.closest('details');
+ if(disclosure&&!disclosure.open)disclosure.querySelector('summary').click();
+ report.scrollIntoView({block:'start'});
+ await wait(()=>(!disclosure||disclosure.open)&&report.getBoundingClientRect().height>0,'Report remains hidden');
  if(!detail.querySelector('[data-section=review]')?.textContent.trim())throw Error('Review absent');
  const results=[];const retained=[];
  for(const id of expected.videos){
   const v=[...detail.querySelectorAll('video')].find(x=>x.getAttribute('src')==='/artifacts/'+id);
-  if(!v)throw Error('Registered comparison video absent: '+id);retained.push(v);v.muted=true;
+  if(!v)throw Error('Registered comparison video absent: '+id);retained.push(v);v.muted=true;v.scrollIntoView({block:'center'});
   const event=(name,act)=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error(name+' timeout')),6000);v.addEventListener(name,()=>{clearTimeout(timer);resolve();},{once:true});v.addEventListener('error',()=>{clearTimeout(timer);reject(Error('media decode error'));},{once:true});act();});
-  await event('loadedmetadata',()=>v.load());await v.play();await new Promise(r=>setTimeout(r,300));v.pause();
+  await event('loadedmetadata',()=>v.load());await v.play();
+  await wait(()=>v.currentTime>0&&v.videoWidth>0&&v.duration>0,'Playback did not advance');v.pause();
   const played=v.currentTime;if(!(played>0&&v.videoWidth>0&&v.duration>0))throw Error('Playback did not advance');
   const target=Math.min(1.5,v.duration/2);await event('seeked',()=>{v.currentTime=target;});
   if(Math.abs(v.currentTime-target)>.1||v.error)throw Error('Seek failed');
@@ -173,7 +179,7 @@ def verify_browser(config, experiment, page, url, cli, poll_wait_ms=16500):
     if observed.get('passed') is not True or observed.get('experiment_id') != experiment:
         raise ValueError('Browser receipt did not prove selected result')
     # Detect a source change during the browser operation before accepting it.
-    if snapshot(config, experiment) != initial:
+    if snapshot(config, experiment) != initial or json.loads(fetch('/api/experiments/' + urllib.parse.quote(experiment, safe=''))) != api:
         raise ValueError('Result changed during browser check')
     return {'domain':'browser','passed':True,'url':base,'source_sha256':fingerprints,
             'viewer_js_sha256':js_hash,'observations':observed,'github_verified':False}
