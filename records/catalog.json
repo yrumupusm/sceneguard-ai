@@ -742,6 +742,84 @@
       "task_id": "task_d32fef262394",
       "title": "고정 카메라 영역 입력 비교",
       "worker_opinion": "입력/재사용 조건은 확인했지만 행동 개선 근거는 아직 없음."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T11:49:18+00:00",
+      "attempt_id": "ctx_0da6354a652f",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_0da6354a652f",
+      "evaluated_model": "Qwen3-VL-2B-Instruct pinned local snapshot; RTX 3080, batch 1, bfloat16; whole-frame / fixed-camera ROI",
+      "evidence": [
+        {
+          "artifact_id": "mvp13-development-input-007",
+          "kind": "image",
+          "label": "007 실제 고정 ROI 입력 확인 시트 — 개발 입력 자료"
+        },
+        {
+          "artifact_id": "mvp13-development-input-030",
+          "kind": "image",
+          "label": "030 실제 고정 ROI 입력 확인 시트 — 개발 입력 자료"
+        },
+        {
+          "artifact_id": "mvp13-reference-007",
+          "kind": "video",
+          "label": "007 원본/표본 참고 영상 — 새 전 구간 결과 아님"
+        },
+        {
+          "artifact_id": "mvp13-reference-030",
+          "kind": "video",
+          "label": "030 원본/표본 참고 영상 — 새 전 구간 결과 아님"
+        },
+        {
+          "artifact_id": "mvp13-whole-frame-030",
+          "kind": "video",
+          "label": "B 전체화면 030 후보 근거 — 담당자 산출, 행동 정답 아님"
+        },
+        {
+          "artifact_id": "mvp13-fixed-roi-007",
+          "kind": "video",
+          "label": "C 고정 ROI 007 후보 근거 — 담당자 산출, 행동 정답 아님"
+        },
+        {
+          "artifact_id": "mvp13-fixed-roi-030",
+          "kind": "video",
+          "label": "C 고정 ROI 030 후보 근거 — 담당자 산출, 행동 정답 아님"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0013",
+      "limitations": [
+        "사람 검수는 핵심 장면에 미완료; 수치 정확도/F1/오탐률 산출 불가",
+        "세 원본은 개발/진단 표본이며 독립 카메라 일반화 검증이 아님",
+        "candidate/contact_review는 모델 창 상태이지 확정 사람 행동·사건 수가 아님",
+        "공개 독립 검토는 39개 측정값과 세 요약 해시를 확인했으며 원본·모델 원응답·상세 구간은 열지 않음",
+        "장면별 세부 구간과 실행 사실 일부는 담당자 보고로 독립 재현되지 않았음"
+      ],
+      "metric_definitions": "records/EXP-0013/metrics.json",
+      "metrics_path": "records/EXP-0013/metrics.json",
+      "metrics_sha256": "93cc8a8ffb032fe35b52bceded01b158509a4491a6e09da5098412c9bb3f5528",
+      "next_step": "웹에서 007 약 56초와 030 약 90초·EOF 후보 근거를 사람 검토한다. 새 추론이나 자동 채택은 이 완료 보고에 포함되지 않는다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "2f4dad51c1ec4e689b2ef767db22b2a8e95e6d628d3cbee857bce3f118ce4104",
+      "report_path": "docs/experiments/EXP-0013-mvp-comparison.md",
+      "report_sha256": "c24f2499bb139e33b1e1285e0a67edff6493dd08ad6d41e0936c9cc0da092b1e",
+      "review_binding_path": "docs/reviews/EXP-0013.binding.json",
+      "review_path": "docs/reviews/MVP-0002-independent-review.md",
+      "review_sha256": "3a425168ffe4162cd55351bc86c21aa60f2c9a9f51a3890fd8ac192e8a54446c",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "93cc8a8ffb032fe35b52bceded01b158509a4491a6e09da5098412c9bb3f5528",
+      "reviewed_report_sha256": "c24f2499bb139e33b1e1285e0a67edff6493dd08ad6d41e0936c9cc0da092b1e",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "기존 Qwen의 전체화면과 고정 카메라 ROI 구성을 공통 GPU 큐에서 비교하고, 세 CCTV 원본의 시간창별 행동 후보 및 로컬 근거 구간을 생성했다. 기능 실행은 보고됐고 행동 정확도는 확정되지 않아 자동 채택은 보류한다.",
+      "synthetic": false,
+      "task_id": "task_e09cc6304b35",
+      "title": "로컬 MVP의 전체 영상 비교 실행",
+      "worker_opinion": "세 구성의 로컬 처리와 후보 근거 생성을 보고함. 007/030 장면은 사람 확인 대상이며, 전체 행동 성능을 확정할 정답 표본이 충분하지 않음."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

@@ -1,6 +1,6 @@
 # SceneGuard
 
-**CCTV 행동 후보와 근거 구간을 저장하는 로컬 프로토타입 — MVP-0001 CPU 준비 완료·실제 모델 검증 차단**
+**CCTV 행동 후보와 근거 구간을 저장하는 로컬 프로토타입 — MVP-0001 코드·실제 전체 영상 실행 완료, 행동 성능 검증·채택 보류**
 
 SceneGuard는 AI Software Engineer 직무 포트폴리오를 위한 실험 프로젝트다. 공개된 CCTV 영상에서 **사람의 출입 경계 통과/넘기 행동**을 감지하고, 카메라별 경계 설정·오탐·감지 시점·실행 비용을 재현 가능하게 평가하는 것이 첫 목표다. 법적 **무단침입이나 출입 권한을 영상만으로 확정하지 않는다.**
 
@@ -8,7 +8,7 @@ SceneGuard는 AI Software Engineer 직무 포트폴리오를 위한 실험 프�
 
 기존 CV 결과와 전체 화면 Qwen을 보존하고, 같은 Qwen에 **배경 기준 고정 감시 영역**을 입력하는 구성을 비교한다. 새 가중치는 받지 않는다. 원본 처음부터 끝까지 5초 창/2.5초 간격/약2fps로 처리하며, CV 후보가 없어도 분석한다. 시간창→행동/판단 불가→겹치는 후보 묶음→원본 근거 구간 저장을 별도 `mvp/` 경로로 구현한다. 기존 CV·경계 규칙·웹 기능은 바꾸지 않는다.
 
-**원본 3개의 CPU 디코딩·시간창 생성과 기존6클립 입력 준비를 확인했지만, GPU 자원 부족으로 새 행동 분석과 전체 모델 검증은 시작하지 못했다. MVP는 미완료다.** [종합 결과](docs/experiments/MVP-0001-summary.md), [전달 기록](docs/orchestration/MVP-0001_DELIVERY.md)에서 확인 범위를 구분한다. 테스트 통과를 행동 정확도나 MVP 완성으로 표현하지 않는다. [고정 계획](docs/experiments/MVP-0001-plan.md), [평가 범위](docs/data/MVP-0001-evaluation.md), [실행 계약](docs/design/MVP_LOCAL_CLI.md), [선택 이유](docs/decisions/ADR-0016-mvp-fixed-camera-region.md)를 따른다. 방법 비교는 [EXP-0011](docs/experiments/EXP-0011-fixed-camera-input.md), 원본 전체 통합은 [EXP-0012](docs/experiments/EXP-0012-continuous-mvp.md)에 분리한다.
+**원본 3개의 실제 전체 영상 추론과 기존 6개 클립 고정 영역 비교를 실행해 이벤트 후보와 근거를 생성했다. 코드와 자동 테스트, 기능 통합은 확인했지만 행동 판단의 정답 검수가 부족해 성능·운영 적합성은 검증되지 않았고 기본 채택은 보류한다.** [EXP-0013 비교 보고서](docs/experiments/EXP-0013-mvp-comparison.md), [종합 결과](docs/experiments/MVP-0001-summary.md), [전달 기록](docs/orchestration/MVP-0001_DELIVERY.md)에서 기능·행동 성능·게시·화면 검증을 구분한다. 테스트 통과나 EOF 처리를 행동 정확도 또는 무단침입 판정으로 표현하지 않는다. [고정 계획](docs/experiments/MVP-0001-plan.md), [평가 범위](docs/data/MVP-0001-evaluation.md), [실행 계약](docs/design/MVP_LOCAL_CLI.md), [선택 이유](docs/decisions/ADR-0016-mvp-fixed-camera-region.md)를 따른다. 자원 차단 상태였던 EXP-0011/12는 보존하고, 후속 실행은 새 ID인 EXP-0013에 기록했다.
 
 ```bash
 # 저장소 루트, 기존 환경과 공통 큐를 사용한다.

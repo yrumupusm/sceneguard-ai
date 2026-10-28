@@ -1,0 +1,576 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0013",
+  "comparison_group": "MVP-0001-full-source-ROI-contrast",
+  "cross_experiment_comparable": false,
+  "comparison_note": "A uses cached CV/ByteTrack outputs with different output semantics; B/C are same Qwen task with distinct whole-frame/fixed-ROI inputs. Development-only; no action-quality score.",
+  "attempt_id": "ctx_0da6354a652f",
+  "input_summary": {
+    "development_clips": 6,
+    "continuous_sources": 3,
+    "window_seconds": 5.0,
+    "stride_seconds": 2.5,
+    "target_sampling_fps": 2.0,
+    "processor_observed_frames_range": [
+      3,
+      10
+    ],
+    "model_revision": "Qwen3-VL-2B-Instruct local pinned snapshot",
+    "dtype": "bfloat16",
+    "batch_size": 1
+  },
+  "metrics": [
+    {
+      "label": "C development input records",
+      "value": 6,
+      "unit": "window",
+      "sample_n": 6,
+      "scope": "6 frozen development clips; C fixed ROI; clip05 reused exactly from EXP-0008",
+      "source": "outputs/mvp0001/EXP-0011/8905b9f968b543f9bc9fd5f8ffcf5f1e/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "total_records"
+      ],
+      "source_sha256": "c0360866a319d6f55e9a21c5952a417ca31bc833d1661dcd40cbde584f5cc1ba",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C development new generations",
+      "value": 5,
+      "unit": "window",
+      "sample_n": 6,
+      "scope": "same fixed six clips; exact prior response reuse is excluded",
+      "source": "outputs/mvp0001/EXP-0011/8905b9f968b543f9bc9fd5f8ffcf5f1e/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "new_generations"
+      ],
+      "source_sha256": "c0360866a319d6f55e9a21c5952a417ca31bc833d1661dcd40cbde584f5cc1ba",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C development reused responses",
+      "value": 1,
+      "unit": "window",
+      "sample_n": 6,
+      "scope": "same fixed six clips; exact cache checks only",
+      "source": "outputs/mvp0001/EXP-0011/8905b9f968b543f9bc9fd5f8ffcf5f1e/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "reused_records"
+      ],
+      "source_sha256": "c0360866a319d6f55e9a21c5952a417ca31bc833d1661dcd40cbde584f5cc1ba",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C development generated output tokens",
+      "value": 475,
+      "unit": "token",
+      "sample_n": 5,
+      "scope": "new generated tensor tokens; not word count",
+      "source": "outputs/mvp0001/EXP-0011/8905b9f968b543f9bc9fd5f8ffcf5f1e/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "newly_generated_tokens"
+      ],
+      "source_sha256": "c0360866a319d6f55e9a21c5952a417ca31bc833d1661dcd40cbde584f5cc1ba",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C development generation time",
+      "value": 18.230874929009588,
+      "unit": "s",
+      "sample_n": 5,
+      "scope": "sum of generate plus CUDA synchronization for new clip calls; no decode or queue wait",
+      "source": "outputs/mvp0001/EXP-0011/8905b9f968b543f9bc9fd5f8ffcf5f1e/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "generation_seconds"
+      ],
+      "source_sha256": "c0360866a319d6f55e9a21c5952a417ca31bc833d1661dcd40cbde584f5cc1ba",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C development canonical queue time",
+      "value": 29.064964294433594,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "single canonical queue attempt, start to child exit; no queue waiting",
+      "source": "outputs/mvp0001/EXP-0011/8905b9f968b543f9bc9fd5f8ffcf5f1e/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "queue_attempt_wall_seconds"
+      ],
+      "source_sha256": "c0360866a319d6f55e9a21c5952a417ca31bc833d1661dcd40cbde584f5cc1ba",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C development complete wrapper time",
+      "value": 30.591328209993662,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "run-once call including fixed pipeline/evidence flush; no source acquisition",
+      "source": "outputs/mvp0001/EXP-0011/8905b9f968b543f9bc9fd5f8ffcf5f1e/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "wrapper_wall_seconds"
+      ],
+      "source_sha256": "c0360866a319d6f55e9a21c5952a417ca31bc833d1661dcd40cbde584f5cc1ba",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: scheduled windows",
+      "value": 172,
+      "unit": "window",
+      "sample_n": 3,
+      "scope": "three full originals; same 5s/2.5s native-PTS scheduler",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "windows"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: model generations",
+      "value": 171,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "new calls only; cache reuse and insufficient-input tail excluded",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "new_generations"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: exact response reuses",
+      "value": 0,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "byte/input-bound exact reuse; not a new generation",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "reused_records"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: insufficient-input windows",
+      "value": 1,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "real short EOF tail retained as insufficient; no model call",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "skipped_records"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: new generated tokens",
+      "value": 16238,
+      "unit": "token",
+      "sample_n": 171,
+      "scope": "generated tensor tokens; not word count",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "newly_generated_tokens"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: generation time",
+      "value": 504.86880223607295,
+      "unit": "s",
+      "sample_n": 171,
+      "scope": "sum over new model calls with CUDA synchronization; excludes decode/queue wait",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "generation_seconds"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: source EOF success",
+      "value": 3,
+      "unit": "source",
+      "sample_n": 3,
+      "scope": "EOF and software functional status only; not action quality",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "all_sources_eof_count"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: model candidate-labelled windows",
+      "value": 34,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "model/parser state count only; not people, distinct events, or true detections",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "state_totals",
+        "candidate"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: contact-review windows",
+      "value": 0,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "model/parser state count only; not a verified contact",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "state_totals",
+        "contact_review"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: parse-failed windows",
+      "value": 3,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "schema/parser failures; not an observed normal action",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "state_totals",
+        "parse_failed"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: canonical queue time",
+      "value": 751.6433641910553,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "single sequential queue attempt start to child exit; no queue wait",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "queue_attempt_wall_seconds"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: wrapper full-run time",
+      "value": 787.4492428270023,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "complete run-once call including pipeline/evidence; offline, not real-time latency",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "wrapper_wall_seconds"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: device peak used",
+      "value": 7020.0,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "nvidia-smi total device used around job; includes other GPU users",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "gpu_device_peak_used_mib"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "B whole-frame: minimum free device memory",
+      "value": 3034.0,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "minimum nvidia-smi free memory during job; includes other GPU users",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "gpu_device_min_free_mib"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: scheduled windows",
+      "value": 172,
+      "unit": "window",
+      "sample_n": 3,
+      "scope": "three full originals; same 5s/2.5s native-PTS scheduler",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "windows"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: model generations",
+      "value": 120,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "new calls only; cache reuse and insufficient-input tail excluded",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "new_generations"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: exact response reuses",
+      "value": 51,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "byte/input-bound exact reuse; not a new generation",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "reused_records"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: insufficient-input windows",
+      "value": 1,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "real short EOF tail retained as insufficient; no model call",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "skipped_records"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: new generated tokens",
+      "value": 10773,
+      "unit": "token",
+      "sample_n": 120,
+      "scope": "generated tensor tokens; not word count",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "newly_generated_tokens"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: generation time",
+      "value": 325.554145382921,
+      "unit": "s",
+      "sample_n": 120,
+      "scope": "sum over new model calls with CUDA synchronization; excludes decode/queue wait",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "aggregate",
+        "generation_seconds"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: source EOF success",
+      "value": 3,
+      "unit": "source",
+      "sample_n": 3,
+      "scope": "EOF and software functional status only; not action quality",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "all_sources_eof_count"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: model candidate-labelled windows",
+      "value": 38,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "model/parser state count only; not people, distinct events, or true detections",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "state_totals",
+        "candidate"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: contact-review windows",
+      "value": 3,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "model/parser state count only; not a verified contact",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "state_totals",
+        "contact_review"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: parse-failed windows",
+      "value": 2,
+      "unit": "window",
+      "sample_n": 172,
+      "scope": "schema/parser failures; not an observed normal action",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "state_totals",
+        "parse_failed"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: canonical queue time",
+      "value": 622.9014799594879,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "single sequential queue attempt start to child exit; no queue wait",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "queue_attempt_wall_seconds"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: wrapper full-run time",
+      "value": 653.5855527069943,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "complete run-once call including pipeline/evidence; offline, not real-time latency",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "wrapper_wall_seconds"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: device peak used",
+      "value": 6877.0,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "nvidia-smi total device used around job; includes other GPU users",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "gpu_device_peak_used_mib"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "C fixed ROI: minimum free device memory",
+      "value": 3177.0,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "minimum nvidia-smi free memory during job; includes other GPU users",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "execution",
+        "gpu_device_min_free_mib"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "E01_007 B whole-frame: candidate-labelled windows",
+      "value": 7,
+      "unit": "window",
+      "sample_n": 56,
+      "scope": "model/parser window labels; not distinct events or truth labels",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "sources",
+        "E01_007",
+        "window_state_counts",
+        "candidate"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "E01_007 C fixed ROI: candidate-labelled windows",
+      "value": 9,
+      "unit": "window",
+      "sample_n": 56,
+      "scope": "model/parser window labels; not distinct events or truth labels",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "sources",
+        "E01_007",
+        "window_state_counts",
+        "candidate"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "E01_030 B whole-frame: candidate-labelled windows",
+      "value": 18,
+      "unit": "window",
+      "sample_n": 65,
+      "scope": "model/parser window labels; not distinct events or truth labels",
+      "source": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/metrics-source.json",
+      "source_pointer": [
+        "sources",
+        "E01_030",
+        "window_state_counts",
+        "candidate"
+      ],
+      "source_sha256": "39d9c2cb48d3332856213911c8d9bdb714881ef925e51e6e185daa1f47b19a69",
+      "verification": "source_json_sha256_checked"
+    },
+    {
+      "label": "E01_030 C fixed ROI: candidate-labelled windows",
+      "value": 20,
+      "unit": "window",
+      "sample_n": 65,
+      "scope": "model/parser window labels; not distinct events or truth labels",
+      "source": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/metrics-source.json",
+      "source_pointer": [
+        "sources",
+        "E01_030",
+        "window_state_counts",
+        "candidate"
+      ],
+      "source_sha256": "2626d81a4642f361a9d690da8c2eb5219e4a38f56925db5927efe563a5b4d15d",
+      "verification": "source_json_sha256_checked"
+    }
+  ]
+}
