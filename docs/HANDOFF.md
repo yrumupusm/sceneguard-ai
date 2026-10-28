@@ -11,7 +11,8 @@ EXP-0015 사용자 라벨과 원응답을 대조해 q02/q03/q05 false candidates
 - MVP summary의 현재 수치는 EXP-0015 기준: no-crossing 5, attempt/progress positive 1, primary positive0. q06 only E01_030 155–160 no person/event. E01_031 EOF observation is not transferred to E01_030.
 - 코드·CPU 테스트 및 최종 resource-gate 기록에 대한 Astra review와 report/metrics SHA addendum이 통과했다. 행동 출력/성능 검토는 아니며 inference 결과는 없다.
 - 로컬 완료 등록: EXP-0016 `inconclusive / blocked / adoption_on_hold`; report/metrics/review hash current. Astra final binding addendum PASS. 브라우저 `http://127.0.0.1:8765/`에서 slot3 카드, report, metrics 2 graphs, review 및 v01–v04 원본 참고 클립 재생/1.5초 seek/decode와 polling 유지 확인; receipt `runtime/EXP-0016/browser-local.json` (ignored). 카드 작업 상태는 resource gate에서 실패로 표시되며, 이는 추론 실패가 아니다.
-- 남음: GitHub 게시와 원격 verify. 성능 효과·모델 비용·q/v 출력은 미측정. prompt 채택 보류; GPU 여유 ≥6144 MiB인 새 실행 Task에서만 비교 재개.
+- GitHub: WSL `git push` 인증은 사용할 수 없었으나, connected GitHub Git Data API로 동일한 local tracked tree를 fast-forward 게시했고 `verify_delivery github` passed. remote main commit `80ac3d36705132bc27324c04796da945bec3b64c`; receipt `runtime/EXP-0016/github-local-r2.json` (ignored). 로컬 commit IDs와 API 생성 remote commit IDs는 다르다.
+- EXP-0016 세팅/차단 기록 및 화면/게시 전달 완료. 성능 효과·모델 비용·q/v 출력은 미측정. prompt 채택 보류; GPU 여유 ≥6144 MiB인 새 실행 Task에서만 비교 재개.
 
 ## 최신 상태 — EXP-0015 사용자 검수 반영
 
