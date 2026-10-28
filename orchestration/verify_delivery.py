@@ -114,7 +114,7 @@ BROWSER_JS = r'''(async()=>{
   const v=[...detail.querySelectorAll('video')].find(x=>x.getAttribute('src')==='/artifacts/'+id);
   if(!v)throw Error('Registered comparison video absent: '+id);retained.push(v);v.muted=true;v.scrollIntoView({block:'center'});
   const event=(name,act)=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error(name+' timeout')),6000);v.addEventListener(name,()=>{clearTimeout(timer);resolve();},{once:true});v.addEventListener('error',()=>{clearTimeout(timer);reject(Error('media decode error'));},{once:true});act();});
-  await event('loadedmetadata',()=>v.load());await v.play();
+  v.preload='auto';await event('loadeddata',()=>v.load());await v.play();
   await wait(()=>v.currentTime>0&&v.videoWidth>0&&v.duration>0,'Playback did not advance');v.pause();
   const played=v.currentTime;if(!(played>0&&v.videoWidth>0&&v.duration>0))throw Error('Playback did not advance');
   const target=Math.min(1.5,v.duration/2);await event('seeked',()=>{v.currentTime=target;});
