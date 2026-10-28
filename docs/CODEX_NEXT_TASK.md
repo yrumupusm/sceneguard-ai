@@ -1,31 +1,28 @@
-# Codex 다음 작업 — Orca 에이전트 실험실 세팅
+# Codex 다음 작업 — Orca 세팅 결과 인계와 다음 배치 준비
 
-2026-10-28 사용자 승인: 최고 가용 성능의 총괄 모델, 역할별 하위 모델, GPU 순차 실행, 동일 결과를 읽는 직관적인 로컬 웹페이지를 세팅한다. **이 파일 갱신은 로컬 세팅 완료가 아니다.**
+2026-10-28. Orca 로컬 기능 검증을 수행했다. 독립 재검토 R1~R4 해결과 실제 명령·게시 내역은 [LOCAL_SETUP_REPORT](orchestration/LOCAL_SETUP_REPORT.md)를 먼저 읽는다. 이 파일은 새 모델 실험 실행 승인이 아니다.
 
 ## 반드시 읽을 것
 
-1. [세팅 구현·검증 지시](orchestration/SETUP_ORCA.md)
-2. [역할별 지침](orchestration/AGENT_ROLES.md)
-3. [목표 모델 정책](../configs/orchestration/model_policy.json)
-4. AGENTS.md, 최신 HANDOFF, EXP-0007. 기존 실험의 데이터/평가 제한은 유지한다.
+1. AGENTS.md, [HANDOFF](HANDOFF.md), [실제 세팅 보고서](orchestration/LOCAL_SETUP_REPORT.md).
+2. [ADR-0013](decisions/ADR-0013-orca-local-experiment-lab.md), [역할](orchestration/AGENT_ROLES.md), [정책](../configs/orchestration/model_policy.json).
+3. [최초 독립 검토](reviews/ORCA-SETUP-independent-review.md)와 [수정 후 검토](reviews/ORCA-SETUP-recheck.md), [최종 R4 검토](reviews/ORCA-SETUP-final-review.md). 초기 needs_revision 기록을 삭제하지 않는다.
+4. EXP-0006·0007의 실패/데이터/평가 제한, 특히 EXP7의 실제 입력 검수 시트와 구조화 실패 기록.
 
-## 이번 승인과 실행 순서
+## 확인된 세팅
 
-- 이전의 UI/서버/에이전트 도입 금지는 **이 세팅 범위에 한해 해제**한다. 기존 CV·VLM 환경 변경이나 새 모델 비교를 포괄 승인한 것은 아니다.
-- Orca/WSL/Codex 가용성, 로그인 컨텍스트, 모델 목록·supported effort와 짧은 실제 호출을 먼저 확인한다. target 모델이 API에 있다는 이유로 Codex 계정 사용 가능하다고 가정하지 않는다. 최고 모델 사용 불가/권한·결제 변경 필요시 해당 역할을 blocked로 기록하고 필요한 사용자 조치만 질문한다.
-- 총괄 target gpt-6-astra 최고 지원 effort, 구현/실험 담당 gpt-6.1-sol high, 독립 reviewer gpt-6-astra high, 웹 담당 gpt-6.1-terra high. 실제 더 높은 Astra Pro가 Codex에 노출되고 도구까지 작동하면 정확한 ID로 검증 후 총괄에 사용한다. 임의 Pro ID/무음 fallback 금지.
-- Orca의 버전별 `orca skills get orchestration --full`을 읽고 native Run/Task/Dispatch를 우선 사용한다. 한 명의 총괄만 두며 Codex 내장 fanout과 Orca 총괄을 중첩하지 않는다. 실제 미지원시 문서상의 역할을 실행됐다고 보고하지 않는다.
-- 새 worktree/브랜치와 독립 `.venv-orca-lab`에서 GPU 큐·상태/결과 계약·읽기 전용 웹페이지를 만든다. 주어진 범위에서 세부 구현마다 재승인 요청하지 않는다.
-- GPU 작업은 host 공통 lock으로 한 번에 하나. 코딩/보고 준비는 최대 세 worker 병렬. 세팅은 CPU mock 작업으로 큐/실패/재시작을 검증하고 실제 새 CV/VLM 실험은 시작하지 않는다.
-- 페이지는 총괄 카드, 담당1/2/3+미배정 카드, 선택한 보고서/실측 그래프/로컬 영상/총괄 검토/다음 작업의 단일 화면. 보고서 원본 하나를 그대로 렌더링하고 metrics 원본으로 그래프를 만든다. 실행 버튼·공개 배포는 만들지 않는다.
-- 기존 EXP-0001~0007의 실제 내용을 표시한다. 미측정/미검증/없음은 그대로 보인다. synthetic 큐 테스트를 실제 성능으로 섞지 않는다.
-- 세팅 보고서 `docs/orchestration/LOCAL_SETUP_REPORT.md`에 실제 모델·effort·가용성, 통합 smoke 결과, 시작/중지/복구 명령, 화면 주소, 테스트, 미완료, 커밋을 작성한다. 설치 사용자 PC에서 확인하지 않은 것은 미검증으로 남긴다.
-- 테스트·diff·허용파일 확인 후 총괄이 통합/커밋/푸시한다. 원본 미디어·가중치·credential·runtime DB·원시 agent 로그는 Git 제외. API 유료전환·전역 설치/업그레이드·외부 미디어 전송·새 모델 가중치 다운로드·무인 반복은 금지한다.
+Astra max 총괄 한 명 + Sol high 실행기 + Terra high 화면 + Astra high 검토를 현재 계정에서 확인했다. 기존 Run을 재사용했고 중첩 fanout은 없다. 새 `.venv-orca-lab`, 공통 runtime, CPU mock 직렬 큐, loopback 읽기 전용 웹을 사용한다. `http://127.0.0.1:8765/`에서 기존 7개 실험을 미배정 카드로 읽는다. 담당1·2·3의 실제 비교 실험은 아직 배정하지 않았다.
 
-## 이번 완료 조건
+32개 fixture와 실제 서로 다른 worktree 큐, 영상4개 재생/seek, 이미지6개 decode, 서비스 재시작/파일 부재/기존 환경 보존을 확인했다. 실행 성공·AI 검수 초안·모델 채택은 별도 상태다. 웹 조회는 모델이나 큐를 시작하지 않는다. 세팅을 반복하거나 기존 `.venv`/`.venv-vlm`을 갱신하지 않는다.
 
-정책 파일만 만들어 놓는 것으로 끝내지 않는다. 실제 계정의 모델별 invocation 확인, worker 결과를 총괄이 받아 review한 무해한 smoke, GPU 큐 직렬화/실패해제/중복방지, 기존 보고서와 로컬 영상의 실제 UI 동작, 기존 환경 보존을 검증한다. 막힌 항목은 이유와 다음 사용자 동작을 명시한다. 완료 후 다음 실험 batch 계획만 제시하고 실행은 멈춘다.
+## 다음 준비 범위 — 아직 실행하지 않은 제안
 
-## 이전 실험 상태 (보존)
+- 사용자가 로컬 EXP7 입력 시트를 확인할 수 있게 기존 기록을 안내하고, 접근/대기/접촉/넘기·가림의 검수 초안과 확정 정답을 구분한다. 기존 VLM 응답을 새 정답으로 삼지 않는다.
+- 기존 six clips/카메라 중복/샘플링 한계를 유지한 비교 manifest, 공통 프롬프트·출력 스키마·프레임/픽셀 예산, OOM·반복·파싱 실패 중단 조건을 먼저 작성한다.
+- 후보가 필요하면 공식 자료와 현재 RTX3080 여유 메모리를 바탕으로 제안한다. 정책의 최대3후보·후보별최대2설정은 상한이며 세 모델 실행 의무가 아니다. 전부 채택 보류할 수 있다.
+- 실제 모델 job을 큐에 등록하기 전에 명령 allowlist, 단일 GPU 잠금, orphan/timeout, 원천/설정 해시, 원시 결과의 로컬 보존, 메트릭/검토 binding을 검토한다. 현재 CPU mock을 그대로 실제 GPU 실행 보장이라고 주장하지 않는다.
+- **실제 다운로드·추론·비교 배치는 별도 하나의 범위 승인을 받은 뒤 시작한다.** 승인된 배치 내부의 세부 단계마다 반복 확인하지 않는다. 이번 인계에서 자동 실행하지 않는다.
 
-EXP-0007 Qwen3-VL-2B 6개 5초 개발 클립 실행은 완료했으나 넘기 누락·문 열기 환각·반복·엄격 JSON 실패로 기본 연동 보류. EXP-0006은 전 후보 유보/근거부족으로 기본 적용 보류. 공식 라벨·이전 보고서·CV/추적/경계 코드·.venv/.venv-vlm을 그대로 보존한다. 데이터 카메라 독립성·검수 정답·G1E 제한은 세팅 완료와 별개다.
+## 유지할 제한
+
+기존 공식 라벨·EXP-0001~0007·출력·CV/추적/경계 코드와 두 환경을 보존한다. EXP-0006 기본 적용, EXP-0007 자동 CV 연동은 보류다. 정밀 정답·카메라 독립성·G1E는 미확정이다. 원본/이미지/가중치/원시 응답/runtime DB/인증정보는 로컬 전용이다. raw CCTV를 클라우드 에이전트 이미지 도구에 보내지 않는다. API 유료 전환, 공개 배포, 무인 반복, 기본 보호 설정 해제, 새 총괄 중복 생성은 하지 않는다.

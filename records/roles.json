@@ -37,21 +37,22 @@
       "role": "infra_builder",
       "model": "gpt-6.1-sol",
       "effort": "high",
-      "status": "verified_invocation",
-      "note": "Codex thread metadata + Orca transcript tool calls verified; setup result pending"
+      "status": "verified_completed",
+      "note": "실제 Codex thread metadata와 Orca 작업 결과 확인. 세팅 역할이며 과거 실험 담당 배정이 아님."
     },
     {
       "role": "web_builder",
       "model": "gpt-6.1-terra",
       "effort": "high",
-      "status": "verified_invocation",
-      "note": "Codex thread metadata + Orca transcript tool calls verified; setup result pending"
+      "status": "verified_completed",
+      "note": "실제 Codex thread metadata와 Orca 작업 결과 확인. 세팅 역할이며 과거 실험 담당 배정이 아님."
     },
     {
       "role": "reviewer",
       "model": "gpt-6-astra",
       "effort": "high",
-      "status": "catalog_only"
+      "status": "verified_completed",
+      "note": "실제 Codex thread metadata와 Orca 작업 결과 확인. 세팅 역할이며 과거 실험 담당 배정이 아님."
     }
   ]
 }

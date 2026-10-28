@@ -186,3 +186,7 @@ Only the five files assigned by the dispatch are edited. Integration/push,
 review belong to the coordinator; this worker does not change those documents
 or claim the complete Orca setup is finished. No new agent, real GPU job,
 CV/VLM/data/weight access or environment installation is part of this work.
+
+## 통합 후 로컬 상태
+
+위 worker 검증 당시에는 persistent runtime을 만들지 않았다. 이후 총괄이 선택한 공통 runtime, 실제 worktree 간 smoke/서비스 재시작 검증, 독립 검토 및 게시 상태는 [LOCAL_SETUP_REPORT](LOCAL_SETUP_REPORT.md)를 따른다. 그 보고서의 현재 공통 절대 경로를 사용하며 worktree별 큐를 새로 만들지 않는다.

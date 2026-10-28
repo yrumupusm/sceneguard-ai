@@ -13,6 +13,12 @@
 - raw CCTV/프레임을 클라우드 에이전트 이미지 도구로 자동 전송하지 않는다. 코드·공개가능 요약으로 orchestration을 구성하고 미디어 검수는 로컬 웹에서 사람이 수행한다.
 - 기본 보호장치를 끄거나, 계정/credential 내용을 복사하거나, 전체 Orca runtime reset을 하지 않는다. setup 문서가 있는 것과 실제 동작이 검증된 것을 구분해 LOCAL_SETUP_REPORT에 기록한다.
 
+## Orca 세팅 확인 상태 (2026-10-28)
+
+로컬 기능 검증 결과는 [LOCAL_SETUP_REPORT](docs/orchestration/LOCAL_SETUP_REPORT.md)에 기록했다. Astra max 총괄 1명, Sol high 구현, Terra high 화면, Astra high 독립 검토의 실제 호출을 확인했다. 공통 runtime과 CPU mock 큐, http://127.0.0.1:8765/ 읽기 전용 페이지를 사용한다. 새 `.venv-orca-lab`만 설치했고 기존 두 환경/실험 기록을 보존했다. 32개 fixture와 실제 큐·브라우저·보존 검사가 통과했다. 독립 검토의 수정과 재검토 판정은 해당 보고서가 원본이다.
+
+세팅 완료 뒤 새 실험을 자동 시작하지 않는다. `CODEX_NEXT_TASK`의 다음 배치 준비 범위를 따르며 실제 모델 비교는 별도 배치 승인이 필요하다. 웹/상태 조회는 agent/GPU 작업을 실행하지 않는다. 큐의 등록 명령은 현재 CPU mock뿐이며 실제 GPU 작업으로 확대하기 전 실행 계약을 검토해야 한다.
+
 ## 현재 실험 상태와 목표 (세팅 전 이력 보존)
 - 현재 실험 단계: **EXP-0007 독립 로컬 VLM 행동 분석 완료·기본 연동 보류**(2026-10-28, ADR-0012). 1차 문제는 CCTV 출입 경계 통과/넘기 **이벤트 후보** 감지. AI-Hub 영상 10개·45개 JSON 구조 감사 및 설계 완료; 최종 메인 데이터·모델·정량 성능은 미확정.
 - 이전 감사: Safe and Unsafe Behaviours·iSafetyBench, SteelBench 401, ACCIDENT 5개 CCTV 감사 완료(Conditional Go). 모두 보존. **현재 후보: AI-Hub 지능형 관제 서비스 CCTV 영상 데이터(71850)의 침입 범주, 로컬 10개 감사·사용자 검수 및 평가 설계 기록 보유**. 문서: `docs/data/AIHUB_INTRUSION_AUDIT_PLAN.md`.
@@ -39,7 +45,7 @@
 10. **역할 분담:** 총괄은 작업 배정·검토·통합, 하위는 배정된 구현/실험/평가, 사용자는 영상 의미와 중대한 범위 선택을 담당한다. 모델 기반 검토는 자동 객관성 인증이 아니다.
 
 ## 지금 바로 수행할 작업
-[Orca 세팅 지시](docs/orchestration/SETUP_ORCA.md)에 따라 환경·실효 모델 확인 → 프로젝트 역할 설정 → 공통 runtime·GPU 큐 → 읽기 전용 결과 페이지 → 실제 smoke/보존 검증을 수행한다. 현재 CODEX_NEXT_TASK가 세부 순서를 정한다. 모델 가용성이나 권한이 막힌 부분은 숨기지 말고 필요한 사용자 조치만 보고한다.
+현재 [LOCAL_SETUP_REPORT](docs/orchestration/LOCAL_SETUP_REPORT.md)의 실제 검증 상태와 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md)를 읽고 이어간다. 이미 확인한 모델/세팅을 매번 다시 설치하지 않는다. 버전·계정·권한 변경으로 재검증이 필요하면 근거를 기록하고 차단된 항목만 보고한다.
 
 ## 세션 종료 전
 - `docs/HANDOFF.md`의 '최근 확인 결과', '남은 문제', '다음 결정'을 업데이트.
