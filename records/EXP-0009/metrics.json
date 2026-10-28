@@ -267,6 +267,7 @@
       "source": "EXP-0009/ef353740b07d46d79ddb030e8d22ecd5/gpu_memory_samples.json",
       "source_pointer": [
         "samples",
+        7,
         "used_mib"
       ],
       "source_sha256": "eae3c20bf6a09df04c08e3a6806e2d862f1c40dc6d47b92029ec921d228f1d8f",
