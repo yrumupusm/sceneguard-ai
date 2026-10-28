@@ -2,6 +2,14 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
+## 신규 사용자 승인 — BATCH-0002 모델 대안 검증 (2026-10-29)
+
+**현재 최우선 작업:** [BATCH-0002 계획](docs/experiments/BATCH-0002-model-upgrade-plan.md), [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md)을 따른다. 기존 EXP-0017 프롬프트 개선 실패/종료, FCOS/ByteTrack 보류, EXP-0001~0017 원본·라벨·보고서·결과를 보존한다. 사용자 승인에 따라 이번 배치에 한해 CV/VLM 후보 1개씩의 신규 로컬 모델 비교 및 조건부 오프라인 결합 PoC(최대1)를 진행할 수 있다. 과거 `새 GPU 실험 자동 실행 금지`는 종료된 구 승인 상태이며, 이번 구체적 신규 승인 범위로만 대체된다. 다른 향후 모델/튜닝을 자동 승인하지 않는다.
+
+**작업 흐름:** 원본/processor 입력 2fps의 자세·시간 정보 감사 → 기존 FCOS 대비 CV 후보(우선 RF-DETR Medium) 1개 → 기존 Qwen3-VL-2B 대비 VLM 후보(우선 Qwen3-VL-4B) 1개 → 두 결과에 보완 근거가 있을 때만 CV+VLM 오프라인 PoC. 각각 공식 모델 카드·라이선스·revision·장치 호환성/양자화 확인, 사전 PTS·프레임·prompt·분모 고정, 같은 사건과 비사건의 행동 기준 비교가 필요하다. **결합이 목표 자체는 아니며**, 근거가 없으면 단계별 보류. 검출기만으로 VLM을 차단하여 중요한 넘기 장면을 삭제하는 설계는 금지.
+
+**자원·검증:** 기존 Astra max 총괄 1명, Sol high 구현/평가 담당 최대2명, Astra high 독립 검토 1명과 native Orca Task/Dispatch, 기존 공통 GPU 직렬 큐/최소 free VRAM 6144MiB gate를 유지한다. 격리 env에서 새 의존성을 설치하고 기존 가상환경·결과를 덮어쓰지 않는다. GPU job 오류 재시도 최대1회, 무음 모델/양자화/프레임 수 하향 대체 금지. 새 weight 총2개(각 종류 최대1), 재학습·외부 API·추가 결제·새 대시보드 금지. 사용자 q/v 5초창은 개발/진단용이며 정확도/F1/FPR 또는 운영 가능성으로 일반화하지 않는다. 로컬 원본/프레임/weights/raw response/receipts는 GitHub·클라우드 에이전트에 전송하지 않는다. 각 실행을 새 결과 ID·해시·독립 검토·기존 웹/GitHub 확인까지 완료한 뒤 보고하고 멈춘다.
+
 ## 최신 결과 — EXP-0017 프롬프트 비교 실행 종료 (2026-10-29)
 
 사용자의 GPU 재확인·재개 지시로 기존 EXP-0016 사양을 새 결과 ID EXP-0017에서 실행했다. [실제 비교 보고서](docs/experiments/EXP-0017-prompt-evidence-results.md), [전달 기록](docs/experiments/EXP-0017-delivery.md), [다음 작업](docs/CODEX_NEXT_TASK.md)을 우선한다. 기존 단일 Run/queue와 Sol high 담당을 재사용했고, free VRAM 8015–8026 MiB가 기존 6144 MiB gate를 통과했다. 4개 직렬 작업·20개 생성 완료, 오류/OOM/retry 0이다. EXP-0016의 차단 보고서/등록과 이전 결과는 불변으로 보존한다.
