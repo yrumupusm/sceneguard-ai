@@ -1,5 +1,16 @@
 # SceneGuard — 다음 작업과 대화 인수인계
 
+## 최신 상태 — EXP-0016 단일 프롬프트 변경 (2026-10-28)
+
+EXP-0015 사용자 라벨과 원응답을 대조해 q02/q03/q05 false candidates의 공통 문제를 “접근/보행 서술만으로 stepping/completion 선택”으로 좁혔다. 저장 결과는 관찰된 오류 양상을 보여주지만 원인 설명은 확정할 수 없다. 개선 가설은 Qwen shared prompt 하나에 프레임 순서에 따른 신체/경계 상대 움직임을 요구하는 것이다. 모델, weights, resolution/ROI, frame sampling/PTS, generation, schema, parser/postprocess는 유지한다. [ADR-0017](decisions/ADR-0017-qwen-temporal-evidence-prompt.md), [EXP-0016](experiments/EXP-0016-prompt-evidence-rubric.md) 참고.
+
+- 담당 구현 Sol high `task_0d088b4695b4` / `ctx_d6e47aa9926b` 완료; q six-window revised prompt phase 구현. 후속 independent-v comparison Sol high `task_6eb2c3c319d6` / `ctx_ac13ea840666` 구현 중. 같은 Run `run_3d23462a014a`.
+- CPU: `.venv-vlm`에서 `tests_mvp` 92 tests 통과, `.venv-orca-lab`에서 queue suite 14 통과, 새 focused 12 통과. 기본 python은 PyAV 미설치여서 3 decoder tests skip했으나 실제 VLM venv에서는 모두 통과. 한 번의 동시 실행에서 순서 의존 queue test 실패, 단독 및 전체 재실행은 통과.
+- **실제 새 모델 실행 없음.** GPU 99% busy, 1.2–1.6 GiB free; canonical MVP preflight 6 GiB free 미달. job enqueue/model load/inference를 시작하지 않음. 기존 큐 우회나 종료, preflight 완화 금지.
+- 추가 사용자 라벨: v01 E01_004 60–65 attempt/progress (completion not assessed); v02 E01_004 0–5 non-event; v03 E01_021 65–70 attempt at a gap beside the door, not door passage, exact boundary association ambiguous (completion not assessed); v04 E01_021 0–5 non-event. q01–q06과 다른 source windows지만 camera/site independent blind test는 아님. 프레임에 라벨/file/event metadata를 함께 넣지 않음.
+- MVP summary의 현재 수치는 EXP-0015 기준: no-crossing 5, attempt/progress positive 1, primary positive0. q06 only E01_030 155–160 no person/event. E01_031 EOF observation is not transferred to E01_030.
+- 남음: 후속 worker code review; Astra review; resource gate 충족 시 exact queued comparison; actual per-q and v outcomes/cost; metrics binding/registration; local page and GitHub independent checks. 성능 효과는 아직 미측정이며 prompt 채택 보류.
+
 ## 최신 상태 — EXP-0015 사용자 검수 반영
 
 2026-10-28. 사용자는 EXP-0014에서 만든 원본 전용 q01–q06을 직접 확인해 다음과 같이 한정된 창 라벨을 제공했다: q01 차량만 통행, q02 접근 후 종료, q03 접근만, q04 넘기 시도/진행은 보이나 완료 전 종료, q05 세 명 중 한 명 접근, q06 사람/사건 없음. 이를 저장 응답에 별도 EXP-0015 revision으로 반영했다. EXP-0014 parent records와 EXP-0013 원문/공식 라벨은 불변이다.

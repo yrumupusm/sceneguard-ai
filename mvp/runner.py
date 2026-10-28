@@ -17,7 +17,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from orchestration.mock_job import atomic_json
 from orchestration.queue import digest, process_state, source_hash
 from orchestration.mvp_command import (ASSETS, ROOT, RUNTIME, MODEL_DIR, SETTINGS,
-                                       load_configs, output_path, validate)
+                                       PHASES, load_configs, load_regression_manifest,
+                                       output_path, validate, validate_run)
 
 
 def verify_lease(config, attempt, lock_fd):
@@ -53,6 +54,7 @@ def verify_lease(config, attempt, lock_fd):
         raise ValueError('attempt child identity differs')
     if json.loads(row['config_json']) != config:
         raise ValueError('MVP phase/view/settings differ from live queue attempt')
+    validate_run(config['phase'], row['run_id'])
     return dict(row)
 
 
@@ -181,11 +183,66 @@ def run_full(analyzer, folder, sources, cameras, pipeline_settings, config, inpu
     return results
 
 
+def run_prompt_regression(analyzer, folder, sources, cameras, context):
+    """Filter unchanged native-PTS windows; no review labels enter this path."""
+    import numpy as np
+    from mvp.windows import iter_windows
+    from mvp.pipeline import _clear_diagnostics, _failure_diagnostics
+    manifest = load_regression_manifest()
+    results = []
+    for item in sources['continuous_sources']:
+        selected = {r['window_id']: r for r in manifest['windows']
+                    if r['source_id'] == item['source_id']}
+        if not selected:
+            continue
+        source_dir = folder / item['source_id']
+        source_dir.mkdir()
+        analyzer.artifact_root = source_dir / 'windows'
+        stats, completed = {}, []
+        try:
+            for window in iter_windows(ASSETS / item['relative_video_path'], stats=stats):
+                frozen = selected.get(window.window_id)
+                if frozen is None:
+                    continue
+                source, rgb = window.source(), window.rgb
+                if (window.start != frozen['start'] or window.end != frozen['end'] or
+                        len(window.samples) != 10 or source['pts_seconds'] !=
+                        [frozen['start'] + i / 2 for i in range(10)]):
+                    raise ValueError('frozen window PTS/frame-count contract differs')
+                source['rgb_sha256'] = hashlib.sha256(rgb.tobytes()).hexdigest()
+                target = analyzer.artifact_root / window.window_id
+                target.mkdir(parents=True)
+                roi = ([0, 0, 1, 1] if context['view'] == 'full_frame' else
+                       cameras['cameras'][item['camera_id']]['roi'])
+                atomic_json(target / 'input.json', {**source, 'roi': roi,
+                    'source_sha256': manifest['sources'][item['source_id']]})
+                _clear_diagnostics(analyzer)
+                try:
+                    record = analyzer.analyze(rgb, source, window.window_id, roi)
+                except Exception:
+                    atomic_json(target / 'failure.json', {'status': 'failed',
+                        'traceback': traceback.format_exc(), **_failure_diagnostics(analyzer)})
+                    raise
+                atomic_json(target / 'result.json', record)
+                (target / 'raw_response.txt').write_text(record['raw_response'], encoding='utf-8')
+                (target / 'expanded_prompt.txt').write_text(analyzer.last_expanded_prompt, encoding='utf-8')
+                np.save(target / 'generated_token_ids.npy', np.array(analyzer.last_generated_token_ids, dtype='int64'))
+                np.save(target / 'processor_rgb.npy', analyzer.last_processor_frames, allow_pickle=False)
+                completed.append(window.window_id)
+            if set(completed) != set(selected) or not stats.get('eof_reached'):
+                raise ValueError('not all frozen windows decoded from original source through EOF')
+        finally:
+            atomic_json(source_dir / 'summary.json', dict(decode=stats,
+                completed_windows=completed, run_context=context))
+        results.append(dict(source_id=item['source_id'], windows=completed, decode=stats))
+    return results
+
+
 def run(phase, view, attempt, lock_fd):
     config = {'phase': phase, 'view': view, 'settings': SETTINGS}
     job = verify_lease(config, attempt, lock_fd)
     inputs = json.loads(job['input_json'])
-    if digest(inputs) != job['input_hash'] or digest(config) != job['config_hash'] or source_hash('mvp-0001') != job['source_hash']:
+    if digest(inputs) != job['input_hash'] or digest(config) != job['config_hash'] or source_hash('mvp-0001', config) != job['source_hash']:
         raise ValueError('registered source/input/config contract changed')
     validate(config, inputs, RUNTIME)
     sources, cameras, pipeline_settings = load_configs()
@@ -195,6 +252,10 @@ def run(phase, view, attempt, lock_fd):
                    code_sha=job['code_sha'], source_hash=job['source_hash'], input_hash=job['input_hash'],
                    config_hash=job['config_hash'], pipeline_settings=pipeline_settings,
                    python_version=sys.version, results=[], generation_retries=0)
+    from mvp.independent import PHASES as INDEPENDENT_PHASES, run_comparison
+    if phase in ('prompt-regression', *INDEPENDENT_PHASES):
+        from orchestration.mvp_command import sources as code_sources
+        summary['bindings'] = {'inputs': inputs, 'code_files': code_sources(config)}
     monitor = None
     try:
         summary['resource_gate'] = check_resources(pipeline_settings)
@@ -222,8 +283,10 @@ def run(phase, view, attempt, lock_fd):
             raise ValueError('all model parameters must be on CUDA0')
         atomic_json(folder / 'loading.json', summary)
         context = {key: job[key] for key in ('run_id', 'task_id', 'dispatch_id', 'code_sha', 'source_hash', 'input_hash', 'config_hash')}
-        context.update(attempt_id=attempt, view=view)
+        context.update(attempt_id=attempt, view=view, phase=phase)
         summary['results'] = (run_development(analyzer, folder, sources, cameras, inputs) if phase == 'dev' else
+            run_comparison(analyzer, folder, context) if phase in INDEPENDENT_PHASES else
+            run_prompt_regression(analyzer, folder, sources, cameras, context) if phase == 'prompt-regression' else
             run_full(analyzer, folder, sources, cameras, pipeline_settings, config, inputs, context))
         summary['status'] = 'succeeded'
     except Exception as exc:
@@ -238,7 +301,7 @@ def run(phase, view, attempt, lock_fd):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--phase', choices=('dev', 'full'), required=True)
+    parser.add_argument('--phase', choices=PHASES, required=True)
     parser.add_argument('--view', choices=('fixed_roi', 'full_frame'), required=True)
     parser.add_argument('--attempt', required=True)
     parser.add_argument('--lock-fd', required=True, type=int)

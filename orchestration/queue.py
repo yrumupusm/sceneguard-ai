@@ -32,7 +32,7 @@ def digest(value):
 def source_hash(command="cpu-mock", config=None):
     if command == 'mvp-0001':
         from orchestration.mvp_command import sources
-        return digest(sources())
+        return digest(sources(config))
     if command == 'vlm-batch01':
         from orchestration.vlm_command import sources
         return digest(sources(config['adapter']))
@@ -235,8 +235,9 @@ class Queue:
             from orchestration.vlm_command import validate
             validate(config, input_value, self.runtime)
         else:
-            from orchestration.mvp_command import validate
+            from orchestration.mvp_command import validate, validate_run
             validate(config, input_value, self.runtime)
+            validate_run(config['phase'], run_id)
         limit = 900 if command == 'vlm-batch01' else 3600
         if command == 'mvp-0001':
             limit = 900 if config['phase'] == 'dev' else 1800

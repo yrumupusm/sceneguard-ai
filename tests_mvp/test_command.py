@@ -69,7 +69,7 @@ class RegistryTests(unittest.TestCase):
         for name in ('orchestration/queue.py', 'orchestration/mock_job.py', 'orchestration/mvp_command.py',
                      'orchestration/vlm_command.py', 'vlm_batch/common.py', 'vlm_batch/qwen.py', 'vlm_batch/run.py',
                      'configs/vlm_batch01_prompt.txt', *('mvp/'+s+'.py' for s in
-                     ('method', 'compare', 'runner', 'windows', 'events', 'evidence', 'pipeline', 'cli'))):
+                     ('method', 'compare', 'runner', 'windows', 'events', 'evidence', 'pipeline', 'cli', 'independent'))):
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text('# CPU fixture '+name)

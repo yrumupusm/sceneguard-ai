@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0016",
+  "execution_status": "inconclusive_resource_blocked_before_enqueue",
+  "behavioral_validation": "not_run",
+  "adoption": "on_hold",
+  "reason": "The existing canonical queue requires at least 6144 MiB free; observed free memory was 1773 MiB at the recorded preflight. No job was enqueued and no model was loaded.",
+  "metrics": [
+    {
+      "label": "EXP-0016 MVP CPU tests passed",
+      "value": 107,
+      "unit": "test cases",
+      "sample_n": 107,
+      "scope": "CPU contract and regression tests; not behavioral performance",
+      "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
+      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "verification": "unittest_exit_zero"
+    },
+    {
+      "label": "Existing GPU queue CPU tests passed",
+      "value": 14,
+      "unit": "test cases",
+      "sample_n": 14,
+      "scope": "Canonical queue serialization/recovery test suite; not an inference run",
+      "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
+      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "verification": "unittest_exit_zero"
+    },
+    {
+      "label": "Additional original-video windows verified without inference",
+      "value": 4,
+      "unit": "windows",
+      "sample_n": 4,
+      "scope": "User-reviewed v01-v04: exact window timing, original PTS, frame indexes and RGB hashes verified on CPU",
+      "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
+      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "verification": "source_and_frame_hashes_checked"
+    },
+    {
+      "label": "Free VRAM at preflight",
+      "value": 1773,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "RTX 3080 snapshot at 2026-10-28 14:29 UTC; minimum queue gate is 6144 MiB",
+      "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
+      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "verification": "nvidia_smi_snapshot"
+    },
+    {
+      "label": "Revised-prompt behavior comparison",
+      "value": null,
+      "unit": "not measured",
+      "sample_n": null,
+      "scope": "No Qwen inference, queue job, or model load occurred",
+      "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
+      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "verification": "unavailable"
+    },
+    {
+      "label": "Generation latency and peak VRAM",
+      "value": null,
+      "unit": "not measured",
+      "sample_n": null,
+      "scope": "No Qwen inference, queue job, or model load occurred",
+      "source": "docs/experiments/EXP-0016-prompt-evidence-rubric.md",
+      "source_sha256": "d75a81d86bd47471e99487ef6e182996ebae9cfd75dbd93827060dd015fc8794",
+      "verification": "unavailable"
+    }
+  ],
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "hourly_false_alarms": null
+  },
+  "performance_null_reason": "Behavioral outputs were not generated. The six q windows are development regressions and the additional four are a purposive user-reviewed micro-sample, not a statistically independent or representative test set."
+}

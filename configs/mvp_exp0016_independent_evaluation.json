@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "experiment": "EXP-0016",
+  "scope": "User-reviewed independent development clips; not a held-out performance estimate",
+  "inference_manifest_sha256": "68b07ef836422cd9043e4fcb88b40b0f70e256d0024a2bd57ce29a12e08aa765",
+  "labels": [
+    {
+      "review_clip_id": "v01",
+      "window_id": "w000001",
+      "label": "attempt_progress",
+      "completion": "not_assessed"
+    },
+    {
+      "review_clip_id": "v02",
+      "window_id": "w000002",
+      "label": "non_event"
+    },
+    {
+      "review_clip_id": "v03",
+      "window_id": "w000003",
+      "label": "attempt_progress",
+      "location": "gap beside gate, not through gate",
+      "boundary_relation": "ambiguous",
+      "exact_location": "ambiguous",
+      "completion": "not_assessed"
+    },
+    {
+      "review_clip_id": "v04",
+      "window_id": "w000004",
+      "label": "non_event"
+    }
+  ]
+}

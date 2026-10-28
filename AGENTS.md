@@ -2,6 +2,14 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
+## 최신 범위 — EXP-0016 단일 프롬프트 개선 비교 (2026-10-28)
+
+사용자가 EXP-0015, 독립 검토, MVP 요약과 기존 작업 지침을 읽고 단일 개선 구현·비교, q01–q06 회귀 확인, 최대6개 별도 확인창, Astra 검토, 기존 웹 등록 및 GitHub 기록을 승인했다. 최신 상세는 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md), [EXP-0016 사양/결과](docs/experiments/EXP-0016-prompt-evidence-rubric.md), [ADR-0017](docs/decisions/ADR-0017-qwen-temporal-evidence-prompt.md)이다. 이 범위에서 변경하는 축은 Qwen 공통 prompt 하나뿐이다. 모델/가중치/processor/generation/parser/후처리/ROI/windows를 조합해 바꾸지 않는다. 재학습·외부 API·가중치 다운로드·웹 기능 확장은 금지다.
+
+GPU job은 **기존 canonical queue와 최소 여유 VRAM 6144 MiB resource gate**를 통과할 때만 순차 실행한다. 2026-10-28 현재 관측된 99% GPU utilization과 약1.2–1.6 GiB free는 기준 미달이다. queue 우회·gate 낮춤·다른 프로세스 종료를 하지 않는다. 실제 모델 입력에는 익명 clip ID와 프레임만 전달한다. q/v 라벨과 공식 annotation은 inference path와 분리한다. 기능/테스트 성공, 실행 완료, 행동 개선, 독립 검증은 별도 판정한다. GPU 실행 전에는 행동 성능 효과를 미측정으로 남긴다.
+
+사용자 추가 확인 v01–v04: v01 attempt/progress(완료 미확인), v02 비사건, v03 attempt/progress(게이트가 아닌 옆 틈, 경계 연결은 애매함), v04 비사건. 공개 가능한 사용자 label 요약 외 원본/추출 영상·프레임/가중치/raw 응답은 로컬에만 둔다. v01/v02는 E01_004, v03/v04는 E01_021이며 세션/카메라 독립성을 확정한 테스트가 아니다.
+
 ## 최신 범위 — EXP-0015 사용자 라벨 개정 (2026-10-28)
 
 사용자는 최신 지침 `c73d217`에서 기존 EXP-0013 출력만 사용한 평가·정리, 기존 웹 등록 및 GitHub 반영을 승인했다. [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md), [MVP_SMALL_EVALUATION_PLAN](docs/data/MVP_SMALL_EVALUATION_PLAN.md), [EXP-0013 observation errata](docs/data/EXP-0013-observation-errata.md)를 따랐다. 평가는 최대12개 고정 창의 저장 B/C 답변만 CPU로 대조하고, 사용자 제공 q01–q06 검수를 EXP-0015 라벨 revision으로 반영했다. 새 GPU 추론·모델·웹 기능은 금지였으며 실행하지 않았다.

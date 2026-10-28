@@ -14,6 +14,21 @@ ROOT = Path(__file__).resolve().parents[1]
 PROCESSOR_SIZE = {'shortest_edge': 16384, 'longest_edge': 3584000}
 
 
+def analyzer_prompt(window_id, phase='full'):
+    """Text accepts only an anonymous ID and registered phase, never metadata."""
+    from orchestration.mvp_command import PHASES, REGRESSION_PROMPT
+    if phase not in PHASES:
+        raise ValueError('unregistered prompt phase')
+    from mvp.independent import PHASES as INDEPENDENT_PHASES, prompt
+    if phase in INDEPENDENT_PHASES:
+        return prompt(window_id, phase)
+    pattern = r'w\d{6,12}' if phase == 'prompt-regression' else r'(?:w\d{6,12}|clip0[1-6])'
+    if not isinstance(window_id, str) or not re.fullmatch(pattern, window_id):
+        raise ValueError('anonymous window ID required')
+    name = REGRESSION_PROMPT if phase == 'prompt-regression' else 'vlm_batch01_prompt.txt'
+    return f'Clip ID: {window_id}\n' + (ROOT / 'configs' / name).read_text(encoding='utf-8').strip()
+
+
 def crop_frames(rgb, roi):
     """Crop one fixed normalized rectangle, using floor/ceil outward bounds."""
     import numpy as np
@@ -78,7 +93,8 @@ class QwenAnalyzer:
     """Weights can only be constructed under the inherited canonical MVP lease."""
     def __init__(self, model_dir, settings):
         from mvp.runner import verify_environment_lease
-        verify_environment_lease()
+        job = verify_environment_lease()
+        self.phase = json.loads(job['config_json'])['phase']
         from orchestration.mvp_command import MODEL_DIR
         if Path(model_dir).resolve() != MODEL_DIR.resolve() or json.dumps(settings, sort_keys=True) != json.dumps(SETTINGS, sort_keys=True):
             raise ValueError('fixed local Qwen model and baseline generation settings required')
@@ -99,9 +115,9 @@ class QwenAnalyzer:
         validate_source(rgb, source, window_id)
         if len(rgb) < 2:
             raise ValueError('insufficient_frames: official resize requires at least two observations')
-        prompt = (ROOT / 'configs/vlm_batch01_prompt.txt').read_text(encoding='utf-8').strip()
+        prompt = analyzer_prompt(window_id, getattr(self, 'phase', 'full'))
         messages = [{'role': 'user', 'content': [{'type': 'video'},
-                    {'type': 'text', 'text': f'Clip ID: {window_id}\n' + prompt}]}]
+                    {'type': 'text', 'text': prompt}]}]
         processor = self.processor
         text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
         duration = source['window_end'] - source['window_start']

@@ -183,6 +183,8 @@ class PipelineTests(PipelineFixture):
         from mvp.cli import main
         runtime = self.root / "canonical"
         registry = SimpleNamespace(RUNTIME=runtime, SETTINGS={"seed": 0},
+                                   PHASES=('dev', 'full', 'prompt-regression', 'independent-original', 'independent-revised'),
+                                   validate_run=MagicMock(),
                                    load_configs=lambda: ({}, {}, {"full_timeout_seconds": 1800}),
                                    input_contract=lambda phase: {"hash": phase},
                                    validate=MagicMock())
