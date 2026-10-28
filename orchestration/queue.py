@@ -1,0 +1,410 @@
+"""Linux local CPU-mock queue with a shared, inherited GPU reservation lock."""
+
+import argparse
+from contextlib import contextmanager
+import fcntl
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+import signal
+import sqlite3
+import subprocess
+import sys
+import time
+import uuid
+
+from orchestration.mock_job import atomic_json
+
+
+ROOT = Path(__file__).resolve().parent.parent
+MOCK = Path(__file__).resolve().with_name("mock_job.py")
+RETRYABLE = {"failed", "cancelled", "interrupted"}
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                                     allow_nan=False).encode()).hexdigest()
+
+
+def source_hash():
+    return digest({p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in (Path(__file__), MOCK)})
+
+
+def process_identity(pid):
+    """Return boot ID + /proc start ticks; None means proven absent/zombie.
+
+    Permission and parse errors deliberately propagate: absence is not assumed.
+    """
+    try:
+        stat = Path(f"/proc/{int(pid)}/stat").read_text()
+    except FileNotFoundError:
+        return None
+    fields = stat[stat.rindex(")") + 2:].split()
+    if fields[0] in {"Z", "X"}:
+        return None
+    boot = Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+    return f"{boot}:{fields[19]}"
+
+
+def process_state(pid, expected):
+    if not pid or not expected:
+        return "unknown"
+    try:
+        actual = process_identity(pid)
+    except (OSError, ValueError, IndexError):
+        return "unknown"
+    if actual is None:
+        return "exited"
+    return "live" if actual == expected else "unknown"
+
+
+class Queue:
+    def __init__(self, runtime):
+        supplied = Path(runtime).expanduser()
+        if not supplied.is_absolute():
+            raise ValueError("--runtime must be an explicit absolute shared path")
+        self.runtime = supplied.resolve()
+        marker = self.runtime / "queue-runtime.json"
+        if not marker.is_file():
+            raise ValueError("runtime is not initialized; use init first")
+        if json.loads(marker.read_text())["canonical_runtime"] != str(self.runtime):
+            raise ValueError("runtime was moved/copied; canonical path differs")
+        self.db = self.runtime / "queue.sqlite3"
+
+    @classmethod
+    def initialize(cls, runtime):
+        path = Path(runtime).expanduser()
+        if not path.is_absolute():
+            raise ValueError("--runtime must be an explicit absolute shared path")
+        path = path.resolve()
+        path.mkdir(parents=True, exist_ok=True)
+        # Serialize first-time initialization across worktrees, without truncation.
+        with (path / "init.lock").open("a+") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            marker = path / "queue-runtime.json"
+            if not marker.exists():
+                atomic_json(marker, {"schema_version": 1, "canonical_runtime": str(path)})
+            queue = cls(path)
+            with queue.connection() as db:
+                db.executescript("""
+                    CREATE TABLE IF NOT EXISTS jobs (
+                        job_id TEXT PRIMARY KEY, job_key TEXT NOT NULL UNIQUE,
+                        run_id TEXT NOT NULL, task_id TEXT NOT NULL, dispatch_id TEXT NOT NULL,
+                        owner TEXT NOT NULL, command TEXT NOT NULL CHECK(command='cpu-mock'),
+                        input_json TEXT NOT NULL, config_json TEXT NOT NULL,
+                        input_hash TEXT NOT NULL, config_hash TEXT NOT NULL,
+                        source_hash TEXT NOT NULL, code_sha TEXT NOT NULL,
+                        timeout REAL NOT NULL, status TEXT NOT NULL,
+                        created_at REAL NOT NULL, cancel_requested INTEGER NOT NULL DEFAULT 0
+                    );
+                    CREATE TABLE IF NOT EXISTS attempts (
+                        attempt_id TEXT PRIMARY KEY, job_id TEXT NOT NULL REFERENCES jobs(job_id),
+                        attempt_no INTEGER NOT NULL CHECK(attempt_no BETWEEN 1 AND 2),
+                        owner TEXT NOT NULL, status TEXT NOT NULL,
+                        supervisor_pid INTEGER, supervisor_identity TEXT,
+                        child_pid INTEGER, child_identity TEXT,
+                        started_at REAL NOT NULL, finished_at REAL, exit_code INTEGER,
+                        heartbeat REAL NOT NULL, timeout REAL NOT NULL,
+                        result_manifest TEXT, reason TEXT,
+                        UNIQUE(job_id, attempt_no)
+                    );
+                """)
+        return queue
+
+    @contextmanager
+    def connection(self):
+        db = sqlite3.connect(self.db, timeout=10, isolation_level=None)
+        db.row_factory = sqlite3.Row
+        db.execute("PRAGMA foreign_keys=ON")
+        db.execute("PRAGMA busy_timeout=10000")
+        try:
+            yield db
+        finally:
+            if db.in_transaction:
+                db.rollback()
+            db.close()
+
+    @contextmanager
+    def gpu_lock(self, blocking=True):
+        # NEVER unlink, truncate, or LOCK_UN: child shares this open description.
+        lock = (self.runtime / "gpu.lock").open("a+")
+        try:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB))
+            except BlockingIOError:
+                yield None
+            else:
+                yield lock
+        finally:
+            lock.close()
+
+    def enqueue(self, *, job_key, run_id, task_id, dispatch_id, owner,
+                command="cpu-mock", input_value=None, config=None, timeout=10,
+                expected_input_hash=None, expected_config_hash=None):
+        if command != "cpu-mock":
+            raise ValueError("only registered cpu-mock is permitted")
+        if any(not isinstance(x, str) or not x.strip() for x in
+               (job_key, run_id, task_id, dispatch_id, owner)):
+            raise ValueError("job key, run/task/dispatch and owner are required")
+        config = {"seconds": 0.1, "exit_code": 0} if config is None else config
+        if not isinstance(config, dict) or set(config) != {"seconds", "exit_code"}:
+            raise ValueError("mock config must contain only seconds and exit_code")
+        seconds, code = config["seconds"], config["exit_code"]
+        if (type(seconds) not in (int, float) or not math.isfinite(seconds)
+                or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
+            raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
+        if type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= 3600:
+            raise ValueError("timeout must be finite and 0 < timeout <= 3600")
+        input_value = {"synthetic": True} if input_value is None else input_value
+        ih, ch = digest(input_value), digest(config)
+        if expected_input_hash not in (None, ih) or expected_config_hash not in (None, ch):
+            raise ValueError("expected input/config hash mismatch")
+        sha = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True,
+                             capture_output=True, check=True).stdout.strip()
+        values = dict(job_key=job_key, run_id=run_id, task_id=task_id,
+                      dispatch_id=dispatch_id, owner=owner, command=command,
+                      input_json=json.dumps(input_value, sort_keys=True),
+                      config_json=json.dumps(config, sort_keys=True),
+                      input_hash=ih, config_hash=ch, source_hash=source_hash(),
+                      code_sha=sha, timeout=timeout)
+        with self.connection() as db:
+            db.execute("BEGIN IMMEDIATE")
+            previous = db.execute("SELECT * FROM jobs WHERE job_key=?", (job_key,)).fetchone()
+            if previous:
+                if any(previous[k] != v for k, v in values.items()):
+                    raise ValueError("job key already exists with a different contract")
+                db.commit()
+                return dict(previous)
+            values.update(job_id=uuid.uuid4().hex, status="queued", created_at=time.time())
+            columns = ",".join(values)
+            db.execute(f"INSERT INTO jobs ({columns}) VALUES ({','.join('?' for _ in values)})",
+                       tuple(values.values()))
+            db.commit()
+        return values
+
+    def status(self):
+        with self.connection() as db:
+            return {"canonical_runtime": str(self.runtime), "synthetic": True,
+                    "jobs": [dict(r) for r in db.execute("SELECT * FROM jobs ORDER BY created_at")],
+                    "attempts": [dict(r) for r in db.execute("SELECT * FROM attempts ORDER BY started_at")]}
+
+    def _claim(self):
+        with self.connection() as db:
+            db.execute("BEGIN IMMEDIATE")
+            # Unresolved identity is a queue-wide fail-closed condition.
+            if db.execute("SELECT 1 FROM jobs WHERE status IN ('running','unknown')").fetchone():
+                db.commit()
+                return None
+            row = db.execute("SELECT * FROM jobs WHERE status='queued' ORDER BY created_at LIMIT 1").fetchone()
+            if row is None:
+                db.commit()
+                return None
+            job = dict(row)
+            number = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job["job_id"],)).fetchone()[0] + 1
+            now, attempt = time.time(), uuid.uuid4().hex
+            db.execute("INSERT INTO attempts (attempt_id,job_id,attempt_no,owner,status,"
+                       "supervisor_pid,supervisor_identity,started_at,heartbeat,timeout) "
+                       "VALUES (?,?,?,?,'running',?,?,?,?,?)",
+                       (attempt, job["job_id"], number, job["owner"], os.getpid(),
+                        process_identity(os.getpid()), now, now, job["timeout"]))
+            db.execute("UPDATE jobs SET status='running' WHERE job_id=?", (job["job_id"],))
+            db.commit()
+            return job, attempt
+
+    def _finish(self, attempt, status, exit_code, reason):
+        with self.connection() as db:
+            row = dict(db.execute("SELECT * FROM attempts WHERE attempt_id=?", (attempt,)).fetchone())
+            job = dict(db.execute("SELECT * FROM jobs WHERE job_id=?", (row["job_id"],)).fetchone())
+            manifest = self.runtime / "attempts" / attempt / "manifest.json"
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            finished = time.time()
+            atomic_json(manifest, {"schema_version": 1, "synthetic": True,
+                        "execution_status": status,
+                        "registration": {"command": "cpu-mock", "script": str(MOCK),
+                                         "cwd": str(ROOT), "interpreter": sys.executable},
+                        "job": {**job, "status": status}, "attempt": {**row, "status": status,
+                        "exit_code": exit_code, "finished_at": finished, "reason": reason},
+                        "mock_result": str(manifest.with_name("mock-result.json")),
+                        "limitations": ["CPU mock timing only; no GPU/model performance measured"]})
+            db.execute("BEGIN IMMEDIATE")
+            db.execute("UPDATE attempts SET status=?,exit_code=?,finished_at=?,heartbeat=?,"
+                       "result_manifest=?,reason=? WHERE attempt_id=?",
+                       (status, exit_code, finished, finished, str(manifest), reason, attempt))
+            db.execute("UPDATE jobs SET status=? WHERE job_id=?", (status, row["job_id"]))
+            db.commit()
+
+    def _recover_locked(self):
+        with self.connection() as db:
+            rows = db.execute("SELECT * FROM attempts WHERE status IN ('running','unknown')").fetchall()
+        results = []
+        for row in rows:
+            states = [process_state(row["supervisor_pid"], row["supervisor_identity"])]
+            if row["child_pid"] is not None:
+                states.append(process_state(row["child_pid"], row["child_identity"]))
+            if "unknown" in states:
+                state = "unknown"
+            elif "live" in states:
+                state = "running"
+            else:
+                state = "interrupted"
+            if state != "running":
+                self._finish(row["attempt_id"], state, None,
+                             "process identity unverifiable" if state == "unknown"
+                             else "supervisor and recorded child exited without final receipt")
+            results.append({"attempt_id": row["attempt_id"], "status": state})
+        return results
+
+    def recover(self):
+        with self.gpu_lock(blocking=False) as lock:
+            if lock is None:
+                return {"status": "busy", "reason": "reservation held; no mutation or signal sent"}
+            return {"status": "checked", "attempts": self._recover_locked()}
+
+    def retry(self, job_id):
+        with self.gpu_lock(blocking=False) as lock:
+            if lock is None:
+                raise ValueError("reservation is held; retry refused")
+            self._recover_locked()
+            with self.connection() as db:
+                db.execute("BEGIN IMMEDIATE")
+                row = db.execute("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
+                count = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job_id,)).fetchone()[0]
+                if row is None or row["status"] not in RETRYABLE or count != 1:
+                    raise ValueError("one explicit retry allowed only after a known failed/cancelled/interrupted attempt")
+                db.execute("UPDATE jobs SET status='queued',cancel_requested=0 WHERE job_id=?", (job_id,))
+                db.commit()
+        return {"job_id": job_id, "status": "queued", "explicit_retry": True}
+
+    def cancel(self, job_id):
+        with self.connection() as db:
+            db.execute("BEGIN IMMEDIATE")
+            row = db.execute("SELECT status FROM jobs WHERE job_id=?", (job_id,)).fetchone()
+            if row is None or row[0] not in {"queued", "running"}:
+                raise ValueError("only queued/running jobs can be cancelled")
+            db.execute("UPDATE jobs SET cancel_requested=1,status=? WHERE job_id=?",
+                       ("cancelled" if row[0] == "queued" else "running", job_id))
+            db.commit()
+        return {"job_id": job_id, "cancel_requested": True}
+
+    def supervise_once(self):
+        # Fail before claiming if this Linux runtime cannot bind signals to PIDs.
+        if not callable(getattr(signal, "pidfd_send_signal", None)):
+            raise ValueError("this runtime requires signal.pidfd_send_signal")
+        probe = os.pidfd_open(os.getpid())
+        os.close(probe)
+        # The supervisor owns this lock before claim and throughout child lifetime.
+        with self.gpu_lock() as lock:
+            self._recover_locked()
+            claimed = self._claim()
+            if claimed is None:
+                return {"status": "idle_or_unresolved"}
+            job, attempt = claimed
+            directory = self.runtime / "attempts" / attempt
+            directory.mkdir(parents=True)
+            child = None
+            try:
+                if job["source_hash"] != source_hash():
+                    raise ValueError("registered source changed since enqueue")
+                if digest(json.loads(job["input_json"])) != job["input_hash"] or digest(json.loads(job["config_json"])) != job["config_hash"]:
+                    raise ValueError("stored input/config hash mismatch")
+                config = json.loads(job["config_json"])
+                argv = [sys.executable, "-I", str(MOCK), "--seconds", str(config["seconds"]),
+                        "--exit-code", str(config["exit_code"]), "--result",
+                        str(directory / "mock-result.json"), "--lock-fd", str(lock.fileno())]
+                with (directory / "child.log").open("ab") as output:
+                    child = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL,
+                                             stdout=output, stderr=subprocess.STDOUT,
+                                             pass_fds=(lock.fileno(),), start_new_session=True)
+                identity = process_identity(child.pid)
+                with self.connection() as db:
+                    db.execute("UPDATE attempts SET child_pid=?,child_identity=? WHERE attempt_id=?",
+                               (child.pid, identity, attempt))
+                # pidfd binds timeout/cancel signals to this exact process incarnation.
+                pidfd = os.pidfd_open(child.pid)
+                try:
+                    deadline = time.monotonic() + job["timeout"]
+                    status, reason = None, None
+                    while child.poll() is None:
+                        with self.connection() as db:
+                            cancelled = db.execute("SELECT cancel_requested FROM jobs WHERE job_id=?", (job["job_id"],)).fetchone()[0]
+                            db.execute("UPDATE attempts SET heartbeat=? WHERE attempt_id=?", (time.time(), attempt))
+                        if cancelled or time.monotonic() >= deadline:
+                            status, reason = ("cancelled", "explicit cancellation") if cancelled else ("failed", "timeout")
+                            try:
+                                signal.pidfd_send_signal(pidfd, signal.SIGKILL)
+                            except ProcessLookupError:
+                                pass  # Exact child exited between poll and signal.
+                            break
+                        time.sleep(0.05)
+                    code = child.wait()
+                    status = status or ("succeeded" if code == 0 else "failed")
+                    self._finish(attempt, status, code, reason or "child exit observed")
+                finally:
+                    os.close(pidfd)
+            except Exception as error:
+                # If a child exists, retain its inherited lock and wait before release.
+                # Do not guess a PID or send a signal without a verified pidfd.
+                if child is not None:
+                    child.wait()
+                self._finish(attempt, "failed", child.returncode if child else None,
+                             f"{type(error).__name__}: {error}")
+            return {"job_id": job["job_id"], "attempt_id": attempt,
+                    "status": next(j["status"] for j in self.status()["jobs"] if j["job_id"] == job["job_id"])}
+
+    def run_once(self):
+        # Detached supervisor survives loss of this caller; it claims its own job.
+        argv = [sys.executable, "-m", "orchestration.queue", "--runtime", str(self.runtime), "_supervise"]
+        with (self.runtime / "supervisor.log").open("ab") as output:
+            process = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL,
+                                       stdout=output, stderr=subprocess.STDOUT, start_new_session=True)
+        return {"supervisor_pid": process.pid, "supervisor_exit_code": process.wait()}
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--runtime", required=True, help="absolute canonical runtime shared by ALL worktrees")
+    commands = parser.add_subparsers(dest="action", required=True)
+    commands.add_parser("init", help="initialize the shared runtime")
+    enqueue = commands.add_parser("enqueue", help="register one CPU mock (idempotent job key)")
+    for field in ("job-key", "run-id", "task-id", "dispatch-id", "owner"):
+        enqueue.add_argument("--" + field, required=True)
+    enqueue.add_argument("--command", choices=["cpu-mock"], default="cpu-mock")
+    enqueue.add_argument("--input-json", type=json.loads, default={"synthetic": True})
+    enqueue.add_argument("--config-json", type=json.loads, default={"seconds": 0.1, "exit_code": 0})
+    enqueue.add_argument("--expected-input-hash")
+    enqueue.add_argument("--expected-config-hash")
+    enqueue.add_argument("--timeout", type=float, default=10)
+    commands.add_parser("run-once", help="wait for reservation and supervise at most one queued job")
+    commands.add_parser("status", help="JSON jobs and attempts, without recovery or execution")
+    commands.add_parser("recover", help="verify process identities; never signal or auto-retry")
+    for action in ("retry", "cancel"):
+        item = commands.add_parser(action, help="explicit " + action)
+        item.add_argument("job_id")
+    commands.add_parser("_supervise", help=argparse.SUPPRESS)
+    args = parser.parse_args(argv)
+    try:
+        queue = Queue.initialize(args.runtime) if args.action == "init" else Queue(args.runtime)
+        if args.action == "enqueue":
+            result = queue.enqueue(job_key=args.job_key, run_id=args.run_id, task_id=args.task_id,
+                                   dispatch_id=args.dispatch_id, owner=args.owner, command=args.command,
+                                   input_value=args.input_json, config=args.config_json, timeout=args.timeout,
+                                   expected_input_hash=args.expected_input_hash,
+                                   expected_config_hash=args.expected_config_hash)
+        elif args.action in {"retry", "cancel"}:
+            result = getattr(queue, args.action)(args.job_id)
+        elif args.action == "init":
+            result = {"canonical_runtime": str(queue.runtime), "status": "initialized", "synthetic": True}
+        else:
+            method = {"run-once": "run_once", "_supervise": "supervise_once"}.get(args.action, args.action)
+            result = getattr(queue, method)()
+        print(json.dumps(result, sort_keys=True))
+        return 0
+    except (ValueError, OSError, sqlite3.Error, subprocess.SubprocessError) as error:
+        parser.exit(2, f"queue: {error}\n")
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
