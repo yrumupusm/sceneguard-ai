@@ -4,6 +4,8 @@
 
 ## 최신 사용자 운영 지시 — 실험 전달 완료 절차 (2026-10-28)
 
+**현재: 첫 실제 VLM 배치 종료.** [BATCH-0001 비교 결론](docs/experiments/BATCH-0001-vlm-comparison.md), [전달 기록](docs/orchestration/BATCH-0001_DELIVERY.md)을 먼저 읽는다. Qwen 기준(EXP8), Smol 기준(EXP9), 사전 고정 Qwen 픽셀 예산 대조(EXP10)의 총3조건·18클립 생성을 기존 큐에서 완료했다. 두 후보 모두 채택 보류, 기본 CV/EXP6 상태 유지. 이번 승인으로 추가 조건·모델·무인 반복을 시작하지 않는다. 다음 모델 실험은 별도 사용자 작업 범위를 따른다. 코드 구현·실제 실행·GitHub 게시·서비스/브라우저 확인은 전달 기록에서 구분한다.
+
 **추가 승인: 첫 실제 VLM 비교 배치(2026-10-28).** 기존 Qwen3-VL-2B 포함 최대3후보/신규최대2, 후보당 baseline1+총괄 결정 improvement최대1, 실행 오류 job당 retry최대1. 이번 배치는 Qwen3-VL-2B와 SmolVLM2-2.2B 두 후보로 시작한다. 기존 6개 개발 클립, 실행 전 공통 질문·평가 고정. Sol high 담당과 Astra high 독립 검토, 기존 단일 Run/GPU 큐 사용. 최소 명령 등록·설치·추론·결과 검토·기록·웹 반영은 승인됐으며 아래 과거의 새 실험 미승인 상태를 이 배치에 한해 대체한다. 큐 우회 추론, 재학습, 외부 추론 API/새 결제/미디어 외부 전송, 새 총괄/큐/대시보드 확장은 금지. 배치 후 보고하고 멈춘다. 공통 계약은 `docs/experiments/BATCH-0001-plan.md`다.
 
 앞으로 승인된 실험은 **담당 에이전트 배정 → 실행 → 보고서·측정값 저장 → 총괄 검토 → 웹 등록 → GitHub 게시 확인 + 로컬 화면 확인**까지 한 작업이다. [EXPERIMENT_DELIVERY](docs/orchestration/EXPERIMENT_DELIVERY.md), [완료 CLI](docs/orchestration/COMPLETE_CLI.md), [실제 검증 기록](docs/orchestration/DELIVERY_VALIDATION.md)을 따른다.
@@ -11,7 +13,7 @@
 - 실제 Orca Run/Task/Dispatch와 담당 슬롯을 `orchestration.complete assign`으로 연결한다. 실효 모델은 세션 증거로 확인한다. 작업 상태는 정확히 일치하는 최근 native 관측만 사용하고, 단절·오래됨·다른 dispatch이면 미확인이다.
 - 작업자는 자기 보고서/metrics/로컬 artifact 목록을 제출한다. 총괄이 별도 검토와 원문·측정치 SHA256을 작성한 뒤 `complete`로 등록한다. worker_done, 코드 구현, 실험 성공, 검토 판정, 채택은 서로 다른 사실이다.
 - `verify_delivery github`와 `verify_delivery browser`로 원격 커밋과 실제 화면을 **각각** 확인한다. 등록 또는 HTTP 200만으로 완료 선언하지 않는다. 첫 실제 실험은 진행 중 담당 카드와 완료 후 보고서 펼치기·그래프·등록 비교 영상 재생/seek·총괄 검토까지 확인하고 로컬 receipt를 남긴다.
-- 실패/미측정/영상 부재도 기록한다. TEST 모의 검증을 실제 실험 성공으로 표현하지 않는다. 현재 실제 실험 배정은 비어 있으며 새 모델 배치 실행 승인은 추가되지 않았다.
+- 실패/미측정/영상 부재도 기록한다. TEST 모의 검증을 실제 실험 성공으로 표현하지 않는다. 과거 세팅 당시 비어 있던 배정은 이번 EXP8~10의 실제 native 배정으로 채웠다.
 - 코드·문서·공개 가능한 측정 요약만 게시한다. 영상·이미지·가중치·원시 응답·로컬 artifact 경로·DB·로그·receipt·인증정보는 Git 제외다. 같은 runtime/환경을 재사용하며 자동 재실험/자동 채택을 추가하지 않는다.
 
 ## 이전 승인 — Orca 세팅 (2026-10-28)
