@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "prepared_at": "2026-10-28",
+  "status": "proposed_requires_local_capability_checks",
+  "purpose": "Models powering Codex agents, not local CV/VLM experiment models",
+  "sources": [
+    "https://developers.openai.com/api/docs/models",
+    "https://developers.openai.com/codex/subagents",
+    "https://www.onorca.dev/docs/cli/orchestration",
+    "https://www.onorca.dev/docs/agents/codex"
+  ],
+  "authentication": {
+    "reuse_current_codex_account": true,
+    "automatic_api_billing_switch": false,
+    "automatic_account_switch": false,
+    "read_or_copy_credentials": false
+  },
+  "availability": {
+    "api_catalog_is_not_codex_entitlement": true,
+    "probe_installed_cli_and_authenticated_models": true,
+    "probe_effective_model_and_reasoning": true,
+    "do_not_accept_model_self_report_as_evidence": true,
+    "on_model_unavailable": "block_role_and_report_supported_choices; no_silent_downgrade",
+    "on_effort_unavailable": "use_highest_runtime_advertised_supported_effort_and_record_the_change",
+    "chatgpt_pro_label_is_not_a_codex_model_id": true,
+    "coordinator_pro_upgrade": "Only if the authenticated Codex runtime explicitly exposes a higher-capability Astra Pro model with required tool support; record exact returned model ID and verify invocation. Never invent a Pro model ID."
+  },
+  "roles": {
+    "coordinator": {
+      "display_name": "총괄",
+      "target_model": "gpt-6-astra",
+      "reasoning_preference": ["max", "xhigh", "high"],
+      "owns": ["task_allocation", "bounded_review_loop", "integration", "final_recommendation"],
+      "can_spawn_workers": true
+    },
+    "experiment_worker": {
+      "display_name": "모델 실험 담당",
+      "target_model": "gpt-6.1-sol",
+      "reasoning_preference": ["high"],
+      "instances": 3,
+      "owns": ["assigned_model_adapter", "registered_experiment_spec", "own_report"],
+      "can_spawn_workers": false
+    },
+    "infra_builder": {
+      "display_name": "실행기·연결 구현",
+      "target_model": "gpt-6.1-sol",
+      "reasoning_preference": ["high"],
+      "owns": ["gpu_queue", "schemas", "orca_adapter"],
+      "can_spawn_workers": false
+    },
+    "reviewer": {
+      "display_name": "독립 검토",
+      "target_model": "gpt-6-astra",
+      "reasoning_preference": ["high"],
+      "owns": ["evidence_audit", "comparison_validity", "review_only"],
+      "can_modify_experiment_outputs": false,
+      "can_spawn_workers": false
+    },
+    "web_builder": {
+      "display_name": "결과 화면 구현",
+      "target_model": "gpt-6.1-terra",
+      "reasoning_preference": ["high"],
+      "owns": ["read_only_webapp", "visualization_tests"],
+      "can_spawn_workers": false
+    }
+  },
+  "concurrency": {
+    "coordinators": 1,
+    "active_worker_sessions": 3,
+    "gpu_experiment_processes": 1,
+    "nested_fanout": false,
+    "gpu_lock_must_be_shared_across_worktrees": true,
+    "idle_polling_by_llm": false
+  },
+  "initial_scope": {
+    "setup_and_read_only_webapp": true,
+    "agent_invocation_smoke_tests": true,
+    "reuse_existing_reports": true,
+    "synthetic_queue_tests": true,
+    "new_cv_vlm_weights_download": false,
+    "real_model_benchmark_batch": false,
+    "external_media_upload": false,
+    "public_deployment": false
+  },
+  "future_batch_proposal_not_yet_enabled": {
+    "max_local_vlm_candidates": 3,
+    "max_configurations_per_candidate": 2,
+    "max_infrastructure_retries_per_job": 1,
+    "manual_batch_approval_required": true,
+    "approve_each_substep_again": false,
+    "all_candidates_may_be_rejected": true
+  }
+}
