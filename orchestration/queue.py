@@ -1,4 +1,4 @@
-"""Linux local CPU-mock queue with a shared, inherited GPU reservation lock."""
+"""Linux local allowlisted queue with a shared, inherited GPU reservation lock."""
 
 import argparse
 from contextlib import contextmanager
@@ -8,6 +8,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import signal
 import sqlite3
 import subprocess
@@ -28,7 +29,10 @@ def digest(value):
                                      allow_nan=False).encode()).hexdigest()
 
 
-def source_hash():
+def source_hash(command="cpu-mock", config=None):
+    if command == 'vlm-batch01':
+        from orchestration.vlm_command import sources
+        return digest(sources(config['adapter']))
     return digest({p.name: hashlib.sha256(p.read_bytes()).hexdigest()
                    for p in (Path(__file__), MOCK)})
 
@@ -93,7 +97,7 @@ class Queue:
                     CREATE TABLE IF NOT EXISTS jobs (
                         job_id TEXT PRIMARY KEY, job_key TEXT NOT NULL UNIQUE,
                         run_id TEXT NOT NULL, task_id TEXT NOT NULL, dispatch_id TEXT NOT NULL,
-                        owner TEXT NOT NULL, command TEXT NOT NULL CHECK(command='cpu-mock'),
+                        owner TEXT NOT NULL, command TEXT NOT NULL CHECK(command IN ('cpu-mock','vlm-batch01')),
                         input_json TEXT NOT NULL, config_json TEXT NOT NULL,
                         input_hash TEXT NOT NULL, config_hash TEXT NOT NULL,
                         source_hash TEXT NOT NULL, code_sha TEXT NOT NULL,
@@ -112,7 +116,55 @@ class Queue:
                         UNIQUE(job_id, attempt_no)
                     );
                 """)
+            queue.migrate_commands()
         return queue
+
+    def migrate_commands(self):
+        """Backup then atomically rebuild only the old command CHECK; keep every row."""
+        with self.gpu_lock(blocking=False) as lock:
+            if lock is None:
+                raise ValueError('cannot migrate while a queue reservation is held')
+            with self.connection() as db:
+                sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
+                if "CHECK(command='cpu-mock')" not in sql:
+                    if "'vlm-batch01'" not in sql:
+                        raise ValueError('unrecognized queue schema')
+                    return
+                db.execute('PRAGMA foreign_keys=OFF')
+                db.execute('BEGIN IMMEDIATE')
+                if db.execute("SELECT 1 FROM jobs WHERE status IN ('running','unknown')").fetchone():
+                    raise ValueError('unresolved queue prevents schema migration')
+                backup = self.runtime / f'queue-before-vlm-{uuid.uuid4().hex}.sqlite3'
+                # Separate reader copies committed state while this write lock
+                # prevents enqueues. Backup precedes the first schema mutation.
+                with sqlite3.connect(self.db) as reader, sqlite3.connect(backup) as dest:
+                    reader.backup(dest)
+                with backup.open('rb') as stream:
+                    os.fsync(stream.fileno())
+                parent_fd = os.open(self.runtime, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(parent_fd)
+                finally:
+                    os.close(parent_fd)
+                jobs = [tuple(r) for r in db.execute('SELECT * FROM jobs ORDER BY job_id')]
+                attempts = [tuple(r) for r in db.execute('SELECT * FROM attempts ORDER BY attempt_id')]
+                extras = [r[0] for r in db.execute("SELECT sql FROM sqlite_master WHERE tbl_name='jobs' "
+                                                  "AND type IN ('index','trigger') AND sql IS NOT NULL")]
+                new_sql = re.sub(r'CREATE TABLE (?:"jobs"|jobs)(?=\s|\()', 'CREATE TABLE jobs_vlm', sql, count=1).replace(
+                    "CHECK(command='cpu-mock')", "CHECK(command IN ('cpu-mock','vlm-batch01'))")
+                db.execute(new_sql)
+                db.execute('INSERT INTO jobs_vlm SELECT * FROM jobs')
+                db.execute('DROP TABLE jobs')
+                db.execute('ALTER TABLE jobs_vlm RENAME TO jobs')
+                for statement in extras:
+                    db.execute(statement)
+                if jobs != [tuple(r) for r in db.execute('SELECT * FROM jobs ORDER BY job_id')] or attempts != [
+                        tuple(r) for r in db.execute('SELECT * FROM attempts ORDER BY attempt_id')]:
+                    raise ValueError('migration preservation mismatch')
+                if db.execute('PRAGMA foreign_key_check').fetchall():
+                    raise ValueError('migration foreign key mismatch')
+                db.commit()
+                db.execute('PRAGMA foreign_keys=ON')
 
     @contextmanager
     def connection(self):
@@ -144,20 +196,25 @@ class Queue:
     def enqueue(self, *, job_key, run_id, task_id, dispatch_id, owner,
                 command="cpu-mock", input_value=None, config=None, timeout=10,
                 expected_input_hash=None, expected_config_hash=None):
-        if command != "cpu-mock":
-            raise ValueError("only registered cpu-mock is permitted")
+        if command not in {"cpu-mock", "vlm-batch01"}:
+            raise ValueError("only registered cpu-mock/vlm-batch01 commands are permitted")
         if any(not isinstance(x, str) or not x.strip() for x in
                (job_key, run_id, task_id, dispatch_id, owner)):
             raise ValueError("job key, run/task/dispatch and owner are required")
-        config = {"seconds": 0.1, "exit_code": 0} if config is None else config
-        if not isinstance(config, dict) or set(config) != {"seconds", "exit_code"}:
-            raise ValueError("mock config must contain only seconds and exit_code")
-        seconds, code = config["seconds"], config["exit_code"]
-        if (type(seconds) not in (int, float) or not math.isfinite(seconds)
-                or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
-            raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
-        if type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= 3600:
-            raise ValueError("timeout must be finite and 0 < timeout <= 3600")
+        if command == 'cpu-mock':
+            config = {"seconds": 0.1, "exit_code": 0} if config is None else config
+            if not isinstance(config, dict) or set(config) != {"seconds", "exit_code"}:
+                raise ValueError("mock config must contain only seconds and exit_code")
+            seconds, code = config["seconds"], config["exit_code"]
+            if (type(seconds) not in (int, float) or not math.isfinite(seconds)
+                    or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
+                raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
+        else:
+            from orchestration.vlm_command import validate
+            validate(config, input_value, self.runtime)
+        limit = 900 if command == 'vlm-batch01' else 3600
+        if type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= limit:
+            raise ValueError(f"timeout must be finite and 0 < timeout <= {limit}")
         input_value = {"synthetic": True} if input_value is None else input_value
         ih, ch = digest(input_value), digest(config)
         if expected_input_hash not in (None, ih) or expected_config_hash not in (None, ch):
@@ -168,7 +225,7 @@ class Queue:
                       dispatch_id=dispatch_id, owner=owner, command=command,
                       input_json=json.dumps(input_value, sort_keys=True),
                       config_json=json.dumps(config, sort_keys=True),
-                      input_hash=ih, config_hash=ch, source_hash=source_hash(),
+                      input_hash=ih, config_hash=ch, source_hash=source_hash(command, config),
                       code_sha=sha, timeout=timeout)
         with self.connection() as db:
             db.execute("BEGIN IMMEDIATE")
@@ -187,8 +244,9 @@ class Queue:
 
     def status(self):
         with self.connection() as db:
-            return {"canonical_runtime": str(self.runtime), "synthetic": True,
-                    "jobs": [dict(r) for r in db.execute("SELECT * FROM jobs ORDER BY created_at")],
+            jobs = [dict(r) for r in db.execute("SELECT * FROM jobs ORDER BY created_at")]
+            return {"canonical_runtime": str(self.runtime), "synthetic": all(j['command'] == 'cpu-mock' for j in jobs),
+                    "jobs": jobs,
                     "attempts": [dict(r) for r in db.execute("SELECT * FROM attempts ORDER BY started_at")]}
 
     def _claim(self):
@@ -221,14 +279,21 @@ class Queue:
             manifest = self.runtime / "attempts" / attempt / "manifest.json"
             manifest.parent.mkdir(parents=True, exist_ok=True)
             finished = time.time()
-            atomic_json(manifest, {"schema_version": 1, "synthetic": True,
+            real = job['command'] == 'vlm-batch01'
+            if real:
+                from orchestration.vlm_command import ASSETS, MODELS, output_path
+                adapter = json.loads(job['config_json'])['adapter']
+            atomic_json(manifest, {"schema_version": 1, "synthetic": not real,
                         "execution_status": status,
-                        "registration": {"command": "cpu-mock", "script": str(MOCK),
-                                         "cwd": str(ROOT), "interpreter": sys.executable},
+                        "registration": {"command": job['command'],
+                                         "script": str(ROOT / 'vlm_batch/run.py') if real else str(MOCK),
+                                         "cwd": str(ROOT), "interpreter": str(ASSETS / MODELS[adapter][1]) if real else sys.executable},
                         "job": {**job, "status": status}, "attempt": {**row, "status": status,
                         "exit_code": exit_code, "finished_at": finished, "reason": reason},
-                        "mock_result": str(manifest.with_name("mock-result.json")),
-                        "limitations": ["CPU mock timing only; no GPU/model performance measured"]})
+                        "result": str(output_path(adapter, attempt)) if real else str(manifest.with_name("mock-result.json")),
+                        "mock_result": None if real else str(manifest.with_name("mock-result.json")),
+                        "limitations": ["Queue exit alone does not establish model quality"] if real else
+                                        ["CPU mock timing only; no GPU/model performance measured"]})
             db.execute("BEGIN IMMEDIATE")
             db.execute("UPDATE attempts SET status=?,exit_code=?,finished_at=?,heartbeat=?,"
                        "result_manifest=?,reason=? WHERE attempt_id=?",
@@ -305,15 +370,23 @@ class Queue:
             directory = self.runtime / "attempts" / attempt
             directory.mkdir(parents=True)
             child = None
+            deadline = time.monotonic() + job['timeout']
             try:
-                if job["source_hash"] != source_hash():
+                config = json.loads(job['config_json'])
+                if job["source_hash"] != source_hash(job['command'], config):
                     raise ValueError("registered source changed since enqueue")
                 if digest(json.loads(job["input_json"])) != job["input_hash"] or digest(json.loads(job["config_json"])) != job["config_hash"]:
                     raise ValueError("stored input/config hash mismatch")
                 config = json.loads(job["config_json"])
-                argv = [sys.executable, "-I", str(MOCK), "--seconds", str(config["seconds"]),
-                        "--exit-code", str(config["exit_code"]), "--result",
-                        str(directory / "mock-result.json"), "--lock-fd", str(lock.fileno())]
+                if job['command'] == 'vlm-batch01':
+                    from orchestration.vlm_command import command
+                    argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
+                elif job['command'] == 'cpu-mock':
+                    argv = [sys.executable, "-I", str(MOCK), "--seconds", str(config["seconds"]),
+                            "--exit-code", str(config["exit_code"]), "--result",
+                            str(directory / "mock-result.json"), "--lock-fd", str(lock.fileno())]
+                else:
+                    raise ValueError('unregistered command in stored job')
                 with (directory / "child.log").open("ab") as output:
                     child = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL,
                                              stdout=output, stderr=subprocess.STDOUT,
@@ -325,7 +398,6 @@ class Queue:
                 # pidfd binds timeout/cancel signals to this exact process incarnation.
                 pidfd = os.pidfd_open(child.pid)
                 try:
-                    deadline = time.monotonic() + job["timeout"]
                     status, reason = None, None
                     while child.poll() is None:
                         with self.connection() as db:
@@ -368,10 +440,10 @@ def main(argv=None):
     parser.add_argument("--runtime", required=True, help="absolute canonical runtime shared by ALL worktrees")
     commands = parser.add_subparsers(dest="action", required=True)
     commands.add_parser("init", help="initialize the shared runtime")
-    enqueue = commands.add_parser("enqueue", help="register one CPU mock (idempotent job key)")
+    enqueue = commands.add_parser("enqueue", help="register one allowlisted job (idempotent job key)")
     for field in ("job-key", "run-id", "task-id", "dispatch-id", "owner"):
         enqueue.add_argument("--" + field, required=True)
-    enqueue.add_argument("--command", choices=["cpu-mock"], default="cpu-mock")
+    enqueue.add_argument("--command", choices=["cpu-mock", "vlm-batch01"], default="cpu-mock")
     enqueue.add_argument("--input-json", type=json.loads, default={"synthetic": True})
     enqueue.add_argument("--config-json", type=json.loads, default={"seconds": 0.1, "exit_code": 0})
     enqueue.add_argument("--expected-input-hash")
