@@ -6,7 +6,7 @@
 
 사용자가 EXP-0015, 독립 검토, MVP 요약과 기존 작업 지침을 읽고 단일 개선 구현·비교, q01–q06 회귀 확인, 최대6개 별도 확인창, Astra 검토, 기존 웹 등록 및 GitHub 기록을 승인했다. 최신 상세는 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md), [EXP-0016 사양/결과](docs/experiments/EXP-0016-prompt-evidence-rubric.md), [ADR-0017](docs/decisions/ADR-0017-qwen-temporal-evidence-prompt.md)이다. 이 범위에서 변경하는 축은 Qwen 공통 prompt 하나뿐이다. 모델/가중치/processor/generation/parser/후처리/ROI/windows를 조합해 바꾸지 않는다. 재학습·외부 API·가중치 다운로드·웹 기능 확장은 금지다.
 
-GPU job은 **기존 canonical queue와 최소 여유 VRAM 6144 MiB resource gate**를 통과할 때만 순차 실행한다. 2026-10-28 현재 관측된 99% GPU utilization과 약1.2–1.6 GiB free는 기준 미달이다. queue 우회·gate 낮춤·다른 프로세스 종료를 하지 않는다. 실제 모델 입력에는 익명 clip ID와 프레임만 전달한다. q/v 라벨과 공식 annotation은 inference path와 분리한다. 기능/테스트 성공, 실행 완료, 행동 개선, 독립 검증은 별도 판정한다. GPU 실행 전에는 행동 성능 효과를 미측정으로 남긴다.
+GPU job은 **기존 canonical queue와 최소 여유 VRAM 6144 MiB resource gate**를 통과할 때만 순차 실행한다. 실행 담당 Sol high Task `task_305549d14771` / Dispatch `ctx_65256d02af82`가 2026-10-28 14:36 UTC RTX 3080에서 8464 MiB used, 1590 MiB free, 99% utilization을 측정해 차단됐다. EXP-0016 job/attempt 0, Qwen model load/inference 0이다. queue 우회·gate 낮춤·다른 프로세스 종료를 하지 않는다. 실제 모델 입력에는 익명 clip ID와 프레임만 전달한다. q/v 라벨과 공식 annotation은 inference path와 분리한다. 기능/테스트 성공, 실행 완료, 행동 개선, 독립 검증은 별도 판정한다. 추론 전에는 행동 성능 효과를 미측정으로 남긴다.
 
 사용자 추가 확인 v01–v04: v01 attempt/progress(완료 미확인), v02 비사건, v03 attempt/progress(게이트가 아닌 옆 틈, 경계 연결은 애매함), v04 비사건. 공개 가능한 사용자 label 요약 외 원본/추출 영상·프레임/가중치/raw 응답은 로컬에만 둔다. v01/v02는 E01_004, v03/v04는 E01_021이며 세션/카메라 독립성을 확정한 테스트가 아니다.
 
