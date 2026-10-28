@@ -66,6 +66,9 @@ def run(config_path: Path, action: str):
         if any(matches(v) for v in state.values()):
             raise RuntimeError("A lab service is already live; use status/stop, never duplicate it")
         with socket.socket() as sock:
+            # A stopped server may leave TIME_WAIT connections. This still
+            # rejects an active listener; it does not enable SO_REUSEPORT.
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             sock.bind(("127.0.0.1", int(config.get("port", 8765))))
         env = os.environ.copy(); env["SCENEGUARD_LAB_CONFIG"] = str(config_path)
         argv = {
