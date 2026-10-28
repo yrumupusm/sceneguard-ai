@@ -1,3 +1,19 @@
+# 다음 작업 — BATCH-0002 CV/VLM 대안 모델 검증과 조건부 결합
+
+2026-10-29. 사용자가 **모델 개선 단계 진행**을 승인했다. 이 문서의 이전 `EXP-0017 종료 / 새 GPU 실행 없음` 지시는 역사적 범위의 종료 기록이며, **이번 명시적 승인 한도에서만** 아래 작업으로 대체한다. [BATCH-0002 고정 상한·평가 계획](experiments/BATCH-0002-model-upgrade-plan.md)을 처음부터 끝까지 읽고, AGENTS/관련 실험 문서와 적용 충돌을 확인한 뒤 진행한다.
+
+## 총괄 실행 순서 (세부 단계 재승인 불필요)
+
+1. **입력 충분성 감사:** q01~q06/v01~v04 + 기존 030/007 문제 장면의 원본과 실제 Qwen processor 입력·PTS·2fps·ROI/resize 정보를 로컬에서 확인. 미저장 q processor RGB는 과거 byte 동등성으로 주장하지 않는다. 입력에 시도 자세가 보이는지 미확정인지를 기록.
+2. **CV 새 후보 1개:** FCOS/ByteTrack 과거 실패를 기준으로, 우선 RF-DETR Medium의 공식 오픈 체크포인트·라이선스·의존성을 검토. 소량 사람 검출 프레임(전체 최대240장)을 같은 PTS로 FCOS와 비교. 과거 FCOS 캐시가 동일하지 않으면 고정 FCOS만 재측정. 검출 개수·COCO AP는 SceneGuard 정확도가 아니다. 실제 넘기 순간의 사람 존재·중복·박스 안정성을 우선 점검.
+3. **VLM 새 후보 1개:** 우선 Qwen3-VL-4B-Instruct를 공식 카드/라이선스/10GB 양자화 호환성 검증 후, q04/q05 1~2건 smoke → q/v 총10개 5초 개발창의 baseline 대조. 기존 ORIGINAL prompt(실패한 EXP-0017 수정본 아님), 원본 PTS·프레임·평가 기준 고정. 새 모델 4bit와 기존 2B BF16은 양자화도 달라진 비교임을 기록.
+4. **결합은 조건부:** CV가 사건 순간 사람 관측을 개선하고 VLM과 상호 보완 근거가 확인될 때만, 저장 결과 중심의 오프라인 통합 PoC **최대 1개**. 조건 불충족 시 결합 **실행하지 않고 보류 결론**으로 종료. CV 검출 성공만을 VLM 호출의 필수 게이트로 삼지 않는다.
+5. **독립 검토/배포:** 기존 총괄 Astra max, Sol high 담당(최대2)·Astra high reviewer, native Task/Dispatch, 기존 GPU 단일 queue 및 **여유 VRAM≥6144MiB** 게이트 유지. 정해진 상한 내 CPU 준비 병렬/GPU 직렬. 기존 완료 CLI와 웹 결과 등록, GitHub push·원격/실제 로컬 화면 검증을 별개로 완료. 한 페이지 비교 요약을 제출하고 멈춤.
+
+**범위:** 신규 CV 체크포인트 최대1, 신규 VLM 최대1, 모델당 사전 고정 baseline 1회와 최소 smoke, 결합 PoC 최대1; 별도의 무제한 개선 실행·정답별 프롬프트 튜닝 없음. 신규 학습/파인튜닝/외부 추론 API/유료 결제/새 웹 UI/별도 큐/기존 파일 덮어쓰기는 금지. 새로운 라벨·영상 정답을 AI가 창작하지 않고, 10개 q/v는 개발 자료로서 독립 테스트/F1/FPR을 만들지 않는다. 원본 미디어/모델 가중치/raw inference/runtime은 로컬 전용. 게이트 실패 시 우회하지 않고 미실행 사유·부분 성과·다음 하나의 의사결정을 보고한다.
+
+---
+
 # 다음 작업 — EXP-0017 비교 종료, 자동 후속 실행 없음
 
 2026-10-29 KST. 사용자가 승인한 단일 prompt 개선의 실제 비교를 완료했다. [EXP-0017 결과](experiments/EXP-0017-prompt-evidence-results.md), [실행 기록](experiments/EXP-0017-execution.md), [평가 코드 검증](experiments/EXP-0017-evaluation-notes.md), [전달 기록](experiments/EXP-0017-delivery.md)을 우선한다. EXP-0016은 실행 전 자원 차단 이력이며 그 보고서·binding은 변경하지 않았다.
