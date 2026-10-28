@@ -10,8 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 class HistoricalRecordContract(unittest.TestCase):
     def test_report_hashes_and_measurement_provenance(self):
         catalog = json.loads((ROOT / "records/catalog.json").read_text())
-        self.assertEqual([x["experiment_id"] for x in catalog["experiments"]], [f"EXP-{i:04d}" for i in range(1, 8)])
-        for row in catalog["experiments"]:
+        rows = catalog["experiments"]
+        ids = [row["experiment_id"] for row in rows]
+        self.assertEqual(ids[:7], [f"EXP-{i:04d}" for i in range(1, 8)])
+        self.assertEqual(len(ids), len(set(ids)))
+        # New registered results may follow the preserved historical imports.
+        # Their assignment/review contract is covered by test_complete; these
+        # assertions describe the historical imports' unknown-agent AI drafts.
+        for row in rows[:7]:
             self.assertEqual(hashlib.sha256((ROOT / row["report_path"]).read_bytes()).hexdigest(), row["report_sha256"])
             self.assertIsNone(row["agent_model_effective"])
             self.assertEqual(row["review_status"], "AI_draft")
