@@ -26,8 +26,28 @@
 
 2026-10-28 16:55 UTC 기존 실제 브라우저의 담당 2와 담당 3 카드에 각각 진행 중 상태가 나타남을 확인했다. native projection은 정확한 CV Task/Dispatch와 VLM Task/Dispatch를 live/working으로 연결했다. 이는 에이전트 작업 상태이며 GPU 추론 중이라는 뜻은 아니다. 당시 CV의 두 GPU 작업은 이미 완료됐고 VLM은 가중치 다운로드와 코드 준비 중이었다. 과거 실패 작업도 기존 카드에 함께 표시되므로 카드 전체의 문구를 현재 실험 실패로 해석하지 않는다. 로컬 receipt는 `runtime/BATCH-0002/working-cards-browser.json`, `status-after-cv.json`이다.
 
+## VLM 비교 EXP-0020
+
+- 담당 3의 기존 Sol high Task `task_cf14cc142ed2` / Dispatch `ctx_0d176c9c2889`, Astra high 독립 검토 Task `task_f5ce741eef6c` / Dispatch `ctx_0fd8c4b82c38`를 사용했다. 새 총괄·queue·웹 기능은 없다.
+- 사전 고정 10개 5초창/16개 view의 생성을 각각 한 번 완료했다. 17개 새 queue job/attempt는 16성공과 v01의 모델 로딩 전 입력 기록 호환성 오류 1개다. 실패를 보존하고 v01의 논리적 retry 한 번만 사용했다. q 12개 성공 결과와 수정 전 33개 row를 바꾸지 않았고 최종 queue 37개 job/attempt는 모두 settled다. 파싱 실패 6개는 생성 실패/OOM과 구분한다.
+- 원래 q 및 실패 v01 소스는 `952c52f`, 수정 후 v 네 조건은 `78ba67df03f9a2f3307d85488d7f201eed119924`다. 소스 25개/합산 digest `f7c7a461f0dc94b6e78a2d8c4ed1db6cde08ccfa1b3fd90b534ca3f5d524eac1`을 Git 객체와 대조하고 새 실행 허가에 연결했다. 원 실행 허가도 별도 보존했다. 명시적으로 연결된 수정 job과 좁은 retry guard를 사용했으며 DB trigger·복구용 schema 변경·원 row 덮어쓰기는 없다.
+- 독립 검토는 28개 회귀 테스트를 직접 통과시켰고, 담당자의 전체 115개 중 113통과/2skip 기록, 네 실제 v의 CPU processor/RGB/확장 질문 동등성 및 immutable 16출력을 확인했다. 모델·가중치·질문·ROI·샘플링·생성 설정은 유지했다. 최종 검토는 38개 metrics의 원본 포인터, 224개 artifact/receipt 해시, CPU 요약 재생산과 총괄 결론까지 확인했다. 기술 실행·정직한 비교 기록은 PASS이며 행동 성능·채택은 보류다.
+- 공개 결과는 원 응답 자체가 아닌 파싱·후보·완료 주장·비용과 기존 사용자 관찰에 대한 검토 초안이다. 메모리는 기존 2B의 준비/전송/생성 포함 peak와 새 4B의 별도 로딩/생성 peak를 구분한다. 선택한 개발창의 차이를 범용 정확도나 통제된 속도/메모리 우위로 표현하지 않는다.
+- 기존 완료 CLI로 [보고서](EXP-0020-vlm-comparison.md), 38개 metrics, [독립 검토](../reviews/EXP-0020-independent-review.md), [binding](../reviews/EXP-0020.binding.json)을 등록했다. 보고서 SHA-256 `9dc4ac83f6c169ce805038effdf1e404f13d2130d03d7b69e4c906ec9e6c054f`, metrics `68ff7e077f97c02e0f5bed0ba70d0cd3ab8e8f740be2310c84fda15408e4927f`, review `55ef40e57689a432d1e857f8ddd347b664b8c8ee8a8a3054e3299c6b93d550f9`를 고정했다. 검토 상태는 `accepted_for_comparison`, 적용 상태는 `adoption_on_hold`다.
+- 로컬 근거는 기존 원본 참고 영상 q04/q05/v01/v03 네 개와 실제 4B processor 입력 표시 일곱 개로 제한했다. 원본 동영상과 2fps 모델 관측 시트를 구분하며 새로운 영상 추론 결과나 사용자 확정 정답이 아니다. 기존 allowlist만 사용했다.
+- 2026-10-28 18:55 UTC 실제 브라우저에서 담당 3 → EXP-0020 → 보고서 펼치기, 38개 측정값/2개 그래프와 검토 의견을 확인했다. 네 5초 영상 모두 실제 재생, 1.5초 seek, 상태 폴링 뒤 노드 유지가 통과했다. 별도 DOM 검사에서 일곱 입력 이미지의 decode와 자연 해상도를 확인했다(여섯 개 1920×504, q04 C 1920×914). 이는 화면 동작 확인이며 AI의 새로운 영상 의미 검수는 아니다.
+- 실제 서비스의 report/metrics/review/binding byte와 JS SHA-256을 checkout과 별도로 대조했다. JS는 앞선 입력 감사/CV 때와 동일하며 웹 코드를 바꾸지 않았다. 로컬 receipt는 `runtime/BATCH-0002/vlm-delivery/browser-r1.json`과 `browser-images-r1.json`이다. GitHub 게시 검증은 아래에 별도로 기록한다.
+
+## 작업 종료와 보존
+
+입력 감사·CV·VLM 실행 담당과 독립 검토자의 실제 native `worker_done`을 각각 확인했다. 마지막 VLM 담당·검토자는 모두 `succeeded`로 종료했다. 종료 후 `worker-release`는 두 터미널 모두 사용자가 인계한 `user_takeover` 보존 대상으로 응답했으므로 강제 종료하지 않았다. Run의 정리 대상 `reclaimable` 작업자는 0이다. 이미 완료된 담당자에게 보낸 후속 종료 알림 하나는 `dispatch_inactive`로 거부돼 재전송하지 않았으며 새 작업/실행을 만들지 않았다.
+
+최종 37개 GPU queue job/attempt는 모두 settled이고 추가 모델 작업·재시도·결합 PoC는 예약하지 않는다. 테스트 통과, 고정 실행 완료, 웹 전달 확인, 행동 성능 충족을 서로 구분한다. 이번에 확인된 것은 앞의 세 가지이며 새 두 모델의 기본 적용과 행동 성능 충족은 보류다.
+
 ## 단계별 GitHub 게시
 
 `3e9a6bb`는 입력 감사 코드/계약, `e0dc11a`는 검토된 입력 감사·신규 모델 선정 문서·RF-DETR 실행 전 소스 고정이다. 정상 HTTPS `git push origin main`으로 `1a06f6c..e0dc11a` 게시를 확인했다. 이 커밋 시점에는 CV 실제 실행 결과와 EXP-0018 완료 등록은 아직 포함되지 않았다. 각 최종 결과의 원격 byte 확인은 해당 결과 등록 후 별도 수행한다.
+
+`d5f6406`은 입력 감사 등록·전달, `952c52f`는 Qwen4B 실행 전 사양·코드 고정, `9ee6753`은 검토된 CV 실제 결과·등록, `78ba67d`는 한 번의 논리적 retry를 제한하는 과거 VLM 입력 기록 호환성 수정이다. 모두 정상 push로 게시했고 기존 결과와 공식 라벨을 덮어쓰지 않았다. 최종 VLM 결과/등록과 총괄 종료 문서는 별도 커밋으로 게시하고 원격 내용을 다시 확인한다.
 
 원본/추출 미디어·배열·raw 예측/응답·weights·환경·DB·raw log·receipt는 로컬 전용이다. `.venv-cv-batch02`와 `.venv-vlm-batch02`도 저장소 ignore에 추가했고, 기존 환경과 이전 실험은 보존했다.

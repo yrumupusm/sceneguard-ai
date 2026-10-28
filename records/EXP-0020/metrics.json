@@ -1,0 +1,623 @@
+{
+  "adoption": "adoption_on_hold",
+  "behavioral_validation": "not_established",
+  "comparison_group": "EXP-0020",
+  "comparison_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+  "comparison_source": "records/EXP-0020/comparison.json",
+  "cross_experiment_comparable": false,
+  "denominators": {
+    "negative_view_conditions": 12,
+    "q_view_conditions": 12,
+    "selected_development_diagnostic_only": true,
+    "unique_negative_windows": 7,
+    "unique_sources": 4,
+    "unique_windows": 10,
+    "v_view_conditions": 4,
+    "view_conditions": 16
+  },
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0020",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "metrics": [
+    {
+      "label": "2B strict schema valid",
+      "sample_n": 16,
+      "scope": "16 selected view conditions from10windows; interface/output diagnostic, not independent behavior accuracy.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "parsing",
+        "baseline",
+        "strict_schema_valid"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 11,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "2B common schema valid",
+      "sample_n": 16,
+      "scope": "16 selected view conditions from10windows; interface/output diagnostic, not independent behavior accuracy.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "parsing",
+        "baseline",
+        "common_schema_valid"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 16,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "2B unscorable response schema",
+      "sample_n": 16,
+      "scope": "16 selected view conditions from10windows; interface/output diagnostic, not independent behavior accuracy.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "parsing",
+        "baseline",
+        "parse_failed"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 0,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B strict schema valid",
+      "sample_n": 16,
+      "scope": "16 selected view conditions from10windows; interface/output diagnostic, not independent behavior accuracy.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "parsing",
+        "candidate",
+        "strict_schema_valid"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 10,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B common schema valid",
+      "sample_n": 16,
+      "scope": "16 selected view conditions from10windows; interface/output diagnostic, not independent behavior accuracy.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "parsing",
+        "candidate",
+        "common_schema_valid"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 10,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B unscorable response schema",
+      "sample_n": 16,
+      "scope": "16 selected view conditions from10windows; interface/output diagnostic, not independent behavior accuracy.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "parsing",
+        "candidate",
+        "parse_failed"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 6,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "q_B 2B false candidates",
+      "sample_n": 5,
+      "scope": "5 planned negative view conditions; 4B has 3 valid and 2 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "q_B",
+        "baseline_false_candidates"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 2,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "q_B 4B false candidates among valid responses",
+      "sample_n": 5,
+      "scope": "5 planned negative view conditions; 4B has 3 valid and 2 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "q_B",
+        "candidate_false_candidates"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 0,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "q_B 4B unavailable negative views",
+      "sample_n": 5,
+      "scope": "5 planned negative view conditions; 4B has 3 valid and 2 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "q_B",
+        "candidate_unscorable_negative_views"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 2,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "q_C 2B false candidates",
+      "sample_n": 5,
+      "scope": "5 planned negative view conditions; 4B has 3 valid and 2 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "q_C",
+        "baseline_false_candidates"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 2,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "q_C 4B false candidates among valid responses",
+      "sample_n": 5,
+      "scope": "5 planned negative view conditions; 4B has 3 valid and 2 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "q_C",
+        "candidate_false_candidates"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 0,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "q_C 4B unavailable negative views",
+      "sample_n": 5,
+      "scope": "5 planned negative view conditions; 4B has 3 valid and 2 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "q_C",
+        "candidate_unscorable_negative_views"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 2,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "v_negative 2B false candidates",
+      "sample_n": 2,
+      "scope": "2 planned negative view conditions; 4B has 2 valid and 0 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "v_negative",
+        "baseline_false_candidates"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 1,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "v_negative 4B false candidates among valid responses",
+      "sample_n": 2,
+      "scope": "2 planned negative view conditions; 4B has 2 valid and 0 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "v_negative",
+        "candidate_false_candidates"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 0,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "v_negative 4B unavailable negative views",
+      "sample_n": 2,
+      "scope": "2 planned negative view conditions; 4B has 2 valid and 0 unavailable. Counts only; no FPR or correct-negative rate.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "summary",
+        "negative_groups",
+        "v_negative",
+        "candidate_unscorable_negative_views"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "view conditions",
+      "value": 0,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "Generated frozen conditions",
+      "sample_n": 16,
+      "scope": "Execution accounting only;16unique outputs/17attempts, no behavior-performance claim.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "execution_summary",
+        "successful_generated_conditions"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "count",
+      "value": 16,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "Queue attempts including one pre-model failure",
+      "sample_n": 17,
+      "scope": "Execution accounting only;16unique outputs/17attempts, no behavior-performance claim.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "execution_summary",
+        "queue_attempts"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "count",
+      "value": 17,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "Explicit v01 logical correction retries",
+      "sample_n": 1,
+      "scope": "Execution accounting only;16unique outputs/17attempts, no behavior-performance claim.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "execution_summary",
+        "logical_error_retries"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "count",
+      "value": 1,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "2B generation mean",
+      "sample_n": 16,
+      "scope": "Saved generate interval over16selected view conditions; excludes source decoding/loading; different capacity+quantization and output lengths, not a general throughput benchmark.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "baseline_timing",
+        "generation_seconds",
+        "mean"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 3.1049473678140203,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "2B generation median",
+      "sample_n": 16,
+      "scope": "Saved generate interval over16selected view conditions; excludes source decoding/loading; different capacity+quantization and output lengths, not a general throughput benchmark.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "baseline_timing",
+        "generation_seconds",
+        "median"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 3.042972343508154,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "2B generation sum",
+      "sample_n": 16,
+      "scope": "Saved generate interval over16selected view conditions; excludes source decoding/loading; different capacity+quantization and output lengths, not a general throughput benchmark.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "baseline_timing",
+        "generation_seconds",
+        "sum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 49.679157885024324,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B generation mean",
+      "sample_n": 16,
+      "scope": "Saved generate interval over16selected view conditions; excludes source decoding/loading; different capacity+quantization and output lengths, not a general throughput benchmark.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "candidate_timing",
+        "generation_seconds",
+        "mean"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 7.430095960626204,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B generation median",
+      "sample_n": 16,
+      "scope": "Saved generate interval over16selected view conditions; excludes source decoding/loading; different capacity+quantization and output lengths, not a general throughput benchmark.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "candidate_timing",
+        "generation_seconds",
+        "median"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 7.757958827001858,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B generation sum",
+      "sample_n": 16,
+      "scope": "Saved generate interval over16selected view conditions; excludes source decoding/loading; different capacity+quantization and output lengths, not a general throughput benchmark.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "candidate_timing",
+        "generation_seconds",
+        "sum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 118.88153537001926,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B model loading total",
+      "sample_n": 16,
+      "scope": "Separate16fresh loads/quantization; no comparable per-condition historical load measurement.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "candidate_timing",
+        "load_seconds",
+        "sum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 101.72569252600078,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B initial validation total",
+      "sample_n": 16,
+      "scope": "Lease/source/input/weight/environment integrity before Torch import.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "candidate_timing",
+        "initial_validation_seconds",
+        "sum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 526.5409234209801,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B preload validation total",
+      "sample_n": 16,
+      "scope": "Repeated integrity/gate checks and device initialization, separate from generation.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "candidate_timing",
+        "preload_validation_seconds",
+        "sum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 531.0937387209851,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B preparation total",
+      "sample_n": 16,
+      "scope": "Includes source decode, official processor and evidence writes; scope differs from old analyze preparation.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "candidate_timing",
+        "prepare_seconds",
+        "sum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "seconds",
+      "value": 65.02628503198503,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "2B analyze allocator allocated peak",
+      "sample_n": 16,
+      "scope": "old allocator reset before preparation/input transfer/generation; resident model included",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "baseline_analyze_peak_allocated_bytes",
+        "maximum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "bytes",
+      "value": 4665041408,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B generation allocator allocated peak",
+      "sample_n": 16,
+      "scope": "generation allocator reset after input transfer; loading peak separately measured; not controlled overall memory reduction",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "generation_peak_allocated_bytes",
+        "maximum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "bytes",
+      "value": 4040090112,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B loading allocator allocated peak",
+      "sample_n": 16,
+      "scope": "Separate loading/quantization interval; allocator only, not device total.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "load_peak_allocated_bytes",
+        "maximum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "bytes",
+      "value": 4112515072,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "4B generation allocator reserved peak",
+      "sample_n": 16,
+      "scope": "generation allocator reset after input transfer; loading peak separately measured; not controlled overall memory reduction",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "generation_peak_reserved_bytes",
+        "maximum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "bytes",
+      "value": 4177526784,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "Minimum free memory before model load",
+      "sample_n": 16,
+      "scope": "Fixed6144MiB gate; snapshot before each of16loads, unrelated processes not reserved.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "costs",
+        "pre_model_free_mib",
+        "minimum"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "MiB",
+      "value": 6321,
+      "verification": "hash_bound_saved_output_CPU_rebuild"
+    },
+    {
+      "label": "Final behavior accuracy",
+      "sample_n": null,
+      "scope": "Not measured; selected diagnostic windows and unresolved input/grounding boundaries do not support a final metric.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "final_metrics",
+        "accuracy"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "not established",
+      "value": null,
+      "verification": "not_measured"
+    },
+    {
+      "label": "Final behavior precision",
+      "sample_n": null,
+      "scope": "Not measured; selected diagnostic windows and unresolved input/grounding boundaries do not support a final metric.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "final_metrics",
+        "precision"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "not established",
+      "value": null,
+      "verification": "not_measured"
+    },
+    {
+      "label": "Final behavior recall",
+      "sample_n": null,
+      "scope": "Not measured; selected diagnostic windows and unresolved input/grounding boundaries do not support a final metric.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "final_metrics",
+        "recall"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "not established",
+      "value": null,
+      "verification": "not_measured"
+    },
+    {
+      "label": "Final behavior F1",
+      "sample_n": null,
+      "scope": "Not measured; selected diagnostic windows and unresolved input/grounding boundaries do not support a final metric.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "final_metrics",
+        "F1"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "not established",
+      "value": null,
+      "verification": "not_measured"
+    },
+    {
+      "label": "Final behavior FPR",
+      "sample_n": null,
+      "scope": "Not measured; selected diagnostic windows and unresolved input/grounding boundaries do not support a final metric.",
+      "source": "records/EXP-0020/comparison.json",
+      "source_pointer": [
+        "final_metrics",
+        "FPR"
+      ],
+      "source_sha256": "dfd3006e0d64e25ddcffbe4a6f759cab0714bc02e2dc69de044045fd327006df",
+      "unit": "not established",
+      "value": null,
+      "verification": "not_measured"
+    }
+  ],
+  "schema_version": 1,
+  "source_bindings": {
+    "continuation_commit": "78ba67df03f9a2f3307d85488d7f201eed119924",
+    "manifest_sha256": "7299ae7ab1f27b12727815c5e4f2c4547587e9dd7b18fe6438235d99a9dae237",
+    "original_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+    "report_builder_sha256": "5b616356c42af8870acb3d85c6ce5dafca16d9f161070c74dad97d6f159af605"
+  }
+}

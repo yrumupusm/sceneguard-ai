@@ -1280,6 +1280,107 @@
       "task_id": "task_5dbd99e6ff9a",
       "title": "BATCH-0002 native CV comparison",
       "worker_opinion": "같은 원본 PTS 11개에서 기술 실행과 반환값 비교를 확인했다. 박스 개수 증가를 실제 사람 복원으로 해석하지 않으며 기본 CV와 결합 PoC를 채택하지 않는다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T16:42:47.196834+00:00",
+      "attempt_id": "fixed-16views-with-one-metadata-retry",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_0d176c9c2889",
+      "evaluated_model": "Qwen3-VL-4B-Instruct NF4 language/BF16 vision versus stored original-prompt Qwen3-VL-2B BF16",
+      "evidence": [
+        {
+          "artifact_id": "exp0020-source-q04",
+          "kind": "video",
+          "label": "q04 원본 참고: 007 62.5–67.5초"
+        },
+        {
+          "artifact_id": "exp0020-source-q05",
+          "kind": "video",
+          "label": "q05 원본 참고: 접근 장면"
+        },
+        {
+          "artifact_id": "exp0020-source-v01",
+          "kind": "video",
+          "label": "v01 원본 참고: 004 60–65초"
+        },
+        {
+          "artifact_id": "exp0020-source-v03",
+          "kind": "video",
+          "label": "v03 원본 참고: 021 65–70초, 경계 관계 미확정"
+        },
+        {
+          "artifact_id": "exp0020-input-q03_B",
+          "kind": "image",
+          "label": "q03_B 실제 processor 입력 10프레임 표시 (정답 아님)"
+        },
+        {
+          "artifact_id": "exp0020-input-q04_B",
+          "kind": "image",
+          "label": "q04_B 실제 processor 입력 10프레임 표시 (정답 아님)"
+        },
+        {
+          "artifact_id": "exp0020-input-q04_C",
+          "kind": "image",
+          "label": "q04_C 실제 processor 입력 10프레임 표시 (정답 아님)"
+        },
+        {
+          "artifact_id": "exp0020-input-q05_B",
+          "kind": "image",
+          "label": "q05_B 실제 processor 입력 10프레임 표시 (정답 아님)"
+        },
+        {
+          "artifact_id": "exp0020-input-q06_B",
+          "kind": "image",
+          "label": "q06_B 실제 processor 입력 10프레임 표시 (정답 아님)"
+        },
+        {
+          "artifact_id": "exp0020-input-v01_full_frame",
+          "kind": "image",
+          "label": "v01 실제 processor 입력 10프레임 표시 (양성 관찰, 모델은 형식 실패)"
+        },
+        {
+          "artifact_id": "exp0020-input-v03_full_frame",
+          "kind": "image",
+          "label": "v03 실제 processor 입력 10프레임 표시 (경계 관계 미확정, 모델 형식 실패)"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0020",
+      "limitations": [
+        "10개 선택 개발창의16개 view이며 카메라/세션 독립 테스트가 아니다. 정확도/F1/FPR을 산출하지 않는다.",
+        "모델 용량과 양자화가 함께 달라졌으며 차이를 어느 한 요소의 효과로 분리하지 않는다.",
+        "과거 q 원 실행의 processor RGB/확장 질문은 미저장이고, 새 q는 EXP17 저장 RGB와 대조했다. 네 v는 원래 저장 RGB/확장 질문과 정확히 일치한다.",
+        "빈 행동 목록6개는 파싱 실패로 후보 판단이 null이다. 정상 또는 적절한 판단 유보로 보정하지 않는다.",
+        "q04 B/C 개별 가시성, v03 바위 올라섬의 경계 관계는 미확정이다. q06의 사람 부재는030 155–160초에만 적용한다.",
+        "메모리 초기화/측정 구간과 준비·로딩 구조가 달라 동일 범위의 메모리 절감률이나 전체 영상 FPS를 계산하지 않는다.",
+        "세부 행동/물체/사람 역할에 대한 평가는 저장 텍스트와 사용자 기록의 대조 초안이며 새 시각 정답이 아니다.",
+        "v01의 모델 로딩 전 metadata 오류와 논리적 retry1을 보존했다. 완료한12개 q 결과를 다시 생성하지 않았다."
+      ],
+      "metric_definitions": "records/EXP-0020/metrics.json",
+      "metrics_path": "records/EXP-0020/metrics.json",
+      "metrics_sha256": "68ff7e077f97c02e0f5bed0ba70d0cd3ab8e8f740be2310c84fda15408e4927f",
+      "next_step": "이번 배치는 종료하며 추가 추론을 예약하지 않는다. 다음 별도 검증 후보는 동일4B와 원래 질문에서 배경 기준 고정 감시 영역 입력 한 축의 비교다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "0e588bac7fd23a08dbcc6c43f41cd443e1e36593a30f6487ab0e4ab848c77963",
+      "report_path": "docs/experiments/EXP-0020-vlm-comparison.md",
+      "report_sha256": "9dc4ac83f6c169ce805038effdf1e404f13d2130d03d7b69e4c906ec9e6c054f",
+      "review_binding_path": "docs/reviews/EXP-0020.binding.json",
+      "review_path": "docs/reviews/EXP-0020-independent-review.md",
+      "review_sha256": "55ef40e57689a432d1e857f8ddd347b664b8c8ee8a8a3054e3299c6b93d550f9",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "68ff7e077f97c02e0f5bed0ba70d0cd3ab8e8f740be2310c84fda15408e4927f",
+      "reviewed_report_sha256": "9dc4ac83f6c169ce805038effdf1e404f13d2130d03d7b69e4c906ec9e6c054f",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "Qwen4B NF4의 고정16개 view 생성을 완료했다. 접근 장면의 일부 잘못된 후보는 줄었지만6개 형식 실패, q04 B 후보 부재, v01의 유효 판정 부재와 근거 없는 완료 주장이 남아 기본 적용을 보류한다.",
+      "synthetic": false,
+      "task_id": "task_cf14cc142ed2",
+      "title": "BATCH-0002 Qwen4B comparison",
+      "worker_opinion": "기술 실행·형식·후보 분류·근거의 사실성을 분리했다. q04 C 후보 유지와 일부 비사건 후보 제거는 관찰됐지만 양성 출력 손실과 완료/경계 설명 오류가 남는다. 기본 모델과 CV 결합은 채택하지 않는다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

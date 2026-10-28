@@ -1,6 +1,19 @@
 # SceneGuard — 다음 작업과 대화 인수인계
 
-## 최신 상태 — EXP-0017 실제 비교 종료 (2026-10-29)
+## 최신 상태 — BATCH-0002 모델 대안 비교 종료 (2026-10-29)
+
+- 최신 [종합 결론](experiments/BATCH-0002-summary.md), [입력 감사 EXP-0018](experiments/EXP-0018-input-audit.md), [CV EXP-0019](experiments/EXP-0019-cv-comparison.md), [VLM EXP-0020](experiments/EXP-0020-vlm-comparison.md), [전달 기록](experiments/BATCH-0002-delivery.md)을 우선한다. 사용자 지침 `1a06f6c`는 로컬 변경·기존 결과를 보존해 fast-forward로 받았으며 강제 reset/stash는 없었다.
+- 기존 Astra max 총괄, Sol high 담당, Astra high 검토와 Run `run_3d23462a014a`/canonical GPU queue를 사용했다. CV 담당 `task_5dbd99e6ff9a` / `ctx_0578048b13d3`, VLM 담당 `task_cf14cc142ed2` / `ctx_0d176c9c2889`, VLM 독립 검토 `task_f5ce741eef6c` / `ctx_0fd8c4b82c38`. 실효 모델·역할과 검토별 별도 Task는 각 보고서에 기록했다.
+- 입력 감사 20개 저장 variant/200개 프레임 관측/103개 고유 source RGB를 대조했다. q original processor RGB/expanded prompt 미저장 한계는 유지한다. v original 입력과 새 4B의 RGB/확장 질문은 정확히 대조했다. 사용자 새 관찰 q04 발 올림, v01 줄 넘은 뒤 반대편에 서 있음, v03 문 옆 바위 올라섬을 별도 revision으로 기록했다.
+- RF-DETR Medium FP32는 11개 native PTS에서 예측을 한 번씩 완료했다. FCOS 030:90 최종 박스 0→RF 1이지만 실제 사람 대응·부분 신체·배경 구분은 미확정이다. 박스 수를 복원 성공으로 해석하지 않는다. CV 2개 job/attempt, 오류/OOM/retry 0이다.
+- Qwen4B NF4는 원래 질문/기존 ROI/10프레임 2fps를 유지해 16개 view를 한 번씩 생성했다. q01/q06 B·C, v01/v03의 6개 형식 실패를 판정 null로 남겼다. q02/q03/q05의 여섯 유효 view에서 잘못된 후보 4→0, q04 C 유지/B 누락, v04 후보 제거를 확인했으나 완료 근거 오류와 양성 v01 출력 실패가 남았다. 기본 적용은 보류다.
+- 오류 복구: v01 첫 attempt `c3ae75c0bcdc4ce0af2cfb4a694edd1b`가 모델 로딩 전 과거 metadata의 `rgb_sha256` 부재로 실패했다. 원 메타데이터·원 실패·12개 성공 출력/old33 rows를 보존하고 per-frame/full-frame 집계 해시를 함께 확인하는 CPU 호환성 수정만 했다. 별도 source freeze `78ba67d`, 연결된 retry1 job의 첫 생성 attempt `3bc7c54ea12d47edaadb45da6025e618`로 논리적 retry 한 번을 사용했다. 기존 q 소스는 `952c52f`, 나머지 네 v는 수정 소스다. SQL trigger/queue schema 변경이나 source hash 우회는 없다.
+- 28개 관련 회귀 검사와 전체 115개 중 113개 통과/2개 skip, 실제 네 v의 CPU processor parity 검증을 기록했다. 초기 fixture 오류와 기존 interruption 테스트의 순서 경합 실패는 별도 보존한다. VLM 새 queue 합계17 jobs/17 attempts는 16성공+준비 실패1이며 생성은16회다. 추론 오류/OOM과 파싱/행동 오류를 분리한다.
+- 비용: 동일 저장16 view의 2B 평균 생성3.105초·준비/전송/생성 allocator peak 최대4.345GiB, 4B 평균7.430초·생성 peak3.763GiB/로딩 peak3.830GiB. 초기화 시점이 달라 동일 범위의 메모리 절감률로 읽지 않는다. 새 load/원본 디코딩/processor/파일 검증/queue 비용은 별도다. 용량과 양자화가 함께 달라진 관측이며 실시간 관제 지연이나 모델 크기 단독 효과가 아니다.
+- **결정:** 신규 두 모델 기본 적용 보류, CV+VLM PoC는 실제 상호 보완 증거 부족으로 미실행. 기존 CV/MVP/EXP-0006 보류 유지. 개발창·미확정 사람 정답으로 정확도/F1/FPR을 만들지 않는다. 다음 별도 검증 후보는 동일4B/질문에서 배경 기준 고정 ROI 입력 한 축이며 이번에 실행하지 않는다.
+- 입력/CV/VLM의 독립 검토·기존 웹 등록·실제 브라우저·GitHub 확인은 전달 기록을 따른다. 주요 단계 커밋은 `3e9a6bb`(감사 계약), `e0dc11a`(검토/검출기 소스), `d5f6406`(입력 전달), `952c52f`(4B 소스), `9ee6753`(CV 결과), `78ba67d`(입력 호환성/한정 retry)이며 최종 결과/전달 커밋은 별도 이어진다. 로컬 미디어·raw 결과·weights·환경·DB·인증정보는 제외한다. **배치 종료 후 추가 GPU 작업·모델 탐색·자동 재시도를 남기지 않는다.**
+
+## 보존된 상태 — EXP-0017 실제 비교 종료 (2026-10-29)
 
 - 사용자가 인증을 완료한 뒤 기존 미게시 main을 정상 HTTPS git push로 `64ab297`까지 동기화했다. 강제 push/reset/stash는 하지 않았다.
 - GPU 최초 여유 8129 MiB, 각 runner gate 8015–8026 MiB로 고정 최소 6144 MiB를 통과했다. 기존 Run/단일 queue에서 4개 job·20개 새 응답 완료, 오류/OOM/retry 0. 원래 EXP-0016 저장 namespace의 새 attempt들을 EXP-0017로 별도 기록했다.

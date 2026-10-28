@@ -1,660 +1,2632 @@
 {
-  "schema_version": 1,
-  "experiment": "EXP-0020",
-  "rubric": {
-    "candidate": "any climbing_attempt_or_in_progress or stepping_over_boundary action",
-    "indeterminate": "indeterminate action, separately from parse failure",
-    "other": "valid parsed response without candidate/indeterminate",
-    "completion": "crossing_completion observed reported separately; q04 observed is unsupported",
-    "raw_schema": "strict original JSON schema independently of common outer-fence removal",
-    "common_fence_removal": "existing vlm_batch.common.parse_pair; no semantic repair",
-    "evidence_consistency": "manual local review of saved exact input required; unreviewed is null",
-    "cost": "load/prepare/generate/queue/output tokens/memory separately; no speed or cost invented",
-    "reference_views": "retain original references and separate new sampled-input review; v03 boundary truth unestablished"
+  "adoption": "hold: schema-invalid positive/negative responses, v01 boundary denial, q04_B noncandidate and unsupported completion/grounding claims remain; no further inference authorized",
+  "completed_conditions": 16,
+  "costs": {
+    "all17_queue_attempt_seconds": 1720.1437520980835,
+    "baseline_analyze_peak_allocated_bytes": {
+      "maximum": 4665041408,
+      "mean": 4660450880,
+      "median": 4664171008.0,
+      "minimum": 4649967616,
+      "observations": 16
+    },
+    "baseline_analyze_peak_reserved_bytes": {
+      "maximum": 5026873344,
+      "mean": 4874305536,
+      "median": 4844421120.0,
+      "minimum": 4802478080,
+      "observations": 16
+    },
+    "baseline_cost_scope": "stored per-window results; historical shared model loads not measured per condition; old preparation excludes source decode and current evidence writes, so preparation scopes differ",
+    "baseline_memory_scope": "old allocator reset before preparation/input transfer/generation; resident model included",
+    "baseline_output_tokens": 1513,
+    "baseline_timing": {
+      "generation_seconds": {
+        "maximum": 5.047238611994544,
+        "mean": 3.1049473678140203,
+        "median": 3.042972343508154,
+        "minimum": 2.330835237982683,
+        "observations": 16,
+        "sum": 49.679157885024324
+      },
+      "prepare_seconds": {
+        "maximum": 0.12678494700230658,
+        "mean": 0.08573358899593586,
+        "median": 0.09487958849058487,
+        "minimum": 0.04303445998812094,
+        "observations": 16,
+        "sum": 1.3717374239349738
+      }
+    },
+    "candidate_memory_scope": "generation allocator reset after input transfer; loading peak separately measured; not controlled overall memory reduction",
+    "candidate_timing": {
+      "child_total_seconds": {
+        "maximum": 105.19996120402357,
+        "mean": 86.11872274999769,
+        "median": 86.91894954550662,
+        "minimum": 51.24696267899708,
+        "observations": 16,
+        "sum": 1377.899563999963
+      },
+      "generation_seconds": {
+        "maximum": 8.732298562012147,
+        "mean": 7.430095960626204,
+        "median": 7.757958827001858,
+        "minimum": 5.5588439679995645,
+        "observations": 16,
+        "sum": 118.88153537001926
+      },
+      "initial_validation_seconds": {
+        "maximum": 41.58634595701005,
+        "mean": 32.90880771381126,
+        "median": 32.8514105475042,
+        "minimum": 15.692812633002177,
+        "observations": 16,
+        "sum": 526.5409234209801
+      },
+      "input_transfer_seconds": {
+        "maximum": 0.01626352101447992,
+        "mean": 0.006672468693068367,
+        "median": 0.00497924599039834,
+        "minimum": 0.00374102100613527,
+        "observations": 16,
+        "sum": 0.10675949908909388
+      },
+      "load_seconds": {
+        "maximum": 7.580308242002502,
+        "mean": 6.357855782875049,
+        "median": 6.320904590509599,
+        "minimum": 5.022331664978992,
+        "observations": 16,
+        "sum": 101.72569252600078
+      },
+      "preload_validation_seconds": {
+        "maximum": 43.76155515998835,
+        "mean": 33.19335867006157,
+        "median": 33.213869817511295,
+        "minimum": 15.840643622999778,
+        "observations": 16,
+        "sum": 531.0937387209851
+      },
+      "prepare_seconds": {
+        "maximum": 6.480691449978622,
+        "mean": 4.064142814499064,
+        "median": 3.92465675449057,
+        "minimum": 1.5915664519998245,
+        "observations": 16,
+        "sum": 65.02628503198503
+      },
+      "queue_wait_seconds": {
+        "maximum": 0.07857203483581543,
+        "mean": 0.06927630305290222,
+        "median": 0.07099854946136475,
+        "minimum": 0.06029343605041504,
+        "observations": 16,
+        "sum": 1.1084208488464355
+      }
+    },
+    "currency": "USD",
+    "device_memory_scope": "PyTorch allocator peaks; pre-model nvidia-smi snapshots separately",
+    "electricity_cost": null,
+    "external_paid_api_cost": 0,
+    "first_job_created_to_last_attempt_finished_seconds": 4430.253630876541,
+    "generated_outputs": 16,
+    "generation_peak_allocated_bytes": {
+      "maximum": 4040090112,
+      "mean": 4035040384,
+      "median": 4040090112.0,
+      "minimum": 4023678976,
+      "observations": 16
+    },
+    "generation_peak_reserved_bytes": {
+      "maximum": 4177526784,
+      "mean": 4177526784,
+      "median": 4177526784.0,
+      "minimum": 4177526784,
+      "observations": 16
+    },
+    "interval_scope": "includes idle/review/metadata-repair pauses; not GPU busy time",
+    "load_peak_allocated_bytes": {
+      "maximum": 4112515072,
+      "mean": 4112515072,
+      "median": 4112515072.0,
+      "minimum": 4112515072,
+      "observations": 16
+    },
+    "load_peak_reserved_bytes": {
+      "maximum": 4173332480,
+      "mean": 4173332480,
+      "median": 4173332480.0,
+      "minimum": 4173332480,
+      "observations": 16
+    },
+    "output_token_limit_hits": 0,
+    "output_tokens": 1523,
+    "pre_model_free_mib": {
+      "maximum": 7733,
+      "mean": 6748.3125,
+      "median": 6452.0,
+      "minimum": 6321,
+      "observations": 16
+    },
+    "preparation_scope": "source decode, official processor, saved evidence and input artifacts",
+    "successful_queue_attempt_seconds": 1663.6157188415527,
+    "validation_scope": "initial lease/input/source checks plus preload revalidation/gate/CUDA initialization; not model inference"
   },
-  "planned_conditions": 16,
-  "completed_conditions": 0,
-  "results": [
-    {
-      "condition_id": "q01_B",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "observed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "67958ee700942f4d0e0ef8971761f5b87b5dcb215f77e8ef6302a53ce32f9cd9",
-      "baseline_timing": {
-        "generation_seconds": 3.009868749999441,
-        "prepare_seconds": 0.12219349198858254
-      },
-      "baseline_output_tokens": 68,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664007168,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": false,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
+  "denominators": {
+    "negative_view_conditions": 12,
+    "q_view_conditions": 12,
+    "selected_development_diagnostic_only": true,
+    "unique_negative_windows": 7,
+    "unique_sources": 4,
+    "unique_windows": 10,
+    "v_view_conditions": 4,
+    "view_conditions": 16
+  },
+  "execution_summary": {
+    "continuation_source_commit": "78ba67df03f9a2f3307d85488d7f201eed119924",
+    "continuation_source_hash": "f7c7a461f0dc94b6e78a2d8c4ed1db6cde08ccfa1b3fd90b534ca3f5d524eac1",
+    "failed_attempt": {
+      "attempt_id": "c3ae75c0bcdc4ce0af2cfb4a694edd1b",
+      "elapsed_seconds": 36.152215083973715,
+      "error": "KeyError('rgb_sha256')",
+      "error_type": "KeyError",
+      "generated_tokens_saved": false,
+      "generation": false,
       "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
+      "job_id": "0b9a0a852237499f8846aa3563f0e10f",
+      "logical_condition_attempt": 1,
+      "model_construction": false,
+      "oom": false,
+      "queue_attempt_seconds": 56.52803325653076,
+      "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+      "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+      "stage": "prepare",
+      "timing": {
+        "initial_validation_seconds": 32.61252041897387,
+        "prepare_elapsed_seconds": 1.32139249498141
+      }
     },
-    {
-      "condition_id": "q01_C",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "not_confirmed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "df28a5e05630076f6cd79c88143aed1d8ef1af19a8082c9f8d057c718008f16c",
-      "baseline_timing": {
-        "generation_seconds": 3.579281226004241,
-        "prepare_seconds": 0.06745181797305122
-      },
-      "baseline_output_tokens": 103,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4649967616,
-        "peak_reserved_bytes": 4802478080
-      },
-      "negative_false_candidate_baseline": false,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q02_B",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": true,
-        "indeterminate": false,
-        "other": false,
-        "completion": "observed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "3cc1483e3998e707dba14454b2fd248a531ae9f061653128249d49980e772ef3",
-      "baseline_timing": {
-        "generation_seconds": 2.4814980429946445,
-        "prepare_seconds": 0.11005722999107093
-      },
-      "baseline_output_tokens": 82,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664334848,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": true,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q02_C",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "observed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "5baaf5a165e38ec1e93f8103b78c405364d6870842175d0bb057a0ebda7718e5",
-      "baseline_timing": {
-        "generation_seconds": 2.7612635340192355,
-        "prepare_seconds": 0.04997833599918522
-      },
-      "baseline_output_tokens": 96,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4651324416,
-        "peak_reserved_bytes": 4802478080
-      },
-      "negative_false_candidate_baseline": false,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q03_B",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "observed",
-        "strict_schema": false,
-        "common_schema": true,
-        "postprocessing": "outer_json_fence_removed",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "90241fcf2c7768256de5fbb98be0fe3e420047ead5e3ac494c87e5a8df80929e",
-      "baseline_timing": {
-        "generation_seconds": 2.638122335978551,
-        "prepare_seconds": 0.09903355699498206
-      },
-      "baseline_output_tokens": 91,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664334848,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": false,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q03_C",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": true,
-        "indeterminate": false,
-        "other": false,
-        "completion": "observed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "3a6d8ccf41f2bf07935b8b76cec185c76dfe3ece4d1ca6ad2bc1bf1863d402f2",
-      "baseline_timing": {
-        "generation_seconds": 3.076075937016867,
-        "prepare_seconds": 0.04303445998812094
-      },
-      "baseline_output_tokens": 101,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4651324416,
-        "peak_reserved_bytes": 4802478080
-      },
-      "negative_false_candidate_baseline": true,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q04_B",
-      "reference": {
-        "prior": "attempt_progress; completion not observed",
-        "sampled_input": "holding gate / foot raising; B/C individually unconfirmed",
-        "boundary_candidate_reference": true,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "not_confirmed",
-        "strict_schema": false,
-        "common_schema": true,
-        "postprocessing": "outer_json_fence_removed",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "ed8ad4a1f6e76bf9bb31bfc0e3f27cc48b1c8382b6ee6d3fed443a5c0af98270",
-      "baseline_timing": {
-        "generation_seconds": 3.11173076601699,
-        "prepare_seconds": 0.10821944900089875
-      },
-      "baseline_output_tokens": 102,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664334848,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": null,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q04_C",
-      "reference": {
-        "prior": "attempt_progress; completion not observed",
-        "sampled_input": "holding gate / foot raising; B/C individually unconfirmed",
-        "boundary_candidate_reference": true,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": true,
-        "indeterminate": false,
-        "other": false,
-        "completion": "indeterminate",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "b29df253c9682a7b5173098b32740f11612bff80e6823e0f7425145216f54000",
-      "baseline_timing": {
-        "generation_seconds": 3.447762668976793,
-        "prepare_seconds": 0.04586679601925425
-      },
-      "baseline_output_tokens": 123,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4651324416,
-        "peak_reserved_bytes": 4802478080
-      },
-      "negative_false_candidate_baseline": null,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q05_B",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": true,
-        "indeterminate": false,
-        "other": false,
-        "completion": "observed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "cddc8004dcfecc2e4a04c0888f11be8d23d733a3987a3af380af9a8fbb15ad0a",
-      "baseline_timing": {
-        "generation_seconds": 2.397994867002126,
-        "prepare_seconds": 0.10996682901168242
-      },
-      "baseline_output_tokens": 85,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4665041408,
-        "peak_reserved_bytes": 5026873344
-      },
-      "negative_false_candidate_baseline": true,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q05_C",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": true,
-        "indeterminate": false,
-        "other": false,
-        "completion": "observed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "2b6c18d9347dbde6f32d289825e4c288c9db82b36aa0fb1667d921c6c6a2e555",
-      "baseline_timing": {
-        "generation_seconds": 2.9377848909934983,
-        "prepare_seconds": 0.05025335497339256
-      },
-      "baseline_output_tokens": 94,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4659583488,
-        "peak_reserved_bytes": 4984930304
-      },
-      "negative_false_candidate_baseline": true,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q06_B",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "not_confirmed",
-        "strict_schema": false,
-        "common_schema": true,
-        "postprocessing": "outer_json_fence_removed",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "5b9486cf4a5bb4ebfaf1fc7e84c8155da17ff6cee20f2cc754ebdf9e13af2ce0",
-      "baseline_timing": {
-        "generation_seconds": 3.2532326520013157,
-        "prepare_seconds": 0.10624484700383618
-      },
-      "baseline_output_tokens": 103,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4665041408,
-        "peak_reserved_bytes": 5026873344
-      },
-      "negative_false_candidate_baseline": false,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "q06_C",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "not_confirmed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "b71d801c3f96d4d8edc0354962dd0730e665bdabd259a81b25c2f80f0d854672",
-      "baseline_timing": {
-        "generation_seconds": 2.330835237982683,
-        "prepare_seconds": 0.050920412002597004
-      },
-      "baseline_output_tokens": 76,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4659583488,
-        "peak_reserved_bytes": 4984930304
-      },
-      "negative_false_candidate_baseline": false,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "v01_full_frame",
-      "reference": {
-        "prior": "attempt_progress; completion previously unassessed",
-        "sampled_input": "rope/line crossed then standing opposite; not exhaustive per person",
-        "boundary_candidate_reference": true,
-        "completion_support": "visible reviewed action only"
-      },
-      "baseline": {
-        "candidate": true,
-        "indeterminate": false,
-        "other": false,
-        "completion": "observed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "b71258684b299542f32f2a76dd3fc39c4c684ac5e8927adcb73c3efc1a75e679",
-      "baseline_timing": {
-        "generation_seconds": 3.9782733930042014,
-        "prepare_seconds": 0.08102996600791812
-      },
-      "baseline_output_tokens": 119,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664334848,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": null,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "v02_full_frame",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "not_confirmed",
-        "strict_schema": true,
-        "common_schema": true,
-        "postprocessing": "none",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "3c152da06e86cf4ec78dd62e9cd4b70fd9fb255dac749d03ec861606f36ff550",
-      "baseline_timing": {
-        "generation_seconds": 5.047238611994544,
-        "prepare_seconds": 0.09072561998618767
-      },
-      "baseline_output_tokens": 119,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664007168,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": false,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "v03_full_frame",
-      "reference": {
-        "prior": "adjacent-gap attempt_progress; boundary relation ambiguous; completion unassessed",
-        "sampled_input": "rock ascent beside gate; boundary crossing not established",
-        "boundary_candidate_reference": null,
-        "completion_support": null,
-        "candidate_absence_definitive_boundary_miss": false
-      },
-      "baseline": {
-        "candidate": false,
-        "indeterminate": false,
-        "other": true,
-        "completion": "not_confirmed",
-        "strict_schema": false,
-        "common_schema": true,
-        "postprocessing": "outer_json_fence_removed",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "2740525a97e01e608999997044482ddd5c0dab38f8c6a09649bcc05ecf3d2979",
-      "baseline_timing": {
-        "generation_seconds": 2.419670657021925,
-        "prepare_seconds": 0.10997630999190733
-      },
-      "baseline_output_tokens": 76,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664334848,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": null,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    },
-    {
-      "condition_id": "v04_full_frame",
-      "reference": {
-        "prior": "no attempt_progress / approach only or no person",
-        "sampled_input": "no new positive review",
-        "boundary_candidate_reference": false,
-        "completion_support": false
-      },
-      "baseline": {
-        "candidate": true,
-        "indeterminate": false,
-        "other": false,
-        "completion": "observed",
-        "strict_schema": false,
-        "common_schema": true,
-        "postprocessing": "outer_json_fence_removed",
-        "evidence_consistency": null,
-        "parse_failure": false
-      },
-      "candidate": null,
-      "baseline_result_sha256": "2037143fa5f5f5eb14660de97e13b3ece693d6475dbb617a1cf3596802effe4b",
-      "baseline_timing": {
-        "generation_seconds": 3.208524314017268,
-        "prepare_seconds": 0.12678494700230658
-      },
-      "baseline_output_tokens": 75,
-      "baseline_gpu_memory": {
-        "peak_allocated_bytes": 4664334848,
-        "peak_reserved_bytes": 4844421120
-      },
-      "negative_false_candidate_baseline": true,
-      "negative_false_candidate_4b": null,
-      "q04_candidate_retained": null,
-      "timing": null,
-      "output_tokens": null,
-      "gpu_memory": null,
-      "evidence_consistency_review": "pending local human review",
-      "cost": null
-    }
-  ],
-  "status": "awaiting_execution",
+    "generations": 16,
+    "logical_error_retries": 1,
+    "oom": 0,
+    "original_source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+    "original_source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+    "preserved_pre_model_failures": 1,
+    "prior33_rows_unchanged": true,
+    "queue_attempts": 17,
+    "queue_jobs": 17,
+    "remaining_conditions": [],
+    "successful_generated_conditions": 16
+  },
+  "experiment": "EXP-0020",
   "final_metrics": {
+    "F1": null,
+    "FPR": null,
     "accuracy": null,
     "precision": null,
-    "recall": null,
-    "F1": null,
-    "FPR": null
+    "recall": null
   },
-  "adoption": "hold; bounded development comparison and independent review required",
   "limitations": [
     "capacity and quantization changed together",
     "historical q processor RGB/expanded prompt unavailable",
     "q04 B/C visibility unconfirmed",
     "v03 rock ascent does not establish boundary crossing",
     "seven negative windows are diagnostic; no final accuracy/F1/FPR"
-  ]
+  ],
+  "model": {
+    "actual_quantized_language_linear_modules_per_load": 252,
+    "all_parameters_buffers_and_quant_states_cuda0": true,
+    "id": "Qwen/Qwen3-VL-4B-Instruct",
+    "nonquantized_floating_parameters_bfloat16": true,
+    "quantization": {
+      "bnb_4bit_compute_dtype": "bfloat16",
+      "bnb_4bit_quant_storage": "uint8",
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": true,
+      "llm_int8_enable_fp32_cpu_offload": false,
+      "llm_int8_skip_modules": [
+        "model.visual",
+        "lm_head"
+      ],
+      "load_in_4bit": true
+    },
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17",
+    "settings": {
+      "attention": "sdpa",
+      "batch_size": 1,
+      "device": "cuda:0",
+      "do_sample": false,
+      "dtype": "bfloat16",
+      "execution_error_retries_max": 1,
+      "max_new_tokens": 384,
+      "minimum_gpu_free_mib": 6144,
+      "repetition_penalty": 1.0,
+      "seed": 0
+    },
+    "shards": {
+      "model-00001-of-00002.safetensors": {
+        "bytes": 4967229296,
+        "official_git_blob": "c76bab650cbb4864c0f85f6d3af26ba3fe857165",
+        "sha256": "30a01a0556622645a3cce87b655bbbbbc1f170c196099f1b666c93202c3339a9"
+      },
+      "model-00002-of-00002.safetensors": {
+        "bytes": 3908490048,
+        "official_git_blob": "e2792feb019e73e6f15d89bc62295fd424807583",
+        "sha256": "046296a2a387efb43b0c997d5833c789604d168834f6e0d3064bf7bb13d002a6"
+      }
+    }
+  },
+  "planned_conditions": 16,
+  "provenance": {
+    "continuation_contract_sha256": "8d884f0d8ea7b306e4367308ecc2d305b330de6038db44e02524ed35fee8cb18",
+    "continuation_receipt_sha256": "af29c5cc0b9f92c8592e4097b2e1a817cdc0ef10cced4989e77a9e4ec232c425",
+    "cpu_processor_validation_sha256": "4d0ed51fb58bbf98742d7f689caf0214d6046d7b4f3813d6ab56d59fd46de20f",
+    "environment_frozen_file_count": 19041,
+    "environment_receipt_sha256": "01d8404acdd71270bb38502b7d97f67efcd826eac1388b94ccf8adc3e17d052f",
+    "final_queue_snapshot_sha256": "c54e217572556e2e509c3095249ca87c61a4bee1ef43be58d6c51bb48b52f00e",
+    "focused_test_log_sha256": "75eb7d7a9e679c9c1a03914c9439e5d87078ff6bf5e5a634c9147c8f5d16b35b",
+    "frozen_evaluation_source_sha256": "e2026557282298f3a9bf0b93164a3870a552e9afcebb34f81707be9f89725e0c",
+    "full_test_log_sha256": "d029cf681127da9e64900447e206f2e42dd228b94b6b28a47a30f47efa6996ee",
+    "hardware_receipt_sha256": "497ea5ce8c28448873b6ab1249debb78ed40c272d03be1f1c084fa654be67cf8",
+    "history_snapshot_sha256": "a1ffae8a95be5dee1a7628837a8cfe351a41f6f0a70892cf6aac7edcd5c25f32",
+    "manifest_sha256": "7299ae7ab1f27b12727815c5e4f2c4547587e9dd7b18fe6438235d99a9dae237",
+    "package_versions": {
+      "accelerate": "1.11.0",
+      "av": "16.0.1",
+      "bitsandbytes": "0.48.1",
+      "numpy": "2.2.6",
+      "pillow": "12.3.0",
+      "torch": "2.5.1+cu124",
+      "transformers": "4.57.1"
+    },
+    "prompt_sha256": "049ec4a6274443fcf8e3069914e53b2913aefa6f4a13ca049cc4001fa8def7a6",
+    "report_builder_sha256": "5b616356c42af8870acb3d85c6ce5dafca16d9f161070c74dad97d6f159af605",
+    "source_hash_verification": "both execution freezes and all stored lease/input/config/output artifact bindings; no model load in this rebuild",
+    "validation_history_sha256": "d162ac608ba86c7fb6d4c40737480505c2b8f1e390160fad802dac3c5961019a"
+  },
+  "results": [
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664007168,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 68,
+      "baseline_result_sha256": "67958ee700942f4d0e0ef8971761f5b87b5dcb215f77e8ef6302a53ce32f9cd9",
+      "baseline_timing": {
+        "generation_seconds": 3.009868749999441,
+        "prepare_seconds": 0.12219349198858254
+      },
+      "candidate": {
+        "candidate": null,
+        "common_schema": false,
+        "completion": null,
+        "evidence_consistency": null,
+        "indeterminate": null,
+        "other": null,
+        "parse_failure": true,
+        "postprocessing": "none",
+        "strict_schema": false
+      },
+      "condition_id": "q01_B",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "5dfe46615d454d8984abd05ed819220d",
+        "config_hash": "dbcebf6bc1da4ce26082e108f22c988bfbfc2260780254886b428b83d5cd1897",
+        "created_at": 1793207225.7402372,
+        "finished_at": 1793207325.1276152,
+        "input_hash": "8b5d35d47f7ee0d9414e2f7e5de45e5835b044e697b0d6b030ba0f9daf598a0f",
+        "job_id": "6e3e0a25bb9142d3af3d3bdfcc55c5e0",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 99.3270845413208,
+        "result_sha256": "32360d0efb6e4de7cfecefba905af73f820b16bb89d071b48ee1ca0a6b6c828f",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793207225.8005307
+      },
+      "format_diagnostics": {
+        "common_error": "invalid action list",
+        "empty_action_list": true,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 0,
+        "raw_completion_claim": "observed",
+        "strict_error": "invalid action list"
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "998d30d3bfe8a5c84dfec2554dbadef07f5121c323257a94e9a5df827e01a44c",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "ff4db5f1806337f71890b3cb031330275e3d5ba39f7d4359ed31f64bb712d516",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 4.5,
+          "historical_last_decoded_pts": 5.0,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "2b8721376fb4cf72e25740202aaea221767f9f494b32d27c7ffc83f2c4334269",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": false,
+      "output_tokens": 88,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "No-attempt reference; the new response is unscorable. Its raw completion does not establish a human boundary crossing.",
+        "baseline_paraphrase": "Describes a vehicle and a nearby person, with observed completion.",
+        "candidate_paraphrase": "Describes a passing vehicle and no people; leaves actions empty but still claims completion.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 81.55899330199463,
+        "generation_seconds": 5.5588439679995645,
+        "initial_validation_seconds": 31.616053235979052,
+        "input_transfer_seconds": 0.0047540320083498955,
+        "load_seconds": 7.395247105014278,
+        "preload_validation_seconds": 31.94777893400169,
+        "prepare_seconds": 3.0802070919889957,
+        "queue_wait_seconds": 0.06029343605041504
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4649967616,
+        "peak_reserved_bytes": 4802478080
+      },
+      "baseline_output_tokens": 103,
+      "baseline_result_sha256": "df28a5e05630076f6cd79c88143aed1d8ef1af19a8082c9f8d057c718008f16c",
+      "baseline_timing": {
+        "generation_seconds": 3.579281226004241,
+        "prepare_seconds": 0.06745181797305122
+      },
+      "candidate": {
+        "candidate": null,
+        "common_schema": false,
+        "completion": null,
+        "evidence_consistency": null,
+        "indeterminate": null,
+        "other": null,
+        "parse_failure": true,
+        "postprocessing": "none",
+        "strict_schema": false
+      },
+      "condition_id": "q01_C",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "74eeead0d0624953a80f7ed38bd1d3c4",
+        "config_hash": "d5e6995e39cf68fae66619f10c90fdcff47038ddfbced87d6aba7cd5bd250169",
+        "created_at": 1793207358.6681886,
+        "finished_at": 1793207456.3323364,
+        "input_hash": "0ce5be0d356dd01e8bdb7215fc3ef52f093c8dd85c2f06b4c565ab7aa409dd4f",
+        "job_id": "7365d8dc34c742f7b0411bb95bfb916a",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 97.58777189254761,
+        "result_sha256": "aa1518d2a14af07c213220f97b2f5b6ebc0a8337cefb4ae004da38743861825a",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793207358.7445645
+      },
+      "format_diagnostics": {
+        "common_error": "invalid action list",
+        "empty_action_list": true,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 0,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": "invalid action list"
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4023678976,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "2491e3ca4ed061c8d3d126a9c1617d6f4610dc2f47bf5a3c0f269f2efb9be8ad",
+        "crop_shape": [
+          10,
+          648,
+          576,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "0b162b005c93904b66222b40371af128cc2640edc1234b398c36ffc38302d869",
+        "input_tokens": 1882,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 4.5,
+          "historical_last_decoded_pts": 5.0,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "d90cd160b25faffa55ca04b82caf7c8667483293fe9f180970bf4f200fc6e23e",
+        "processor_shape": [
+          10,
+          3,
+          608,
+          544
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": false,
+      "output_tokens": 70,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "No-attempt reference; empty actions remain a schema failure, not a correct negative. Presence details are unverified.",
+        "baseline_paraphrase": "Describes a person near the gate, with no confirmed completion.",
+        "candidate_paraphrase": "Describes a static gate and no people, leaving actions empty.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 81.29933527699905,
+        "generation_seconds": 6.310806102992501,
+        "initial_validation_seconds": 32.15779394598212,
+        "input_transfer_seconds": 0.00374102100613527,
+        "load_seconds": 5.022331664978992,
+        "preload_validation_seconds": 31.889303097006632,
+        "prepare_seconds": 3.5798751240072306,
+        "queue_wait_seconds": 0.07637596130371094
+      }
+    },
+    {
+      "baseline": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 82,
+      "baseline_result_sha256": "3cc1483e3998e707dba14454b2fd248a531ae9f061653128249d49980e772ef3",
+      "baseline_timing": {
+        "generation_seconds": 2.4814980429946445,
+        "prepare_seconds": 0.11005722999107093
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q02_B",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "990a7815cb374cba952b43cb017171fb",
+        "config_hash": "3450a21050ca24879b1ac534eadf75180dc1e96d2e7410e815ead80318826add",
+        "created_at": 1793207491.1051466,
+        "finished_at": 1793207597.1659374,
+        "input_hash": "ee2083f863d9f0e3e2536d85db9ca42d6230e53dd9c4b81e7ba15173db32159e",
+        "job_id": "821002192be6406a834b90e8c8d0553f",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 105.99107599258423,
+        "result_sha256": "b6369b6f5d6bcb4a638e9cc9716ee94c9ca631b9b3720818a01c3c75c7fab7cc",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793207491.1748614
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 1,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "e141223bdd4058cef8f61d8651757e1ec39527ffa1f4a6c086b72a03c00c4703",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "0cab1e6b934efbcb078284f771e11106d8f05a3647bf849e3d62a2c9ad9396d3",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 52.0,
+          "historical_last_decoded_pts": 52.5,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "8626d0b81186b6268025170a8c24976402210d0120c9eaab86be1f6d42c42c08",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": true,
+      "output_tokens": 91,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "The new action/completion description is compatible with the approach-only reference; detailed visual grounding remains unassessed.",
+        "baseline_paraphrase": "Adds a stepping-over candidate to roadside walking and claims completion.",
+        "candidate_paraphrase": "Describes people approaching the gate without entering; no candidate or confirmed completion.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 86.92752178400406,
+        "generation_seconds": 7.648282726004254,
+        "initial_validation_seconds": 34.5434156130068,
+        "input_transfer_seconds": 0.0049132099957205355,
+        "load_seconds": 5.524030825006776,
+        "preload_validation_seconds": 33.41699844299001,
+        "prepare_seconds": 3.80189236899605,
+        "queue_wait_seconds": 0.06971478462219238
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4651324416,
+        "peak_reserved_bytes": 4802478080
+      },
+      "baseline_output_tokens": 96,
+      "baseline_result_sha256": "5baaf5a165e38ec1e93f8103b78c405364d6870842175d0bb057a0ebda7718e5",
+      "baseline_timing": {
+        "generation_seconds": 2.7612635340192355,
+        "prepare_seconds": 0.04997833599918522
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q02_C",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "42e4f04d9f5a40afb740346737603225",
+        "config_hash": "baf1925bfb76f52ea6bb3e1c911301922bf1db8efb9b95e7e68998d5f26c47dd",
+        "created_at": 1793207630.2004447,
+        "finished_at": 1793207731.8406854,
+        "input_hash": "b731ffbd0682a55bc74627800b9bbcf776e1a6bd032ae31319f2e9600e16c409",
+        "job_id": "211b69c660ea44d8ad59b5a03d2d193c",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 101.56693434715271,
+        "result_sha256": "077589ba94aaca675ec2a0e380e47684bf7694d6e3e645a24f60bb48f0673fe2",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793207630.273751
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 1,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4023678976,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "9558e68779da5cf1b19bb097a208be0f537668403ad0c6253764bb1171055a68",
+        "crop_shape": [
+          10,
+          648,
+          576,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "0b0736ab0f4f3c2432607c8a37c4f30a936e1eb62af2be756d86ffd5eef7acd3",
+        "input_tokens": 1882,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 52.0,
+          "historical_last_decoded_pts": 52.5,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "0d76526c6a3dc2ca166d1d2e42b37c306ef1591ed9f656c0fd37f7ffd29ed436",
+        "processor_shape": [
+          10,
+          3,
+          608,
+          544
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": false,
+      "output_tokens": 87,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "The new completion description better matches the approach-only reference; person details are unverified.",
+        "baseline_paraphrase": "Describes approach but claims observed completion without a candidate.",
+        "candidate_paraphrase": "Describes approach, with neither candidate nor confirmed completion.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 84.89621196698863,
+        "generation_seconds": 6.174163765012054,
+        "initial_validation_seconds": 32.856441809999524,
+        "input_transfer_seconds": 0.01414398301858455,
+        "load_seconds": 6.6764368480071425,
+        "preload_validation_seconds": 32.87084781800513,
+        "prepare_seconds": 4.04742113998509,
+        "queue_wait_seconds": 0.07330632209777832
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "outer_json_fence_removed",
+        "strict_schema": false
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 91,
+      "baseline_result_sha256": "90241fcf2c7768256de5fbb98be0fe3e420047ead5e3ac494c87e5a8df80929e",
+      "baseline_timing": {
+        "generation_seconds": 2.638122335978551,
+        "prepare_seconds": 0.09903355699498206
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q03_B",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "0ef23e7c358d44c6b70e093267574a33",
+        "config_hash": "8b648db2750508fa5bb1ac487450776b3dfab87b5b71163b31de690050ddf9df",
+        "created_at": 1793207763.9446785,
+        "finished_at": 1793207872.5302446,
+        "input_hash": "3931610ff6f079d8f8bcf172be77e5fb39a5a900289b419595defbf6c51055c3",
+        "job_id": "b4e5faf9b35649439d7ee50d7cffa876",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 108.52415490150452,
+        "result_sha256": "944e35bdf9bb7f9928ab0d98318a2c44854c23f405c5abf3161441a332ab1655",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793207764.0060897
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 1,
+        "raw_completion_claim": "observed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "edd815dd6aee3b3d83bd83131c895e14d14672872e47cbd38c5e886fe0d4715c",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "4efcad2a92540a085d5821903dd12772b3df7a3cdb1d6d1e24c06293fa9513b3",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 57.0,
+          "historical_last_decoded_pts": 57.5,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "40b7ddcb5c90c54c563488a678791b00df46b9b48f476db48af2a752faec8224",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": false,
+      "output_tokens": 91,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "The no-attempt reference and the response evidence do not support its completion claim; no candidate alone is insufficient.",
+        "baseline_paraphrase": "Describes approach/waiting without a candidate but claims completion.",
+        "candidate_paraphrase": "Describes walking and pausing, again without a candidate but with observed completion.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 88.92402233899338,
+        "generation_seconds": 8.163072371011367,
+        "initial_validation_seconds": 33.95111427200027,
+        "input_transfer_seconds": 0.01626352101447992,
+        "load_seconds": 5.610829723998904,
+        "preload_validation_seconds": 34.60639157900005,
+        "prepare_seconds": 4.405379868985619,
+        "queue_wait_seconds": 0.061411142349243164
+      }
+    },
+    {
+      "baseline": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4651324416,
+        "peak_reserved_bytes": 4802478080
+      },
+      "baseline_output_tokens": 101,
+      "baseline_result_sha256": "3a6d8ccf41f2bf07935b8b76cec185c76dfe3ece4d1ca6ad2bc1bf1863d402f2",
+      "baseline_timing": {
+        "generation_seconds": 3.076075937016867,
+        "prepare_seconds": 0.04303445998812094
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q03_C",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "4dee9f88dcdc4863893a95e559503b7c",
+        "config_hash": "e2972bc10c91d4fa65db1ae08fe925c9cda0a28ee24ce14cf0ef3f462cc978a7",
+        "created_at": 1793207905.2407131,
+        "finished_at": 1793208008.5688438,
+        "input_hash": "bf48224d297dd82b3c9964facb3b3f57ca092cf237b4802d9fa6c48a969f4402",
+        "job_id": "ef597545346d44f89293260c03e486d0",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 103.26583099365234,
+        "result_sha256": "f259fac81801e02266c13ae6716de0cdbbde88517f10afbec160aa22bf39b2af",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793207905.3030128
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 1,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4023678976,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "f4a3334b45ab5e329232b4d42cc2702021efb7fa8b4dd6acbefdaf3b45b7094e",
+        "crop_shape": [
+          10,
+          648,
+          576,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "e3504b70b5b570d97c4aa4217fb00a6ec6e41fd99b78b309765f34f63e3ec3de",
+        "input_tokens": 1882,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 57.0,
+          "historical_last_decoded_pts": 57.5,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "f0bdbea047f07e0120bfca95f8086a414545a61cb4212c7ed8767de94adba791",
+        "processor_shape": [
+          10,
+          3,
+          608,
+          544
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": true,
+      "output_tokens": 99,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "This direction is compatible with the no-attempt reference; detailed person/bag descriptions were not visually checked.",
+        "baseline_paraphrase": "Turns approach into a stepping-over candidate and claims completion.",
+        "candidate_paraphrase": "Describes approach, without a candidate or confirmed completion.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 86.84756646599271,
+        "generation_seconds": 6.888108637998812,
+        "initial_validation_seconds": 32.81574330700096,
+        "input_transfer_seconds": 0.010934433026704937,
+        "load_seconds": 7.580308242002502,
+        "preload_validation_seconds": 33.03858389798552,
+        "prepare_seconds": 4.384443415998248,
+        "queue_wait_seconds": 0.06229972839355469
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "outer_json_fence_removed",
+        "strict_schema": false
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 102,
+      "baseline_result_sha256": "ed8ad4a1f6e76bf9bb31bfc0e3f27cc48b1c8382b6ee6d3fed443a5c0af98270",
+      "baseline_timing": {
+        "generation_seconds": 3.11173076601699,
+        "prepare_seconds": 0.10821944900089875
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q04_B",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "e443179fea814c6791b41886d18e4d0a",
+        "config_hash": "11de7231c3159aacaba8427db4ca4aa45d61b50c6325cb133597611caa15f4c3",
+        "created_at": 1793208041.2749598,
+        "finished_at": 1793208148.868694,
+        "input_hash": "1a281e966af569b85ef10b5d962205e284aafe175a990981ef6aab316665f9ff",
+        "job_id": "47402126fc5949ae97fc6b80ae926fac",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 107.52012753486633,
+        "result_sha256": "365fe7b13d0fbe541ce9179941a368c2e3bb761df0d9f75f1ec93e58ea7c095b",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793208041.3485665
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 1,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "a0f52af96785b87cb34d5385a75e2fc99d6fee4e83107b3b1f618cf109d4b512",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "93870b860764f757f79a7b460e93769983147cf13182f058e8c38b9f4a1917fa",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 67.0,
+          "historical_last_decoded_pts": 67.5,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "68d45df4eecb6f92998cbcce2dd130ffc98d36ebf3d011dc529ad5321eb69eb5",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": null,
+      "output_tokens": 112,
+      "q04_candidate_retained": false,
+      "reference": {
+        "boundary_candidate_reference": true,
+        "completion_support": false,
+        "prior": "attempt_progress; completion not observed",
+        "sampled_input": "holding gate / foot raising; B/C individually unconfirmed"
+      },
+      "text_reference_review": {
+        "assessment": "Still no candidate despite the window-level foot-raise reference; B-specific visibility was not separately confirmed, so do not invent a definitive per-view boundary miss.",
+        "baseline_paraphrase": "Describes waiting at the gate, without an attempt candidate or confirmed completion.",
+        "candidate_paraphrase": "Describes waiting/preparation and denies active passing or climbing.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 88.82316065998748,
+        "generation_seconds": 8.535360971000046,
+        "initial_validation_seconds": 32.590145886002574,
+        "input_transfer_seconds": 0.006247109005926177,
+        "load_seconds": 7.485462115000701,
+        "preload_validation_seconds": 33.171488604013575,
+        "prepare_seconds": 4.9949804810166825,
+        "queue_wait_seconds": 0.07360672950744629
+      }
+    },
+    {
+      "baseline": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "indeterminate",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4651324416,
+        "peak_reserved_bytes": 4802478080
+      },
+      "baseline_output_tokens": 123,
+      "baseline_result_sha256": "b29df253c9682a7b5173098b32740f11612bff80e6823e0f7425145216f54000",
+      "baseline_timing": {
+        "generation_seconds": 3.447762668976793,
+        "prepare_seconds": 0.04586679601925425
+      },
+      "candidate": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q04_C",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "db217d223c9342ab8f5f6029f9d593ef",
+        "config_hash": "5486b44c4cd61a5dbf2c3f710a653a6c152eba9df8920698bdfd0a94aa9623f5",
+        "created_at": 1793206963.5882516,
+        "finished_at": 1793207020.0259333,
+        "input_hash": "c693f41b9246db58bef4c513438efd2371ed472b62689eddfc95bb1a01711cdd",
+        "job_id": "d1ebbd8478d24dd7aeec6dc0f9ff8ede",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 56.37714672088623,
+        "result_sha256": "0600bb06ca5c2cfe5c89f5aa0d351507d89187aeeafde57e781631f817f7d699",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793206963.6487865
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 2,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4023678976,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "2bf89c3b590d71e2ee9bcc39ba5ac0d647597443f17f915614746a74fd74f9b0",
+        "crop_shape": [
+          10,
+          648,
+          576,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "435fad6e4680ddcde48e0f2bf304dd8da6d1798a9586b1654d4871f132e86673",
+        "input_tokens": 1882,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 67.0,
+          "historical_last_decoded_pts": 67.5,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "de75c319c14a4d6aaed0319c50b3fe92ae08bbfd697560c94d4763407efcf9a6",
+        "processor_shape": [
+          10,
+          3,
+          608,
+          544
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            38,
+            34
+          ]
+        ],
+        "visual_tokens": 1615
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": null,
+      "output_tokens": 121,
+      "q04_candidate_retained": true,
+      "reference": {
+        "boundary_candidate_reference": true,
+        "completion_support": false,
+        "prior": "attempt_progress; completion not observed",
+        "sampled_input": "holding gate / foot raising; B/C individually unconfirmed"
+      },
+      "text_reference_review": {
+        "assessment": "Broad contact/body-lift direction is compatible with the user review and avoids claiming completion. Per-person roles and C-specific visibility remain unconfirmed.",
+        "baseline_paraphrase": "Retains an attempt candidate but assigns pushing/climbing roles to people; completion is indeterminate.",
+        "candidate_paraphrase": "Retains contact and climbing-attempt tags with pushing/climbing roles; completion is not confirmed.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 51.24696267899708,
+        "generation_seconds": 7.6167584210052155,
+        "initial_validation_seconds": 15.692812633002177,
+        "input_transfer_seconds": 0.004316342994570732,
+        "load_seconds": 5.264094170997851,
+        "preload_validation_seconds": 15.840643622999778,
+        "prepare_seconds": 4.781628915981855,
+        "queue_wait_seconds": 0.06053495407104492
+      }
+    },
+    {
+      "baseline": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4665041408,
+        "peak_reserved_bytes": 5026873344
+      },
+      "baseline_output_tokens": 85,
+      "baseline_result_sha256": "cddc8004dcfecc2e4a04c0888f11be8d23d733a3987a3af380af9a8fbb15ad0a",
+      "baseline_timing": {
+        "generation_seconds": 2.397994867002126,
+        "prepare_seconds": 0.10996682901168242
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q05_B",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "22e5f0f8e8644e06af2f8fca82014f3a",
+        "config_hash": "f60b56ec60adcce0e4fbb56c063eaac7bb6cf1e741898f74b4ef10e99f42d2ea",
+        "created_at": 1793207061.0318,
+        "finished_at": 1793207139.7669535,
+        "input_hash": "e270f7163bad60299df8335d75efddf1cd282a4d0daaa53dfc4e3c8214841e91",
+        "job_id": "80e95fa69fa54438ac5373f9af8af80e",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 78.66957569122314,
+        "result_sha256": "202dc2a05b83d297e897b38836a9ec9d9715be237138085d4c3b9e1b4dafd289",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793207061.0973778
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 2,
+        "raw_completion_claim": "observed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "1c777362f1302490f342305f593ddfa02324f72c78e832ccffccf3986a3eb79b",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "7504d5e47281a3d2f6f71dbc4fce11086ec025e3740665367ec3e3a0d31e9c09",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 54.5,
+          "historical_last_decoded_pts": 55.0,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "0903ed065676fe46e0f0e50490a609861111bb846440dfd981fa4492a2e4b0b0",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": true,
+      "output_tokens": 125,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "Candidate removal does not fix unsupported completion under the approach-only reference. Contact and precise scene details remain unverified.",
+        "baseline_paraphrase": "Describes approach as stepping over the gate and claims completion.",
+        "candidate_paraphrase": "Describes approach/stepping onto a crossing area, tags contact, and still claims completion without a candidate.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 68.76831013901392,
+        "generation_seconds": 8.32225187899894,
+        "initial_validation_seconds": 23.664349236991256,
+        "input_transfer_seconds": 0.005045281985076144,
+        "load_seconds": 7.296804156998405,
+        "preload_validation_seconds": 23.85987629799638,
+        "prepare_seconds": 3.574693749018479,
+        "queue_wait_seconds": 0.06557774543762207
+      }
+    },
+    {
+      "baseline": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4659583488,
+        "peak_reserved_bytes": 4984930304
+      },
+      "baseline_output_tokens": 94,
+      "baseline_result_sha256": "2b6c18d9347dbde6f32d289825e4c288c9db82b36aa0fb1667d921c6c6a2e555",
+      "baseline_timing": {
+        "generation_seconds": 2.9377848909934983,
+        "prepare_seconds": 0.05025335497339256
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "q05_C",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "7654446d6a7a47fdb0679639ce1c6512",
+        "config_hash": "5ecfdaa2a41c65aa6ad062e548a4cd7c05aaee9ddfe7ff9f761c0fe8316a7868",
+        "created_at": 1793208246.500779,
+        "finished_at": 1793208352.493436,
+        "input_hash": "af44d81f0deb239dc9a0f18eb27f9fbeccd5ee23e4fbee4ed5a28254d88399c1",
+        "job_id": "127ebd9526464dc29dcd90e1615120bd",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 105.92983436584473,
+        "result_sha256": "6b8c6c69ae0309cbc5cbe66d0901604c5e9402ab1045f612cc4153524eb54444",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793208246.5636017
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 2,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4032514560,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "06a47f60c8ff0cfb23b85e46b7b0df86ba41c241ee5d9e98406e37e5129a4ef1",
+        "crop_shape": [
+          10,
+          648,
+          903,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "9fa535e95c1055f1cf046b5e93cc0296399893f54ddf81d04c18266fb46111c6",
+        "input_tokens": 1917,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 54.5,
+          "historical_last_decoded_pts": 55.0,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "1c9b3761f54927d46a73c19772dadbcd10d6a36b65ec9c2d015dabed950244a9",
+        "processor_shape": [
+          10,
+          3,
+          480,
+          704
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            30,
+            44
+          ]
+        ],
+        "visual_tokens": 1650
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": true,
+      "output_tokens": 100,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "No candidate is compatible with approach-only; the additional contact claim has not been visually adjudicated.",
+        "baseline_paraphrase": "Describes approaching people as stepping over the lower gate and claims completion.",
+        "candidate_paraphrase": "Describes approach and gate contact, without a candidate or confirmed completion.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 87.22322177598835,
+        "generation_seconds": 8.633041700988542,
+        "initial_validation_seconds": 32.867350782995345,
+        "input_transfer_seconds": 0.00463959199259989,
+        "load_seconds": 6.925583947013365,
+        "preload_validation_seconds": 32.968557421001606,
+        "prepare_seconds": 3.651134055980947,
+        "queue_wait_seconds": 0.06282281875610352
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "outer_json_fence_removed",
+        "strict_schema": false
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4665041408,
+        "peak_reserved_bytes": 5026873344
+      },
+      "baseline_output_tokens": 103,
+      "baseline_result_sha256": "5b9486cf4a5bb4ebfaf1fc7e84c8155da17ff6cee20f2cc754ebdf9e13af2ce0",
+      "baseline_timing": {
+        "generation_seconds": 3.2532326520013157,
+        "prepare_seconds": 0.10624484700383618
+      },
+      "candidate": {
+        "candidate": null,
+        "common_schema": false,
+        "completion": null,
+        "evidence_consistency": null,
+        "indeterminate": null,
+        "other": null,
+        "parse_failure": true,
+        "postprocessing": "none",
+        "strict_schema": false
+      },
+      "condition_id": "q06_B",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "eca5ee81313f44c68fb738979b913c88",
+        "config_hash": "4537fd40905a70961be596b7bce316cc2d1a47697bd0d0874d3e450596f6e6b7",
+        "created_at": 1793208386.8234086,
+        "finished_at": 1793208491.0561178,
+        "input_hash": "2cb447c9c7fcc5dec0681e65696e8bae5e4b4746d261d92e4f23c836527ed49b",
+        "job_id": "817d75a7dc6c4671a0b4c14638e88e3e",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 104.15551161766052,
+        "result_sha256": "dfca290c1471bde844a426d864b367be3b7fe68c51544e16ecb8398e5f87e468",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793208386.9006062
+      },
+      "format_diagnostics": {
+        "common_error": "invalid action list",
+        "empty_action_list": true,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 0,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": "invalid action list"
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "57db1b586bf39226da7f757edf75543df02c2ad42efe8c62b9ec6a76cb4ffc3b",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "7442274b639ae0acaee4f71fa83a163b6b6d6019fd127c28c34c144b1ec76570",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 159.5,
+          "historical_last_decoded_pts": 160.0,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "740987e9feaf4b28d96073276f4dd671f5cce5015c1f50a2245b7d63e9a75adb",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": false,
+      "output_tokens": 88,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "No-person reference is specific to this 030 window. New no-person text is compatible, but its invalid schema remains unscorable; the animal claim was not adjudicated.",
+        "baseline_paraphrase": "Describes a possible small animal, without a candidate or confirmed completion.",
+        "candidate_paraphrase": "Describes a static entrance and no people, leaving actions empty.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 87.96795979197486,
+        "generation_seconds": 5.910397950996412,
+        "initial_validation_seconds": 32.81566146799014,
+        "input_transfer_seconds": 0.004648220987292007,
+        "load_seconds": 7.1367843089974485,
+        "preload_validation_seconds": 33.42195253999671,
+        "prepare_seconds": 6.480691449978622,
+        "queue_wait_seconds": 0.07719755172729492
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4659583488,
+        "peak_reserved_bytes": 4984930304
+      },
+      "baseline_output_tokens": 76,
+      "baseline_result_sha256": "b71d801c3f96d4d8edc0354962dd0730e665bdabd259a81b25c2f80f0d854672",
+      "baseline_timing": {
+        "generation_seconds": 2.330835237982683,
+        "prepare_seconds": 0.050920412002597004
+      },
+      "candidate": {
+        "candidate": null,
+        "common_schema": false,
+        "completion": null,
+        "evidence_consistency": null,
+        "indeterminate": null,
+        "other": null,
+        "parse_failure": true,
+        "postprocessing": "none",
+        "strict_schema": false
+      },
+      "condition_id": "q06_C",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "4ab7a9fadd694db593061ac429a7b49f",
+        "config_hash": "8600e773ad65401c051c96e66d4a911b0460b41aac8b0a7fe27b428e8b16aff2",
+        "created_at": 1793208522.8713048,
+        "finished_at": 1793208628.1876214,
+        "input_hash": "fc61f9fff161474a8a26694a01068c06dff15089a707be1352cdd39e09413b35",
+        "job_id": "2d73c0f9316c495ea34f61d16e5e8622",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 105.24362707138062,
+        "result_sha256": "b1e8862a91b9c163d1d668d9eba53e2472ac78080bc97205c981cca4a4f79389",
+        "source_commit": "952c52fdb3786ab0ae306562d3dfbeaca4e5d7bd",
+        "source_hash": "76c9322a6c8ff5e208b209e757f517fda385e6bb84aed35bbaab6b4cc85f35a7",
+        "started_at": 1793208522.9439943
+      },
+      "format_diagnostics": {
+        "common_error": "invalid action list",
+        "empty_action_list": true,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 0,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": "invalid action list"
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4032514560,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "61a26891eb21c7ee985140ab85cc83fe42df0d2f32aaf1167b519b598bd08bb1",
+        "crop_shape": [
+          10,
+          648,
+          903,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "5fa9e6d0721d3801f9145104e9b2338e7884ffa91640be43900281a6890a0ccc",
+        "input_tokens": 1917,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 159.5,
+          "historical_last_decoded_pts": 160.0,
+          "original_baseline_expanded_prompt": "unavailable_historical_q",
+          "original_baseline_processor_RGB": "unavailable_historical_q",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "ddfddf21e7dc158f0b30bcc4c7c163e6a671b04b8d1782ce1ab69aab5b7d9519",
+        "processor_shape": [
+          10,
+          3,
+          480,
+          704
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            30,
+            44
+          ]
+        ],
+        "visual_tokens": 1650
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": false,
+      "output_tokens": 59,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "The baseline text is internally unclear and unsupported by the no-person reference. New text does not rescue its empty-action schema failure.",
+        "baseline_paraphrase": "Describes a person behind the gate while also saying the person is not visible.",
+        "candidate_paraphrase": "Describes an empty/static gate, leaving actions empty.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 86.56284778300324,
+        "generation_seconds": 6.198094938998111,
+        "initial_validation_seconds": 32.84637928500888,
+        "input_transfer_seconds": 0.006325752008706331,
+        "load_seconds": 5.500266670976998,
+        "preload_validation_seconds": 33.39681434299564,
+        "prepare_seconds": 6.38249495299533,
+        "queue_wait_seconds": 0.07268953323364258
+      }
+    },
+    {
+      "baseline": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 119,
+      "baseline_result_sha256": "b71258684b299542f32f2a76dd3fc39c4c684ac5e8927adcb73c3efc1a75e679",
+      "baseline_timing": {
+        "generation_seconds": 3.9782733930042014,
+        "prepare_seconds": 0.08102996600791812
+      },
+      "candidate": {
+        "candidate": null,
+        "common_schema": false,
+        "completion": null,
+        "evidence_consistency": null,
+        "indeterminate": null,
+        "other": null,
+        "parse_failure": true,
+        "postprocessing": "none",
+        "strict_schema": false
+      },
+      "condition_id": "v01_full_frame",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "3bc7c54ea12d47edaadb45da6025e618",
+        "config_hash": "19ceb67d53b40c91e9136d031086dd77c05c10b50856a418f411eaccd274cc93",
+        "created_at": 1793210673.048725,
+        "finished_at": 1793210778.787204,
+        "input_hash": "2a9d5f1e46465cb55235c71528aad086285fbbb8428d445eb4da8fdfbd6de85e",
+        "job_id": "b8721a1d0e774260b2ef0d9b3a394524",
+        "logical_condition_attempt": 2,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 105.66217947006226,
+        "result_sha256": "fa1796b312820a130732df57225489e9fff19492cee2f448fcdcde664031ac11",
+        "source_commit": "78ba67df03f9a2f3307d85488d7f201eed119924",
+        "source_hash": "f7c7a461f0dc94b6e78a2d8c4ed1db6cde08ccfa1b3fd90b534ca3f5d524eac1",
+        "started_at": 1793210673.1250246
+      },
+      "format_diagnostics": {
+        "common_error": "invalid action list",
+        "empty_action_list": true,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 0,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": "invalid action list"
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "7839c4446ab44a8f397633477550484d1c1f66f76159479d4d75fae64437cf44",
+        "crop_shape": [
+          10,
+          720,
+          1280,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "ff4db5f1806337f71890b3cb031330275e3d5ba39f7d4359ed31f64bb712d516",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 64.5,
+          "historical_last_decoded_pts": 65.0,
+          "original_baseline_expanded_prompt": "exact_saved_v",
+          "original_baseline_processor_RGB": "exact_saved_v",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "eee82ea88e56f4bdfa69f9d481eb313caccd2678d15e819fed29b867a7828b19",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1280,
+          720
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": null,
+      "output_tokens": 119,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": true,
+        "completion_support": "visible reviewed action only",
+        "prior": "attempt_progress; completion previously unassessed",
+        "sampled_input": "rope/line crossed then standing opposite; not exhaustive per person"
+      },
+      "text_reference_review": {
+        "assessment": "New boundary-visibility denial conflicts with the user sampled-input rope-crossing/opposite-side observation; no valid candidate judgment exists. Preserve the historical completion-unassessed reference alongside the newer limited completion observation.",
+        "baseline_paraphrase": "Has a stepping-over candidate/completion claim, but its evidence describes object handling and road traffic rather than a rope crossing.",
+        "candidate_paraphrase": "Describes people near vehicles and a wall, denies visible gates/fences/ropes, and leaves actions empty.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 86.91037730700918,
+        "generation_seconds": 8.367319569020765,
+        "initial_validation_seconds": 33.73637230199529,
+        "input_transfer_seconds": 0.004847521020565182,
+        "load_seconds": 6.997923079004977,
+        "preload_validation_seconds": 33.256251031009015,
+        "prepare_seconds": 2.338943360024132,
+        "queue_wait_seconds": 0.07629966735839844
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664007168,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 119,
+      "baseline_result_sha256": "3c152da06e86cf4ec78dd62e9cd4b70fd9fb255dac749d03ec861606f36ff550",
+      "baseline_timing": {
+        "generation_seconds": 5.047238611994544,
+        "prepare_seconds": 0.09072561998618767
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "v02_full_frame",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "230238df28774b4383ce92cdf27cdeac",
+        "config_hash": "b8071263a4a85ccd353ccf8dda57e592c27c6396e088ba62e41d9915201f8090",
+        "created_at": 1793210919.9258835,
+        "finished_at": 1793211045.4501703,
+        "input_hash": "a8d40b3ea69bd675dec57ee910b9fdeb806a4b8d1cb191d678c153af3eff3261",
+        "job_id": "0999205e4d9e45c5bec8dee091027f93",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 125.45200443267822,
+        "result_sha256": "6c0fc1da14e9d37778bb9e93624ecea5ece7aae61c5a3995ce028d22cb8b99c5",
+        "source_commit": "78ba67df03f9a2f3307d85488d7f201eed119924",
+        "source_hash": "f7c7a461f0dc94b6e78a2d8c4ed1db6cde08ccfa1b3fd90b534ca3f5d524eac1",
+        "started_at": 1793210919.9981658
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 1,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "2529d28310ab3f0a1511794ea6e18b2d9ac58cdeab4e3134792cc49ec5fe2bd5",
+        "crop_shape": [
+          10,
+          720,
+          1280,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "4b48a2bdeaf88c09e3143551b28dd19c3effd8a9ec732b5b11ab39c4d6bab4ed",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 4.5,
+          "historical_last_decoded_pts": 5.0,
+          "original_baseline_expanded_prompt": "exact_saved_v",
+          "original_baseline_processor_RGB": "exact_saved_v",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "3977ed8aede9a93185a7b2a89bb6c2330e0781401b7002049338b928ceac1f19",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1280,
+          720
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": false,
+      "output_tokens": 85,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "Both lack an attempt candidate under the non-event reference; wall-contact/person details remain unverified.",
+        "baseline_paraphrase": "Describes a person waiting near a wall/vehicle, without a candidate or completion.",
+        "candidate_paraphrase": "Tags contact while describing leaning on a wall, without a candidate or completion.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 100.84032649599249,
+        "generation_seconds": 7.955098877981072,
+        "initial_validation_seconds": 41.58634595701005,
+        "input_transfer_seconds": 0.004704312013927847,
+        "load_seconds": 5.674006509012543,
+        "preload_validation_seconds": 41.75524778399267,
+        "prepare_seconds": 1.5915664519998245,
+        "queue_wait_seconds": 0.07228231430053711
+      }
+    },
+    {
+      "baseline": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "outer_json_fence_removed",
+        "strict_schema": false
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 76,
+      "baseline_result_sha256": "2740525a97e01e608999997044482ddd5c0dab38f8c6a09649bcc05ecf3d2979",
+      "baseline_timing": {
+        "generation_seconds": 2.419670657021925,
+        "prepare_seconds": 0.10997630999190733
+      },
+      "candidate": {
+        "candidate": null,
+        "common_schema": false,
+        "completion": null,
+        "evidence_consistency": null,
+        "indeterminate": null,
+        "other": null,
+        "parse_failure": true,
+        "postprocessing": "none",
+        "strict_schema": false
+      },
+      "condition_id": "v03_full_frame",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "baa5f2119a0547b9aa233afa8c484bd1",
+        "config_hash": "8b3f015b4955dc634f01c41c5cda44efedac9d59ccd295096d07af6574634dde",
+        "created_at": 1793211088.9959972,
+        "finished_at": 1793211217.751501,
+        "input_hash": "8fae9cc97f7fd5d22666f3bcc66828d57ca85342b9476995ce8c9fedd7e0c871",
+        "job_id": "f7ff4814f9ca485e808d2c8f850203e2",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 128.67693185806274,
+        "result_sha256": "53e5e1c209cc8083abc9fc96ec41bb83b9cce21cd0d57b251421102d498de956",
+        "source_commit": "78ba67df03f9a2f3307d85488d7f201eed119924",
+        "source_hash": "f7c7a461f0dc94b6e78a2d8c4ed1db6cde08ccfa1b3fd90b534ca3f5d524eac1",
+        "started_at": 1793211089.0745692
+      },
+      "format_diagnostics": {
+        "common_error": "invalid action list",
+        "empty_action_list": true,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 0,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": "invalid action list"
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "31732880d96205a6511643c8f99d9dbaba6d0763fd075b8c10e7d656793b188f",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "343f48b9415ec972ff1d6483454e74f75796ea60749d76175f8b16e06af79519",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 69.5,
+          "historical_last_decoded_pts": 70.0,
+          "original_baseline_expanded_prompt": "exact_saved_v",
+          "original_baseline_processor_RGB": "exact_saved_v",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "e644332a25f09650f37fe4e93125254ce2017a33536ed454c7aa961149e86316",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": null,
+      "negative_false_candidate_baseline": null,
+      "output_tokens": 88,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": null,
+        "candidate_absence_definitive_boundary_miss": false,
+        "completion_support": null,
+        "prior": "adjacent-gap attempt_progress; boundary relation ambiguous; completion unassessed",
+        "sampled_input": "rock ascent beside gate; boundary crossing not established"
+      },
+      "text_reference_review": {
+        "assessment": "The no-person text conflicts with the user rock-ascent observation. Retain the old adjacent-gap attempt reference and new rock-ascent reference separately; neither establishes boundary crossing, and candidate absence is not a definitive boundary miss.",
+        "baseline_paraphrase": "Describes a person standing near the gate, without a candidate or completion.",
+        "candidate_paraphrase": "Denies people or interaction and leaves actions empty.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 103.90278502900037,
+        "generation_seconds": 7.867634927999461,
+        "initial_validation_seconds": 41.39774508800474,
+        "input_transfer_seconds": 0.005426876014098525,
+        "load_seconds": 5.965372333012056,
+        "preload_validation_seconds": 41.89144814800238,
+        "prepare_seconds": 4.580442070000572,
+        "queue_wait_seconds": 0.07857203483581543
+      }
+    },
+    {
+      "baseline": {
+        "candidate": true,
+        "common_schema": true,
+        "completion": "observed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": false,
+        "parse_failure": false,
+        "postprocessing": "outer_json_fence_removed",
+        "strict_schema": false
+      },
+      "baseline_gpu_memory": {
+        "peak_allocated_bytes": 4664334848,
+        "peak_reserved_bytes": 4844421120
+      },
+      "baseline_output_tokens": 75,
+      "baseline_result_sha256": "2037143fa5f5f5eb14660de97e13b3ece693d6475dbb617a1cf3596802effe4b",
+      "baseline_timing": {
+        "generation_seconds": 3.208524314017268,
+        "prepare_seconds": 0.12678494700230658
+      },
+      "candidate": {
+        "candidate": false,
+        "common_schema": true,
+        "completion": "not_confirmed",
+        "evidence_consistency": null,
+        "indeterminate": false,
+        "other": true,
+        "parse_failure": false,
+        "postprocessing": "none",
+        "strict_schema": true
+      },
+      "condition_id": "v04_full_frame",
+      "cost": {
+        "currency": "USD",
+        "electricity_cost": null,
+        "external_paid_api_cost": 0
+      },
+      "evidence_consistency_review": "pending local human review",
+      "execution": {
+        "attempt_id": "a09703c8d9154a0e82e17674903eba56",
+        "config_hash": "1fbe32a8de39fda4d943c7e056bdbe2ec45d9483d747c9429781d0b4f639eeb0",
+        "created_at": 1793211264.110519,
+        "finished_at": 1793211393.8418825,
+        "input_hash": "7aa9422e5bf2276b888f09bff1665f0ca8169f714029c3828292c490017c2ca7",
+        "job_id": "fd1053e15d624ac08505531f53cea5d1",
+        "logical_condition_attempt": 1,
+        "queue_attempt_number": 1,
+        "queue_attempt_seconds": 129.66592741012573,
+        "result_sha256": "bd4c5303ca3cbdc2237569a667fd12677f5642507e2d5335451835876a52f46c",
+        "source_commit": "78ba67df03f9a2f3307d85488d7f201eed119924",
+        "source_hash": "f7c7a461f0dc94b6e78a2d8c4ed1db6cde08ccfa1b3fd90b534ca3f5d524eac1",
+        "started_at": 1793211264.175955
+      },
+      "format_diagnostics": {
+        "common_error": null,
+        "empty_action_list": false,
+        "json_object_syntax_valid": true,
+        "raw_action_count": 2,
+        "raw_completion_claim": "not_confirmed",
+        "strict_error": null
+      },
+      "gpu_memory": {
+        "peak_allocated_bytes": 4040090112,
+        "peak_reserved_bytes": 4177526784
+      },
+      "hit_token_limit": false,
+      "input_summary": {
+        "crop_sha256": "bd52ce79bb31ce71a8b8e40a09cb3cf38378943d22ea4b335dd31365904fab9a",
+        "crop_shape": [
+          10,
+          1080,
+          1920,
+          3
+        ],
+        "effective_context_tokens": 262144,
+        "expanded_prompt_sha256": "2229e1196738cce1e0c121a87fec425dd99135eb2158a47bba7a4f542a5ef464",
+        "input_tokens": 1947,
+        "nonvisual_input_tokens": 267,
+        "observations": 10,
+        "parity": {
+          "actual_last_decoded_pts": 4.5,
+          "historical_last_decoded_pts": 5.0,
+          "original_baseline_expanded_prompt": "exact_saved_v",
+          "original_baseline_processor_RGB": "exact_saved_v",
+          "processor_RGB_matches_saved_EXP17": true,
+          "source_pts_rgb_crop_and_metadata": true
+        },
+        "processor_payload_sha256": "4e109836178d6db20625bf774e36177e412c874173610e941ededee23ff3f488",
+        "processor_shape": [
+          10,
+          3,
+          448,
+          768
+        ],
+        "source_wh": [
+          1920,
+          1080
+        ],
+        "video_grid_thw": [
+          [
+            5,
+            28,
+            48
+          ]
+        ],
+        "visual_tokens": 1680
+      },
+      "load_gpu_memory": {
+        "peak_allocated_bytes": 4112515072,
+        "peak_reserved_bytes": 4173332480
+      },
+      "negative_false_candidate_4b": false,
+      "negative_false_candidate_baseline": true,
+      "output_tokens": 100,
+      "q04_candidate_retained": null,
+      "reference": {
+        "boundary_candidate_reference": false,
+        "completion_support": false,
+        "prior": "no attempt_progress / approach only or no person",
+        "sampled_input": "no new positive review"
+      },
+      "text_reference_review": {
+        "assessment": "Candidate removal is compatible with the non-event reference; ground-contact semantics and person details remain unverified.",
+        "baseline_paraphrase": "Turns ordinary crosswalk movement into a stepping-over candidate and claims completion.",
+        "candidate_paraphrase": "Describes standing/walking, labels ground contact, and denies a boundary crossing.",
+        "kind": "Codex text-vs-user-reference draft; no media viewing or human visual adjudication",
+        "visual_evidence_consistency": null
+      },
+      "timing": {
+        "child_total_seconds": 105.19996120402357,
+        "generation_seconds": 8.732298562012147,
+        "initial_validation_seconds": 41.40319859801093,
+        "input_transfer_seconds": 0.005808290996355936,
+        "load_seconds": 5.670210825977847,
+        "preload_validation_seconds": 43.76155515998835,
+        "prepare_seconds": 3.3504905350273475,
+        "queue_wait_seconds": 0.06543612480163574
+      }
+    }
+  ],
+  "rubric": {
+    "candidate": "any climbing_attempt_or_in_progress or stepping_over_boundary action",
+    "common_fence_removal": "existing vlm_batch.common.parse_pair; no semantic repair",
+    "completion": "crossing_completion observed reported separately; q04 observed is unsupported",
+    "cost": "load/prepare/generate/queue/output tokens/memory separately; no speed or cost invented",
+    "evidence_consistency": "manual local review of saved exact input required; unreviewed is null",
+    "indeterminate": "indeterminate action, separately from parse failure",
+    "other": "valid parsed response without candidate/indeterminate",
+    "raw_schema": "strict original JSON schema independently of common outer-fence removal",
+    "reference_views": "retain original references and separate new sampled-input review; v03 boundary truth unestablished"
+  },
+  "schema_version": 2,
+  "status": "executed_behavior_insufficient_adoption_hold",
+  "summary": {
+    "candidate_json_object_syntax_valid": 16,
+    "negative_groups": {
+      "q_B": {
+        "baseline_false_candidates": 2,
+        "baseline_unscorable": 0,
+        "candidate_false_candidates": 0,
+        "candidate_unscorable_negative_views": 2,
+        "candidate_valid_negative_view_responses": 3,
+        "planned_negative_view_conditions": 5
+      },
+      "q_C": {
+        "baseline_false_candidates": 2,
+        "baseline_unscorable": 0,
+        "candidate_false_candidates": 0,
+        "candidate_unscorable_negative_views": 2,
+        "candidate_valid_negative_view_responses": 3,
+        "planned_negative_view_conditions": 5
+      },
+      "v_negative": {
+        "baseline_false_candidates": 1,
+        "baseline_unscorable": 0,
+        "candidate_false_candidates": 0,
+        "candidate_unscorable_negative_views": 0,
+        "candidate_valid_negative_view_responses": 2,
+        "planned_negative_view_conditions": 2
+      }
+    },
+    "parsing": {
+      "baseline": {
+        "candidate_tag": 7,
+        "common_schema_valid": 16,
+        "completion_indeterminate_valid": 1,
+        "completion_not_confirmed_valid": 6,
+        "completion_observed_valid": 9,
+        "indeterminate_tag": 0,
+        "other_valid": 9,
+        "parse_failed": 0,
+        "strict_schema_valid": 11
+      },
+      "candidate": {
+        "candidate_tag": 1,
+        "common_schema_valid": 10,
+        "completion_indeterminate_valid": 0,
+        "completion_not_confirmed_valid": 8,
+        "completion_observed_valid": 2,
+        "indeterminate_tag": 0,
+        "other_valid": 9,
+        "parse_failed": 6,
+        "strict_schema_valid": 10
+      }
+    },
+    "q04": {
+      "B_candidate": false,
+      "C_candidate": true,
+      "per_view_visibility": "not independently confirmed"
+    },
+    "unscorable_conditions": [
+      "q01_B",
+      "q01_C",
+      "q06_B",
+      "q06_C",
+      "v01_full_frame",
+      "v03_full_frame"
+    ],
+    "v01_candidate": null,
+    "v03_boundary_truth": "unestablished; no definitive boundary-miss count",
+    "valid_completion_observed_without_candidate": [
+      "q03_B",
+      "q05_B"
+    ]
+  }
 }

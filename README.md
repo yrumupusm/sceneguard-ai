@@ -4,11 +4,13 @@
 
 SceneGuard는 AI Software Engineer 직무 포트폴리오를 위한 실험 프로젝트다. 공개된 CCTV 영상에서 **사람의 출입 경계 통과/넘기 행동**을 감지하고, 카메라별 경계 설정·오탐·감지 시점·실행 비용을 재현 가능하게 평가하는 것이 첫 목표다. 법적 **무단침입이나 출입 권한을 영상만으로 확정하지 않는다.**
 
-## MVP-0001 현재 범위 (2026-10-28)
+최신 모델 대안 비교는 [BATCH-0002 종합 결과](docs/experiments/BATCH-0002-summary.md)를 따른다. [실제 입력 감사](docs/experiments/EXP-0018-input-audit.md), [RF-DETR와 기존 FCOS 캐시 비교](docs/experiments/EXP-0019-cv-comparison.md), [Qwen 4B NF4와 기존 2B BF16 비교](docs/experiments/EXP-0020-vlm-comparison.md)를 분리 기록한다. 새 모델은 기존 MVP에 자동 연결하지 않는다. q/v는 개발 자료이며 출력 개수·파싱 성공·GPU 실행 가능성을 행동 정확도로 읽지 않는다. [전달 기록](docs/experiments/BATCH-0002-delivery.md)에서 GitHub 게시와 실제 로컬 화면 확인을 구분한다.
 
-기존 CV 결과와 전체 화면 Qwen을 보존하고, 같은 Qwen에 **배경 기준 고정 감시 영역**을 입력하는 구성을 비교한다. 새 가중치는 받지 않는다. 원본 처음부터 끝까지 5초 창/2.5초 간격/약2fps로 처리하며, CV 후보가 없어도 분석한다. 시간창→행동/판단 불가→겹치는 후보 묶음→원본 근거 구간 저장을 별도 `mvp/` 경로로 구현한다. 기존 CV·경계 규칙·웹 기능은 바꾸지 않는다.
+## MVP-0001 구현과 평가 범위
 
-**원본 3개의 실제 전체 영상 추론과 기존 6개 클립 고정 영역 비교로 이벤트 후보·근거를 생성했다. 코드·기능 통합과 EXP-0013 저장 출력 12개 창의 소규모 CPU 평가는 확인했다. 기존 화면에 EXP-0014 등록 및 로컬 브라우저 표시도 검증했다. 그러나 확정 행동 라벨은 한 부분 양성 관찰뿐이고 확인된 음성 창은 없어 행동 성능·운영 적합성은 아직 검증되지 않았다. 기본 채택은 보류한다.** [EXP-0013 실행 보고서](docs/experiments/EXP-0013-mvp-comparison.md), [EXP-0014 출력 평가](docs/experiments/EXP-0014-mvp-small-evaluation.md), [종합 결과](docs/experiments/MVP-0001-summary.md), [전달 기록](docs/orchestration/MVP-0001_DELIVERY.md)에서 기능·평가·게시·화면 검증을 구분한다. 테스트 통과나 candidate 출력은 행동 정확도 또는 무단침입 판정이 아니다. [고정 계획](docs/experiments/MVP-0001-plan.md), [평가 범위](docs/data/MVP-0001-evaluation.md), [실행 계약](docs/design/MVP_LOCAL_CLI.md), [선택 이유](docs/decisions/ADR-0016-mvp-fixed-camera-region.md)를 따른다. 자원 차단 상태였던 EXP-0011/12는 보존하고, 후속 실행은 새 ID인 EXP-0013에 기록했다. EXP-0014에는 새 GPU 추론이 없었다.
+기존 CV 결과와 전체 화면 Qwen을 보존하고, 같은 Qwen에 **배경 기준 고정 감시 영역**을 입력하는 구성을 비교했다. EXP-0013은 기존 가중치를 재사용했다. 원본 처음부터 끝까지 5초 창/2.5초 간격/약2fps로 처리하며, CV 후보가 없어도 분석한다. 시간창→행동/판단 불가→겹치는 후보 묶음→원본 근거 구간 저장을 별도 `mvp/` 경로로 구현했다. 기존 CV·경계 규칙·웹 기능은 보존한다.
+
+**원본 3개의 실제 전체 영상 추론으로 이벤트 후보·근거를 생성했고, 저장 출력의 소규모 평가와 사용자 라벨 개정까지 완료했다. EXP-0015에서 q 6개는 no-crossing 5개, attempt/progress positive 1개, primary positive 0개다. 비시도 장면을 후보로 만들고 시도를 놓치는 문제가 남아 행동 성능·운영 채택은 보류한다.** [EXP-0013 실행 보고서](docs/experiments/EXP-0013-mvp-comparison.md), [EXP-0015 사용자 라벨 개정](docs/experiments/EXP-0015-user-label-revision.md), [종합 결과](docs/experiments/MVP-0001-summary.md), [전달 기록](docs/orchestration/MVP-0001_DELIVERY.md)에서 기능·평가·게시·화면 검증을 구분한다. EXP-0014 당시 음성 정답이 없었던 상태는 과거 이력이다. q06의 사람/사건 없음은 030의 155–160초에만 적용하며 031의 종료 미완료 관찰을 030에 옮기지 않는다. 테스트 통과나 candidate 출력은 행동 정확도 또는 무단침입 판정이 아니다. [실행 계약](docs/design/MVP_LOCAL_CLI.md), [선택 이유](docs/decisions/ADR-0016-mvp-fixed-camera-region.md)를 따른다. 기존 차단·실행·평가 보고서는 보존한다.
 
 ```bash
 # 저장소 루트, 기존 환경과 공통 큐를 사용한다.
@@ -30,7 +32,7 @@ MVP_QUEUE_RUNTIME="$HOME/dev/sceneguard-orca-lab/runtime/orca-lab/gpu-queue"
 
 같은 FCOS 캐시로 **IoU / ByteTrack high-only / low 2차 연결**도 비교했다. 일부 실제 사람의 연결이 개선됐지만 중복·배경 track과 부분 신체 기반 경계 후보 오류가 남아 기본 tracker 교체는 보류한다. [EXP-0005](docs/experiments/EXP-0005-bytetrack-cache-comparison.md)에 재현·연속 검수·실패를 기록했다. 검출 재추론이나 새 가중치 다운로드는 없었다.
 
-## 현재 결정 (2026-10-27)
+## 초기 결정 이력 (2026-10-27)
 - **첫 MVP 방향 잠정 채택:** 학교 등 고정형 CCTV에서 카메라별 감시선/ROI를 지정해 **출입 경계 통과·넘기 이벤트 후보를 검토하는 시스템**. [ADR-0004](docs/decisions/ADR-0004-boundary-crossing-cctv-mvp.md).
 - **현재 데이터 후보:** [AI-Hub 71850 지능형 관제 서비스 CCTV 영상 데이터](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71850)의 **침입 범주**. 사용자 제공 전체 장면 미리보기에서 학교 철제 출입구 반복이 확인됨. 특수 사례는 **4번 줄 넘기**, **7번 공원 울타리 넘기**로 구별.
 - **검증 완료/보류 구분:** 로컬 Training MP4·JSON 45개 대응, CCTV 10개 소량 감사 및 사용자 행동 검수 기록 완료. **미확정:** 실제 독립 카메라 수, 비이벤트 평가 정답 시간, E01_006 프레임 수 차이(원본 4,006/JSON 4,011), 정밀 사람별 행동 시각, 최종 모델 및 공개 영상 활용권. [사용자 검수](docs/data/AIHUB_INTRUSION_USER_REVIEW.md), [평가 계획](docs/data/AIHUB_INTRUSION_EVALUATION_PLAN.md).
@@ -40,7 +42,7 @@ MVP_QUEUE_RUNTIME="$HOME/dev/sceneguard-orca-lab/runtime/orca-lab/gpu-queue"
 
 ## 왜 이 문제인가
 - ACCIDENT 교통 사고 CCTV는 실제 영상·정답 검증에 성공했지만 짧은 **사고 포함 클립** 위주라 정상 구간 오탐 평가에 제약이 있음.
-- AI-Hub 침입 영상은 소량 감사에서 약 2~3분 길이임을 확인. 사건 전후 시점이 있지만 **검수 완료 비이벤트 시간은 아직 0초**로, 오탐 성능을 확정해 보고하지 않는다.
+- AI-Hub 침입 영상은 소량 감사에서 약 2~3분 길이임을 확인. 일부 5초 개발창에 사용자 비사건 확인이 있지만 연속 운영 음성 시간과 독립 표본은 충분하지 않아 시간당 오탐률을 산출하지 않는다.
 - 학교 출입구 구도가 반복되는 **장면 편중** 때문에 카메라별 설정 방식과 새로운 카메라 일반화 성능을 구분해 측정해야 한다.
 - 상용 침입 검지 기능 자체를 새 발명으로 주장하지 않는다. **기존 단순 방식의 실패·오탐과 VLM 도입 필요성을 실험으로 판단하는 과정**을 핵심 성과로 삼는다.
 
