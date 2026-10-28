@@ -129,6 +129,19 @@
       "synthetic": false,
       "task_id": "task_032ba4cbc816",
       "title": "EXP-0017 resumed Qwen prompt-only comparison"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T16:23:18.646061+00:00",
+      "dispatch_id": "ctx_f0c0eef8ed14",
+      "experiment_id": "EXP-0018",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot1",
+      "synthetic": false,
+      "task_id": "task_806f089dde4f",
+      "title": "BATCH-0002 input sufficiency audit"
     }
   ],
   "schema_version": 1

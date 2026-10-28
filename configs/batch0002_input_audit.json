@@ -1,0 +1,77 @@
+{
+  "batch_id": "BATCH-0002",
+  "bounded_human_check": [
+    "q04",
+    "v01",
+    "v03"
+  ],
+  "diagnostic_historical_windows": {
+    "84": "w000034",
+    "90": "w000037",
+    "94": "w000038"
+  },
+  "diagnostic_instants": {
+    "E01_007": [
+      64,
+      66
+    ],
+    "E01_030": [
+      84,
+      90,
+      94
+    ]
+  },
+  "experiment_id": "EXP-0018",
+  "historical_q_roots": {
+    "B": "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec",
+    "C": "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf"
+  },
+  "maximum_unique_selected_source_frames": 103,
+  "pins": {
+    "configs/mvp_exp0016_independent_evaluation.json": "e7e59c8ae807ffcea5a606ad4d6618360be43dc62afa83e4abaec88ddd363a0d",
+    "configs/mvp_exp0016_independent_manifest.json": "68b07ef836422cd9043e4fcb88b40b0f70e256d0024a2bd57ce29a12e08aa765",
+    "outputs/cv_phase2b/fcos007/frames.jsonl": "2a1e841c3e26edeee4336006f5edefd701431cebaeab70d35a0ceea07653f016",
+    "outputs/cv_phase2b/fcos007/run.json": "9bb1a3aa0f2126d10fd84ed1d30028fe0b682dd89cb62891145727f1efce9221",
+    "outputs/cv_phase2b/fcos030/frames.jsonl": "bd1d3a0df25a44c0f7783030a642c48aa715935fe3f021eb641a9c81b0cf8285",
+    "outputs/cv_phase2b/fcos030/run.json": "4f732086de45f58a99671078ebe50b3eb218b8006a17a5c39b954b94d96549d6",
+    "outputs/cv_phase2c/review_locations.json": "325978fdea2a0540fed193f041aa552e1ed22fdf0e39df67b9a5c06208cfcb46",
+    "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/E01_030/windows/w000034/input.json": "1f144381d0e13357e9d212293253c9dc549c5bd3a17ba39b1e43f98b2d9a6e25",
+    "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/E01_030/windows/w000034/result.json": "d5030777fa424cb00aa5d109cb172c11e14dbddd7ed392d6aa0f0d3227deb567",
+    "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/E01_030/windows/w000037/input.json": "fae7b4fb60a7d5216ba244ddbbec9ae54d345101c03422fc25330a89d49f70ec",
+    "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/E01_030/windows/w000037/result.json": "80254442324d1f72a57b50617e509e9ca24df443ee6e96e7ff7e50a1299867b8",
+    "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/E01_030/windows/w000038/input.json": "e6c647289ba32f86f5448939e47b2fb9df006ebc42dd8f8ed0be3c38cfd40204",
+    "outputs/mvp0001/EXP-0012/49cad0749df04995bb55727d57946fec/E01_030/windows/w000038/result.json": "e04b24409d561d9e5ec67fbe40864871b12d1afb9a64e6dcc3767e186b24cb83",
+    "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/E01_030/windows/w000034/input.json": "1f144381d0e13357e9d212293253c9dc549c5bd3a17ba39b1e43f98b2d9a6e25",
+    "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/E01_030/windows/w000034/result.json": "f116702e4cc8c72ae5ae2a05a8407dea03dab88464161d7878adc56c8c204cf8",
+    "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/E01_030/windows/w000037/input.json": "fae7b4fb60a7d5216ba244ddbbec9ae54d345101c03422fc25330a89d49f70ec",
+    "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/E01_030/windows/w000037/result.json": "af6433d4d5bcc094e81905fff2fb117a178d24a8d35c8703a63319ccc3618da6",
+    "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/E01_030/windows/w000038/input.json": "e6c647289ba32f86f5448939e47b2fb9df006ebc42dd8f8ed0be3c38cfd40204",
+    "outputs/mvp0001/EXP-0012/a546b67626e54ef79cdf9bee1c70b3bf/E01_030/windows/w000038/result.json": "774b9051444030cf8030ceee27549c271df524ef61fa6eb82134cdf3f5c50b4c",
+    "records/EXP-0015/window_reviews.json": "b82267a2c8a457a2dd505183c61fb0cffde886776970322e66176e69493de0d0",
+    "runtime/EXP-0017/evaluation-input-index.json": "b7327a9ce68041af5fb95be1052ea5d21e0c9e9758aab3d787fa782e469e6565",
+    "runtime/EXP-0017/run-index.json": "b5cd2d62d4c451d0b59505f77715e268c6440c6ac557d393e143d8861d7e33bb"
+  },
+  "prior_cv_runs": {
+    "E01_007": "outputs/cv_phase2b/fcos007",
+    "E01_030": "outputs/cv_phase2b/fcos030"
+  },
+  "prior_native_user_review": {
+    "84_seconds": "user previously confirmed three approaching people",
+    "90_seconds": "user previously confirmed three climbing people",
+    "completion": "not_established",
+    "provenance": "Existing EXP-0002/0003 diagnostics and coordinator clarification on this Dispatch; not a new view of actual processor input",
+    "source_id": "E01_030"
+  },
+  "prior_review_locations": "outputs/cv_phase2c/review_locations.json",
+  "privacy": "No raw images, videos, model answers or absolute paths in public summaries; no cloud image tools.",
+  "run_index": "runtime/EXP-0017/run-index.json",
+  "saved_file_index": "runtime/EXP-0017/evaluation-input-index.json",
+  "schema_version": 1,
+  "semantic_evidence": "Unknown until human views exact saved processor samples; prior original-clip labels are separate.",
+  "source_paths": {
+    "E01_004": "data/TS_\uce68\uc785/E01_004.mp4",
+    "E01_007": "data/TS_\uce68\uc785/E01_007.mp4",
+    "E01_021": "data/TS_\uce68\uc785/E01_021.mp4",
+    "E01_030": "data/TS_\uce68\uc785/E01_030.mp4"
+  }
+}
