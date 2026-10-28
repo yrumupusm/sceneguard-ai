@@ -1,0 +1,693 @@
+{
+  "adoption": "adopt_on_hold",
+  "behavioral_validation": "not_established",
+  "comparison_group": "EXP-0019",
+  "comparison_sha256": "fd98d4600abd96d7663b26f845f4dc115aaccdb697376d84a70ba61f01fd1caa",
+  "comparison_source": "records/EXP-0019/comparison.json",
+  "cross_experiment_comparable": false,
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0019",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "metrics": [
+    {
+      "label": "030_084 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "fcos_person_count"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "boxes",
+      "value": 3,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_084 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "person_count"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "boxes",
+      "value": 3,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_084 instrumented predict",
+      "sample_n": 1,
+      "scope": "cold_first_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "predict_seconds"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "seconds/frame",
+      "value": 1.1032874950033147,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_090 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "fcos_person_count"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_090 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "person_count"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "boxes",
+      "value": 1,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_090 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "predict_seconds"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "seconds/frame",
+      "value": 0.03764854997280054,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "smoke model construction/load including CUDA transfer",
+      "sample_n": 1,
+      "scope": "Single stage model load; no predict/warmup; PyTorch allocator only, not device total.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "model_construction_load_seconds"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "seconds/load",
+      "value": 2.8744757419917732,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "smoke load allocator allocated peak",
+      "sample_n": 1,
+      "scope": "Single stage model load; no predict/warmup; PyTorch allocator only, not device total.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "load_peak_allocated_bytes"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "bytes",
+      "value": 135486464,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "smoke load allocator reserved peak",
+      "sample_n": 1,
+      "scope": "Single stage model load; no predict/warmup; PyTorch allocator only, not device total.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "load_peak_reserved_bytes"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "bytes",
+      "value": 163577856,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "smoke predict allocator allocated peak",
+      "sample_n": 2,
+      "scope": "Maximum allocator peak across these stage frames; includes resident model; excludes device-wide other processes.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "bytes",
+      "value": 224630272,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "smoke predict allocator reserved peak",
+      "sample_n": 2,
+      "scope": "Maximum allocator peak across these stage frames; includes resident model; excludes device-wide other processes.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "bytes",
+      "value": 255852544,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "smoke child free VRAM gate",
+      "sample_n": 1,
+      "scope": "Immediately before torch import/model construction under canonical queue lease; unchanged minimum6144MiB.",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_pointer": [
+        "resource_gate",
+        "free_mib"
+      ],
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "unit": "MiB",
+      "value": 7495.0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_094 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_094 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "030_094 instrumented predict",
+      "sample_n": 1,
+      "scope": "cold_first_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.96348009101348,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_052 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_052 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_052 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.08566868098569103,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_064 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        2,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 3,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_064 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        2,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_064 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        2,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.031447171000763774,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_066 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        3,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 1,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_066 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        3,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "007_066 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        3,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.03605338800116442,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "031_032 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        4,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "031_032 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        4,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "031_032 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        4,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.0311573360231705,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "031_040 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        5,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "031_040 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        5,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "031_040 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        5,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.03320655401330441,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_119 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        6,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_119 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        6,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_119 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        6,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.053150674008065835,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_125 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        7,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_125 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        7,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_125 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        7,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.030375503993127495,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_131 Historical FCOS final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        8,
+        "fcos_person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 2,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_131 RF-DETR final person boxes",
+      "sample_n": 1,
+      "scope": "One selected native development frame; output count only, not distinct people or precision/recall; no exact box adjudication.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        8,
+        "person_count"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "boxes",
+      "value": 0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "006_131 instrumented predict",
+      "sample_n": 1,
+      "scope": "subsequent_single_pass_no_warmup; full original RGB, eager FP32; includes tensor capture/hash; excludes model load/decode/queue; historical FCOS not a controlled benchmark.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        8,
+        "predict_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/frame",
+      "value": 0.03571861798991449,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "remaining model construction/load including CUDA transfer",
+      "sample_n": 1,
+      "scope": "Single stage model load; no predict/warmup; PyTorch allocator only, not device total.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "model_construction_load_seconds"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "seconds/load",
+      "value": 2.9235354860138614,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "remaining load allocator allocated peak",
+      "sample_n": 1,
+      "scope": "Single stage model load; no predict/warmup; PyTorch allocator only, not device total.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "load_peak_allocated_bytes"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "bytes",
+      "value": 135486464,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "remaining load allocator reserved peak",
+      "sample_n": 1,
+      "scope": "Single stage model load; no predict/warmup; PyTorch allocator only, not device total.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "load_peak_reserved_bytes"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "bytes",
+      "value": 163577856,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "remaining predict allocator allocated peak",
+      "sample_n": 9,
+      "scope": "Maximum allocator peak across these stage frames; includes resident model; excludes device-wide other processes.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        1,
+        "peak_allocated_bytes"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "bytes",
+      "value": 224630272,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "remaining predict allocator reserved peak",
+      "sample_n": 9,
+      "scope": "Maximum allocator peak across these stage frames; includes resident model; excludes device-wide other processes.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "results",
+        0,
+        "peak_reserved_bytes"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "bytes",
+      "value": 255852544,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    },
+    {
+      "label": "remaining child free VRAM gate",
+      "sample_n": 1,
+      "scope": "Immediately before torch import/model construction under canonical queue lease; unchanged minimum6144MiB.",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_pointer": [
+        "resource_gate",
+        "free_mib"
+      ],
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "unit": "MiB",
+      "value": 7698.0,
+      "verification": "saved_summary_and_exact_native_pts_cache_bindings_checked"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Eleven purposive native development frames only; counts are diagnostic outputs and timing is instrumented single-pass. Both cold-first predictions are retained; no controlled historical FCOS comparison.",
+  "source_bindings": {
+    "checkpoint_bytes": 404992918,
+    "checkpoint_sha256": "749ff6071828aaffac63e204c4f4135ed3d6cdae4d702e086c360edc3b5768c8",
+    "environment_inventory_sha256": "1916998bd79752278ad81bc7c8b73a52b475232e7f46f1b598bf260741036739",
+    "execution_commit": "e0dc11a505002304eb0daf03d723d735849dcce8",
+    "execution_source_sha256": "5e6f7f75aeaeac197e3912fe89471f5608295d068dd1475b9d275515de0aae30",
+    "installed_environment_file_index_sha256": "5d320de24c21ab9bf52388ee3ea0774a861f6f72b0cc202422229d8312451315",
+    "manifest_sha256": "30b35f9c06866f876de0e74a3a3a394ea1f6f6913f4198c78004608426c75b45",
+    "manifest_source": "configs/batch0002_cv_manifest.json",
+    "requirement_lock_sha256": "2f424298d36573ad0e066a627dc7fa83cd1c67db4ace639982255c97438275c3"
+  }
+}

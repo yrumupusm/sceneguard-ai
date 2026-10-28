@@ -10,6 +10,16 @@
 - 2026-10-28 16:50 UTC 실제 `http://127.0.0.1:8765/` 브라우저에서 담당 1 → EXP-0018 → 보고서 펼치기, 4개 측정값/2개 그래프, 검토 의견, q04/v01/v03의 5초 영상 재생과 1.5초 seek를 확인했다. 상태 폴링 뒤 영상 노드도 유지됐다. 화면 자료는 2fps 샘플 표시이며 전체 프레임 원본 영상과 다르다.
 - API의 보고서·metrics·review·binding 해시와 실제 서비스의 JavaScript 해시를 로컬 checkout과 별도로 대조했다. JS SHA-256은 `cae122f859102f7a6f0dd3255d9e4a7ec5491814f340dc9a4e28fff6ba8b9fcd`다. 새 웹 기능은 없다.
 - 로컬 receipt: `runtime/BATCH-0002/input-delivery/browser-r1.json`. 이 기록의 화면 확인은 GitHub 게시 확인을 대신하지 않는다.
+- 정상 push 후 원격 `main`의 `d5f64061913f9a5fae4ca0259113b85c63123d51`에서 assignment/catalog와 보고서·metrics·review·binding byte 확인을 통과했다. 별도 receipt는 `runtime/BATCH-0002/input-delivery/github-r1.json`이다.
+
+## 검출기 비교 EXP-0019
+
+- Sol high Task `task_5dbd99e6ff9a` / Dispatch `ctx_0578048b13d3`, 담당 2를 사용했다. 기존 큐의 2개 작업/첫 attempt에서 11개 고유 프레임을 한 번씩 실행했다. 오류/OOM/retry 0, FCOS 재추론 0이며 원래 18개 작업/attempt를 보존했다.
+- 독립 Astra high Task `task_14a8a08146b2` / Dispatch `ctx_ef71a0f01600`가 역사적 실행 소스 commit, 정확한 native PTS/cache, 45개 지표 포인터, 실제 반환값·시간·메모리·환경/기존 결과 보존을 검토했다. 12개 합성 테스트가 통과했다. 기술 실행/비교는 PASS, 사람 복원·박스 품질 판정과 채택·결합 PoC는 미확정/보류다.
+- 기존 완료 CLI로 [보고서](EXP-0019-cv-comparison.md), 45개 metrics, [독립 검토](../reviews/EXP-0019-independent-review.md), [binding](../reviews/EXP-0019.binding.json), 11개 원본/FCOS/RF-DETR 정지 비교와 2개 기존 참고 영상을 등록했다.
+- 2026-10-28 17:09 UTC 실제 브라우저에서 담당 2 → EXP-0019, 보고서 펼치기, 45개 측정값/2개 그래프, 검토 의견, 두 영상의 재생/1.5초 seek와 폴링 유지가 통과했다. 추가 DOM 검사에서 11개 비교 이미지 모두 2880×570으로 decode됨을 확인했다. 이미지를 AI가 시각적으로 검수했다는 뜻은 아니다.
+- 영상 하나는 기존 030:88.6–91.5 원본/B/C 추적 비교(정상·0.25배속), 다른 하나는 007:62.5–67.5 원본 참고다. 신규 RF-DETR 연속 영상으로 표기하지 않았다. 신규 검출 비교는 고정한 11개 정지 화면이다.
+- 서비스가 읽는 report/metrics/review/binding 및 JS 해시를 별도로 확인했다. 로컬 receipt는 `runtime/BATCH-0002/cv-delivery/browser-r1.json`과 `browser-images-r1.json`이다. 최종 GitHub byte 검증은 VLM의 동결 소스 실행이 끝난 뒤 커밋하여 수행한다.
 
 ## 진행 중 배정 표시
 

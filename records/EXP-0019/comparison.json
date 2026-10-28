@@ -1,0 +1,409 @@
+{
+  "adoption": "adopt_on_hold",
+  "device_memory_scope": "Device-wide sampled ranges in report include other processes and may miss peaks; distinct from allocator metrics.",
+  "errors": 0,
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0019",
+  "frames": [
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "705a59481e7b740e80c25371a28693d5b6867810639299f464ee4fa31d168a14",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 3,
+      "frame_alias": "030_084",
+      "local_summary_result_index": 0,
+      "local_summary_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "native_pts": 1290240,
+      "original_rgb_bytes_sha256": "013bc46ccb8962a2f42aa81a7a5ed7188c16f294dfd38baef54f55b05ba17ace",
+      "partial_body_quality": null,
+      "predict_seconds": 1.1032874950033147,
+      "requested_seconds": 84,
+      "rfdetr_final_person_boxes": 3,
+      "source_id": "E01_030",
+      "source_pts_seconds": 84.0,
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "time_base": "1/15360",
+      "timing_label": "cold_first_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "5d6685dc992956e53d5caeb108c091d063b0a13d1145b5600228c5dccc0a370c",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 0,
+      "frame_alias": "030_090",
+      "local_summary_result_index": 1,
+      "local_summary_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "native_pts": 1382400,
+      "original_rgb_bytes_sha256": "41f2bb0bd075b02cd15a53f1d411da6c46eaa882febf547abb99ceb49e54126f",
+      "partial_body_quality": null,
+      "predict_seconds": 0.03764854997280054,
+      "requested_seconds": 90,
+      "rfdetr_final_person_boxes": 1,
+      "source_id": "E01_030",
+      "source_pts_seconds": 90.0,
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "time_base": "1/15360",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "58dac3bf087be850b94e99c465e52cdfc5401d45ca61081e42138530c48cdde5",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 0,
+      "frame_alias": "030_094",
+      "local_summary_result_index": 0,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 1443840,
+      "original_rgb_bytes_sha256": "d7100a03cdfeb415031cba0c97923d75c9e271c593beec5c425b134710a39d3f",
+      "partial_body_quality": null,
+      "predict_seconds": 0.96348009101348,
+      "requested_seconds": 94,
+      "rfdetr_final_person_boxes": 0,
+      "source_id": "E01_030",
+      "source_pts_seconds": 94.0,
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "time_base": "1/15360",
+      "timing_label": "cold_first_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "64e10a960d0816a598c30778f1872150cbe11d57b6c38022b1c1211b53dd85fa",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 2,
+      "frame_alias": "007_052",
+      "local_summary_result_index": 1,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 798720,
+      "original_rgb_bytes_sha256": "18fc4dd490048bed6c08ffd7b4e61f4199ce5cdcbc1145c797802ce2275b71e4",
+      "partial_body_quality": null,
+      "predict_seconds": 0.08566868098569103,
+      "requested_seconds": 52,
+      "rfdetr_final_person_boxes": 2,
+      "source_id": "E01_007",
+      "source_pts_seconds": 52.0,
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "time_base": "1/15360",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "41195c908c53b0d9291fe89538d403041ab6748633a08e245092db5254b76152",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 3,
+      "frame_alias": "007_064",
+      "local_summary_result_index": 2,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 983040,
+      "original_rgb_bytes_sha256": "972d23c38c9b2b8ee9e0fc7813144cfebed1a2a308fc4a93a90d3772682a7bee",
+      "partial_body_quality": null,
+      "predict_seconds": 0.031447171000763774,
+      "requested_seconds": 64,
+      "rfdetr_final_person_boxes": 2,
+      "source_id": "E01_007",
+      "source_pts_seconds": 64.0,
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "time_base": "1/15360",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "6e6d08d7d8b8ba5b1f041dee4b68d2619b63186d9dbb32498ba4004b15f0b745",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 1,
+      "frame_alias": "007_066",
+      "local_summary_result_index": 3,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 1013760,
+      "original_rgb_bytes_sha256": "d1697bde0f8e43721ec57cfe9680e3058f725a9f0f6a7648a8d271b21d1c2f5f",
+      "partial_body_quality": null,
+      "predict_seconds": 0.03605338800116442,
+      "requested_seconds": 66,
+      "rfdetr_final_person_boxes": 2,
+      "source_id": "E01_007",
+      "source_pts_seconds": 66.0,
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "time_base": "1/15360",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "d74ea818214640f61d235db459034c06d8ad898eb2b33a8f883eace12e627e44",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 2,
+      "frame_alias": "031_032",
+      "local_summary_result_index": 4,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 491520,
+      "original_rgb_bytes_sha256": "6dccac8acd204f29b2e039adacd4143121dec7883186779571ccd00413c5a0eb",
+      "partial_body_quality": null,
+      "predict_seconds": 0.0311573360231705,
+      "requested_seconds": 32,
+      "rfdetr_final_person_boxes": 0,
+      "source_id": "E01_031",
+      "source_pts_seconds": 32.0,
+      "source_sha256": "daf7b1075c21fdfad6789604bea5922f0e8bfdf34fc5fa54d822212b2ba9d37f",
+      "time_base": "1/15360",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "bd002d081bb2dedc175a2c81df30e9993ebe6160882ec8f643f15dc281565858",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 0,
+      "frame_alias": "031_040",
+      "local_summary_result_index": 5,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 614400,
+      "original_rgb_bytes_sha256": "c9e5c4eb1d51899b124e2a6605a992b9a0ee3635cb70dc569cf7fdfa2d432959",
+      "partial_body_quality": null,
+      "predict_seconds": 0.03320655401330441,
+      "requested_seconds": 40,
+      "rfdetr_final_person_boxes": 0,
+      "source_id": "E01_031",
+      "source_pts_seconds": 40.0,
+      "source_sha256": "daf7b1075c21fdfad6789604bea5922f0e8bfdf34fc5fa54d822212b2ba9d37f",
+      "time_base": "1/15360",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "50e5051c4d5abb9a6d61907f237758303afbffacf66b85eff8d924bd62a89d54",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 2,
+      "frame_alias": "006_119",
+      "local_summary_result_index": 6,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 10708698,
+      "original_rgb_bytes_sha256": "f974f2e8e04139f2941f36baa3276dbbcdc3bddec98fbcd85559b0a5ab6b6f3a",
+      "partial_body_quality": null,
+      "predict_seconds": 0.053150674008065835,
+      "requested_seconds": 119,
+      "rfdetr_final_person_boxes": 2,
+      "source_id": "E01_006",
+      "source_pts_seconds": 118.98553333333334,
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "time_base": "1/90000",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "aed2f8b751d222064360d815fb05f2022f7001d9f225fc84a73e62b7977e8301",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 0,
+      "frame_alias": "006_125",
+      "local_summary_result_index": 7,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 11249238,
+      "original_rgb_bytes_sha256": "2fcd395a2c43ec34c26a917a3771b2f65de13abda57a2381e1a8fe9e4131742e",
+      "partial_body_quality": null,
+      "predict_seconds": 0.030375503993127495,
+      "requested_seconds": 125,
+      "rfdetr_final_person_boxes": 2,
+      "source_id": "E01_006",
+      "source_pts_seconds": 124.99153333333334,
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "time_base": "1/90000",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    },
+    {
+      "actual_preprocessed": {
+        "dtype": "float32",
+        "sha256": "197fcf205b42fda220fe3ed2ac7916079614a80f71f460b90f304fe915472d7a",
+        "shape": [
+          1,
+          3,
+          576,
+          576
+        ]
+      },
+      "background_false_positive": null,
+      "duplicate_quality": null,
+      "fcos_final_person_boxes": 2,
+      "frame_alias": "006_131",
+      "local_summary_result_index": 8,
+      "local_summary_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "local_summary_source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "native_pts": 11789778,
+      "original_rgb_bytes_sha256": "31966b2ce71cb634fa0332acc5a202882ef70627823ff6c9661755a1a14be0cc",
+      "partial_body_quality": null,
+      "predict_seconds": 0.03571861798991449,
+      "requested_seconds": 131,
+      "rfdetr_final_person_boxes": 0,
+      "source_id": "E01_006",
+      "source_pts_seconds": 130.99753333333334,
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "time_base": "1/90000",
+      "timing_label": "subsequent_single_pass_no_warmup",
+      "visual_person_recovery": null
+    }
+  ],
+  "limitations": [
+    "Selected development frames;006/007 share a camera group; no independent generalization sample.",
+    "New counts do not establish true recovery, duplicates, whole-body fit or background rejection.",
+    "No controlled FCOS latency rerun; no end-to-end throughput, tracker/event or power benchmark.",
+    "No tracker/ROI/event/default changes or integration PoC."
+  ],
+  "new_fcos_predict_calls": 0,
+  "oom": 0,
+  "prior_human_observations": {
+    "approach03084_people": 3,
+    "climbing03090_people": 3,
+    "completion": "not_established",
+    "precise_person_boxes": "not_provided"
+  },
+  "quality": {
+    "f1": null,
+    "generalization": "not_established",
+    "precision": null,
+    "recall": null,
+    "visual_box_adjudication": "pending"
+  },
+  "retries": 0,
+  "rfdetr_predict_calls": 11,
+  "sampled_vlm_scope": "Separate human-input review; q04 B/C individual adequacy and v03 boundary relation remain uncertain; no CV claim resolves them.",
+  "schema_version": 1,
+  "source_bindings": {
+    "checkpoint_bytes": 404992918,
+    "checkpoint_sha256": "749ff6071828aaffac63e204c4f4135ed3d6cdae4d702e086c360edc3b5768c8",
+    "environment_inventory_sha256": "1916998bd79752278ad81bc7c8b73a52b475232e7f46f1b598bf260741036739",
+    "execution_commit": "e0dc11a505002304eb0daf03d723d735849dcce8",
+    "execution_source_sha256": "5e6f7f75aeaeac197e3912fe89471f5608295d068dd1475b9d275515de0aae30",
+    "installed_environment_file_index_sha256": "5d320de24c21ab9bf52388ee3ea0774a861f6f72b0cc202422229d8312451315",
+    "manifest_sha256": "30b35f9c06866f876de0e74a3a3a394ea1f6f6913f4198c78004608426c75b45",
+    "manifest_source": "configs/batch0002_cv_manifest.json",
+    "requirement_lock_sha256": "2f424298d36573ad0e066a627dc7fa83cd1c67db4ace639982255c97438275c3"
+  },
+  "stage_sources": [
+    {
+      "config_sha256": "1391d15f835fe837b26ded3b043fcb31a62e36353d9b93605d8c19c2d9a72845",
+      "execution_source_sha256": "5e6f7f75aeaeac197e3912fe89471f5608295d068dd1475b9d275515de0aae30",
+      "execution_status": "succeeded",
+      "input_sha256": "b6042c62f9afdfa16c2dc0fe9aeed4a20653a62d412f2ae9372408a32ffdc86e",
+      "source": "outputs/batch0002/cv/EXP-0019/smoke/72cd3434f0c94b6ab03487375c705a32/summary.json",
+      "source_sha256": "203bf2f63dba5081283ec520a35c73d564e68e5933cb317f6edc4570abfc288e",
+      "stage": "smoke"
+    },
+    {
+      "config_sha256": "82b3a705cc4cf5394c80cd83542771059d32cff911616a5b56a9c9601f75af1a",
+      "execution_source_sha256": "5e6f7f75aeaeac197e3912fe89471f5608295d068dd1475b9d275515de0aae30",
+      "execution_status": "succeeded",
+      "input_sha256": "f941c5e2afb31895e80e67ab6dd37b497d8cbb2c58660be4798f39e62b19ff2e",
+      "source": "outputs/batch0002/cv/EXP-0019/remaining/d09518cedcc644e8aed3a82e064c88b8/summary.json",
+      "source_sha256": "90ddfbbb300e62187b567e09ff164eefada8c0fbdd09df9b34d78cd10fc1128e",
+      "stage": "remaining"
+    }
+  ],
+  "summary": "Eleven unique native frames completed technically;03090 person-box output0 to1 is diagnostic only, and stable person recovery is not established.",
+  "unique_native_frames": 11,
+  "warmup_frames": 0
+}

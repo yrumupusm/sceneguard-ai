@@ -1,6 +1,6 @@
 # EXP-0019 — BATCH-0002 native-frame CV comparison
 
-2026-10-29 KST. **CPU preparation complete; model execution awaits coordinator freeze/assignment; adopt_on_hold.** This bounded diagnostic compares the preserved FCOS COCO_V1 outputs with one RF-DETR Medium checkpoint. It does not change the default detector, ByteTrack, ROI, event rules, or MVP.
+2026-10-29 KST. **Eleven-frame native comparison executed successfully; exact visual quality review pending; adopt_on_hold.** This bounded diagnostic compares the preserved FCOS COCO_V1 outputs with one RF-DETR Medium checkpoint. It does not change the default detector, ByteTrack, ROI, event rules, or MVP.
 
 The coordinator accepted the CPU native-source audit and the prior human observations of three approaching people at03084 and three climbing people at03090. Those observations establish neither precise person boxes nor completion. The separate sampled-input human bundle now reports q04 holding the gate and raising a foot (B/C adequacy not independently established), v01 crossing the rope and standing opposite, and v03 climbing a rock beside the gate (boundary crossing unestablished); this CV comparison does not certify VLM input sufficiency.
 
@@ -12,7 +12,7 @@ The sole new checkpoint is official RF-DETR Medium, rfdetr1.11.2/tag7433d5919d0f
 
 RF-DETR uses full original RGB only, eager FP32, batch1, official576×576 resize/normalization, score strictly greater than0.5, default top300 over sparse COCO classes, person ID1, and no added NMS. Official predict maps boxes back to original coordinates once. FCOS uses its historical full-frame min800/max1333 path and final person score at least0.5; equal numeric score thresholds do not imply calibrated equivalence. Model family and preprocessing both differ.
 
-The isolated environment installed torch2.5.1+cu124/torchvision0.20.1+cu124, rfdetr1.11.2, transformers5.1.0, supervision0.29.0. Its76-package inventory and23,147 installed code/native-library file hashes are frozen before enqueue. CPU import checks with CUDA hidden passed, cuda_initialized=false, and six reviewed installed RF-DETR files exactly match the cached official tag. No model has been constructed in those checks. Existing environments are untouched. The execution child denies network connections, and offline environment flags prevent implicit backbone or extra checkpoint retrieval.
+The isolated environment installed torch2.5.1+cu124/torchvision0.20.1+cu124, rfdetr1.11.2, transformers5.1.0, supervision0.29.0. Its76-package inventory and23,147 installed code/native-library file hashes are frozen before enqueue. CPU import checks with CUDA hidden passed, cuda_initialized=false, and six reviewed installed RF-DETR files exactly match the cached official tag. Those checks constructed no model; subsequent construction and all predictions occurred only in the authorized canonical queue child. Existing environments are untouched. The execution child denies network connections, and offline environment flags prevent implicit backbone or extra checkpoint retrieval.
 
 ## Execution gate and cost
 
@@ -28,4 +28,48 @@ More detections do not establish improved person recovery. Exact visual judgment
 
 ## Validation status
 
-Twelve new CPU contract tests pass, including direct-child rejection, lease identity, strict score/sparse class mapping, resource gate and preservation migration. System-Python full Orca discovery encountered two unrelated missing-fastapi import errors; the existing project interpreter passed all48 targeted queue, existing VLM/MVP registration and new CV checks. Installation, pip dependency check and CPU imports pass; actual smoke/full compatibility, detections and costs remain unmeasured.
+Twelve new CPU contract tests pass, including direct-child rejection, lease identity, strict score/sparse class mapping, resource gate and preservation migration. System-Python full Orca discovery encountered two unrelated missing-fastapi import errors; the existing project interpreter passed all48 targeted queue, existing VLM/MVP registration and new CV checks. Installation, pip dependency check, CPU imports and both actual CUDA stages pass. The coordinator ran the full Orca suite in the existing lab environment:101 tests ran successfully with1 skipped (100 passed); its local log is separate from the earlier missing-fastapi discovery attempts. Independent quality review is pending.
+
+
+## Actual execution and original-frame comparison
+
+The coordinator reviewed and committed the frozen execution bytes as `e0dc11a505002304eb0daf03d723d735849dcce8`, then confirmed the registered EXP-0019 Task/Dispatch. Execution source digest was `5e6f7f75aeaeac197e3912fe89471f5608295d068dd1475b9d275515de0aae30`. Both queue jobs and both first attempts succeeded: **11 unique frame predictions,0 warmup,0 retries,0 errors/OOM**. No FCOS prediction or additional checkpoint/backbone download occurred. Source bytes and all pinned input/environment/weight/cache files were verified again after execution. All18 pre-existing jobs and18 attempts remained byte-for-byte equal as records; the additive migration backup is retained locally.
+
+These are **final person-box output counts**, not numbers of recovered people or quality scores. The two cold-first rows belong to separate model loads and were never repeated.
+
+| Frame alias | Native PTS | Time base | Actual source PTS(s) | FCOS≥0.5 | RF-DETR>0.5 | Predict(ms) |
+| --- | --- | --- | --- | --- | --- | --- |
+|030_084|1290240|1/15360|84.000000000|3|3|1103.287 (cold-first)|
+|030_090|1382400|1/15360|90.000000000|0|1|37.649|
+|030_094|1443840|1/15360|94.000000000|0|0|963.480 (cold-first)|
+|007_052|798720|1/15360|52.000000000|2|2|85.669|
+|007_064|983040|1/15360|64.000000000|3|2|31.447|
+|007_066|1013760|1/15360|66.000000000|1|2|36.053|
+|031_032|491520|1/15360|32.000000000|2|0|31.157|
+|031_040|614400|1/15360|40.000000000|0|0|33.207|
+|006_119|10708698|1/90000|118.985533333|2|2|53.151|
+|006_125|11249238|1/90000|124.991533333|0|2|30.376|
+|006_131|11789778|1/90000|130.997533333|2|0|35.719|
+
+At the prior human-confirmed03090 climbing instant, RF-DETR returns one person box versus FCOS zero. That box has not been visually adjudicated for person identity, whole/partial body, overlap or background. The output does not establish stable recovery of the three previously observed people. Counts increase at some other frames and decrease at others, so they support no blanket improvement claim.03094 and03140 remain zero-output diagnostic frames; exact person-level judgments remain unknown. No new visual observations were made by an image model or cloud media tool.
+
+## Measured costs and evidence
+
+| Measurement | Smoke2 frames | Remaining9 frames |
+| --- | --- | --- |
+| Child free-VRAM gate(MiB) |7495|7698|
+| Model construction/load plus official CUDA transfer(s)|2.8745|2.9235|
+| Load allocator peak allocated/reserved(MiB)|129.21 /156|129.21 /156|
+| Predict allocator peak allocated/reserved(MiB)|214.22 /244|214.22 /244|
+| Device-wide sampled used-memory range(MiB)|2558–3068|2361–2866|
+| Device samples / sampling errors|28 /0|64 /0|
+| Queue attempt duration(s), including hash/import/receipt overhead|13.251|24.907|
+
+Total instrumented predict time was2.4412s across11 calls. Nine subsequent-frame measurements range30.376–85.669ms; the two cold-first values are reported separately above. These small single-pass measurements include the actual tensor CPU-copy/hash capture hook and cannot establish a controlled throughput or latency advantage over historical FCOS. Device-wide samples include other GPU use and can miss peaks; they are not interchangeable with allocator peaks. Actual inputs were captured as FP32 `1×3×576×576` for all11 predictions, with original1920×1080 RGB and original-coordinate returned boxes retained. No second coordinate scaling was applied.
+
+The ignored local comparison directory contains11 original/FCOS/RF-DETR panels and the privacy-safe counts/timing summary. Actual source PTS, native PTS and time base were added to panel display text only after both inference stages settled. Raw returned boxes/scores/classes, actual preprocessed arrays/hashes, original RGB, tentative overlap diagnostics, device samples, environment inventory, migration backup and both queue receipts remain local; they are not published media or bbox ground truth. The local execution-results and integrity receipts bind job/attempt IDs and evidence hashes for independent review.
+
+**Decision: adopt_on_hold.** Technical compatibility is established for these eleven frames. Stable human recovery, duplicate/background/partial-box quality, event sensitivity, precision/recall/F1, new-camera generalization and operational cost remain unestablished. These outputs alone do not justify replacing FCOS, changing tracking/ROI/events, or starting a combined PoC. The next needed evidence is exact local panel adjudication under the preserved human observations and independent review, without another inference or settings search.
+
+
+Public source-bound numeric records: [metrics](../../records/EXP-0019/metrics.json) and [native-frame comparison summary](../../records/EXP-0019/comparison.json). Every measured metric cites the relative local summary source, its actual SHA256 and exact field pointer; original-source, manifest, environment inventory, checkpoint and execution-source hashes are frozen in those records. Raw summaries stay local and are not included as public bbox payloads.

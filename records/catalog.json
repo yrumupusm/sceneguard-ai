@@ -1171,6 +1171,115 @@
       "task_id": "task_806f089dde4f",
       "title": "BATCH-0002 input sufficiency audit",
       "worker_opinion": "원본 PTS와 저장 RGB·crop·resize 출처는 확인됐다. q04의 발 올림과 v01 반대편 이동은 사용자 관찰이며 q04 B/C별 충분성과 v03 경계 연결은 미확정이다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-28T16:35:22.471217+00:00",
+      "attempt_id": "native-frame-comparison-r1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_0578048b13d3",
+      "evaluated_model": "RF-DETR Medium 1.11.2 FP32 versus historical FCOS COCO_V1 cache",
+      "evidence": [
+        {
+          "artifact_id": "exp0019-frame-030_084",
+          "kind": "image",
+          "label": "030_084 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-030_090",
+          "kind": "image",
+          "label": "030_090 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-030_094",
+          "kind": "image",
+          "label": "030_094 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-007_052",
+          "kind": "image",
+          "label": "007_052 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-007_064",
+          "kind": "image",
+          "label": "007_064 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-007_066",
+          "kind": "image",
+          "label": "007_066 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-031_032",
+          "kind": "image",
+          "label": "031_032 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-031_040",
+          "kind": "image",
+          "label": "031_040 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-006_119",
+          "kind": "image",
+          "label": "006_119 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-006_125",
+          "kind": "image",
+          "label": "006_125 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-frame-006_131",
+          "kind": "image",
+          "label": "006_131 원본 / FCOS / RF-DETR (사람 대응 미확정)"
+        },
+        {
+          "artifact_id": "exp0019-reference-030",
+          "kind": "video",
+          "label": "030:88.6–91.5 기존 원본/B/C 추적 비교: 신규 RF-DETR 영상 아님"
+        },
+        {
+          "artifact_id": "exp0019-reference-q04",
+          "kind": "video",
+          "label": "007:62.5–67.5 원본 참고: CV 64/66초 포함"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0019",
+      "limitations": [
+        "11개 프레임은 개발 진단이며 정확한 사람별 bbox 정답이 없다.",
+        "CV 출력 개수와 근사 영역 겹침은 실제 사람 수·복원·정확도가 아니다.",
+        "검출기와 전처리가 함께 다르며 같은0.5 점수도 보정 확률이 같다는 뜻이 아니다.",
+        "predict는 tensor 복사/해시와 기록 계측을 포함하고 첫 호출은 별도 cold-first다. 과거 FCOS와 통제된 속도 비교가 아니다.",
+        "006 후기 보행은 기존 ROI 밖이며 정상 판별 성공으로 세지 않는다.",
+        "비디오는 기존 장면 참고 자료이며 RF-DETR 연속 추론 영상이 아니다. 신규 비교는 11개 정지 이미지다."
+      ],
+      "metric_definitions": "records/EXP-0019/metrics.json",
+      "metrics_path": "records/EXP-0019/metrics.json",
+      "metrics_sha256": "6e6df09b55be1ac48130ea3d4666aa2b87fba68db34bd0520366d0ddf7eb5612",
+      "next_step": "등록한 원본/FCOS/RF-DETR 정지 화면에서 실제 사람 대응을 확인해야 한다. 이번 배치에서는 추가 추론 없이 VLM 독립 비교와 종합 판단을 마무리한다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "a3c9be386d7b40f0a499bf65d88959207d0c3932a95dd95d03f4570561c2ac54",
+      "report_path": "docs/experiments/EXP-0019-cv-comparison.md",
+      "report_sha256": "d492ba56462994ca913feab981b7410e343a6055e0f299849f2dbea41b59e75b",
+      "review_binding_path": "docs/reviews/EXP-0019.binding.json",
+      "review_path": "docs/reviews/EXP-0019-independent-review.md",
+      "review_sha256": "71b2c32ab5d5d9ecf0b9fc79025236c039690d474eeb6a8fd12651013a4eb4e4",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "6e6df09b55be1ac48130ea3d4666aa2b87fba68db34bd0520366d0ddf7eb5612",
+      "reviewed_report_sha256": "d492ba56462994ca913feab981b7410e343a6055e0f299849f2dbea41b59e75b",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot2",
+      "summary": "RF-DETR Medium 11프레임 실행 완료, 오류/OOM/retry 0. 030:90 최종 사람 박스는 FCOS 0개에서 1개로 달라졌지만 실제 사람 대응·중복·부분 신체 품질은 미확정이며 채택 보류다.",
+      "synthetic": false,
+      "task_id": "task_5dbd99e6ff9a",
+      "title": "BATCH-0002 native CV comparison",
+      "worker_opinion": "같은 원본 PTS 11개에서 기술 실행과 반환값 비교를 확인했다. 박스 개수 증가를 실제 사람 복원으로 해석하지 않으며 기본 CV와 결합 PoC를 채택하지 않는다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
