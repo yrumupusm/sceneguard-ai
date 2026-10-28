@@ -13,7 +13,7 @@
 | TEST 완료 자료 화면 | 실제 Orca 브라우저 확인 | 보고서 펼침, metrics 표/그래프, 기존 EXP5 영상 재생/seek, 별도 검토 |
 | 기존 결과 서비스 | 실제 확인 | `127.0.0.1:8765`의 EXP5 보고서·그래프·007/030 영상 두 개·총괄 검토 |
 | 첫 실제 새 실험 | **미실행** | 공개 배정 목록은 비어 있고, 카탈로그는 기존 EXP-0001~0007만 포함 |
-| GitHub 게시 | 화면 확인과 별도 | 게시 후 원격 SHA와 게시 자료 해시 대조; 완료 메시지와 로컬 게시 receipt에 기록 |
+| GitHub 게시 | 별도 확인 완료 | 코드/운영 기록 12커밋, 원격 `5bca66b`와 각 source tree 일치, EXP5 원천/검토 파일 대조. [게시 이력](DELIVERY_PUBLICATION.md) |
 
 화면 테스트는 로컬 DOM·표 값·해시·미디어 디코딩 상태를 조회했다. CCTV 픽셀/프레임/스크린샷을 클라우드 도구에 보내지 않았다. 영상 재생 성공은 행동 정답 검수나 새 모델 실험 성공을 뜻하지 않는다. 007/030 자료는 기존 비교 영상을 참조했으며 새 영상·추론·가중치는 만들지 않았다.
 
@@ -46,7 +46,7 @@ Codex worker CLI는 0.165.0. 현재 총괄 세션의 생성 메타데이터는 0
 
 화면 확인 자체의 실패도 보존했다. 통합 worktree의 새 탭은 생성 응답 뒤 `browser_tab_not_found`가 나왔고, 원인은 확정하지 않았다. 전체 Orca를 재시작하지 않고 `tab list --worktree all`에 실제 남아 있는 기존 실험실 탭을 재사용했다. `loadedmetadata` 직후 play는 0초에서 멈추는 사례가 있었고, 300ms 대기를 늘리는 것만으로 해결되지 않았다. 로컬 seek 후 play와 `preload=auto`+`loadeddata` 대기를 비교한 뒤 후자를 검사에 적용했다. 최종 검사는 최소 0.2초의 실제 재생 진행 후 seek를 확인한다. 원본 MP4나 코덱을 수정하지 않았다.
 
-최종 구현 검토 기준은 `2d88656`, 준비 상태/지속 재생 보완은 `1f89f92`/`a639352`다. 테스트는 새 테스트용 임시 파일만 사용했고 기존 실험을 재실행하지 않았다. 최초 reviewer의 sandboxed 전체 fixture는 socket 제한으로 timeout했고, 허용된 같은 로컬 테스트 재실행 61개는 통과했다. 이를 실제 실험 실패나 모델 문제로 기록하지 않는다.
+최종 구현 검토 기준은 `2d88656`, 준비 상태/지속 재생 보완은 `1f89f92`/`a639352`다. [재검토](../reviews/DELIVERY-recheck.md)는 F1~F4 해결과 두 보완 diff 검토를 기록했다. 테스트는 새 테스트용 임시 파일만 사용했고 기존 실험을 재실행하지 않았다. 최초 reviewer의 sandboxed 전체 fixture는 socket 제한으로 timeout했고, 허용된 같은 로컬 테스트 재실행 61개는 통과했다. 이를 실제 실험 실패나 모델 문제로 기록하지 않는다.
 
 ## 실제 브라우저 관측
 
@@ -54,13 +54,14 @@ Codex worker CLI는 0.165.0. 현재 총괄 세션의 생성 메타데이터는 0
 
 - 최종 TEST 확인: 원문 펼침·표 값 `1`과 그래프 1개·총괄 검토, 기존 비교 영상 1800×780/15.666667초. 실제 재생 0.223442초, seek 1.5초, decoded frames 53. 이후 16.5초 기다려 15초 주기 갱신이 영상 DOM을 교체하지 않는지 확인했다. 값 `1`은 합성 fixture이지 성능 지표가 아니다.
 - 실제 서비스 EXP5 확인: 기존 metrics 13행(최종 행동 정확도는 미측정), 그래프 1개, 원문 펼침과 기존 검토. 007 영상 15.666667초/재생 0.200811초, 030 영상 14.666667초/재생 0.217622초, 각각 seek 1.5초와 디코딩 성공. 갱신 중 두 영상 노드 유지.
+- 게시 후 main 서비스로 전환한 별도 확인(17:15 KST): 같은 원천/검토 4개 해시, 원문 펼침/그래프/검토, 007 재생 0.201070초와 030 재생 0.228892초, 각각 seek 1.5초. 브라우저 receipt는 GitHub 성공을 자동 주장하지 않는다. 실제 제공된 app.js SHA256은 `cae122f859102f7a6f0dd3255d9e4a7ec5491814f340dc9a4e28fff6ba8b9fcd`다.
 - 코드가 실행하는 카드 선택/원문 펼침/재생·seek 결과를 확인한 것이며, 영상의 사람 행동을 새로 의미 검수한 것은 아니다. 실험 간 지표를 범용 성능 순위로 비교하지 않았다.
 
-로컬 증거: 통합 worktree의 `runtime/delivery/registration-lifecycle-receipts.json`, `browser-task-states-v3.json`, `browser-poll-failure.json`, `browser-lifecycle-accepted.json`, `browser-production-exp5.json`, `tests-review-fixes.log`, 모델 메타데이터 및 각 실패 receipt. 이 디렉터리는 Git 제외다. TEST 자료를 공개 `records/`에 옮기지 않는다. 수정 전 TEST의 attempt 포함 binding은 로컬 증거로 그대로 보존했으며 신규 등록 코드는 EXP별 고정 binding을 사용한다.
+로컬 증거: 통합 worktree의 `runtime/delivery/registration-lifecycle-receipts.json`, `browser-task-states-v3.json`, `browser-poll-failure.json`, `browser-lifecycle-accepted.json`, `browser-production-exp5.json`, `browser-published-main-exp5.json`, `github-production-exp5.json`, `publication-map.json`, `tests-review-fixes.log`, 모델 메타데이터 및 각 실패 receipt. 이 디렉터리는 Git 제외다. TEST 자료를 공개 `records/`에 옮기지 않는다. 수정 전 TEST의 attempt 포함 binding은 로컬 증거로 그대로 보존했으며 신규 등록 코드는 EXP별 고정 binding을 사용한다.
 
 ## 실행·중지·복구와 다음 실험
 
-웹 주소: **http://127.0.0.1:8765/**. 서비스 검증 시 코드는 `sceneguard-workflow` worktree를 읽었다. 게시된 main으로 전환할 때도 config의 실제 root와 서비스 코드/자료 버전을 별도로 확인한다. 환경과 공통 runtime은 기존 실험실 경로를 그대로 사용한다.
+웹 주소: **http://127.0.0.1:8765/**. 최초 화면 검증은 `sceneguard-workflow`에서 수행했고, 게시 후 config의 `repo_root`를 **`/home/jhc7484/dev/sceneguard-ai`의 main**으로 바꾸어 소유 서비스만 재시작했다. 새 수집기의 connected 상태와 main의 실제 화면 확인이 통과했다. 환경과 공통 runtime은 기존 실험실 경로를 그대로 사용한다. 기존 LOCAL_SETUP_REPORT의 lab 코드 경로는 당시 이력이고, 현재 실행 코드는 이 경로다.
 
 ```sh
 cd /home/jhc7484/dev/sceneguard-ai
@@ -69,7 +70,7 @@ cd /home/jhc7484/dev/sceneguard-ai
 /home/jhc7484/dev/sceneguard-orca-lab/.venv-orca-lab/bin/python -m orchestration.lab --config /home/jhc7484/dev/sceneguard-orca-lab/runtime/orca-lab/local_config.json start
 ```
 
-재시작은 status→소유 서비스 stop→start다. 웹 중지는 GPU 큐/Orca 작업자를 종료하지 않는다. 부분 시작 실패는 저장된 정확한 PID/boot/start-ticks로 소유권을 확인하고 stop으로 정리한다. 다른 프로세스/전체 runtime을 종료하지 않는다. 기존 config 원본은 로컬 `production-config-before.json`에 보존했다. 같은 공통 runtime에 `completion.lock`과 기존 GPU 큐를 유지하며 worktree별 큐를 만들지 않는다.
+재시작은 status→소유 서비스 stop→start다. 웹 중지는 GPU 큐/Orca 작업자를 종료하지 않는다. 부분 시작 실패는 저장된 정확한 PID/boot/start-ticks로 소유권을 확인하고 stop으로 정리한다. 다른 프로세스/전체 runtime을 종료하지 않는다. 기존 config 원본은 로컬 `production-config-before.json`에 보존했다. 같은 공통 runtime에 `completion.lock`과 기존 GPU 큐를 유지하며 worktree별 큐를 만들지 않는다. 격리 TEST 서버 8766은 소유 PID 확인 후 중지했다. 배정한 작업자는 모두 완료 수락→release→정확한 idle 터미널 정리→ack를 마쳤고, reclaimable 조회는 빈 목록이다.
 
 다음 실제 실험은 [CODEX_NEXT_TASK](../CODEX_NEXT_TASK.md) 순서대로 배정부터 화면 확인까지 수행한다. 새로운 가중치/실제 배치 실행 범위는 이번 운영 요청에 포함되지 않는다. 등록 CLI는 trusted coordinator용이며 역할 인증이나 자동 채택기가 아니다. 파일 검사·hash 연결은 검수의 의미적 정확성을 보장하지 않는다. 영상 부재/실패 시 해당 확인은 미완료로 표시한다.
 
