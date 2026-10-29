@@ -20,3 +20,9 @@ Astra high는 사용자 정성 관찰 해석·한 명 표시 제한 없음·이�
 - `docs/reviews/EXP-0024.binding.json`: `9d552579c21ea293e2cb9794b8b7947015c68574231a54277b2c8e0837177cab`
 
 실제 화면 receipt는 로컬 runtime/EXP-0024/browser-images.json에 보존했다. GitHub 원격 확인은 별도 기록한다.
+
+## 원격 게시 확인
+
+문서·공개지표·등록10개 파일을 b1cb070364810dd7d1df20311a40ef694a8f115b에commit/push했다.2026-10-29 06:04 UTC 원격main 및report/metrics/review/binding의Git객체bytes가 실제서비스와같음을 별도검증했다(runtime/EXP-0024/github-results.json). 수기이미지·기존미디어·원시결과·runtime은Git제외를확인했다.
+
+두작업자는worker_done succeeded로완료했다. reviewer터미널은해제했고 담당터미널은Orca가user_takeover로retained를반환해강제종료하지않았다. reclaimable0이며신규GPU큐작업0이다. 이최종전달기록커밋도push후원격검증하며receipt는로컬에만보존한다.
