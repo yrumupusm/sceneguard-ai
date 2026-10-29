@@ -2,7 +2,11 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
-## 현재 신규 승인 — BATCH-0003 YOLO26m-Pose 무학습 자세 추정 (2026-10-29)
+## 최신 상태 — BATCH-0003 실행 실패·재시도 한도 종료 (2026-10-29)
+
+[종합 결과](docs/experiments/BATCH-0003-summary.md)와 [전달 기록](docs/experiments/BATCH-0003-delivery.md)을 우선한다. 공식 YOLO26m-Pose 한 모델과 267개 입력을 준비했으나, 두 smoke가 각각 head 초기화 누락/지원하지 않는 visualize 인자로 실패했다. 실제 모델 로딩은 2회, 완료 forward·pose 출력은 0개다. 이는 어댑터 호환성 실패이며 모델 관절 품질 실패라는 뜻이 아니다. 한 번의 논리적 retry를 소진했고 나머지265개·행동 규칙은 실행하지 않았다. **추가 GPU 실행·세 번째 시도·모델 변경을 자동 시작하지 않는다.** 기존 CV/VLM·공식 라벨·결과와 기본 적용 보류를 유지한다. 다음 별도 범위 전에는 실패 기록/CPU 검사와 전달 증거만 활용한다.
+
+## 보존된 승인 — BATCH-0003 YOLO26m-Pose 무학습 자세 추정 (2026-10-29)
 
 **최우선:** [BATCH-0003 전체 계획](docs/experiments/BATCH-0003-yolo26-pose-plan.md) 및 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md). 사용자는 **추가 학습 없이 공식 COCO 사전학습 `yolo26m-pose.pt` 1개**를 RTX3080에서 사용해, 실제 울타리 넘는 순간 사람 검출과 17개 관절의 시각적 정확성·시간 변화·접근/대기 오판을 확인하는 제한된 실험을 승인했다. 이번 신규 승인은 이전 **BATCH-0002 종료/추가 GPU 작업 금지의 역사적 상태**를 이 범위 한정으로만 대체한다.
 

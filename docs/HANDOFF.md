@@ -1,3 +1,11 @@
+# 최신 인수인계 — BATCH-0003 실행 실패·종료
+
+2026-10-29 KST. [종합 결과](experiments/BATCH-0003-summary.md), [EXP-0021](experiments/EXP-0021-yolo26m-pose.md), [독립 검토](reviews/EXP-0021-independent-review.md), [전달 기록](experiments/BATCH-0003-delivery.md).
+
+YOLO26m-Pose/ultralytics8.4.192 한 모델을 격리하고267고유 입력을 고정했다. 원소스 b52ac22의 smoke는 로딩 후 구조 검사 실패, 수정소스1b12d85의 유일한 retry는 첫호출 visualize 인자 TypeError다. 모델 로딩2회/완료예측0개/저장pose0개이며 remaining265·규칙은 미실행. 원 실패38개 queue row를 보존한 별도 correction job으로 논리적 retry1을 소진했다. 실패는 어댑터 문제이고 실제 관절 품질은 미측정이다. **새 GPU 작업을 예약하지 않는다.** 기존 CV/VLM·환경·라벨·결과를 유지한다.
+
+---
+
 # SceneGuard — 다음 작업과 대화 인수인계
 
 ## 신규 사용자 승인 / 다음 실행 — BATCH-0003 YOLO26m-Pose (2026-10-29)

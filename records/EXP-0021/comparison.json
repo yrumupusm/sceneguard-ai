@@ -1,0 +1,163 @@
+{
+  "actual_input_tensor_artifact": "unavailable: capture/save occurred only after successful inference; second path reached shape/dtype assertion but tensor not persisted",
+  "adoption": "adopt_on_hold",
+  "attempted_outer_model_calls": 1,
+  "attempts": [
+    {
+      "architecture_initial": null,
+      "architecture_selected": null,
+      "attempt_id": "152d45f0113f4c94b44c69961a677023",
+      "code_sha": "b52ac221a2e43924f86efd8fbd32a0df4973ceec",
+      "completed_forward_returns": 0,
+      "completed_frames": 0,
+      "error": "official pose architecture/end2end differs",
+      "error_type": "ValueError",
+      "first_attempted_frame": null,
+      "free_vram_before_load_mib": 7172.0,
+      "initial_validation_seconds": 3.8017660019977484,
+      "job_key": "batch0003-exp0021-pose-smoke",
+      "load_peak_allocated_bytes": 98152448,
+      "load_peak_reserved_bytes": 98566144,
+      "load_seconds": 0.3474994809948839,
+      "queue_attempt_wall_seconds": 9.21063756942749,
+      "run_entry_wall_seconds": 5.1620144250046,
+      "source_sha256": "1096a4f9c6322a6e7da7f3f6fa204a54fc6b3f095ff618156453e431a8f339e0",
+      "status": "failed",
+      "summary_sha256": "593ebd605f6555dba9f426b81d6499878e03a8adfad0686ea5602bd3cb33eadb",
+      "warmup_frames": 0
+    },
+    {
+      "architecture_initial": {
+        "end2end": false,
+        "export": false,
+        "fused": false,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "legacy_model_end2end": true,
+        "max_det": 300,
+        "names": {
+          "0": "person"
+        },
+        "one2one_present": true,
+        "serialized_end2end": null,
+        "stride": 32
+      },
+      "architecture_selected": {
+        "end2end": true,
+        "export": false,
+        "fused": false,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "legacy_model_end2end": true,
+        "max_det": 300,
+        "names": {
+          "0": "person"
+        },
+        "one2one_present": true,
+        "serialized_end2end": true,
+        "stride": 32
+      },
+      "attempt_id": "070b7d4885154095bb84299b8f5916b8",
+      "code_sha": "1b12d85c20ba922de5062148045281849055ef9e",
+      "completed_forward_returns": 0,
+      "completed_frames": 0,
+      "error": "BaseModel.predict() got an unexpected keyword argument 'visualize'",
+      "error_type": "TypeError",
+      "first_attempted_frame": "030_090",
+      "free_vram_before_load_mib": 7169.0,
+      "initial_validation_seconds": 3.73252681599115,
+      "job_key": "batch0003-exp0021-pose-smoke-retry1",
+      "load_peak_allocated_bytes": 98152448,
+      "load_peak_reserved_bytes": 98566144,
+      "load_seconds": 0.36898144098813646,
+      "queue_attempt_wall_seconds": 9.18245267868042,
+      "run_entry_wall_seconds": 5.193570391013054,
+      "source_sha256": "7bd780ab2a7b59f011865042fd478a64e5a217a588c0b86bdb4d4597bc753c6a",
+      "status": "failed",
+      "summary_sha256": "2acff1ceae9d44e1ad2cc7acfb90ee3ffea25375ec22926963d9a04ed682ccf8",
+      "warmup_frames": 0
+    }
+  ],
+  "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+  "completed_forward_returns": 0,
+  "completed_unique_frames": 0,
+  "diagnostic_frames_completed": 0,
+  "diagnostic_frames_planned": 11,
+  "environment_file_index_sha256": "65885e839cb80cb622dc6ecfff08375e975a4abf7018ea0f9ab44be87abb0a51",
+  "execution_status": "failed",
+  "experiment_id": "EXP-0021",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "inference_fps": null,
+  "logical_retry_consumed": true,
+  "logical_smoke_attempts": 2,
+  "manifest_sha256": "6ea2fe8d692611f7808b1109a591fedff9cd8c901f13cc43474246324927883d",
+  "original_pose_comparison": "unavailable: no pose output; never substitute original footage or blank skeleton for a successful model comparison",
+  "original_queue_rows_preserved": {
+    "attempts": 38,
+    "jobs": 38
+  },
+  "person_joint_quality": "unmeasured",
+  "planned_smoke_frames": [
+    "030_090",
+    "007_064"
+  ],
+  "planned_unique_frames": 267,
+  "remaining_stage": "not_enqueued_or_executed",
+  "rule_status": "skipped: no pose evidence; existing fence-top/far-side geometry unvalidated",
+  "scope": "Smoke technical integration only; two failed smoke attempts with completed model loads, zero successful prediction results; no pose/person/behavior performance measured",
+  "technical_limitation": "forward_count records completed returns only; correction attempted the outer model call once, failing keyword binding before BaseModel.predict body/_predict_once",
+  "temporal_correspondence": "unmeasured",
+  "tracker": "not_run",
+  "windows": [
+    {
+      "alias": "climb030",
+      "bbox_count": null,
+      "completed_frames": 0,
+      "planned_frames": 60,
+      "retained_joint_count": null,
+      "visual_correspondence": null
+    },
+    {
+      "alias": "climb007",
+      "bbox_count": null,
+      "completed_frames": 0,
+      "planned_frames": 50,
+      "retained_joint_count": null,
+      "visual_correspondence": null
+    },
+    {
+      "alias": "approach007",
+      "bbox_count": null,
+      "completed_frames": 0,
+      "planned_frames": 50,
+      "retained_joint_count": null,
+      "visual_correspondence": null
+    },
+    {
+      "alias": "approach030",
+      "bbox_count": null,
+      "completed_frames": 0,
+      "planned_frames": 50,
+      "retained_joint_count": null,
+      "visual_correspondence": null
+    },
+    {
+      "alias": "rope004",
+      "bbox_count": null,
+      "completed_frames": 0,
+      "planned_frames": 50,
+      "retained_joint_count": null,
+      "visual_correspondence": null
+    }
+  ]
+}

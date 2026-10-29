@@ -1381,6 +1381,60 @@
       "task_id": "task_cf14cc142ed2",
       "title": "BATCH-0002 Qwen4B comparison",
       "worker_opinion": "기술 실행·형식·후보 분류·근거의 사실성을 분리했다. q04 C 후보 유지와 일부 비사건 후보 제거는 관찰됐지만 양성 출력 손실과 완료/경계 설명 오류가 남는다. 기본 모델과 CV 결합은 채택하지 않는다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T03:34:14.801267+00:00",
+      "attempt_id": "two-failed-smokes-retry-budget-exhausted",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_b15556efe8cd",
+      "evaluated_model": "Official YOLO26m-Pose COCO17, ultralytics8.4.192, FP32, full-frame640",
+      "evidence": [
+        {
+          "artifact_id": "exp0021-input-reference-030",
+          "kind": "video",
+          "label": "030 88–94초 입력 참고(10fps), pose 결과 없음"
+        },
+        {
+          "artifact_id": "exp0021-input-reference-007",
+          "kind": "video",
+          "label": "007 62.5–67.5초 기존 원본 참고, pose 결과 없음"
+        }
+      ],
+      "execution_status": "failed",
+      "experiment_id": "EXP-0021",
+      "limitations": [
+        "기존 개발 표본267개를 준비했지만 실제 예측 완료0개다.",
+        "실행 어댑터 호환성 오류이며 YOLO 관절 인식 품질의 실패라는 뜻이 아니다.",
+        "두 모델 로딩은 성공했고 그 뒤 smoke가 실패했다. load peak는 추론/전체장치 peak가 아니다.",
+        "추론 FPS·사람/관절 개수·정확도/F1/FPR·완료율은 미측정이다.",
+        "참고 영상은 원본 입력 설명용이며 pose overlay·새 모델 비교가 아니다.",
+        "규칙·tracker·remaining265는 실행하지 않았고, 기존 경계의 물리적 의미도 미확정이다."
+      ],
+      "metric_definitions": "records/EXP-0021/metrics.json",
+      "metrics_path": "records/EXP-0021/metrics.json",
+      "metrics_sha256": "fff6e18af58434efb77fcf110cdb00b51b64d07b8e34c496b9b12cb6a2945e61",
+      "next_step": "이번 배치 종료. 다음 별도 범위를 정할 때 공식 호출 signature와 head 초기화 CPU 검증, 성공 smoke와 실제 관절 대응 근거가 필요하다. 자동 후속 GPU 작업 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "dd0e781b762814dc9b7ec9546d7efdc1de14a2e77207521251e7e71902450c28",
+      "report_path": "docs/experiments/EXP-0021-yolo26m-pose.md",
+      "report_sha256": "a64b18fd230d318504d580c6fe4f4ff584edce151fb17c98efd0f931a917f482",
+      "review_binding_path": "docs/reviews/EXP-0021.binding.json",
+      "review_path": "docs/reviews/EXP-0021-independent-review.md",
+      "review_sha256": "c81e6b27b1a73215d26360dba3e358c5cd71261d991640044a5a7dcec9b10522",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "fff6e18af58434efb77fcf110cdb00b51b64d07b8e34c496b9b12cb6a2945e61",
+      "reviewed_report_sha256": "a64b18fd230d318504d580c6fe4f4ff584edce151fb17c98efd0f931a917f482",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot1",
+      "summary": "267개 입력을 준비했으나 두 smoke가 어댑터 호환성 오류로 실패했다. 모델 로딩2회·논리적 retry1·예측 출력0개이며 관절 품질과 행동 구분은 미측정이다. 한도를 소진해 추가 GPU 작업을 종료했다.",
+      "synthetic": false,
+      "task_id": "task_7c8a851c6d27",
+      "title": "BATCH-0003 YOLO26m-Pose",
+      "worker_opinion": "기술 실행 실패로 사람·관절 품질을 평가하지 못했다. 출력0개를 정상 판별이나 모델 성능 실패로 해석하지 않으며 기존 구성을 유지한다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

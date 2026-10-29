@@ -20,6 +20,32 @@ EXP-0021을 담당 1에 배정했다. 기존 실제 브라우저에서 담당 �
 
 공식 버전의 predictor/backend는 `nms=False`일 때 `model.end2end=True`를 명시한다. 직접 unfused 경로에서 이 초기화가 누락된 정황을 공식 코드와 checkpoint ZIP/pickletools 데이터 검사로 확인했다. CPU에서 checkpoint를 역직렬화하거나 모델을 추가 구성하지 않았다. 최초 summary는 결합된 구조 assertion의 실제 속성값을 남기지 않았으므로 정확히 어떤 항목이 실패했는지는 최초 로그만으로 확정하지 않는다.
 
-같은 모델·입력·설정에서 공식 setter를 적용하고 assertion 전후 속성을 남기는 수정만 준비한다. 원 실패·소스·허가·38개 기존 queue row를 보존하고, 검토된 별도 correction job을 최초 실패에 연결하여 **논리적 retry 최대 1회**로 제한한다. 기존 job의 소스나 실패 상태를 덮어쓰지 않으며 세 번째 시도를 허용하지 않는다. 수정·재시도 결과와 최종 전달 검증은 실제 확인 후 후속 기록으로 추가한다.
+당시 같은 모델·입력·설정에서 공식 setter를 적용하고 assertion 전후 속성을 남기는 수정을 준비했다. 원 실패·소스·허가·38개 기존 queue row를 보존하고, 검토된 별도 correction job을 최초 실패에 연결하여 **논리적 retry 최대 1회**로 제한했다. 기존 job의 소스나 실패 상태를 덮어쓰지 않았으며 세 번째 시도를 허용하지 않았다. 실제 후속 결과는 아래와 같다.
 
 미디어·원시 관절·가중치·환경·DB·raw log·receipt는 로컬 전용이다. GitHub에는 코드·문서·공개 가능한 비식별 집계만 게시한다.
+
+## 단 한 번의 retry와 종료
+
+공식 setter 및 한도 검증을 `1b12d85c20ba922de5062148045281849055ef9e`로 게시하고, 수정된 13개 실행 의존 파일의 Git 객체·현재 bytes·사전 고정 hashes가 모두 일치함을 확인했다. CPU 검사 70개 중 69통과/기존 1skip, 독립 검사 9개 통과 뒤 기존 manifest·모델·조건을 유지한 correction만 실행했다.
+
+job `3b5125ac3e26401296bfe3e44e202ecd`, attempt `070b7d4885154095bb84299b8f5916b8`는 free VRAM 7169MiB에서 모델 로딩을 0.3690초에 완료했다. 실제 head 선택 false→true가 기록됐지만 첫 호출의 `visualize=False`가 설치된 `BaseModel.predict`에서 지원되지 않아 TypeError로 종료됐다. `embed`는 지원되는 인자다. 입력 전송과 외부 모델 호출은 있었으나 network prediction의 완료 반환은 없었다.
+
+**모델 로딩 2회 성공 / smoke 2회 실패 / 논리적 retry 1회 소진 / 완료 예측·관절 출력 0개.** 사전 계약 검사가 실제 API 호출 인자까지 검증하지 못한 연결 코드의 오류다. GPU 메모리 부족이나 관절 인식 성능의 실패로 설명하지 않는다. 나머지265개·규칙·추적은 enqueue/실행하지 않았고 세 번째 시도·후속 GPU 작업도 없다. 최종 queue는39 jobs/39 attempts이며 이전38개 row와 원 실패 출력을 보존했다.
+
+두 실패 summary SHA256은 각각 `593ebd605f6555dba9f426b81d6499878e03a8adfad0686ea5602bd3cb33eadb`, `2acff1ceae9d44e1ad2cc7acfb90ee3ffea25375ec22926963d9a04ed682ccf8`다. 실행 소스는 그대로 두고 `scripts/summarize_exp0021_failure.py`가 저장 실패 기록만 CPU로 집계한다. 관절 품질·행동 구분·FPS는 미측정이다.
+
+## 독립 검토와 등록
+
+Astra high는 실패 원문·소스·실측 비용·보존 범위와 최종 문서/측정값을 대조하여 **실패 보고의 충실성에 PASS**를 주었다. 기술 실행이나 행동 성능의 PASS가 아니다. 최종 검토 SHA256은 `c81e6b27b1a73215d26360dba3e358c5cd71261d991640044a5a7dcec9b10522`다. 검토는 보고서 `a64b18fd230d318504d580c6fe4f4ff584edce151fb17c98efd0f931a917f482`, metrics `fff6e18af58434efb77fcf110cdb00b51b64d07b8e34c496b9b12cb6a2945e61`, 총괄 요약 `1eeca829a461f2a4e50cfa852d118e2fbee97078fe4323a25bf2735ee9d28b4d`에 묶였다.
+
+실행 담당의 native `worker_done`은 failed, 검토 담당은 succeeded로 종료됐다. 두 Dispatch 모두 정확한 완료 메시지를 수용한 뒤 native `worker-release`로 해제했으며, 기존 총괄·다른 사용자 터미널을 닫지 않았다. 해당 Run의 reclaimable workers는0이다.
+
+기존 COMPLETE_CLI로 EXP-0021을 담당1에 `execution_status=failed`, `review_status=accepted_for_comparison`, `decision_status=adoption_on_hold`로 등록했다. 여기서 accepted는 실패 기록을 비교 자료로 수용했다는 뜻이다. immutable binding SHA256은 `c9d2d67c148cc94573b2fdbc00a06b82e03c3406960e7745d668011ca86d077d`다. 로컬 package/등록 영수증은 `runtime/BATCH-0003/delivery/`에만 둔다.
+
+## 실제 서비스·브라우저 확인
+
+2026-10-29 04:08 UTC에 기존 `http://127.0.0.1:8765/`에서 EXP-0021을 선택해 담당1의 실패 상태, 보고서,22개 측정 항목(16개 실측·6개 미측정),기존 그래프2개,독립 검토를 확인했다. 브라우저가 읽은 report/metrics/review/binding bytes가 위 해시와 일치했다. viewer JS SHA256 `cae122f859102f7a6f0dd3255d9e4a7ec5491814f340dc9a4e28fff6ba8b9fcd`도 기존과 동일하며 웹 기능을 바꾸지 않았다.
+
+등록한 영상2개는 **입력 원본 참고이며 pose 출력이 아니다.** 030 88–94초의10fps 참고 영상(6초/960×540)과 기존007 62.5–67.5초 원본(5초/1920×1080)을 각각 실제 재생·1.5초 seek했고 자동 polling 후 재생 요소도 유지됐다. 새 관절 overlay·원본/pose 비교 영상은 출력이 없으므로 만들지 않았다. `runtime/BATCH-0003/delivery/browser-r1.json`의 PASS는 이 전달 동작만 증명한다.
+
+GitHub 게시와 원격 byte 검증은 브라우저 PASS와 별개이며, 아래에 실제 확인 후 기록한다.

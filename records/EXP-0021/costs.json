@@ -1,0 +1,120 @@
+{
+  "attempts": [
+    {
+      "architecture_initial": null,
+      "architecture_selected": null,
+      "attempt_id": "152d45f0113f4c94b44c69961a677023",
+      "code_sha": "b52ac221a2e43924f86efd8fbd32a0df4973ceec",
+      "completed_forward_returns": 0,
+      "completed_frames": 0,
+      "error": "official pose architecture/end2end differs",
+      "error_type": "ValueError",
+      "first_attempted_frame": null,
+      "free_vram_before_load_mib": 7172.0,
+      "initial_validation_seconds": 3.8017660019977484,
+      "job_key": "batch0003-exp0021-pose-smoke",
+      "load_peak_allocated_bytes": 98152448,
+      "load_peak_reserved_bytes": 98566144,
+      "load_seconds": 0.3474994809948839,
+      "queue_attempt_wall_seconds": 9.21063756942749,
+      "run_entry_wall_seconds": 5.1620144250046,
+      "source_sha256": "1096a4f9c6322a6e7da7f3f6fa204a54fc6b3f095ff618156453e431a8f339e0",
+      "status": "failed",
+      "summary_sha256": "593ebd605f6555dba9f426b81d6499878e03a8adfad0686ea5602bd3cb33eadb",
+      "warmup_frames": 0
+    },
+    {
+      "architecture_initial": {
+        "end2end": false,
+        "export": false,
+        "fused": false,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "legacy_model_end2end": true,
+        "max_det": 300,
+        "names": {
+          "0": "person"
+        },
+        "one2one_present": true,
+        "serialized_end2end": null,
+        "stride": 32
+      },
+      "architecture_selected": {
+        "end2end": true,
+        "export": false,
+        "fused": false,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "legacy_model_end2end": true,
+        "max_det": 300,
+        "names": {
+          "0": "person"
+        },
+        "one2one_present": true,
+        "serialized_end2end": true,
+        "stride": 32
+      },
+      "attempt_id": "070b7d4885154095bb84299b8f5916b8",
+      "code_sha": "1b12d85c20ba922de5062148045281849055ef9e",
+      "completed_forward_returns": 0,
+      "completed_frames": 0,
+      "error": "BaseModel.predict() got an unexpected keyword argument 'visualize'",
+      "error_type": "TypeError",
+      "first_attempted_frame": "030_090",
+      "free_vram_before_load_mib": 7169.0,
+      "initial_validation_seconds": 3.73252681599115,
+      "job_key": "batch0003-exp0021-pose-smoke-retry1",
+      "load_peak_allocated_bytes": 98152448,
+      "load_peak_reserved_bytes": 98566144,
+      "load_seconds": 0.36898144098813646,
+      "queue_attempt_wall_seconds": 9.18245267868042,
+      "run_entry_wall_seconds": 5.193570391013054,
+      "source_sha256": "7bd780ab2a7b59f011865042fd478a64e5a217a588c0b86bdb4d4597bc753c6a",
+      "status": "failed",
+      "summary_sha256": "2acff1ceae9d44e1ad2cc7acfb90ee3ffea25375ec22926963d9a04ed682ccf8",
+      "warmup_frames": 0
+    }
+  ],
+  "frame_wall_fps": null,
+  "inference_fps": null,
+  "inference_seconds": null,
+  "model_load_total_seconds": 0.7164809219830204,
+  "postprocess_seconds": null,
+  "preparation": {
+    "E01_004": {
+      "decoded_frames": 1982,
+      "includes_decode_rgb_save_and_hash": true,
+      "wall_seconds": 2.1322174219822045
+    },
+    "E01_006": {
+      "decoded_frames": 3956,
+      "includes_decode_rgb_save_and_hash": true,
+      "wall_seconds": 7.574844546994427
+    },
+    "E01_007": {
+      "decoded_frames": 2057,
+      "includes_decode_rgb_save_and_hash": true,
+      "wall_seconds": 6.23809029100812
+    },
+    "E01_030": {
+      "decoded_frames": 2852,
+      "includes_decode_rgb_save_and_hash": true,
+      "wall_seconds": 10.767572802986251
+    },
+    "E01_031": {
+      "decoded_frames": 1232,
+      "includes_decode_rgb_save_and_hash": true,
+      "wall_seconds": 2.381866083975183
+    }
+  },
+  "preprocess_seconds": null,
+  "queue_attempt_total_seconds": 18.39309024810791,
+  "run_entry_total_seconds": 10.355584816017654,
+  "save_seconds": null,
+  "scopes": "model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+  "successful_prediction_frames": 0
+}

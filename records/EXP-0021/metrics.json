@@ -1,0 +1,334 @@
+{
+  "adoption": "adopt_on_hold",
+  "behavioral_validation": "unmeasured",
+  "comparison_group": "EXP-0021",
+  "comparison_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+  "comparison_source": "records/EXP-0021/comparison.json",
+  "cross_experiment_comparable": false,
+  "execution_status": "failed",
+  "experiment_id": "EXP-0021",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "metrics": [
+    {
+      "label": "Attempt1 completed_frames",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "completed_frames"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "frames",
+      "value": 0,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt1 load_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "load_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 0.3474994809948839,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt1 initial_validation_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "initial_validation_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 3.8017660019977484,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt1 run_entry_wall_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "run_entry_wall_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 5.1620144250046,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt1 queue_attempt_wall_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "queue_attempt_wall_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 9.21063756942749,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt1 load_peak_allocated_bytes",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "load_peak_allocated_bytes"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "bytes",
+      "value": 98152448,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt1 load_peak_reserved_bytes",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "load_peak_reserved_bytes"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "bytes",
+      "value": 98566144,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt1 free_vram_before_load_mib",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        0,
+        "free_vram_before_load_mib"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "MiB",
+      "value": 7172.0,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 completed_frames",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "completed_frames"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "frames",
+      "value": 0,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 load_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "load_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 0.36898144098813646,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 initial_validation_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "initial_validation_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 3.73252681599115,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 run_entry_wall_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "run_entry_wall_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 5.193570391013054,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 queue_attempt_wall_seconds",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "queue_attempt_wall_seconds"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "seconds",
+      "value": 9.18245267868042,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 load_peak_allocated_bytes",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "load_peak_allocated_bytes"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "bytes",
+      "value": 98152448,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 load_peak_reserved_bytes",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "load_peak_reserved_bytes"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "bytes",
+      "value": 98566144,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "Attempt2 free_vram_before_load_mib",
+      "sample_n": 1,
+      "scope": "One failed canonical smoke attempt; no prediction quality or throughput measurement. model load includes checkpoint/FP32/CUDA transfer and synchronization; run-entry starts before lease/input validation but excludes Python/module startup and final summary write; queue attempt includes parent validation/child startup; preparation includes CPU decode/RGB/save/hash; failed frame phase durations were not persisted and remain null; allocator peaks are load-only, not full device total",
+      "source": "records/EXP-0021/comparison.json",
+      "source_pointer": [
+        "attempts",
+        1,
+        "free_vram_before_load_mib"
+      ],
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "MiB",
+      "value": 7169.0,
+      "verification": "saved_failure_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "inference_fps",
+      "sample_n": 0,
+      "scope": "No pose outputs or joint/person/action GT; never interpret missing inference as normal/empty detections",
+      "source": "records/EXP-0021/comparison.json",
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "accuracy",
+      "sample_n": 0,
+      "scope": "No pose outputs or joint/person/action GT; never interpret missing inference as normal/empty detections",
+      "source": "records/EXP-0021/comparison.json",
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "precision",
+      "sample_n": 0,
+      "scope": "No pose outputs or joint/person/action GT; never interpret missing inference as normal/empty detections",
+      "source": "records/EXP-0021/comparison.json",
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "recall",
+      "sample_n": 0,
+      "scope": "No pose outputs or joint/person/action GT; never interpret missing inference as normal/empty detections",
+      "source": "records/EXP-0021/comparison.json",
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "f1",
+      "sample_n": 0,
+      "scope": "No pose outputs or joint/person/action GT; never interpret missing inference as normal/empty detections",
+      "source": "records/EXP-0021/comparison.json",
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "false_positive_rate",
+      "sample_n": 0,
+      "scope": "No pose outputs or joint/person/action GT; never interpret missing inference as normal/empty detections",
+      "source": "records/EXP-0021/comparison.json",
+      "source_sha256": "01d836c21f3d1a99e47402bcc264e1ca08a822fabd6c7a0e054efb82b5377af5",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "unavailable"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Smoke technical integration only; two failed smoke attempts with completed model loads, zero successful prediction results; no pose/person/behavior performance measured",
+  "source_bindings": {
+    "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+    "execution_commits": [
+      "b52ac221a2e43924f86efd8fbd32a0df4973ceec",
+      "1b12d85c20ba922de5062148045281849055ef9e"
+    ],
+    "failure_builder_sha256": "85c6edede495971d7f0c0e64f926bf18ad0585ca2732a1d56162f28393afb57e",
+    "manifest_sha256": "6ea2fe8d692611f7808b1109a591fedff9cd8c901f13cc43474246324927883d",
+    "stage_summary_sha256": [
+      "593ebd605f6555dba9f426b81d6499878e03a8adfad0686ea5602bd3cb33eadb",
+      "2acff1ceae9d44e1ad2cc7acfb90ee3ffea25375ec22926963d9a04ed682ccf8"
+    ]
+  }
+}
