@@ -44,4 +44,17 @@ EXP-0022를 기존 담당2 카드에 배정했다. 실제 브라우저에서 `�
 
 영상 없는2프레임 결과이므로 **영상 재생/seek는 해당 없음**이다. 검증을 통과하려고 가짜 영상을 만들지 않았다. 기존 영상용 검증 함수 대신 로컬의 이미지 decode/render 검사로 확인했고 웹 기능/디자인은 변경하지 않았다. 서비스 JS SHA256은 기존 `cae122f859102f7a6f0dd3255d9e4a7ec5491814f340dc9a4e28fff6ba8b9fcd`와 같다. 실제 증거는 로컬 `runtime/BATCH-0004/delivery/browser-images.json`에 남긴다.
 
-GitHub 최종 결과 게시와 원격 byte 확인은 로컬 화면 확인과 별도로 수행해 후속 기록한다.
+worker 종료 후 실제 화면을 다시 확인해 EXP-0022의 `succeeded`, 두 이미지 로드 유지, 담당2의 진행 중 표시 해제를 확인했다. 해당 Run의 reclaimable worker는0이며 다른 사용자 터미널은 건드리지 않았다.
+
+## GitHub 게시와 종료
+
+최종 코드/문서/공개 집계15개를 `471af388f65fd09ff2c5c5599817e574f8234593`으로 정상 commit/push했다. 게시 전 변경·staged 목록과 제외 파일을 확인했으며, 영상/이미지·raw Results/좌표/tensor·가중치·환경·runtime/DB/log/receipt는 Git에 포함하지 않았다. 기존21 catalog 항목과39 jobs/attempts, frozen15 실행 의존 파일은 보존됐다. canonical queue는36 succeeded/4 failed, queued/running0이며 이번 신규 job은1개 succeeded다.
+
+2026-10-29 04:54 UTC의 원격 검증은 origin/main commit과 Git 객체의 report/metrics/review/binding bytes가 로컬 및 실제 서비스에서 확인한 해시와 일치함을 증명했다(`runtime/BATCH-0004/delivery/github-results.json`, PASS). 이 전달 증거 문단도 별도 커밋으로 게시한 뒤 최종 HEAD를 다시 검증하며 receipt는 로컬에 보관한다.
+
+| 커밋 | 내용 |
+| --- | --- |
+| `7c281e3` | 공식 public API 복구·CPU 계약/회귀 검사·고정 입력·담당 배정 |
+| `471af38` | 실제2프레임 성공 결과·제한된 품질 해석·독립 검토·기존 웹 등록 |
+
+**종료:** 기술 복구·실제 두 comparison PNG 생성·독립 검토·웹 표시·GitHub 게시를 완료했다. 030의 관절 근거는 부족하고007 위치는 미검수이며, 시간적 행동 구분과 remaining265는 미실행이다. 사용자 추가 답변이 아직 없어도 새 정답을 만들지 않고 미확정으로 남긴다. 새 GPU/설정 변경·자동 후속 실험 없이 종료한다.
