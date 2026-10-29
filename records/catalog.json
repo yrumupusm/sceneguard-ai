@@ -1827,6 +1827,89 @@
       "task_id": "task_e36f02bf0722",
       "title": "EXP-0027 Detection low-score diagnosis and label inventory",
       "worker_opinion": "Canonical14sample+2warmup succeeded; cache14/14 exactly equal; old43queue rows preserved. New rows are not confirmed people."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T16:14:20.862863+00:00",
+      "attempt_id": "exp0028-practical-v1-reid-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_da00202ebfa3",
+      "evaluated_model": "Cached pretrained FCOS COCO_V1; ByteTrack strict/gap3s; BoT-SORT with official pretrained YOLO26n ReID CPU",
+      "evidence": [
+        {
+          "artifact_id": "exp0028-030-original-strict-gap-continuous",
+          "kind": "video",
+          "label": "030 original_strict_gap continuous; native PTS, observed and prediction separated"
+        },
+        {
+          "artifact_id": "exp0028-030-original-strict-gap-focused",
+          "kind": "video",
+          "label": "030 original_strict_gap focused; native PTS, observed and prediction separated"
+        },
+        {
+          "artifact_id": "exp0028-030-original-gap-reid-continuous",
+          "kind": "video",
+          "label": "030 original_gap_reid continuous; native PTS, observed and prediction separated"
+        },
+        {
+          "artifact_id": "exp0028-030-original-gap-reid-focused",
+          "kind": "video",
+          "label": "030 original_gap_reid focused; native PTS, observed and prediction separated"
+        },
+        {
+          "artifact_id": "exp0028-007-original-strict-gap-continuous",
+          "kind": "video",
+          "label": "007 original_strict_gap continuous; native PTS, observed and prediction separated"
+        },
+        {
+          "artifact_id": "exp0028-007-original-strict-gap-focused",
+          "kind": "video",
+          "label": "007 original_strict_gap focused; native PTS, observed and prediction separated"
+        },
+        {
+          "artifact_id": "exp0028-007-original-gap-reid-continuous",
+          "kind": "video",
+          "label": "007 original_gap_reid continuous; native PTS, observed and prediction separated"
+        },
+        {
+          "artifact_id": "exp0028-007-original-gap-reid-focused",
+          "kind": "video",
+          "label": "007 original_gap_reid focused; native PTS, observed and prediction separated"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0028",
+      "limitations": [
+        "Full cache intervals16/20s, not entire source videos.",
+        "Physical person identity and new candidate meaning partly unverified; no IDF1/HOTA/F1.",
+        "Package comparison, not isolated ReID or retain-seconds causal effect.",
+        "Predictions are display states only; no predicted-only alerts.",
+        "Fine-tuned models and Roboflow labels not used; no GPU jobs."
+      ],
+      "metric_definitions": "records/EXP-0028/metrics.json",
+      "metrics_path": "records/EXP-0028/metrics.json",
+      "metrics_sha256": "60e5555573767f7a446794af2c7be712e111d6cea49c441f30e53657f91004b5",
+      "next_step": "Use the two focused comparisons to distinguish identity transfer from detector body-extent changes; do not start another configuration automatically.",
+      "reasoning_effective": "high",
+      "registration_sha256": "31e5b1e9cb906637f5fbd9a933d9c37f022801365ffd63e653227b995b5e67f3",
+      "report_path": "docs/experiments/EXP-0028-results.md",
+      "report_sha256": "96f98bbf0f7c91206cfdc542fab4ef51f7e2a2e01b08a3ca24158b59c0d70fb9",
+      "review_binding_path": "docs/reviews/EXP-0028.binding.json",
+      "review_path": "docs/reviews/EXP-0028-independent-review.md",
+      "review_sha256": "b435292cbe3e8825cdaf7e59513297058364b68f612b4b6311ba208e5cde5eff",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "60e5555573767f7a446794af2c7be712e111d6cea49c441f30e53657f91004b5",
+      "reviewed_report_sha256": "96f98bbf0f7c91206cfdc542fab4ef51f7e2a2e01b08a3ca24158b59c0d70fb9",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "Actual1080-frame strict/gap comparison and one CPU pretrained BoT-SORT/ReID comparison completed.030 late ID breaks persist;007 approach candidates2/0/1. Eight local comparison videos; adoption on hold.",
+      "synthetic": false,
+      "task_id": "task_6e9c22520b45",
+      "title": "EXP-0028 practical tracking and gap comparison",
+      "worker_opinion": "Exact strict replay verified; gap suppresses the prior007 approach candidates without resolving030 identity breaks. ReID preserves numeric IDs longer in007 but identity mix is unverified and an approach candidate returns."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

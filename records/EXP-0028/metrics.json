@@ -1,0 +1,748 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0028",
+  "metrics": [
+    {
+      "label": "030 strict frames",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "original cached frames, not full source video",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames"
+      ]
+    },
+    {
+      "label": "030 strict observed_boxes",
+      "value": 700,
+      "unit": "boxes",
+      "sample_n": 480,
+      "scope": "confirmed measured boxes, not true people",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_boxes"
+      ]
+    },
+    {
+      "label": "030 strict frames_with_observations",
+      "value": 320,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "frames with confirmed measurement",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames_with_observations"
+      ]
+    },
+    {
+      "label": "030 strict observed_ids",
+      "value": 8,
+      "unit": "IDs",
+      "sample_n": 480,
+      "scope": "IDs with confirmed measurement, physical identity unverified",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_ids"
+      ]
+    },
+    {
+      "label": "030 strict reobservations_after_gap",
+      "value": 12,
+      "unit": "reconnections",
+      "sample_n": 480,
+      "scope": "same tracker ID reobserved after at least one absent frame",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "reobservations_after_gap"
+      ]
+    },
+    {
+      "label": "030 strict candidates",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "boundary candidates, not physical crossing successes",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "candidates"
+      ]
+    },
+    {
+      "label": "030 strict bridged_gap_candidates",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "candidates whose boundary evidence bridged an observation gap",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "bridged_gap_candidates"
+      ]
+    },
+    {
+      "label": "030 strict replay_seconds",
+      "value": 0.1126408489944879,
+      "unit": "seconds",
+      "sample_n": 480,
+      "scope": "CPU tracking and rules only; excludes inference, decode, render and IO",
+      "source": "outputs/exp0028/practical-v1/track030/strict/summary.json",
+      "source_sha256": "517b25b98ebd2e5563da0ada23aa35a8333cc306d5ec512708fa430a3e16fe2d",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "replay_seconds"
+      ]
+    },
+    {
+      "label": "030 gap frames",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "original cached frames, not full source video",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames"
+      ]
+    },
+    {
+      "label": "030 gap observed_boxes",
+      "value": 700,
+      "unit": "boxes",
+      "sample_n": 480,
+      "scope": "confirmed measured boxes, not true people",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_boxes"
+      ]
+    },
+    {
+      "label": "030 gap frames_with_observations",
+      "value": 320,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "frames with confirmed measurement",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames_with_observations"
+      ]
+    },
+    {
+      "label": "030 gap observed_ids",
+      "value": 8,
+      "unit": "IDs",
+      "sample_n": 480,
+      "scope": "IDs with confirmed measurement, physical identity unverified",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_ids"
+      ]
+    },
+    {
+      "label": "030 gap reobservations_after_gap",
+      "value": 12,
+      "unit": "reconnections",
+      "sample_n": 480,
+      "scope": "same tracker ID reobserved after at least one absent frame",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "reobservations_after_gap"
+      ]
+    },
+    {
+      "label": "030 gap candidates",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "boundary candidates, not physical crossing successes",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "candidates"
+      ]
+    },
+    {
+      "label": "030 gap bridged_gap_candidates",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "candidates whose boundary evidence bridged an observation gap",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "bridged_gap_candidates"
+      ]
+    },
+    {
+      "label": "030 gap replay_seconds",
+      "value": 0.11859089694917202,
+      "unit": "seconds",
+      "sample_n": 480,
+      "scope": "CPU tracking and rules only; excludes inference, decode, render and IO",
+      "source": "outputs/exp0028/practical-v1/track030/gap/summary.json",
+      "source_sha256": "75504640b7697a732792ba300654a65b826af92f393829e3ea399d4b4f984c18",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "replay_seconds"
+      ]
+    },
+    {
+      "label": "007 strict frames",
+      "value": 600,
+      "unit": "frames",
+      "sample_n": 600,
+      "scope": "original cached frames, not full source video",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames"
+      ]
+    },
+    {
+      "label": "007 strict observed_boxes",
+      "value": 1252,
+      "unit": "boxes",
+      "sample_n": 600,
+      "scope": "confirmed measured boxes, not true people",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_boxes"
+      ]
+    },
+    {
+      "label": "007 strict frames_with_observations",
+      "value": 569,
+      "unit": "frames",
+      "sample_n": 600,
+      "scope": "frames with confirmed measurement",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames_with_observations"
+      ]
+    },
+    {
+      "label": "007 strict observed_ids",
+      "value": 9,
+      "unit": "IDs",
+      "sample_n": 600,
+      "scope": "IDs with confirmed measurement, physical identity unverified",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_ids"
+      ]
+    },
+    {
+      "label": "007 strict reobservations_after_gap",
+      "value": 8,
+      "unit": "reconnections",
+      "sample_n": 600,
+      "scope": "same tracker ID reobserved after at least one absent frame",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "reobservations_after_gap"
+      ]
+    },
+    {
+      "label": "007 strict candidates",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 600,
+      "scope": "boundary candidates, not physical crossing successes",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "candidates"
+      ]
+    },
+    {
+      "label": "007 strict bridged_gap_candidates",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 600,
+      "scope": "candidates whose boundary evidence bridged an observation gap",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "bridged_gap_candidates"
+      ]
+    },
+    {
+      "label": "007 strict replay_seconds",
+      "value": 0.17179380625020713,
+      "unit": "seconds",
+      "sample_n": 600,
+      "scope": "CPU tracking and rules only; excludes inference, decode, render and IO",
+      "source": "outputs/exp0028/practical-v1/track007/strict/summary.json",
+      "source_sha256": "d6387b929e4e6075a1be3d97e7c9f9ee9a4216b8277dfb91855512f3a2c7d1cb",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "replay_seconds"
+      ]
+    },
+    {
+      "label": "007 gap frames",
+      "value": 600,
+      "unit": "frames",
+      "sample_n": 600,
+      "scope": "original cached frames, not full source video",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames"
+      ]
+    },
+    {
+      "label": "007 gap observed_boxes",
+      "value": 1279,
+      "unit": "boxes",
+      "sample_n": 600,
+      "scope": "confirmed measured boxes, not true people",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_boxes"
+      ]
+    },
+    {
+      "label": "007 gap frames_with_observations",
+      "value": 569,
+      "unit": "frames",
+      "sample_n": 600,
+      "scope": "frames with confirmed measurement",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "frames_with_observations"
+      ]
+    },
+    {
+      "label": "007 gap observed_ids",
+      "value": 9,
+      "unit": "IDs",
+      "sample_n": 600,
+      "scope": "IDs with confirmed measurement, physical identity unverified",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "observed_ids"
+      ]
+    },
+    {
+      "label": "007 gap reobservations_after_gap",
+      "value": 11,
+      "unit": "reconnections",
+      "sample_n": 600,
+      "scope": "same tracker ID reobserved after at least one absent frame",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "reobservations_after_gap"
+      ]
+    },
+    {
+      "label": "007 gap candidates",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 600,
+      "scope": "boundary candidates, not physical crossing successes",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "candidates"
+      ]
+    },
+    {
+      "label": "007 gap bridged_gap_candidates",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 600,
+      "scope": "candidates whose boundary evidence bridged an observation gap",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "bridged_gap_candidates"
+      ]
+    },
+    {
+      "label": "007 gap replay_seconds",
+      "value": 0.17545703455107287,
+      "unit": "seconds",
+      "sample_n": 600,
+      "scope": "CPU tracking and rules only; excludes inference, decode, render and IO",
+      "source": "outputs/exp0028/practical-v1/track007/gap/summary.json",
+      "source_sha256": "2614f0297e01ef4036674b903a9a45ded3b8cde893a3c9a78ba1fc670f42c02e",
+      "verification": "measured_actual_cache_replay; physical identity unverified",
+      "source_pointer": [
+        "replay_seconds"
+      ]
+    },
+    {
+      "label": "CCTV accuracy",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "unmeasured; no frame-level physical identity/behavior GT",
+      "source": "outputs/exp0028/practical-v1/track030/summary.json",
+      "source_sha256": "a4309c7194c976ddd6ca10bb8e652a12f4810dbfdd397b87269b0bc54c7ec5b8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "identity IDF1",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "unmeasured; no frame-level physical identity/behavior GT",
+      "source": "outputs/exp0028/practical-v1/track030/summary.json",
+      "source_sha256": "a4309c7194c976ddd6ca10bb8e652a12f4810dbfdd397b87269b0bc54c7ec5b8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "behavior F1",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "unmeasured; no frame-level physical identity/behavior GT",
+      "source": "outputs/exp0028/practical-v1/track030/summary.json",
+      "source_sha256": "a4309c7194c976ddd6ca10bb8e652a12f4810dbfdd397b87269b0bc54c7ec5b8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "false alerts per hour",
+      "value": null,
+      "unit": "per hour",
+      "sample_n": null,
+      "scope": "unmeasured; no frame-level physical identity/behavior GT",
+      "source": "outputs/exp0028/practical-v1/track030/summary.json",
+      "source_sha256": "a4309c7194c976ddd6ca10bb8e652a12f4810dbfdd397b87269b0bc54c7ec5b8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "030 botsort_reid frames",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "original cached frames; not full source video",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "frames"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid observed_boxes",
+      "value": 677,
+      "unit": "boxes",
+      "sample_n": 480,
+      "scope": "confirmed measured boxes; not correct persons",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "observed_boxes"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid frames_with_observations",
+      "value": 327,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "frames with confirmed measurement",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "frames_with_observations"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid observed_ids",
+      "value": 9,
+      "unit": "IDs",
+      "sample_n": 480,
+      "scope": "IDs with confirmed measurement; physical identity unverified",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "observed_ids"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid reobservations_after_gap",
+      "value": 9,
+      "unit": "reconnections",
+      "sample_n": 480,
+      "scope": "same tracker ID reobserved after at least one absent frame",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "reobservations_after_gap"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid candidates",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "boundary candidates; not confirmed physical crossing",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "candidates"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid bridged_gap_candidates",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "candidate with retained boundary evidence across observation gap",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "bridged_gap_candidates"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid elapsed_seconds",
+      "value": 18.59452049501124,
+      "unit": "seconds",
+      "sample_n": 480,
+      "scope": "CPU model setup/decode/crop/ReID/tracking/rules/JSON/hash checks; no detector inference",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "elapsed_seconds"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid reid_calls",
+      "value": 771,
+      "unit": "calls",
+      "sample_n": 480,
+      "scope": "actual pretrained CPU embedding encoder invocations",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "reid_calls"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid reid_patches",
+      "value": 2837,
+      "unit": "patches",
+      "sample_n": 480,
+      "scope": "actual detection crops encoded, includes unconfirmed/second-stage inputs",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "reid_patches"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "030 botsort_reid valid_embeddings",
+      "value": 2837,
+      "unit": "embeddings",
+      "sample_n": 480,
+      "scope": "finite nonzero pretrained embeddings; not correct identity matches",
+      "source": "outputs/exp0028/reid-v1/track030/botsort_reid/summary.json",
+      "source_sha256": "28f4c8c798bc3d5d1be3e72bbdb00b33778eca951dd875125204e2b64cc5e9ff",
+      "source_pointer": [
+        "valid_embeddings"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid frames",
+      "value": 600,
+      "unit": "frames",
+      "sample_n": 600,
+      "scope": "original cached frames; not full source video",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "frames"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid observed_boxes",
+      "value": 1278,
+      "unit": "boxes",
+      "sample_n": 600,
+      "scope": "confirmed measured boxes; not correct persons",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "observed_boxes"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid frames_with_observations",
+      "value": 569,
+      "unit": "frames",
+      "sample_n": 600,
+      "scope": "frames with confirmed measurement",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "frames_with_observations"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid observed_ids",
+      "value": 11,
+      "unit": "IDs",
+      "sample_n": 600,
+      "scope": "IDs with confirmed measurement; physical identity unverified",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "observed_ids"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid reobservations_after_gap",
+      "value": 12,
+      "unit": "reconnections",
+      "sample_n": 600,
+      "scope": "same tracker ID reobserved after at least one absent frame",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "reobservations_after_gap"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid candidates",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 600,
+      "scope": "boundary candidates; not confirmed physical crossing",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "candidates"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid bridged_gap_candidates",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 600,
+      "scope": "candidate with retained boundary evidence across observation gap",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "bridged_gap_candidates"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid elapsed_seconds",
+      "value": 22.59115715502412,
+      "unit": "seconds",
+      "sample_n": 600,
+      "scope": "CPU model setup/decode/crop/ReID/tracking/rules/JSON/hash checks; no detector inference",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "elapsed_seconds"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid reid_calls",
+      "value": 1152,
+      "unit": "calls",
+      "sample_n": 600,
+      "scope": "actual pretrained CPU embedding encoder invocations",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "reid_calls"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid reid_patches",
+      "value": 4041,
+      "unit": "patches",
+      "sample_n": 600,
+      "scope": "actual detection crops encoded, includes unconfirmed/second-stage inputs",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "reid_patches"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    },
+    {
+      "label": "007 botsort_reid valid_embeddings",
+      "value": 4041,
+      "unit": "embeddings",
+      "sample_n": 600,
+      "scope": "finite nonzero pretrained embeddings; not correct identity matches",
+      "source": "outputs/exp0028/reid-v1/track007/botsort_reid/summary.json",
+      "source_sha256": "6f152580235154e4e44cf73036189bb25eca7c4ff14104d1b228524202a80b5e",
+      "source_pointer": [
+        "valid_embeddings"
+      ],
+      "verification": "measured_actual_original_crop_ReID; physical identity unverified"
+    }
+  ]
+}

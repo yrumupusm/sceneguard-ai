@@ -259,6 +259,19 @@
       "synthetic": false,
       "task_id": "task_e36f02bf0722",
       "title": "EXP-0027 Detection low-score diagnosis and label inventory"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T16:14:20.862863+00:00",
+      "dispatch_id": "ctx_da00202ebfa3",
+      "experiment_id": "EXP-0028",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_6e9c22520b45",
+      "title": "EXP-0028 practical tracking and gap comparison"
     }
   ],
   "schema_version": 1
