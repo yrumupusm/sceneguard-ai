@@ -1667,6 +1667,89 @@
       "task_id": "task_259c3da684ec",
       "title": "BATCH-0006 C6 pose 640 vs 960",
       "worker_opinion": "신규960 세 예측 성공·640재추론0·오류0. 94초 한 사람의 정성적 관측 개선과90초 미해결을 함께 보고."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T08:42:09.851546+00:00",
+      "attempt_id": "616f05a480c7434f82253e90ae7a096e",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_76b9a0360296",
+      "evaluated_model": "YOLO26m Detection COCO pretrained vs fixed20epoch person fine-tune; Ultralytics8.4.192",
+      "evidence": [
+        {
+          "artifact_id": "exp0026-007-047p5-before-after",
+          "kind": "image",
+          "label": "007_047p5 pretrained / fine-tuned · box review pending"
+        },
+        {
+          "artifact_id": "exp0026-007-052p5-before-after",
+          "kind": "image",
+          "label": "007_052p5 pretrained / fine-tuned · box review pending"
+        },
+        {
+          "artifact_id": "exp0026-030-050-before-after",
+          "kind": "image",
+          "label": "030_050 pretrained / fine-tuned · box review pending"
+        },
+        {
+          "artifact_id": "exp0026-030-055-before-after",
+          "kind": "image",
+          "label": "030_055 pretrained / fine-tuned · box review pending"
+        },
+        {
+          "artifact_id": "exp0026-030-084-before-after",
+          "kind": "image",
+          "label": "030_084 pretrained / fine-tuned · box review pending"
+        },
+        {
+          "artifact_id": "exp0026-030-090-before-after",
+          "kind": "image",
+          "label": "030_090 pretrained / fine-tuned · box review pending"
+        },
+        {
+          "artifact_id": "exp0026-030-094-before-after",
+          "kind": "image",
+          "label": "030_094 pretrained / fine-tuned · box review pending"
+        },
+        {
+          "artifact_id": "exp0026-training-loss",
+          "kind": "image",
+          "label": "Train/valid loss · provisional labels, not CCTV accuracy"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0026",
+      "limitations": [
+        "라벨 의미·split 촬영 그룹 독립성 미검수; D0 미통과",
+        "valid20 지표는 잠정 라벨 일치 진단이며 CCTV 정확도 아님",
+        "CCTV7장 개발표본,개인별 bbox GT 없음",
+        "일반 사람 학습 자료 혼합 없음",
+        "새 박스 대응 시각 검수는 추후 사용자 확인; 기본 모델 불변"
+      ],
+      "metric_definitions": "records/EXP-0026/metrics.json",
+      "metrics_path": "records/EXP-0026/metrics.json",
+      "metrics_sha256": "259ecefb9dd2f1daf6b12d68ff54b7b2334468a51d6e37c0b133b12bebe29848",
+      "next_step": "사용자가 추후 준비된 라벨 비교 자료의 개인별 박스 범위와 누락 라벨을 검수한 뒤 새 학습 설계를 판단한다. 자동 후속 학습 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "05709c85238a4c95ff214e1549707b08916c17bce933c861419a27794e9a673a",
+      "report_path": "docs/experiments/EXP-0026-exploratory-person-finetune.md",
+      "report_sha256": "5f5395eaee1af10925bd1577700b01014a4a4a8d8618a5095a08bad2bfc991f2",
+      "review_binding_path": "docs/reviews/EXP-0026.binding.json",
+      "review_path": "docs/reviews/EXP-0026-independent-review.md",
+      "review_sha256": "a13dacff201b54636fe64b52e333a809a522c6240668b43cb11b391b9a382265",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "259ecefb9dd2f1daf6b12d68ff54b7b2334468a51d6e37c0b133b12bebe29848",
+      "reviewed_report_sha256": "5f5395eaee1af10925bd1577700b01014a4a4a8d8618a5095a08bad2bfc991f2",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "고정20epoch 학습 완료. C6 90·94초 검출0개 유지,84초3→1 및 일부 접근 출력 감소. 라벨·실제 박스 대응 미검수,기존 모델 유지.",
+      "synthetic": false,
+      "task_id": "task_96b539b1624d",
+      "title": "EXP-0026 exploratory person Detection fine-tuning",
+      "worker_opinion": "학습 경로는 실제 성공했으나 핵심 누락이 지속되고 일부 출력이 감소했다. 새 모델 적용을 보류한다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

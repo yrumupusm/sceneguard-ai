@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0026",
+  "metrics": [
+    {
+      "label": "Completed training epochs",
+      "value": 20,
+      "unit": "epoch",
+      "sample_n": 1,
+      "scope": "single exploratory training run",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Pretrained seven-frame stage",
+      "value": 1.5204234439879656,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "measured execution cost; not continuous-video FPS",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Training including validations",
+      "value": 223.54420114998356,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "measured execution cost; not continuous-video FPS",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Fine-tuned seven-frame stage",
+      "value": 0.8298767860105727,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "measured execution cost; not continuous-video FPS",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Runner including integrity checks",
+      "value": 241.1283242960053,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "measured execution cost; not continuous-video FPS",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Peak allocated GPU memory",
+      "value": 1373.00341796875,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "PyTorch allocator across baseline/train/after",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Peak reserved GPU memory",
+      "value": 1984.0,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "PyTorch allocator across baseline/train/after",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Validation calls",
+      "value": 21,
+      "unit": "calls",
+      "sample_n": 1,
+      "scope": "valid20 only; includes final best validation",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_084 pretrained",
+      "value": 3,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_084 fine_tuned",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_090 pretrained",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_090 fine_tuned",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_094 pretrained",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_094 fine_tuned",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_050 pretrained",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_050 fine_tuned",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_055 pretrained",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "030_055 fine_tuned",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "007_047p5 pretrained",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "007_047p5 fine_tuned",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "007_052p5 pretrained",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "007_052p5 fine_tuned",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic output count; not actual person count or detection accuracy",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Unreviewed valid20: metrics/mAP50(B)",
+      "value": 0.9411421911421911,
+      "unit": "ratio",
+      "sample_n": 20,
+      "scope": "agreement with provisional labels; not independent CCTV performance",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Unreviewed valid20: metrics/mAP50-95(B)",
+      "value": 0.619998843151579,
+      "unit": "ratio",
+      "sample_n": 20,
+      "scope": "agreement with provisional labels; not independent CCTV performance",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Unreviewed valid20: metrics/precision(B)",
+      "value": 0.8835109490986829,
+      "unit": "ratio",
+      "sample_n": 20,
+      "scope": "agreement with provisional labels; not independent CCTV performance",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    },
+    {
+      "label": "Unreviewed valid20: metrics/recall(B)",
+      "value": 0.948362734918665,
+      "unit": "ratio",
+      "sample_n": 20,
+      "scope": "agreement with provisional labels; not independent CCTV performance",
+      "source": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/summary.json",
+      "source_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99",
+      "verification": "measured_local_output; semantic box review pending"
+    }
+  ],
+  "comparisons": [
+    {
+      "frame_id": "030_084",
+      "before": 3,
+      "after": 1,
+      "visual_review": "pending",
+      "accuracy": null
+    },
+    {
+      "frame_id": "030_090",
+      "before": 0,
+      "after": 0,
+      "visual_review": "pending",
+      "accuracy": null
+    },
+    {
+      "frame_id": "030_094",
+      "before": 0,
+      "after": 0,
+      "visual_review": "pending",
+      "accuracy": null
+    },
+    {
+      "frame_id": "030_050",
+      "before": 1,
+      "after": 0,
+      "visual_review": "pending",
+      "accuracy": null
+    },
+    {
+      "frame_id": "030_055",
+      "before": 2,
+      "after": 1,
+      "visual_review": "pending",
+      "accuracy": null
+    },
+    {
+      "frame_id": "007_047p5",
+      "before": 0,
+      "after": 0,
+      "visual_review": "pending",
+      "accuracy": null
+    },
+    {
+      "frame_id": "007_052p5",
+      "before": 2,
+      "after": 2,
+      "visual_review": "pending",
+      "accuracy": null
+    }
+  ],
+  "label_review": "pending",
+  "D0_passed": false,
+  "independent_validation": false,
+  "default_model_replaced": false,
+  "training_settings": "configs/batch0007_detect_manifest.json"
+}

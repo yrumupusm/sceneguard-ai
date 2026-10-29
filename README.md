@@ -1,5 +1,7 @@
 # SceneGuard
 
+**EXP-0026:** YOLO26m Detection의 첫20epoch 탐색 학습을 완료했습니다(약3분44초). C6의90·94초 검출0개가 유지되고84초는3→1개로 감소해 적용을 보류합니다. 학습 실행 성공과 실제 검출 개선을 구분하며 미검수 라벨의 의미 검수는 남아 있습니다. 기존 모델 기본값을 유지합니다. [실험 결과](docs/experiments/EXP-0026-exploratory-person-finetune.md) · [고정 계획](docs/experiments/EXP-0026-exploratory-training-plan.md).
+
 **BATCH-0006:** C6 ROI의 입력 해상도만640→960으로 바꾼 세 장 비교를 완료했습니다. 사용자 검수상84초는 양호하고94초 문 위 사람을 새로 포착했지만,90초는 출력0개로 핵심 누락이 지속됩니다. 기본 적용·행동 판단 확대는 보류합니다. [종합 결과](docs/experiments/BATCH-0006-summary.md) · [실험 보고서](docs/experiments/EXP-0025-c6-pose-960.md) · [전달 기록](docs/experiments/BATCH-0006-delivery.md).
 
 **BATCH-0004:** 공식 YOLO.predict로 두 프레임의 실제 추론과 관절 비교 이미지 생성에 성공했습니다. 030의90초는 사람 후보0개로 관절 근거를 얻지 못했고,007의64초는2개 후보/관절 추정23개로 실제 위치 검수는 별도입니다. 나머지265프레임·행동 규칙·기본 교체는 보류합니다. [종합 결과](docs/experiments/BATCH-0004-summary.md) · [전달 기록](docs/experiments/BATCH-0004-delivery.md).
