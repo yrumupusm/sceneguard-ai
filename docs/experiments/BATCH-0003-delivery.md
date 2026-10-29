@@ -48,4 +48,17 @@ Astra high는 실패 원문·소스·실측 비용·보존 범위와 최종 문�
 
 등록한 영상2개는 **입력 원본 참고이며 pose 출력이 아니다.** 030 88–94초의10fps 참고 영상(6초/960×540)과 기존007 62.5–67.5초 원본(5초/1920×1080)을 각각 실제 재생·1.5초 seek했고 자동 polling 후 재생 요소도 유지됐다. 새 관절 overlay·원본/pose 비교 영상은 출력이 없으므로 만들지 않았다. `runtime/BATCH-0003/delivery/browser-r1.json`의 PASS는 이 전달 동작만 증명한다.
 
-GitHub 게시와 원격 byte 검증은 브라우저 PASS와 별개이며, 아래에 실제 확인 후 기록한다.
+## GitHub 게시와 최종 상태
+
+검토한 코드·문서·공개 집계15개를 `30cce7ccf3ebf9a620ecbe6aa60ceb32636817a9`로 정상 push했다. 2026-10-29 04:10 UTC의 GitHub 검증은 origin/main의 실제 commit과 로컬 Git 객체의 report/metrics/review/binding hashes가 일치함을 확인했다(`runtime/BATCH-0003/delivery/github-results.json`, PASS). 이는 별도로 확인한 브라우저 서비스 bytes와도 같다. 이 문단을 담는 후속 전달 기록 커밋도 push 후 같은 방식으로 검증하며, 그 최종 receipt는 로컬에 남긴다.
+
+| 커밋 | 범위 |
+| --- | --- |
+| `738cac9` | 고정 실행/평가 계약·담당 배정·격리 환경 제외 |
+| `b52ac22` | 최초 고정 구현·테스트·입력 manifest·모델 선정 근거 |
+| `1b12d85` | 유일한 retry용 head 초기화·한도 검사·초기 실패 기록 |
+| `30cce7c` | 두 실제 실패의 보고서·공개 집계·독립 검토·기존 결과 등록 |
+
+게시 전 staged 목록을 명시적으로 확인했다. 영상/이미지·weights·환경·raw 출력·runtime/DB/log/receipt는 제외됐고, 실제 checkpoint 및 로컬 원본 참고 영상·실행 결과의 ignore를 확인했다. 기존20개 catalog 항목과 고정된13개 실행 파일은 변경되지 않았다. 실패 이후 소스 수정이나 추가 GPU 실행을 섞지 않았다. 최종 canonical queue는35 succeeded/4 failed이며 queued/running0, 이번 batch의2개 smoke는 모두 failed다.
+
+**종료 판정:** 준비/검사와 실패 기록 전달은 완료, 실제 pose 추론은 실패, 사람·관절 품질 및 행동 성능은 평가 미완료다. 참고 영상 재생 확인을 pose 검수 완료로 바꾸지 않는다. 기존 CV/VLM/기본 구성은 보존하고 새 모델 채택을 보류하며, 이번 승인 한도 종료 후 자동 작업을 시작하지 않는다.
