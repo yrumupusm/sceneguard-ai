@@ -2,6 +2,14 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
+## 최신 결과 — BATCH-0005 고정 ROI 비교 실행 완료·기본 적용 보류
+
+2026-10-29 KST. [종합 결과](docs/experiments/BATCH-0005-summary.md), [EXP-0023](docs/experiments/EXP-0023-c6-pose-roi-comparison.md), [전달 기록](docs/experiments/BATCH-0005-delivery.md)을 우선한다. 고정84/90/94초 full/C6에서 신규5개·기존90 full 재사용1개를 완료했다. 박스/관절 추정은84 full2/24→ROI3/38,90 full0/0→ROI1/12,94둘다0/0이다. 오류/retry0, sample forward5·별도 warmup1이며 출력 증가가 실제 관절 복원이나 행동 성능 충족은 아니다.
+
+세 비교 이미지의 사용자 검수를 한 번 묶어 요청했고 실제 인물/관절 대응·가림/중복/ROI 절단은 답변 전 미확정이다. 기본 적용·추적·행동 규칙·결합은 보류한다. 기존40 jobs/attempts·공식 라벨·CV/VLM·weights·환경·기본 설정을 유지하며 **추가 GPU 작업이나267전체 처리를 자동 시작하지 않는다**. 다음 결정은 새 세 이미지의 실제 대응 확인 한 가지다. 아래 승인 문단은 완료된 이번 배치의 범위 이력이다.
+
+---
+
 ## 현재 신규 승인 — BATCH-0005 C6 ROI 자세 추정 비교 (2026-10-29)
 
 **최신 작업 지침:** [BATCH-0005 비교 계획](docs/experiments/BATCH-0005-c6-pose-roi-comparison-plan.md)과 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md). 사용자가 이전 BATCH-0004의 실제 원본/관절 오버레이(030 90초 full-frame 검출0, 007 64초 출력2행)를 보고, **E01_030 84/90/94초 원본 전체화면과 기존 C6 고정 ROI를 비교**하도록 새 범위를 승인했다. 이전 '추가 GPU 실험 금지'는 **해당 종료 배치에 대한 기록**이며 이번 BATCH-0005 / EXP-0023의 신규 5개 조건으로만 대체한다. 이전 실험/보고/실패 원본·설정·가중치/큐를 변경하지 않는다.

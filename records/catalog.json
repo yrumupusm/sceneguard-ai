@@ -1489,6 +1489,64 @@
       "task_id": "task_5df19346a61c",
       "title": "BATCH-0004 YOLO26m-Pose official API recovery",
       "worker_opinion": "연결 코드의 기술 복구는 성공했다. 030의0출력은 정상 API 반환이며 정상 행동 판정이나 기술 오류가 아니다. 007의 행/관절 수를 실제 사람 대응 성공으로 해석하지 않는다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T05:44:41.563191+00:00",
+      "attempt_id": "90784d50902748b9956101771e27662b",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_f85d0a3a38de",
+      "evaluated_model": "YOLO26m-Pose / Ultralytics 8.4.192 / 640 FP32",
+      "evidence": [
+        {
+          "artifact_id": "exp0023-030-084-c6-comparison",
+          "kind": "image",
+          "label": "E01_030 84초: 원본 / 전체 / 고정 C6 ROI — 관절 대응 미검수"
+        },
+        {
+          "artifact_id": "exp0023-030-090-c6-comparison",
+          "kind": "image",
+          "label": "E01_030 90초: 원본 / 전체 (EXP-0022 재사용) / 고정 C6 ROI — 관절 대응 미검수"
+        },
+        {
+          "artifact_id": "exp0023-030-094-c6-comparison",
+          "kind": "image",
+          "label": "E01_030 94초: 원본 / 전체 / 고정 C6 ROI — 관절 대응 미검수"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0023",
+      "limitations": [
+        "새5개/캐시1개 개발 진단이며 관절 정답·독립 테스트가 아님",
+        "bbox/손목·골반·무릎·발목 대응·가림·중복·ROI절단 미확정",
+        "94초 양쪽 정상empty. 사람 부재/정상 행동 판정이 아님",
+        "계측5장의 시간으로 영상FPS/일반 속도 개선을 주장하지 않음",
+        "행동·추적·규칙·F1/FPR 미평가. 정지 이미지라 영상playback/seek 해당 없음"
+      ],
+      "metric_definitions": "records/EXP-0023/metrics.json",
+      "metrics_path": "records/EXP-0023/metrics.json",
+      "metrics_sha256": "1143c6d5e7f6587a63047edcf7a711564f7eed5ddb42118c489b4de89ce18070",
+      "next_step": "세 로컬 비교 이미지의 실제 사람·관절 대응 확인. 추가 GPU 자동 실행 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "817497b076cad7dbd3231ee88004ce9fcc387965a3e0363d583901855ec373e9",
+      "report_path": "docs/experiments/EXP-0023-c6-pose-roi-comparison.md",
+      "report_sha256": "0978d472573ac037a268483b8b358b8d8b5b359f7557c372fc621f9a1dab1e36",
+      "review_binding_path": "docs/reviews/EXP-0023.binding.json",
+      "review_path": "docs/reviews/EXP-0023-independent-review.md",
+      "review_sha256": "821d16917c385fcd64ddc01522971da55ca7833cfac48b1d0dcf7258601ce28b",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "1143c6d5e7f6587a63047edcf7a711564f7eed5ddb42118c489b4de89ce18070",
+      "reviewed_report_sha256": "0978d472573ac037a268483b8b358b8d8b5b359f7557c372fc621f9a1dab1e36",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "고정84/90/94초 전체/C6 비교. 신규5회 성공, 기존90전체1회 재사용. 90ROI1행/12관절 추정,94양쪽0. 실제 신체 대응 미검수, 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_000a7c6dec59",
+      "title": "BATCH-0005 C6 pose ROI comparison",
+      "worker_opinion": "실행과 좌표 변환은 검증됐으나 출력 개수만으로 실제 사람·관절 복원을 주장할 수 없다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

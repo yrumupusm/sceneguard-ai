@@ -1,0 +1,314 @@
+{
+  "adoption": "adopt_on_hold",
+  "attempt_id": "90784d50902748b9956101771e27662b",
+  "batch": "BATCH-0005",
+  "behavioral_validation": "unmeasured",
+  "cached_native_results": 1,
+  "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+  "code_sha": "62fe072bdd70f4e3eeb8c51a4984b96f221fea41",
+  "comparison_image_sha256": {
+    "030_084": "e827fadc1f17fba81f898bcd288569393f40f0d523a3455df81f3dd53b43a0c2",
+    "030_084_C6": "f70b1a904f0c8a9751487ec7075c828bc55f83f396a46496799102137b3675f0",
+    "030_084_full": "424334332382e01588fe451dfa9511f682f993fd7279f1948aa54c0a80aa3fff",
+    "030_084_original": "1283f84b5af205dab2a23c6de351720bfafe7877e344de93879989a2879f7362",
+    "030_090": "c25235570f16faf04698f209591676182f10ab5df4698b2adc3286fb3047d7b5",
+    "030_090_C6": "b94c7f93203a138aeefc4e720dfad78e33e164b00c24f0567dadbe163f206709",
+    "030_090_full": "67c9d94725f2be5ef2e33201f9e1d86f97eb85f59762e3c2e0d03753ebfbd9aa",
+    "030_090_original": "86a5a8220f57cd5e653ba6926f649b6fdf003398e6f22c840aa0536b3d13389b",
+    "030_094": "9159f3e50ae10fc86f96f2fe04b794e2f5d33512966fb57f2bac73efd2705d22",
+    "030_094_C6": "c55f3b389e38b4859bc5be8e06fd60e3f57f5476194c5ec23f6f002ac601ef2f",
+    "030_094_full": "2079cb93179be5b4258a2deaa748b01379d70d3af04293a63ee34b39eb102927",
+    "030_094_original": "09c38526eb7121cbcdc89a22fc1d7924e4ba07fbe67fc7d9609de614207e2b72"
+  },
+  "errors": 0,
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0023",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "frames": [
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "e3364bbf4e4c57d110d96969267a39369494bcecd3d29c8a66dad736f80c0e5b",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifact_sha256": {
+        "input.npy": "480ec4dc25fca139eb949a432d6bac67f14223063317931c724d37d20c07bb49",
+        "official-events.local.json": "397859c0ff5d6c95e72c96a5971db406ae8c21e01fa34d0952a921db065a2dac",
+        "results.pt": "971dbb3527715339f5e28f500c1ac508d00b33fed3ab57c3c6b43c4eb2bf5833"
+      },
+      "condition_id": "030_084_full",
+      "frame_id": "030_084",
+      "native_pts": 1290240,
+      "person_rows": 2,
+      "provenance": "EXP-0023 new prediction",
+      "pts_seconds": 84.0,
+      "retained_joint_estimates": 24,
+      "technical_status": "normal_pose_results",
+      "time_base": "1/15360",
+      "unknown_joint_estimates": 10,
+      "view": "full",
+      "visual_correspondence": "unreviewed; counts are not people/joint GT"
+    },
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "d3caac6e7f6df5a0dfeafbe10dcc59df3e17ec29891ba09a7f9549a157ada95b",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifact_sha256": {
+        "input.npy": "05d5238b99785322ed3e463b2888df5a3a46b536b9178d389e42a5620478cd0d",
+        "official-events.local.json": "4b7febd160c25ba1ddde67a9ea8813295789bc1fefa32ccb32f6b620e22214c9",
+        "results.pt": "1055c9078644b9fe1aebd007047adaa78cc04f3d8419e529e53154ed211660cd"
+      },
+      "condition_id": "030_084_C6",
+      "frame_id": "030_084",
+      "native_pts": 1290240,
+      "person_rows": 3,
+      "provenance": "EXP-0023 new prediction",
+      "pts_seconds": 84.0,
+      "retained_joint_estimates": 38,
+      "technical_status": "normal_pose_results",
+      "time_base": "1/15360",
+      "unknown_joint_estimates": 13,
+      "view": "C6",
+      "visual_correspondence": "unreviewed; counts are not people/joint GT"
+    },
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "e9295434c62a2316cb0944c335fbd6e7d1591ea96417a61f8f8d3b113b38c3f0",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifact_sha256": {
+        "comparison": "9a2d55712a117fbf68ebef3a72bde23d1a5ce9b85505c7df3619f9441e11bf11",
+        "input.npy": "9726b3f92e7fd5a138ca7fc7c76fa042d0465af39ee8a0fbdbe8d94d51eafb03",
+        "official-events.local.json": "977ce33ccbe928c71d52cfdcfabec5ff8d45a7818d262c8ff284b19b0309b26d",
+        "original": "e47ebe17847fe8b84abd69c1aad76c91d3daaa4584eb222ff0a3bfd734f2d142",
+        "overlay": "e47ebe17847fe8b84abd69c1aad76c91d3daaa4584eb222ff0a3bfd734f2d142",
+        "results.pt": "e4ddc88ec334e9acb5174dc0f8d4e3bf38b286aa1baeae39c712ec6646d00c56"
+      },
+      "condition_id": "030_090_full",
+      "frame_id": "030_090",
+      "native_pts": 1382400,
+      "person_rows": 0,
+      "provenance": "EXP-0022 cached; zero new prediction cost",
+      "pts_seconds": 90.0,
+      "retained_joint_estimates": 0,
+      "technical_status": "normal_empty_results",
+      "time_base": "1/15360",
+      "unknown_joint_estimates": 0,
+      "view": "full",
+      "visual_correspondence": "unreviewed; counts are not people/joint GT"
+    },
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "07887f5923a81dc1600b954e8ae832bdcd4977a287fbf4c730e54309dec28ad8",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifact_sha256": {
+        "input.npy": "4a365c528f7eb56bcd4a9660d7758ebd92db842cb51bcd85e6459e24b55d2d47",
+        "official-events.local.json": "ef24c5d39b5ad9ff93f0d8dbf1c5337dfba18b7264894ab5539c19a93f705345",
+        "results.pt": "322aa0403144179453b46125cd175d840ccddf7a19371d09bd05cee0ae685db8"
+      },
+      "condition_id": "030_090_C6",
+      "frame_id": "030_090",
+      "native_pts": 1382400,
+      "person_rows": 1,
+      "provenance": "EXP-0023 new prediction",
+      "pts_seconds": 90.0,
+      "retained_joint_estimates": 12,
+      "technical_status": "normal_pose_results",
+      "time_base": "1/15360",
+      "unknown_joint_estimates": 5,
+      "view": "C6",
+      "visual_correspondence": "unreviewed; counts are not people/joint GT"
+    },
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "ee3361b23c3adad674ff249ed525a48098ae18bcbced16e4e8606dd279168cd2",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifact_sha256": {
+        "input.npy": "163267f8b3f6574d82608bd65b0639d467f79cbb67dbc2713fba437e9498ec1b",
+        "official-events.local.json": "e2beec135a2fa5496a026bc9574eeda2affc9bf10b95736262a0a620dba682bb",
+        "results.pt": "b69b9fb9c1799eb613876f248a7ee79a6f677cb43308ad77ae5616021b4188ca"
+      },
+      "condition_id": "030_094_full",
+      "frame_id": "030_094",
+      "native_pts": 1443840,
+      "person_rows": 0,
+      "provenance": "EXP-0023 new prediction",
+      "pts_seconds": 94.0,
+      "retained_joint_estimates": 0,
+      "technical_status": "normal_empty_results",
+      "time_base": "1/15360",
+      "unknown_joint_estimates": 0,
+      "view": "full",
+      "visual_correspondence": "unreviewed; counts are not people/joint GT"
+    },
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "d908e7b92b3514dea3003739b91f7a59a528e80e73e4a39091de368fb47c6582",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifact_sha256": {
+        "input.npy": "d9c5d5ef1ebbe25706bd9b8027e64fc1390196e5fabba224a02d9bbf78579df8",
+        "official-events.local.json": "cf19983a4d072c055c6d89af592d5cb646c3b5f450edcc3bfe7ddf99397ab8bd",
+        "results.pt": "d2059e92cb6d7025bf77dd1dc304b212d0f131e0f68b2defd8cb94446a5a69a2"
+      },
+      "condition_id": "030_094_C6",
+      "frame_id": "030_094",
+      "native_pts": 1443840,
+      "person_rows": 0,
+      "provenance": "EXP-0023 new prediction",
+      "pts_seconds": 94.0,
+      "retained_joint_estimates": 0,
+      "technical_status": "normal_empty_results",
+      "time_base": "1/15360",
+      "unknown_joint_estimates": 0,
+      "view": "C6",
+      "visual_correspondence": "unreviewed; counts are not people/joint GT"
+    }
+  ],
+  "job_id": "7c366be9bf694ce7a476a47119419ca2",
+  "manifest_sha256": "a7c01d94d70aafeb6910ec0958fadc8ad5b461005224eaf68fe83c59d553f045",
+  "model_constructions": 1,
+  "new_checkpoints": 0,
+  "new_environments": 0,
+  "new_native_results": 5,
+  "original_native_rows_preserved": {
+    "attempts": 40,
+    "jobs": 40
+  },
+  "person_joint_quality": "unreviewed; fixed ROI output counts do not confirm actual body/joint correspondence",
+  "public_predict_calls": 5,
+  "retries": 0,
+  "rule_status": "not_run",
+  "sample_model_forward_attempts": 5,
+  "sample_model_forward_returns": 5,
+  "schema_version": 1,
+  "scope": "Three fixed native times full/C6 diagnostic. Five new calls and one historical cached empty Results. No GT, behavior accuracy, calibrated fence, or adoption claim.",
+  "source_sha256": "c6de4151fe1c836a8c607db1979e058154368461dc823b3be8187d2cf82f8a16",
+  "stage_summary_sha256": "1c08d87413a2bc399c2a426f63b865e7f3e2f817c8fc35801781ef206d67c46a",
+  "tracker_status": "not_run",
+  "training": false,
+  "warmup_model_forward_attempts": 1,
+  "warmup_model_forward_returns": 1
+}

@@ -1,3 +1,11 @@
+# 최신 인수인계 — BATCH-0005 고정 ROI 비교 실행 완료
+
+2026-10-29 KST. [종합 결과](experiments/BATCH-0005-summary.md), [EXP-0023](experiments/EXP-0023-c6-pose-roi-comparison.md), [전달 기록](experiments/BATCH-0005-delivery.md)을 우선한다. 고정84/90/94초 full/C6에서 신규5개·기존90 full 재사용1개를 완료했다. 박스/관절 추정은84 full2/24→ROI3/38,90 full0/0→ROI1/12,94둘다0/0이다. 오류/retry0, sample forward5·별도 warmup1이며 출력 증가가 실제 관절 복원이나 행동 성능 충족은 아니다.
+
+세 비교 이미지의 사용자 검수를 한 번 묶어 요청했고 실제 인물/관절 대응·가림/중복/ROI 절단은 답변 전 미확정이다. 기본 적용·추적·행동 규칙·결합은 보류한다. 기존40 jobs/attempts·공식 라벨·CV/VLM·weights·환경·기본 설정을 유지하며 **추가 GPU 작업이나267전체 처리를 자동 시작하지 않는다**. 다음 결정은 새 세 이미지의 실제 대응 확인 한 가지다. 아래 승인 문단은 완료된 이번 배치의 범위 이력이다.
+
+---
+
 # 신규 인수인계 — BATCH-0005 C6 고정 ROI vs 전체화면 Pose 비교 (2026-10-29)
 
 **새 사용자 승인:** E01_030 84/90/94초에서 사전 고정 카메라 C6 ROI를 이용해 YOLO26m-Pose 사람·관절 누락이 개선되는지 비교한다. [이번 고정 실험 계획](experiments/BATCH-0005-c6-pose-roi-comparison-plan.md), [CODEX_NEXT_TASK](CODEX_NEXT_TASK.md) 최우선.

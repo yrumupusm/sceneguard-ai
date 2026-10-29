@@ -1,0 +1,210 @@
+{
+  "allocator_peak_allocated_bytes": 204847616,
+  "allocator_peak_reserved_bytes": 228589568,
+  "cached_prediction": {
+    "charged_to": "EXP-0022 only",
+    "condition_id": "030_090_full",
+    "historical_public_predict_wall_seconds": 0.9093708290020004,
+    "historical_results_speed_ms": {
+      "inference": 12.631882971618325,
+      "postprocess": 20.20767700741999,
+      "preprocess": 34.14455897291191
+    },
+    "new_gpu_inference_seconds": 0,
+    "new_predict_calls": 0
+  },
+  "constructor_checkpoint_cpu_seconds": 0.20579401100985706,
+  "device_sampler_errors": 0,
+  "device_wide_max_sampled_used_mib": 2299.0,
+  "device_wide_min_sampled_free_mib": 7755.0,
+  "device_wide_sample_count": 19,
+  "experiment_id": "EXP-0023",
+  "free_vram_before_load_mib": 8262.0,
+  "inference_fps": null,
+  "new_predictions": [
+    {
+      "condition_id": "030_090_C6",
+      "frame_wall_seconds": 0.9391812510148156,
+      "input_read_convert_verify_seconds": 0.007976916007464752,
+      "official_events": [
+        {
+          "returned_value": false,
+          "seconds": 0.3608530880010221,
+          "stage": "setup_model",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.025164112012134865,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.3518355519918259,
+          "stage": "network_predict",
+          "warmup": true
+        },
+        {
+          "returned_value": false,
+          "seconds": 0.44376962300157174,
+          "stage": "warmup",
+          "warmup": true
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.0308265509956982,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.030954593006754294,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "public_predict_wall_seconds": 0.9033686610055156,
+      "results_speed_ms": {
+        "inference": 30.990298022516072,
+        "postprocess": 27.494114998262376,
+        "preprocess": 33.067732001654804
+      },
+      "tensor_capture_save_seconds": 0.007851247006328776
+    },
+    {
+      "condition_id": "030_084_full",
+      "frame_wall_seconds": 0.09589253200101666,
+      "input_read_convert_verify_seconds": 0.009301334008341655,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.0007931420113891363,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.021054798999102786,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.021142430021427572,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "public_predict_wall_seconds": 0.03478972701122984,
+      "results_speed_ms": {
+        "inference": 21.175198984565213,
+        "postprocess": 1.3594359916169196,
+        "preprocess": 6.961323000723496
+      },
+      "tensor_capture_save_seconds": 0.00611928099533543
+    },
+    {
+      "condition_id": "030_084_C6",
+      "frame_wall_seconds": 0.04989938699873164,
+      "input_read_convert_verify_seconds": 0.005604330013738945,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.000861199019709602,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.010143824008991942,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.010253496002405882,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "public_predict_wall_seconds": 0.02438625501235947,
+      "results_speed_ms": {
+        "inference": 10.285679018124938,
+        "postprocess": 1.1305389925837517,
+        "preprocess": 7.892380992416292
+      },
+      "tensor_capture_save_seconds": 0.006974629010073841
+    },
+    {
+      "condition_id": "030_094_full",
+      "frame_wall_seconds": 0.09183928501443006,
+      "input_read_convert_verify_seconds": 0.009705821023089811,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.0007338270079344511,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.02071364101720974,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.020813972019823268,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "public_predict_wall_seconds": 0.033996847982052714,
+      "results_speed_ms": {
+        "inference": 20.84562400705181,
+        "postprocess": 0.8151319925673306,
+        "preprocess": 6.084369990276173
+      },
+      "tensor_capture_save_seconds": 0.005302353005390614
+    },
+    {
+      "condition_id": "030_094_C6",
+      "frame_wall_seconds": 0.05217068298952654,
+      "input_read_convert_verify_seconds": 0.0054038479865994304,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.0008056189981289208,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.017712288012262434,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.017786657001124695,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "public_predict_wall_seconds": 0.028063307981938124,
+      "results_speed_ms": {
+        "inference": 17.817225016187876,
+        "postprocess": 0.523752998560667,
+        "preprocess": 4.832965001696721
+      },
+      "tensor_capture_save_seconds": 0.003974986990215257
+    }
+  ],
+  "official_setup_model_seconds": 0.3608530880010221,
+  "official_warmup_model_forward_seconds": 0.3518355519918259,
+  "official_warmup_seconds": 0.44376962300157174,
+  "queue_attempt_wall_seconds": 9.63161849975586,
+  "run_entry_wall_seconds": 6.3523391199996695,
+  "scope": "One instrumented five-call diagnostic, not throughput benchmark. Constructor excludes first predictor setup/fuse/CUDA preparation. Setup/warmup/network events overlap and must not be summed. Warmup contains actual-input model forward plus synthetic random-box NMS, excluded from five predictions and Results.speed. Results.speed preprocess includes profiler/synchronization and tensor CPU capture/save; public predict wall includes first setup/warmup/observer saves; frame wall includes RGB validation and native Results serialization. Run-entry includes lease/input validation and final comparison PNG creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports before constructor; device-wide samples include other processes. Cached full90 historical costs are not new cost. No general FPS or real-time claim."
+}
