@@ -2,6 +2,16 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
+## 현재 신규 승인 — BATCH-0003 YOLO26m-Pose 무학습 자세 추정 (2026-10-29)
+
+**최우선:** [BATCH-0003 전체 계획](docs/experiments/BATCH-0003-yolo26-pose-plan.md) 및 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md). 사용자는 **추가 학습 없이 공식 COCO 사전학습 `yolo26m-pose.pt` 1개**를 RTX3080에서 사용해, 실제 울타리 넘는 순간 사람 검출과 17개 관절의 시각적 정확성·시간 변화·접근/대기 오판을 확인하는 제한된 실험을 승인했다. 이번 신규 승인은 이전 **BATCH-0002 종료/추가 GPU 작업 금지의 역사적 상태**를 이 범위 한정으로만 대체한다.
+
+**범위/게이트:** 기존 EXP-0019 native PTS 11개 + 사전 고정 5개 구간에서 원본10fps 이하, 총 고유300프레임 이하. YOLO26m-Pose 640/FP32/conf0.25의 한 조건, 2프레임 smoke→성공 시 나머지 단일 직렬 실행. 모델버전/가중치 SHA/환경/코드/PTS/경계를 실행 전 고정. `.venv-pose-batch03` 격리, AGPL-3.0 및 결과 공개 범위 검토. free VRAM≥6144MiB gate와 기존 Orca Run/Task/Dispatch·단일 canonical GPU queue·Astra max/Sol high/Astra high 체계 유지. 새 학습·파인튜닝·추가 모델/가중치·대안 프롬프트·외부 AI API·유료 결제·기본 CV/VLM 교체·새 UI·무허가 이미지 업로드 금지.
+
+**평가:** 모델 성공/박스 개수와 사람·관절 실재 복원·행동 구분을 별도 판단. 원본/로컬 오버레이에 대한 정확한 사람별 관절 검수 전에는 RF-DETR 030:90의 0→1이나 새 pose 개수를 사람 복원 성공으로 간주하지 않는다. 사람/관절 관측이 부족하면 규칙을 **건너뛴다**. 충분하면 고정 감시 경계와 손·무릎·발·체중 이동의 **사전 등록 규칙 단1개**를 독립 구현해 접근/시도 창을 비교한다. 관절은 YOLO COCO 17개, 시도/완료/법적 침입의 GT가 아니다. q/v는 개발/진단 표본이고 정확도/F1/FPR/일반화·사람별 완료를 만들지 않는다. 이전 031 종료 미완료는 030 사실로 전이하지 않는다.
+
+**제3자 참고:** 공개 YOLOv8-Pose fence rule 예시는 아이디어 참고용이다. 명시적 라이선스가 없는 제3자 프로젝트 구현 코드를 복사/벤더링하지 않는다. Ultralytics AGPL-3.0의 파생물 공개 의무 및 향후 상용 통합은 별도 검토 전 연구/기술 실험 밖으로 확대하지 않는다. 원본 CCTV/프레임·사람 좌표/raw 응답·가중치·DB·runtime·receipts는 로컬 전용. 코드·비식별 수치/해석/독립 리뷰만 GitHub. 기존 Orca 결과 등록, 실제 웹·영상 재생/seek, GitHub 원격 byte 확인을 분리한다. 승인 배치 종료 후 새 GPU 작업 자동 시작 금지.
+
 ## 최신 상태 — BATCH-0002 고정 비교 종료·기본 적용 보류 (2026-10-29)
 
 [종합 결과](docs/experiments/BATCH-0002-summary.md), [EXP-0018 입력 감사](docs/experiments/EXP-0018-input-audit.md), [EXP-0019 CV 비교](docs/experiments/EXP-0019-cv-comparison.md), [EXP-0020 VLM 비교](docs/experiments/EXP-0020-vlm-comparison.md), [전달 기록](docs/experiments/BATCH-0002-delivery.md)을 우선한다. RF-DETR Medium 11프레임과 Qwen3-VL-4B NF4 16개 view를 각각 한 번 생성했다. v01의 모델 로딩 전 메타데이터 오류는 기존 실패·12개 q 출력을 보존한 단 한 번의 논리적 retry로 복구했다. 새 모델 2개·고정 비교 한도는 종료했으며 **추가 GPU 작업·모델·튜닝·자동 재시도는 예약하거나 시작하지 않는다.** 아래 승인 문단은 이 배치의 실행 이력이다.
