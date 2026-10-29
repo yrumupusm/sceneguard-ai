@@ -1,0 +1,696 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0027",
+  "metrics": [
+    {
+      "label": "pretrained 030_084",
+      "value": 5,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_090",
+      "value": 6,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_094",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_050",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_055",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_047p5",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_052p5",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned 030_084",
+      "value": 4,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned 030_090",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned 030_094",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned 030_050",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned 030_055",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned 007_047p5",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned 007_052p5",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "conf>0.05 final person rows; not true people",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained seven-frame stage",
+      "value": 1.4075210180017166,
+      "unit": "s",
+      "sample_n": 7,
+      "scope": "instrumented predict plus cached comparison and local save; not streaming latency",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine-tuned seven-frame stage",
+      "value": 0.8647044310055207,
+      "unit": "s",
+      "sample_n": 7,
+      "scope": "instrumented predict plus cached comparison and local save; not streaming latency",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_084 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_084 [0.10,0.25)",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_084 [0.25,1]",
+      "value": 3,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_090 [0.05,0.10)",
+      "value": 3,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_090 [0.10,0.25)",
+      "value": 3,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_090 [0.25,1]",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_094 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_094 [0.10,0.25)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_094 [0.25,1]",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_050 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_050 [0.10,0.25)",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_050 [0.25,1]",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_055 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_055 [0.10,0.25)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 030_055 [0.25,1]",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_047p5 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_047p5 [0.10,0.25)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_047p5 [0.25,1]",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_052p5 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_052p5 [0.10,0.25)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "pretrained 007_052p5 [0.25,1]",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_084 [0.05,0.10)",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_084 [0.10,0.25)",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_084 [0.25,1]",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_090 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_090 [0.10,0.25)",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_090 [0.25,1]",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_094 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_094 [0.10,0.25)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_094 [0.25,1]",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_050 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_050 [0.10,0.25)",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_050 [0.25,1]",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_055 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_055 [0.10,0.25)",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 030_055 [0.25,1]",
+      "value": 1,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 007_047p5 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 007_047p5 [0.10,0.25)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 007_047p5 [0.25,1]",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 007_052p5 [0.05,0.10)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 007_052p5 [0.10,0.25)",
+      "value": 0,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "fine_tuned 007_052p5 [0.25,1]",
+      "value": 2,
+      "unit": "boxes",
+      "sample_n": 1,
+      "scope": "diagnostic score bins; no accuracy interpretation",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "exact cached comparisons",
+      "value": 14,
+      "unit": "cases",
+      "sample_n": 14,
+      "scope": "CPU >=0.25 versus historical EXP26 >0.25 ordered rows",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "sample forwards",
+      "value": 14,
+      "unit": "calls",
+      "sample_n": 14,
+      "scope": "new sample network forward; official warmups excluded",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "official warmups",
+      "value": 2,
+      "unit": "calls",
+      "sample_n": 2,
+      "scope": "separately instrumented official warmup forwards",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "runner total",
+      "value": 27.24035992199788,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "preflight imports audits inference plots and final preservation checks",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "peak allocated",
+      "value": 191.83154296875,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "PyTorch CUDA allocator, peak over both models",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "peak reserved",
+      "value": 212.0,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "PyTorch CUDA allocator, peak over both models",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "sampled device usage maximum",
+      "value": 1943.0,
+      "unit": "MiB",
+      "sample_n": 105,
+      "scope": "whole-device nvidia-smi sampled usage including other processes",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "sampled free memory minimum",
+      "value": 8111.0,
+      "unit": "MiB",
+      "sample_n": 105,
+      "scope": "whole-device nvidia-smi sampled free memory",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "measured_local_summary; semantic person correspondence unreviewed"
+    },
+    {
+      "label": "CCTV accuracy",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "unmeasured; no reviewed person-level ground truth",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "unavailable"
+    },
+    {
+      "label": "person recall",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "unmeasured; no reviewed person-level ground truth",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "unavailable"
+    },
+    {
+      "label": "behavior F1",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "unmeasured; no reviewed person-level ground truth",
+      "source": "outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/summary.json",
+      "source_sha256": "68d3bc88789fdfb17c2669a6951e353128c89dca73d753f7254bf7916e5c548b",
+      "verification": "unavailable"
+    }
+  ]
+}

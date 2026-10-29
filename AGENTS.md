@@ -1,5 +1,15 @@
 # Codex 프로젝트 작업 지침 — SceneGuard
 
+## 최신 결과 — EXP-0027 낮은 점수 진단 완료·시각 검수 대기
+
+2026-10-29. [진단 결과](docs/experiments/EXP-0027-detection-low-confidence-diagnosis.md)와 [라벨 감사](docs/data/EXP-0027-label-audit.md)를 우선한다. 기존 두 Detection×7캐시에 conf0.05만 적용한14회가 canonical 단일GPU큐에서 성공했다. 새 결과의>=0.25 행은 기존14조건과 좌표·점수·순서까지 정확히 같았다. 030:90은 pretrained6/best1개의 낮은 점수 행,94초는 두 모델0행이다. 실제 사람/부분 신체/중복/배경 대응은 미검수이고0.05에서도 없는 출력이 내부 전체 후보 부재를 뜻하지 않는다.
+
+**기술 실행 완료 / 핵심 누락 원인 일부만 좁힘 / 사람 검수·D0 미완료 / 기본 적용 보류**다. 원본·준비파일1,108개·과거43jobs/43attempts를 보존했고 신규1job/1attempt만 추가했다. 전체113라벨 패널·354사람행은 모두review_pending이며 우선27행은15패널이다. 사용자에게 새7장 비교를 한 번에 요청했고 답변 전 실제 인물 복원이나 정확도로 표시하지 않는다.
+
+다음은 새 낮은 점수 출력과 우선15라벨 패널의 사람·신체 범위를 확인하는 한 가지 검수다. 비교이미지는 로컬 `outputs/exp0027/EXP-0027/diagnose/111e49f413a4446586e629cd65419721/`, 라벨 인덱스/양식은 `runtime/EXP-0027/label-audit/`에 있다. GPU한도14회를 마쳤고 **추가학습·threshold/해상도/ROI sweep·새모델·추적/행동실험을 자동 시작하지 않는다**. 기존 EXP26 실패·기본구성은 보존한다. [전달 확인](docs/experiments/EXP-0027-delivery.md)은 웹등록·실제렌더·GitHub게시를 별도로 기록한다.
+
+---
+
 ## 현재 승인 — EXP-0027 낮은 점수 Detection 진단·라벨 검수 준비
 
 2026-10-29. 사용자 지시에 따라 GitHub `b79a9eb`의 [신규 진단 계획](docs/experiments/EXP-0027-detection-low-confidence-diagnosis-plan.md)을 실행한다. EXP-0026 종료/추가 학습 금지는 보존하고, 이번 범위에서는 기존 Detection 두 가중치×기존7프레임에 conf0.05만 적용하는 최대14회 추론을 승인한다. 기존0.25 결과·모델·입력·ROI·라벨/113검수 패널을 보존한다. 추가 학습·새 모델/프레임·threshold sweep·기본값 변경은 없다.

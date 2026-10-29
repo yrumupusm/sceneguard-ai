@@ -1750,6 +1750,83 @@
       "task_id": "task_96b539b1624d",
       "title": "EXP-0026 exploratory person Detection fine-tuning",
       "worker_opinion": "학습 경로는 실제 성공했으나 핵심 누락이 지속되고 일부 출력이 감소했다. 새 모델 적용을 보류한다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T14:28:32.868217+00:00",
+      "attempt_id": "111e49f413a4446586e629cd65419721",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_75d3dc7cb54f",
+      "evaluated_model": "YOLO26m Detection pretrained COCO80 + EXP-0026 best person1;640 FP32 conf0.05",
+      "evidence": [
+        {
+          "artifact_id": "exp0027-030-084",
+          "kind": "image",
+          "label": "030_084 original / pretrained / fine-tuned low-score; human review pending"
+        },
+        {
+          "artifact_id": "exp0027-030-090",
+          "kind": "image",
+          "label": "030_090 original / pretrained / fine-tuned low-score; human review pending"
+        },
+        {
+          "artifact_id": "exp0027-030-094",
+          "kind": "image",
+          "label": "030_094 original / pretrained / fine-tuned low-score; human review pending"
+        },
+        {
+          "artifact_id": "exp0027-030-050",
+          "kind": "image",
+          "label": "030_050 original / pretrained / fine-tuned low-score; human review pending"
+        },
+        {
+          "artifact_id": "exp0027-030-055",
+          "kind": "image",
+          "label": "030_055 original / pretrained / fine-tuned low-score; human review pending"
+        },
+        {
+          "artifact_id": "exp0027-007-047p5",
+          "kind": "image",
+          "label": "007_047p5 original / pretrained / fine-tuned low-score; human review pending"
+        },
+        {
+          "artifact_id": "exp0027-007-052p5",
+          "kind": "image",
+          "label": "007_052p5 original / pretrained / fine-tuned low-score; human review pending"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0027",
+      "limitations": [
+        "Final low-score Results do not expose all pre-topk candidates.",
+        "Seven frames are development samples; no reviewed bbox GT or accuracy.",
+        "All113 label panels and354person rows remain review_pending; D0false.",
+        "94s remains empty for both models; no default model or threshold change."
+      ],
+      "metric_definitions": "records/EXP-0027/metrics.json",
+      "metrics_path": "records/EXP-0027/metrics.json",
+      "metrics_sha256": "56330c93b7476ad1b69ebb49c334afd5d865edb46db17ffe7757d42c7afcaf35",
+      "next_step": "Human correspondence review of low-score boxes and15priority label panels; no further GPU work scheduled.",
+      "reasoning_effective": "high",
+      "registration_sha256": "265a6022a93b20682a81b22d95971008959a535d4e7d13f7fcf33f7ae1f370f5",
+      "report_path": "docs/experiments/EXP-0027-detection-low-confidence-diagnosis.md",
+      "report_sha256": "242718f4862ac9375615370179d9c8301048fb891460577f13f78190288a0cca",
+      "review_binding_path": "docs/reviews/EXP-0027.binding.json",
+      "review_path": "docs/reviews/EXP-0027-independent-review.md",
+      "review_sha256": "46af9d165e34debf346f55cfcef11141137da672c6e5b1cba51358c2ffa92218",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "56330c93b7476ad1b69ebb49c334afd5d865edb46db17ffe7757d42c7afcaf35",
+      "reviewed_report_sha256": "242718f4862ac9375615370179d9c8301048fb891460577f13f78190288a0cca",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "conf0.05 diagnosis completed14/14;90s pretrained6/fine-tuned1 low-score rows,94s both0; all14 >=0.25 outputs exactly reproduce cached rows; semantic review pending",
+      "synthetic": false,
+      "task_id": "task_e36f02bf0722",
+      "title": "EXP-0027 Detection low-score diagnosis and label inventory",
+      "worker_opinion": "Canonical14sample+2warmup succeeded; cache14/14 exactly equal; old43queue rows preserved. New rows are not confirmed people."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
