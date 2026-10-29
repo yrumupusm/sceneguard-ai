@@ -1,5 +1,13 @@
 # SceneGuard — 다음 작업과 대화 인수인계
 
+## 신규 사용자 승인 / 다음 실행 — BATCH-0003 YOLO26m-Pose (2026-10-29)
+
+- **새 범위:** 사용자는 기존 모델 교체만으로 행동 분류가 해결되지 않은 점을 확인하고, **재학습 없이 YOLO26m-Pose 사전학습 가중치로 사람 관절·울타리 넘기 동작 단서**를 검증하라고 승인했다. [고정 계획](experiments/BATCH-0003-yolo26-pose-plan.md)과 [현재 지시](CODEX_NEXT_TASK.md) 우선.
+- **베이스라인 보존:** BATCH-0002는 입력 감사 완료, FCOS vs RF-DETR Medium 11프레임 품질 미확정, Qwen2B vs 4B 16 view에서 4B 형식 실패6, 새 모델 두 개 기본 적용 보류, CV+VLM 미연결 상태로 종료. 현재 main의 기존 실험/채택 상태를 덮어쓰지 않는다.
+- **실험:** 신규 weight 1개 `yolo26m-pose.pt`만, 격리 환경·GPU canonical queue/free6144MiB gate. 11개 정확한 native PTS + 030[88,94), 007[62.5,67.5), 007[47.5,52.5), 030[50,55), 004[60,65)에서 원본≤10fps/고유≤300프레임. 2프레임 smoke 후 1회 실행. 사람/관절의 **실제 관측 가시성**부터 검토; 좋을 때만 단1개 무학습 사전등록 규칙과 시간 일관성 평가. VLM 재추론, 새 기본 모델 채택, 전체 영상 처리나 별도 학습 없음.
+- **한계:** q04 시도/발 올림 완료 미관찰, 030 약90초 여러 사람 올라탐·개별 완료 미확정, q02/q05 접근뿐, v01 줄 넘음. 사람별 박스/관절 프레임 GT 없음. 정확도/F1/시간당 오탐률 주장 금지. 사람 누락 시 규칙/결합 구현을 멈추고 그 실패를 보고한다.
+- **전달:** 기존 Astra max/Sol high/Astra high·단일 Run/queue, 독립 리뷰, 기존 읽기전용 로컬 결과 페이지 및 정상 GitHub push/원격 byte 확인. 공개 코드/비식별 요약만, 원본·weights·raw 좌표·영상은 로컬. 사용자가 승인한 한도를 완료하면 후속 실험 자동 실행 없이 종료. 현재 GitHub 문서 갱신은 **실제 로컬 GPU 실행이 아님**.
+
 ## 최신 상태 — BATCH-0002 모델 대안 비교 종료 (2026-10-29)
 
 - 최신 [종합 결론](experiments/BATCH-0002-summary.md), [입력 감사 EXP-0018](experiments/EXP-0018-input-audit.md), [CV EXP-0019](experiments/EXP-0019-cv-comparison.md), [VLM EXP-0020](experiments/EXP-0020-vlm-comparison.md), [전달 기록](experiments/BATCH-0002-delivery.md)을 우선한다. 사용자 지침 `1a06f6c`는 로컬 변경·기존 결과를 보존해 fast-forward로 받았으며 강제 reset/stash는 없었다.
