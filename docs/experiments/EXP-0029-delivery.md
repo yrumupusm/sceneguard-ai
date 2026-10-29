@@ -12,7 +12,7 @@
 | 기술 검증 |tracklet43개·extension10개·canonicalqueue14개 통과; 별도 합산29개 회귀의 과거fixture1실패 기록 |
 | 행동 결론 |전후동일인물복원 개선미확인·기본적용보류; 같은영역후보양쪽0을성공으로세지않음 |
 | 완료 등록 / 실제 재생 |EXP-0029 등록·review current; 실제 브라우저에서 보고서/검토 펼침·32측정항목·그래프2개·4영상 재생/1.5초 seek·16.5초 주기갱신 중 영상 유지 통과 |
-| GitHub 게시 / 서비스 버전 |게시 후 별도 확인 예정 |
+| GitHub 게시 / 서비스 버전 |결과커밋 `05a8b2fc5b949c28a01afd2dffaca23ddbb1677e` main push후 remote검증통과; 변경21파일 원격바이트=로컬. 실제서비스의report/metrics/review/binding SHA도동일 |
 
 로컬 영상은 `outputs/exp0029/track030/v1/` 및 `outputs/exp0029/track007/v1/`의 `original_raw_linked.mp4`와 `original_raw_linked_focus.mp4`다. 전체판이 후기 인물을 포함한 원본 전체 시야를 보존한다. 확대판의 표시 범위를 분석 ROI나 모든 인물의 가시성 보장으로 해석하지 않는다.
 
@@ -23,3 +23,10 @@
 초기 브라우저 검증 helper를직접파일명으로실행했을때는repository import경로누락으로중단됐고,기존runpy호출로복구했다. 모델/GPU재실행은없었다. viewer app.js SHA `cae122f859102f7a6f0dd3255d9e4a7ec5491814f340dc9a4e28fff6ba8b9fcd`는작업전과같다.
 
 게시 전검사에서새runner의EOF여분빈줄1개만제거했다. 실행문장은동일하며실제실행바이트는 `runtime/EXP-0029/runner.executed.py`, 전후SHA는 `packaging-whitespace.json`에보존했다. 이포장정리는실행후이므로과거sourcefreeze/실행receipt를최신코드SHA로덮어쓰지않았다.
+
+
+게시 확인은2026-10-30 03:39 KST에수행했다. GitHub검증receipt의browser_verified:false는그명령이GitHub만검사한다는뜻이며,별도실제브라우저receipt는passed:true다. HTTP200만으로완료처리하지않고보고서·그래프·영상실제play/seek를각각확인했다. 서비스재시작이나웹기능변경은필요하지않았다.
+
+실제3개담당dispatch는succeeded로종료하고명시적으로release했다. 마지막Orca조회에서이번3개모두released이며이전사용자보존22개는그대로두었다. 새GPU작업·모델·튜닝·후속실험을예약하지않았다. 결과보고서와metrics의독립검토SHA는등록후변경하지않았다.
+
+**코드구현 완료 / 실제실험 완료 / GitHub게시 확인 / 로컬화면·4영상 확인 / 행동성능개선 및 기본적용 보류.** 이파일의전달확인갱신은별도문서커밋으로게시하며,검토결속된결과원문은불변이다. 로컬receipt는 `runtime/EXP-0029/delivery/`에있다.
