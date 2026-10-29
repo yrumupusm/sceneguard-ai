@@ -1,3 +1,14 @@
+# 신규 승인 및 다음 실행 — BATCH-0006 / EXP-0025 C6 ROI 960 해상도 비교 (2026-10-29)
+
+- 사용자 승인: **기존 YOLO26m-Pose 사전학습 모델, 같은 고정 C6 ROI, 같은 전체 공개 YOLO.predict 설정**에서 입력 크기만 **640→960**으로 바꾸어 E01_030 **84·90·94초 3프레임**을 다시 평가. [고정 계획](experiments/BATCH-0006-c6-pose-960-resolution-plan.md), [실행 지시](CODEX_NEXT_TASK.md).
+- 현재 최신 사용자 관찰은 [EXP-0024](experiments/EXP-0024-user-pose-review.md): 84초 C6는 3명 관절 대체로 양호, 90초 C6는 오른쪽 1명만 검출·관절 오정합/나머지2명 누락, 94초는 보이는 2명 전부 누락. 정확한 person/keypoint GT는 아님.
+- **비교:** 기존 EXP-0023의 C6 640 native Results 84 **3명/38 추정**, 90 **1명/12 추정**, 94 **0명/0 추정**을 검증해 **캐시 재사용(640 예측0회)**. 신규 960 **3회만**, 같은 1920×1080에서 기존 normalized ROI [0.28,0.20,0.75,0.80], RGB crop [216:864,537:1440] (648×903), FP32/conf0.25/rectFalse/nmsFalse. 실측 bbox/키포인트는 ROI 좌표에서 원본 (+537,+216) **한 번만** 이동. 모델·환경·프레임/ROI/기존 시험 source/report/binding 불변.
+- 기존 Orca Run `run_3d23462a014a` / Astra max 총괄, Sol high 담당 최대2, Astra high 독립 검토1, **같은 canonical GPU queue/free VRAM≥6144 MiB**. 새 EXP-0025 module/job/manifest/source freeze, CPU API/kwargs·cached artifact·input/hash/ROI offset·960 shape 및 독립 리뷰 후 실제 예측. **90초에서 정상 empty라도 84/94까지 실행**. 재학습/새 모델/VLM/SAHI/threshold 조정/다른 해상도 추가 없음.
+- 실제 **원본/640/960** triptych 3개를 로컬에서 대조하고 사람·관절 대응(특히 90/94 누락) 검수. 사람이 보기 전에는 출력 수 증가를 정합성 개선으로 확정하지 않는다. 정확도/F1/FPR, 사람별 완료, 경계 위법성 및 시간적 행동 성능은 미평가. tracker/규칙/결합/전체267 처리 금지.
+- 신규 결과 report/metrics·독립 Astra 검토·기존 로컬 웹 이미지 표시·GitHub 원격 SHA 확인을 완료한 후 중단. 원본 CCTV/이미지/관절 raw/weights/환경/receipts/runtime은 로컬만. **현재 GitHub 지침 갱신은 로컬 GPU 추론과 별개**이며, 기존 EXP-0023/0024 결과를 수정하지 않는다.
+
+---
+
 # 최신 인수인계 — EXP-0024 사용자 관절 검수
 
 2026-10-29. [사용자 검수 기록](experiments/EXP-0024-user-pose-review.md)을 최신 판단으로 사용한다. EXP-0023의 실행·출력·검토본은 변경하지 않는다. 이번 기록은 기존 자료에 대한 사용자 정성 검수이며 신규 GPU 추론은0회다.
