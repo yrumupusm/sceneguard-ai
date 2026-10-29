@@ -1,0 +1,24 @@
+{
+  "baseline_manifest_sha256": "a7c01d94d70aafeb6910ec0958fadc8ad5b461005224eaf68fe83c59d553f045",
+  "baseline_new_predictions": 0,
+  "batch": "BATCH-0006",
+  "cached_results": 3,
+  "cached_summary_sha256": "1c08d87413a2bc399c2a426f63b865e7f3e2f817c8fc35801781ef206d67c46a",
+  "change": {
+    "imgsz": {
+      "baseline": 640,
+      "new": 960
+    }
+  },
+  "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+  "conditions": [
+    "030_090_C6_960",
+    "030_084_C6_960",
+    "030_094_C6_960"
+  ],
+  "experiment_id": "EXP-0025",
+  "input_manifest_sha256": "afcb48e605f3dd6f5a85d57869e3b97544da7749d2efb41ed1187dc9f59ebf51",
+  "new_predictions_max": 3,
+  "quality": "960 unknown pending human review; behavior unmeasured",
+  "schema_version": 1
+}
