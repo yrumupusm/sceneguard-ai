@@ -1547,6 +1547,69 @@
       "task_id": "task_000a7c6dec59",
       "title": "BATCH-0005 C6 pose ROI comparison",
       "worker_opinion": "실행과 좌표 변환은 검증됐으나 출력 개수만으로 실제 사람·관절 복원을 주장할 수 없다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T06:00:06.875266+00:00",
+      "attempt_id": "user-review-20261029",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_467e2b32ec60",
+      "evaluated_model": "기존 YOLO26m-Pose 결과의 사용자 검수 — 재추론 없음",
+      "evidence": [
+        {
+          "artifact_id": "exp0024-030-084-c6-comparison",
+          "kind": "image",
+          "label": "084초 기존 원본/full/C6 비교 — 재추론 없음"
+        },
+        {
+          "artifact_id": "exp0024-030-090-c6-comparison",
+          "kind": "image",
+          "label": "090초 기존 원본/full/C6 비교 — 재추론 없음"
+        },
+        {
+          "artifact_id": "exp0024-030-094-c6-comparison",
+          "kind": "image",
+          "label": "094초 기존 원본/full/C6 비교 — 재추론 없음"
+        },
+        {
+          "artifact_id": "exp0024-user-030-090-annotation",
+          "kind": "image",
+          "label": "사용자 수기 참고 — 정밀GT 아님"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0024",
+      "limitations": [
+        "사용자 정성검수이며 정밀17관절 GT나 독립 평가가 아님",
+        "90초의 모델 내부 누락 원인 미확정",
+        "94초 특정 사람 상태를 모두의 넘기 완료로 일반화하지 않음",
+        "손표시이미지는 로컬 참고이며 모델입력/학습/정밀GT가 아님",
+        "succeeded는 문서 기록 완료, 행동성능 성공이 아님"
+      ],
+      "metric_definitions": "records/EXP-0024/metrics.json",
+      "metrics_path": "records/EXP-0024/metrics.json",
+      "metrics_sha256": "2cf69f32a5d3a970a6d54a9d1f0bd25516adbfff5707a2b3812c32f0b6174066",
+      "next_step": "검출 누락과 검출된 사람의 관절 오류를 구분한 평가 기준 검토. 새 GPU 실험 자동 진행 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "c8aef50660c7be446c34ec79b6a8338e7ae34c0febc4d74b1427679438d3dddb",
+      "report_path": "docs/experiments/EXP-0024-user-pose-review.md",
+      "report_sha256": "11be179d4f4559f5aed4633b43cf00e4ddea577e9ce92888984f6eca9c58914f",
+      "review_binding_path": "docs/reviews/EXP-0024.binding.json",
+      "review_path": "docs/reviews/EXP-0024-independent-review.md",
+      "review_sha256": "f3c4c6b6d859d0cee78877622341581de597406e299c4efaf2828a60d7b6c23e",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "2cf69f32a5d3a970a6d54a9d1f0bd25516adbfff5707a2b3812c32f0b6174066",
+      "reviewed_report_sha256": "11be179d4f4559f5aed4633b43cf00e4ddea577e9ce92888984f6eca9c58914f",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "사용자 검수:84초 C6 세 사람 박스·관절 대체로 양호.90초 오른쪽1명만 검출·관절어긋남,94초 보이는2명모두누락. 신규추론0회, 넘기 자세 품질 부족·기본보류.",
+      "synthetic": false,
+      "task_id": "task_9c014eca1fc8",
+      "title": "EXP-0024 사용자 관절 검수",
+      "worker_opinion": "접근84초의 정성적 양호와90/94초 넘기 자세 실패를 분리한다. 한 명 출력은 의도적top1표시가 아니다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

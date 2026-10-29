@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0024",
+  "execution_status": "succeeded",
+  "adoption": "adoption_on_hold",
+  "behavioral_validation": "unmeasured; qualitative user observation only",
+  "scope": "완료된 EXP-0023의 세 시점 사용자 관찰을 기록한 문서 검수 한 건. 새 예측이나 정밀 GT 평가가 아님.",
+  "display_contract": {
+    "intentional_top1_selection": false,
+    "max_det": 300,
+    "all_returned_rows_rendered": true
+  },
+  "metrics": [
+    {
+      "source": "docs/experiments/EXP-0024-user-pose-review.md",
+      "source_sha256": "11be179d4f4559f5aed4633b43cf00e4ddea577e9ce92888984f6eca9c58914f",
+      "verification": "report_sha256_verified_user_observation_review",
+      "label": "new_gpu_calls",
+      "value": 0,
+      "unit": "calls",
+      "sample_n": 1,
+      "scope": "이번 EXP-0024 문서 검수 작업 한 건의 신규 GPU 호출. EXP-0023의 과거 5회 예측과 별도 warmup을 포함하지 않음. 사람·프레임·관절 평가 분모가 아님."
+    },
+    {
+      "source": "docs/experiments/EXP-0024-user-pose-review.md",
+      "source_sha256": "11be179d4f4559f5aed4633b43cf00e4ddea577e9ce92888984f6eca9c58914f",
+      "verification": "report_sha256_verified_user_observation_review",
+      "label": "actual_joint_accuracy",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": 0,
+      "scope": "사용자 정성 검수만 존재. 84초 호평은 COCO 17개 관절별 GT가 아니며 정밀 관절 정확도 미측정."
+    },
+    {
+      "source": "docs/experiments/EXP-0024-user-pose-review.md",
+      "source_sha256": "11be179d4f4559f5aed4633b43cf00e4ddea577e9ce92888984f6eca9c58914f",
+      "verification": "report_sha256_verified_user_observation_review",
+      "label": "behavior_f1",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": 0,
+      "scope": "90초 관절 오정합·두 명 누락과 94초 두 명 누락의 사용자 관찰. 행동 GT·독립 평가·F1 분모가 없어 미측정."
+    }
+  ]
+}
