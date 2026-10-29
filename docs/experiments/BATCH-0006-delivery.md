@@ -41,3 +41,18 @@ Astra high는 신규3회/캐시3개/별도warmup1회,47개metric의 현재 sourc
 | `exp0025-030-084-resolution-comparison` | `6e102474f33e3dd29a31fb5e2d1eb20888fe608c23be045298b17f40c51ee0f1` |
 | `exp0025-030-090-resolution-comparison` | `7efcf7786c80079c932ab1a59b922f5f68f92018691f7964d755e8cc68e79dcb` |
 | `exp0025-030-094-resolution-comparison` | `89ec86df5932ea988503ca930b0c0a58833edee4a7ee6819b790b01cf4b5839d` |
+
+## GitHub 게시와 서비스 버전 대조
+
+2026-10-29 07:04 UTC, 결과·사용자 검수·독립 리뷰·등록·최신 작업 문서15파일을 `fe85ccaabc4f56608349016c2b7282d5ae6b6beb`로 정상commit/push했다. staged목록/diff와제외규칙을검토해미디어·nativeResults/좌표·tensor·weights·환경·runtime/DB/로그/receipt는포함하지않았다. GitHub origin/main을조회해정확한커밋을확인하고report/metrics/review/binding및이번배치공개변경파일의Git객체bytes와로컬파일을대조했다. 별도github-results receipt는PASS다.
+
+동시에실제서비스API의report/metrics/review/binding해시가독립검토본·브라우저에서열었던버전·원격게시본과모두같음을확인했다. GitHub게시성공과웹실제렌더링성공은서로다른receipt로보관한다. 서비스가파일을읽는기존구조를재사용했으며새웹기능/모델답변화면은추가하지않았다.
+
+| 커밋 | 내용 |
+| --- | --- |
+| `ecc8a55` | 960한축실험구현·CPU검증·공개manifest·배정의실행전고정 |
+| `fe85cca` | 3회실측·사용자검수·독립검토·비교집계·기존웹등록·최신문서 |
+
+이게시확인문단은별도전달문서커밋으로남기고최종HEAD도원격검증한다. 이미검토·등록한report/metrics/review/binding은수정하지않는다. 최종확인receipt는로컬전용이다.
+
+**종료:** 코드/CPU계약·승인된9603회·사용자정성비교·Astra독립검토·기존웹이미지표시·GitHub게시확인은완료했다. 94초문위사람의제한된개선은있지만90초미해결과94초반대편누락이남아기본적용을보류한다. 정밀관절/행동성능충족으로표시하지않으며추가GPU·모델·튜닝·후속실험은예약하지않았다.
