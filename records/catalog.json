@@ -1610,6 +1610,63 @@
       "task_id": "task_9c014eca1fc8",
       "title": "EXP-0024 사용자 관절 검수",
       "worker_opinion": "접근84초의 정성적 양호와90/94초 넘기 자세 실패를 분리한다. 한 명 출력은 의도적top1표시가 아니다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T06:46:49.201358+00:00",
+      "attempt_id": "dbc34eb78e324d79a725925f48f4783c",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_4941141147c8",
+      "evaluated_model": "YOLO26m-Pose; fixed C6 ROI; cached640 vs new960; FP32; Ultralytics8.4.192",
+      "evidence": [
+        {
+          "artifact_id": "exp0025-030-084-resolution-comparison",
+          "kind": "image",
+          "label": "E01_030 84초 원본 / C6 640 cached / C6 960 new"
+        },
+        {
+          "artifact_id": "exp0025-030-090-resolution-comparison",
+          "kind": "image",
+          "label": "E01_030 90초 원본 / C6 640 cached / C6 960 new"
+        },
+        {
+          "artifact_id": "exp0025-030-094-resolution-comparison",
+          "kind": "image",
+          "label": "E01_030 94초 원본 / C6 640 cached / C6 960 new"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0025",
+      "limitations": [
+        "한 카메라의 개발용3프레임; 독립 검증 아님",
+        "사용자 정성 검수이며 개별 관절 GT/행동 성능은 미평가",
+        "90초0행·94초 이미 넘어간 사람 누락",
+        "단회 계측 비용과 과거 캐시 비용의 범위가 달라 FPS/일반 속도 개선 주장 없음"
+      ],
+      "metric_definitions": "records/EXP-0025/metrics.json",
+      "metrics_path": "records/EXP-0025/metrics.json",
+      "metrics_sha256": "7eaa71f84d54d6b4bcd5f06bd997a465f9e74756d9df3754359a8dc3326db7f5",
+      "next_step": "이번 배치 종료. pose 기반 행동 판단 확대는 보류하며 후속 추론은 자동 실행하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "a6551f78a7e343e684105a4b755cd58907d3497faee665a3a3de79fe6cb7f6f4",
+      "report_path": "docs/experiments/EXP-0025-c6-pose-960.md",
+      "report_sha256": "80ee4f04a8569f6121864496b1d683c7dcef650fb929943d3fce506f2f6ed0ab",
+      "review_binding_path": "docs/reviews/EXP-0025.binding.json",
+      "review_path": "docs/reviews/EXP-0025-independent-review.md",
+      "review_sha256": "b68d1b21e9bc185bb891c5cddc1e74dec1313ab3c678eb98346112a8c29dddba",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "7eaa71f84d54d6b4bcd5f06bd997a465f9e74756d9df3754359a8dc3326db7f5",
+      "reviewed_report_sha256": "80ee4f04a8569f6121864496b1d683c7dcef650fb929943d3fce506f2f6ed0ab",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "입력 해상도만640→960. 사용자 검수상84초 양호·94초 문 위 사람 개선,90초 관절 근거 부재와94초 반대편 사람 누락 지속. 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_259c3da684ec",
+      "title": "BATCH-0006 C6 pose 640 vs 960",
+      "worker_opinion": "신규960 세 예측 성공·640재추론0·오류0. 94초 한 사람의 정성적 관측 개선과90초 미해결을 함께 보고."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

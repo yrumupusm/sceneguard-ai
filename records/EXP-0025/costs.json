@@ -1,0 +1,259 @@
+{
+  "allocator_peak_allocated_bytes": 308564992,
+  "allocator_peak_reserved_bytes": 387973120,
+  "cached640_predictions": [
+    {
+      "charged_to": "EXP-0023 historical only",
+      "frame_wall_seconds": 0.9391812510148156,
+      "input_read_convert_verify_seconds": 0.007976916007464752,
+      "new_gpu_inference_seconds": 0,
+      "new_predict_calls": 0,
+      "official_events": [
+        {
+          "returned_value": false,
+          "seconds": 0.3608530880010221,
+          "stage": "setup_model",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.025164112012134865,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.3518355519918259,
+          "stage": "network_predict",
+          "warmup": true
+        },
+        {
+          "returned_value": false,
+          "seconds": 0.44376962300157174,
+          "stage": "warmup",
+          "warmup": true
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.0308265509956982,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.030954593006754294,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "pts_seconds": 90.0,
+      "public_predict_wall_seconds": 0.9033686610055156,
+      "results_speed_ms": {
+        "inference": 30.990298022516072,
+        "postprocess": 27.494114998262376,
+        "preprocess": 33.067732001654804
+      },
+      "tensor_capture_save_seconds": 0.007851247006328776
+    },
+    {
+      "charged_to": "EXP-0023 historical only",
+      "frame_wall_seconds": 0.04989938699873164,
+      "input_read_convert_verify_seconds": 0.005604330013738945,
+      "new_gpu_inference_seconds": 0,
+      "new_predict_calls": 0,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.000861199019709602,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.010143824008991942,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.010253496002405882,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "pts_seconds": 84.0,
+      "public_predict_wall_seconds": 0.02438625501235947,
+      "results_speed_ms": {
+        "inference": 10.285679018124938,
+        "postprocess": 1.1305389925837517,
+        "preprocess": 7.892380992416292
+      },
+      "tensor_capture_save_seconds": 0.006974629010073841
+    },
+    {
+      "charged_to": "EXP-0023 historical only",
+      "frame_wall_seconds": 0.05217068298952654,
+      "input_read_convert_verify_seconds": 0.0054038479865994304,
+      "new_gpu_inference_seconds": 0,
+      "new_predict_calls": 0,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.0008056189981289208,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.017712288012262434,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.017786657001124695,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "pts_seconds": 94.0,
+      "public_predict_wall_seconds": 0.028063307981938124,
+      "results_speed_ms": {
+        "inference": 17.817225016187876,
+        "postprocess": 0.523752998560667,
+        "preprocess": 4.832965001696721
+      },
+      "tensor_capture_save_seconds": 0.003974986990215257
+    }
+  ],
+  "constructor_checkpoint_cpu_seconds": 0.2435908589977771,
+  "device_sampler_errors": 0,
+  "device_wide_max_sampled_used_mib": 2538.0,
+  "device_wide_min_sampled_free_mib": 7516.0,
+  "device_wide_sample_count": 14,
+  "experiment_id": "EXP-0025",
+  "free_vram_before_load_mib": 8172.0,
+  "inference_fps": null,
+  "new960_predictions": [
+    {
+      "frame_wall_seconds": 0.9363325500162318,
+      "input_read_convert_verify_seconds": 0.013478823995683342,
+      "official_events": [
+        {
+          "returned_value": false,
+          "seconds": 0.3819861910014879,
+          "stage": "setup_model",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.0221236229990609,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.33641016599722207,
+          "stage": "network_predict",
+          "warmup": true
+        },
+        {
+          "returned_value": false,
+          "seconds": 0.42383434300427325,
+          "stage": "warmup",
+          "warmup": true
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.02400311199016869,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.024192762008169666,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "pts_seconds": 90.0,
+      "public_predict_wall_seconds": 0.8980432190001011,
+      "results_speed_ms": {
+        "inference": 24.237201985670254,
+        "postprocess": 20.84721499704756,
+        "preprocess": 39.71658798400313
+      },
+      "tensor_capture_save_seconds": 0.017456895002396777
+    },
+    {
+      "frame_wall_seconds": 0.09238894097507,
+      "input_read_convert_verify_seconds": 0.004778848990099505,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.0011242009932175279,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.01877205999335274,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.018873280001571402,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "pts_seconds": 84.0,
+      "public_predict_wall_seconds": 0.0545306850108318,
+      "results_speed_ms": {
+        "inference": 18.909070000518113,
+        "postprocess": 0.6662410160060972,
+        "preprocess": 29.49146498576738
+      },
+      "tensor_capture_save_seconds": 0.02830692401039414
+    },
+    {
+      "frame_wall_seconds": 0.06389174098148942,
+      "input_read_convert_verify_seconds": 0.004846822994295508,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.001212061004480347,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.020755022997036576,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.020868513005552813,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "pts_seconds": 94.0,
+      "public_predict_wall_seconds": 0.038729707011952996,
+      "results_speed_ms": {
+        "inference": 20.90539300115779,
+        "postprocess": 0.6922299799043685,
+        "preprocess": 11.783519003074616
+      },
+      "tensor_capture_save_seconds": 0.010511807980947196
+    }
+  ],
+  "official_setup_model_seconds": 0.3819861910014879,
+  "official_warmup_model_forward_seconds": 0.33641016599722207,
+  "official_warmup_seconds": 0.42383434300427325,
+  "queue_attempt_wall_seconds": 17.47824788093567,
+  "run_entry_wall_seconds": 11.341878098988673,
+  "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes."
+}

@@ -1,0 +1,291 @@
+{
+  "adoption": "adopt_on_hold",
+  "attempt_id": "dbc34eb78e324d79a725925f48f4783c",
+  "baseline_new_predict_calls": 0,
+  "batch": "BATCH-0006",
+  "behavioral_validation": "unmeasured",
+  "cached_native_results": 3,
+  "cached_summary_sha256": "1c08d87413a2bc399c2a426f63b865e7f3e2f817c8fc35801781ef206d67c46a",
+  "changed_predict_kwargs": [
+    "imgsz"
+  ],
+  "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+  "code_sha": "ecc8a55a68b806c7876b480b52a9b69b3e3aa85f",
+  "comparison_image_sha256": {
+    "030_084": "6e102474f33e3dd29a31fb5e2d1eb20888fe608c23be045298b17f40c51ee0f1",
+    "030_090": "7efcf7786c80079c932ab1a59b922f5f68f92018691f7964d755e8cc68e79dcb",
+    "030_094": "89ec86df5932ea988503ca930b0c0a58833edee4a7ee6819b790b01cf4b5839d"
+  },
+  "errors": 0,
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0025",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "frames": [
+    {
+      "baseline_user_review": "User: three persons/poses generally good; qualitative, no precise joint GT",
+      "cached640": {
+        "actual_input_tensor": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "sha256": "d3caac6e7f6df5a0dfeafbe10dcc59df3e17ec29891ba09a7f9549a157ada95b",
+          "shape": [
+            1,
+            3,
+            640,
+            640
+          ]
+        },
+        "architecture": {
+          "done_warmup": true,
+          "end2end": true,
+          "format": "pt",
+          "fp16": false,
+          "fused": true,
+          "kpt_shape": [
+            17,
+            3
+          ],
+          "stride": 32
+        },
+        "artifact_sha256": {
+          "input.npy": "05d5238b99785322ed3e463b2888df5a3a46b536b9178d389e42a5620478cd0d",
+          "official-events.local.json": "4b7febd160c25ba1ddde67a9ea8813295789bc1fefa32ccb32f6b620e22214c9",
+          "results.pt": "1055c9078644b9fe1aebd007047adaa78cc04f3d8419e529e53154ed211660cd"
+        },
+        "person_rows": 3,
+        "retained_joint_estimates": 38,
+        "technical_status": "normal_pose_results",
+        "unknown_joint_estimates": 13
+      },
+      "count_change_is_quality_improvement": false,
+      "native_pts": 1290240,
+      "new960": {
+        "actual_input_tensor": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "sha256": "4d2550fc9ab7e520fab4611568ad0daf58565fe4d49a2a2e37fa7c9085a73619",
+          "shape": [
+            1,
+            3,
+            960,
+            960
+          ]
+        },
+        "architecture": {
+          "done_warmup": true,
+          "end2end": true,
+          "format": "pt",
+          "fp16": false,
+          "fused": true,
+          "kpt_shape": [
+            17,
+            3
+          ],
+          "stride": 32
+        },
+        "artifact_sha256": {
+          "input.npy": "a2ce876d276aef72f7b775ede872d4e614d80e9b0f13958880591e9d7a799ac5",
+          "official-events.local.json": "cda4c260d74d97f1fe47d9556f7a3049f51709ab372568108c71dbd4beb37377",
+          "results.pt": "3bcf97e03773d522b202fee06e680e5187d861aefb52ad1cea6b40edae2c04a0"
+        },
+        "person_rows": 3,
+        "retained_joint_estimates": 37,
+        "technical_status": "normal_pose_results",
+        "unknown_joint_estimates": 14
+      },
+      "new960_joint_correspondence": "user qualitative good; individual wrist/hip/knee/ankle GT unavailable",
+      "new960_person_correspondence": "user qualitative good; exact row/person correspondence not annotated",
+      "new960_user_review": "User: good; qualitative person/pose appraisal, no individual joint GT",
+      "pts_seconds": 84.0,
+      "time_base": "1/15360"
+    },
+    {
+      "baseline_user_review": "User: only rightmost of three detected; its joints misaligned; other two missed",
+      "cached640": {
+        "actual_input_tensor": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "sha256": "07887f5923a81dc1600b954e8ae832bdcd4977a287fbf4c730e54309dec28ad8",
+          "shape": [
+            1,
+            3,
+            640,
+            640
+          ]
+        },
+        "architecture": {
+          "done_warmup": true,
+          "end2end": true,
+          "format": "pt",
+          "fp16": false,
+          "fused": true,
+          "kpt_shape": [
+            17,
+            3
+          ],
+          "stride": 32
+        },
+        "artifact_sha256": {
+          "input.npy": "4a365c528f7eb56bcd4a9660d7758ebd92db842cb51bcd85e6459e24b55d2d47",
+          "official-events.local.json": "ef24c5d39b5ad9ff93f0d8dbf1c5337dfba18b7264894ab5539c19a93f705345",
+          "results.pt": "322aa0403144179453b46125cd175d840ccddf7a19371d09bd05cee0ae685db8"
+        },
+        "person_rows": 1,
+        "retained_joint_estimates": 12,
+        "technical_status": "normal_pose_results",
+        "unknown_joint_estimates": 5
+      },
+      "count_change_is_quality_improvement": false,
+      "native_pts": 1382400,
+      "new960": {
+        "actual_input_tensor": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "sha256": "7f69b6b68948331da5c855fa3bf2338b6d86d8539034a4c87f45cc7f40ea2fde",
+          "shape": [
+            1,
+            3,
+            960,
+            960
+          ]
+        },
+        "architecture": {
+          "done_warmup": true,
+          "end2end": true,
+          "format": "pt",
+          "fp16": false,
+          "fused": true,
+          "kpt_shape": [
+            17,
+            3
+          ],
+          "stride": 32
+        },
+        "artifact_sha256": {
+          "input.npy": "1c13c4e950d61d9f63e5996e4eaa4e7f136585aec72b575b92ae16bce2ec0ef5",
+          "official-events.local.json": "7e61a09c601b95cf46cf14095add32ee2e1386d8a622a173aee65bcf09f4c7da",
+          "results.pt": "531f5f59901637f241397a08a8dd9cc3ea5946d78397875e0f3042c220fb2574"
+        },
+        "person_rows": 0,
+        "retained_joint_estimates": 0,
+        "technical_status": "normal_empty_results",
+        "unknown_joint_estimates": 0
+      },
+      "new960_joint_correspondence": "no output joints; quality remains insufficient",
+      "new960_person_correspondence": "normal empty; no useful pose evidence",
+      "new960_user_review": "User: same level as prior experiment; still no useful pose evidence. Saved6401row/12retained versus9600/0 remains unchanged",
+      "pts_seconds": 90.0,
+      "time_base": "1/15360"
+    },
+    {
+      "baseline_user_review": "User: one person atop gate and one beyond visible, both missed; no general completion/legal claim",
+      "cached640": {
+        "actual_input_tensor": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "sha256": "d908e7b92b3514dea3003739b91f7a59a528e80e73e4a39091de368fb47c6582",
+          "shape": [
+            1,
+            3,
+            640,
+            640
+          ]
+        },
+        "architecture": {
+          "done_warmup": true,
+          "end2end": true,
+          "format": "pt",
+          "fp16": false,
+          "fused": true,
+          "kpt_shape": [
+            17,
+            3
+          ],
+          "stride": 32
+        },
+        "artifact_sha256": {
+          "input.npy": "d9c5d5ef1ebbe25706bd9b8027e64fc1390196e5fabba224a02d9bbf78579df8",
+          "official-events.local.json": "cf19983a4d072c055c6d89af592d5cb646c3b5f450edcc3bfe7ddf99397ab8bd",
+          "results.pt": "d2059e92cb6d7025bf77dd1dc304b212d0f131e0f68b2defd8cb94446a5a69a2"
+        },
+        "person_rows": 0,
+        "retained_joint_estimates": 0,
+        "technical_status": "normal_empty_results",
+        "unknown_joint_estimates": 0
+      },
+      "count_change_is_quality_improvement": false,
+      "native_pts": 1443840,
+      "new960": {
+        "actual_input_tensor": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "sha256": "3bc00a194fdf626a9e7d6379d9080310791fab2eb9f290f256c48cb7b2cef8a9",
+          "shape": [
+            1,
+            3,
+            960,
+            960
+          ]
+        },
+        "architecture": {
+          "done_warmup": true,
+          "end2end": true,
+          "format": "pt",
+          "fp16": false,
+          "fused": true,
+          "kpt_shape": [
+            17,
+            3
+          ],
+          "stride": 32
+        },
+        "artifact_sha256": {
+          "input.npy": "b36dfcf60ae1df97364fcba2763689e54f57d46db17a96b98017ae8d7fd029e3",
+          "official-events.local.json": "1debc9c92186e834cd0929e4467b95beed1ec7725291ac5504dc37f9fb4481e4",
+          "results.pt": "dcab30a1be96665eabbd4703af1852894f17af162df7d4cafeb78839ee858218"
+        },
+        "person_rows": 1,
+        "retained_joint_estimates": 11,
+        "technical_status": "normal_pose_results",
+        "unknown_joint_estimates": 6
+      },
+      "new960_joint_correspondence": "user qualitative good for gate-top person; individual joint GT unavailable",
+      "new960_person_correspondence": "user: gate-top person detected; already-across person missed",
+      "new960_user_review": "User: already-across person missed; person on gate detected and pose surprisingly good. Qualitative only, no individual joint GT",
+      "pts_seconds": 94.0,
+      "time_base": "1/15360"
+    }
+  ],
+  "job_id": "a5cc40358de84429bcf75c4e0a0d61fd",
+  "manifest_sha256": "661b8afd12b17e66c84cdfdfa224158878e15d8093cc0c4eb1be9872a4b4a393",
+  "model_constructions": 1,
+  "new_checkpoints": 0,
+  "new_environments": 0,
+  "new_native_results": 3,
+  "original_native_rows_preserved": {
+    "attempts": 41,
+    "jobs": 41
+  },
+  "person_joint_quality": "User qualitative good84 and gate-top94; no useful90 pose and already-across94 missed. No precise person/joint GT; no overall success/adoption claim",
+  "public_predict_calls": 3,
+  "retries": 0,
+  "rule_status": "not_run",
+  "sample_model_forward_attempts": 3,
+  "sample_model_forward_returns": 3,
+  "schema_version": 1,
+  "scope": "Three fixed paired native PTS of one development scene. Three cached640 Results, no640 rerun, three new960 calls. No precise GT or adoption/behavior performance claim.",
+  "source_sha256": "fae3a85787a5df77003a8075e40ac89ae892309d8faeda838000dfc27fedc8dc",
+  "stage_summary_sha256": "e1b2c56fa82aa77b3b7b27946a5434b865c7c3f8b882b07680f9f41787e5d994",
+  "tracker_status": "not_run",
+  "training": false,
+  "user_review_source": "user qualitative review relayed by coordinator",
+  "user_review_summary_sha256": "3f8961fe8da2b4d8568550195472a90b50088f10059655118bb11d837353b1a1",
+  "warmup_model_forward_attempts": 1,
+  "warmup_model_forward_returns": 1
+}

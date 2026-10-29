@@ -1,0 +1,729 @@
+{
+  "adoption": "adopt_on_hold",
+  "behavioral_validation": "unmeasured",
+  "comparison_group": "EXP-0025",
+  "comparison_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+  "comparison_source": "records/EXP-0025/comparison.json",
+  "cross_experiment_comparable": false,
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0025",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "metrics": [
+    {
+      "label": "public_predict_calls",
+      "sample_n": 3,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "public_predict_calls"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "calls",
+      "value": 3,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "new_native_results",
+      "sample_n": 3,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "new_native_results"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "results",
+      "value": 3,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "cached_native_results",
+      "sample_n": 3,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "cached_native_results"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "results",
+      "value": 3,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "baseline_new_predict_calls",
+      "sample_n": 3,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "baseline_new_predict_calls"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "calls",
+      "value": 0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "model_constructions",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "model_constructions"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "loads",
+      "value": 1,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "sample_model_forward_returns",
+      "sample_n": 3,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "sample_model_forward_returns"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "forwards",
+      "value": 3,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "warmup_model_forward_returns",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "warmup_model_forward_returns"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "forwards",
+      "value": 1,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "constructor_checkpoint_cpu_seconds",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "constructor_checkpoint_cpu_seconds"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "seconds",
+      "value": 0.2435908589977771,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "official_setup_model_seconds",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "official_setup_model_seconds"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "seconds",
+      "value": 0.3819861910014879,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "official_warmup_seconds",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "official_warmup_seconds"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "seconds",
+      "value": 0.42383434300427325,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "run_entry_wall_seconds",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "run_entry_wall_seconds"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "seconds",
+      "value": 11.341878098988673,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "queue_attempt_wall_seconds",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "queue_attempt_wall_seconds"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "seconds",
+      "value": 17.47824788093567,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "allocator_peak_allocated_bytes",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "allocator_peak_allocated_bytes"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "bytes",
+      "value": 308564992,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "allocator_peak_reserved_bytes",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "allocator_peak_reserved_bytes"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "bytes",
+      "value": 387973120,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "free_vram_before_load_mib",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "free_vram_before_load_mib"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "MiB",
+      "value": 8172.0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 cached640 person_rows",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "cached640",
+        "person_rows"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "rows",
+      "value": 3,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 cached640 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "cached640",
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 38,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 cached640 unknown_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "cached640",
+        "unknown_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 13,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 new960 person_rows",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "new960",
+        "person_rows"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "rows",
+      "value": 3,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 new960 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "new960",
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 37,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 new960 unknown_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "new960",
+        "unknown_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 14,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 cached640 person_rows",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "cached640",
+        "person_rows"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "rows",
+      "value": 1,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 cached640 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "cached640",
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 12,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 cached640 unknown_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "cached640",
+        "unknown_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 5,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 new960 person_rows",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "new960",
+        "person_rows"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "rows",
+      "value": 0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 new960 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "new960",
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 new960 unknown_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "new960",
+        "unknown_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 cached640 person_rows",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        2,
+        "cached640",
+        "person_rows"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "rows",
+      "value": 0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 cached640 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        2,
+        "cached640",
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 cached640 unknown_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        2,
+        "cached640",
+        "unknown_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 0,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 new960 person_rows",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        2,
+        "new960",
+        "person_rows"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "rows",
+      "value": 1,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 new960 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        2,
+        "new960",
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 11,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 new960 unknown_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output counts, not precise person/joint GT; user qualitative appraisal recorded separately",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "frames",
+        2,
+        "new960",
+        "unknown_joint_estimates"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "estimated joints",
+      "value": 6,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 new960 preprocess",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        0,
+        "results_speed_ms",
+        "preprocess"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 39.71658798400313,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 new960 inference",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        0,
+        "results_speed_ms",
+        "inference"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 24.237201985670254,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "90.0 new960 postprocess",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        0,
+        "results_speed_ms",
+        "postprocess"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 20.84721499704756,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 new960 preprocess",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        1,
+        "results_speed_ms",
+        "preprocess"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 29.49146498576738,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 new960 inference",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        1,
+        "results_speed_ms",
+        "inference"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 18.909070000518113,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "84.0 new960 postprocess",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        1,
+        "results_speed_ms",
+        "postprocess"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 0.6662410160060972,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 new960 preprocess",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        2,
+        "results_speed_ms",
+        "preprocess"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 11.783519003074616,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 new960 inference",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        2,
+        "results_speed_ms",
+        "inference"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 20.90539300115779,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "94.0 new960 postprocess",
+      "sample_n": 1,
+      "scope": "Three-call instrumented diagnostic, not throughput. First960 call is90s and contains setup/fuse/warmup; cached640 90s was first in a five-call prior run, 84/94 later. Historical640 costs belong to EXP-0023, zero new640 GPU inference. Whole960 three-call and historical640 five-call run totals have different scopes; do not directly benchmark them or derive FPS. Constructor excludes predictor setup/fuse/CUDA transfer. Official setup/warmup/network timings overlap and cannot be summed. Warmup includes one model forward plus synthetic random-box NMS, separate from sample predictions. Results.speed and public wall include profiler/synchronization/tensor capture overhead in different scopes. Frame wall also includes RGB verification/native serialization. Run-entry includes lease/input validation and image creation, excludes interpreter startup/final summary save; queue wall includes supervisor validation/startup. Allocator reset after imports; device-wide samples include other processes.",
+      "source": "records/EXP-0025/costs.json",
+      "source_pointer": [
+        "new960_predictions",
+        2,
+        "results_speed_ms",
+        "postprocess"
+      ],
+      "source_sha256": "6f257b5948436e5accdff3eda310ac6f09d735e29c63d60bcfaeec7e0639b1ef",
+      "unit": "ms",
+      "value": 0.6922299799043685,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "accuracy",
+      "sample_n": 0,
+      "scope": "No precise person/joint/action GT; behavior unmeasured",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "accuracy"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "precision",
+      "sample_n": 0,
+      "scope": "No precise person/joint/action GT; behavior unmeasured",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "precision"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "recall",
+      "sample_n": 0,
+      "scope": "No precise person/joint/action GT; behavior unmeasured",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "recall"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "f1",
+      "sample_n": 0,
+      "scope": "No precise person/joint/action GT; behavior unmeasured",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "f1"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    },
+    {
+      "label": "false_positive_rate",
+      "sample_n": 0,
+      "scope": "No precise person/joint/action GT; behavior unmeasured",
+      "source": "records/EXP-0025/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "false_positive_rate"
+      ],
+      "source_sha256": "c3a08068419846ca3fca6f608697abe1dce1a73b5dd62e837bb3dee6061dc5e7",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_and_exact_queue_receipt"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Three fixed paired native PTS of one development scene. Three cached640 Results, no640 rerun, three new960 calls. No precise GT or adoption/behavior performance claim.",
+  "source_bindings": {
+    "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+    "execution_commits": [
+      "ecc8a55a68b806c7876b480b52a9b69b3e3aa85f"
+    ],
+    "manifest_sha256": "661b8afd12b17e66c84cdfdfa224158878e15d8093cc0c4eb1be9872a4b4a393",
+    "report_builder_sha256": "6c603b7f9aa157439205cf3044cfc5d3545d4cfc7f92384859e131e2fd469989",
+    "stage_summary_sha256": [
+      "e1b2c56fa82aa77b3b7b27946a5434b865c7c3f8b882b07680f9f41787e5d994"
+    ]
+  }
+}
