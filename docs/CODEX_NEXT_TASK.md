@@ -1,5 +1,7 @@
 # 다음 작업 — BATCH-0006 / EXP-0025 C6 ROI 해상도 640→960 단일 실험 (사용자 승인)
 
+전달 확인: [EXP-0028 실제 웹·GitHub 게시 및 종료](experiments/EXP-0028-delivery.md).
+
 ## 최신 결과 — EXP-0028 실제 추적 비교 완료·일반 적용 보류
 
 2026-10-30. [experiments/EXP-0028-results.md](experiments/EXP-0028-results.md)를 우선한다. 기존 FCOS 030480/007600프레임 strict·gap3초를 실제 CPU 재생했고 strict는 EXP5C를 정확히 재현했다. gap에서030후보2개 유지·007접근 후보2→0, 그러나030전후ID단절은 남았다. 이에 승인된 BoT-SORT+공식 pretrained nanoReID 한 구성을 실제1080프레임/6878crop에 CPU로 실행(41.186초,오류/retry0)했다.030후보2개와후기ID단절 지속,007후보가1개 재발했다. 긴ID유지·부분박스·서로다른ID의관측 재배정을 정체복원 성공으로 바꾸지 않는다.
