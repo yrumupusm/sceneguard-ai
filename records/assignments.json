@@ -168,6 +168,19 @@
       "synthetic": false,
       "task_id": "task_cf14cc142ed2",
       "title": "BATCH-0002 Qwen4B comparison"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T03:34:14.801267+00:00",
+      "dispatch_id": "ctx_b15556efe8cd",
+      "experiment_id": "EXP-0021",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot1",
+      "synthetic": false,
+      "task_id": "task_7c8a851c6d27",
+      "title": "BATCH-0003 YOLO26m-Pose"
     }
   ],
   "schema_version": 1

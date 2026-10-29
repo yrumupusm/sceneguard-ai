@@ -243,6 +243,7 @@ __marimo__/
 /.venv-vlm-batch01/
 /.venv-vlm-batch02/
 /.venv-cv-batch02/
+/.venv-pose-batch03/
 
 # Orca lab: local environments, state, logs and receipts
 .venv-orca-lab/
