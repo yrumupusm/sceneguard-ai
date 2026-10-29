@@ -272,6 +272,19 @@
       "synthetic": false,
       "task_id": "task_6e9c22520b45",
       "title": "EXP-0028 practical tracking and gap comparison"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T18:22:16.574039+00:00",
+      "dispatch_id": "ctx_8d48c0450481",
+      "experiment_id": "EXP-0029",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_09fbd5d636c5",
+      "title": "EXP-0029 offline tracklet linking"
     }
   ],
   "schema_version": 1

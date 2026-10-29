@@ -18,7 +18,7 @@ import time
 import numpy as np
 
 from .tracklet_linking import (LinkSettings, build_tracklets, endpoint_rows,
-                              link_tracklets, region_events, unit_features, validate_zones)
+                              link_tracklets, region_events, unit_features, validate_zones, valid_box)
 
 FCOS_SHA = '99b0c9b7cfb1527d782db86b91d207f00547c792fb4103fc612b651d0a07b9e7'
 REID_SHA = '8529c383197ae4c468eda535d1b165f8b4162cf17bf5fbcff49c7cb6455bc0bb'
@@ -125,6 +125,23 @@ def create_encoder(weights, interval):
     return adapter.tracker.encoder
 
 
+def validate_features(features, selections):
+    """Reject incomplete/tampered reuse rather than silently dropping link evidence."""
+    if not isinstance(features, dict) or set(features) != set(selections):
+        raise ValueError('Feature segments must exactly match eligible tracklets')
+    dimension = None
+    for sid, endpoints in features.items():
+        if not isinstance(endpoints, dict) or set(endpoints) != {'head', 'tail'}:
+            raise ValueError('Feature endpoints must be exactly head and tail')
+        for end, values in endpoints.items():
+            array = unit_features(values)
+            if len(array) != len(selections[sid][end]):
+                raise ValueError('Feature count must match selected endpoint representatives')
+            if dimension is not None and array.shape[1] != dimension:
+                raise ValueError('All representative embedding dimensions must agree')
+            dimension = array.shape[1]
+
+
 def encode_selected(source, cached, segments, settings, encoder, decoder=decode_native, review_dir=None):
     requests, selections = {}, {}
     for segment in segments:
@@ -184,60 +201,90 @@ def encode_selected(source, cached, segments, settings, encoder, decoder=decode_
     return features, selections, dict(encoder_calls=calls, encoded_crops=len(encoded))
 
 
-def render_comparison(source, cached, tracked, segments, associations, events, path, decoder=decode_native):
+def render_comparison(source, cached, tracked, segments, associations, events, path,
+                      decoder=decode_native, zones=None, control=(), display_region=None):
     """Local original/raw-ID/linked-ID comparison. No boxes invented in gaps."""
     import cv2
+    import av
     width, height = cached[0]['source_size']
-    panel_w, panel_h = 640, max(1, round(640*height/width))
-    dt = statistics.median(b['pts']-a['pts'] for a,b in zip(cached,cached[1:]))
-    writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*'mp4v'), 1/dt,
-                             (panel_w*3, panel_h+64))
-    if not writer.isOpened():
-        raise RuntimeError('Local MP4 writer unavailable')
+    view = valid_box(display_region if display_region is not None else [0,0,1,1])
+    left,top = math.floor(view[0]*width),math.floor(view[1]*height)
+    right,bottom = math.ceil(view[2]*width),math.ceil(view[3]*height)
+    panel_w, panel_h = 640, max(1, round(640*(bottom-top)/(right-left)))
+    def display_points(points):
+        return (np.asarray(points)*[width,height]-[left,top])*[panel_w/(right-left),panel_h/(bottom-top)]
+    # Derive exact playback rate from native rational PTS rather than float noise.
+    dt = ((cached[1]['native_pts']-cached[0]['native_pts']) * Fraction(cached[0]['time_base']))
+    header_h = 144
+    canvas_h = panel_h+header_h
+    canvas_h += canvas_h % 2  # yuv420p requires even dimensions
+    if Path(path).exists():
+        raise FileExistsError('Comparison media must not overwrite existing results')
     mapping = {(r['frame_index'],r['raw_id']):(s['id'],associations['mapping'][s['id']])
                for s in segments for r in s['rows']}
     def color(key):
         raw = hashlib.sha256(key.encode()).digest()
         return tuple(80+int(x)%176 for x in raw[:3])
     count = 0
-    try:
+    with av.open(str(path), 'w', options={'movflags': '+faststart'}) as writer:
+        stream = writer.add_stream('libx264', rate=1/dt)
+        stream.width, stream.height, stream.pix_fmt = panel_w*3, canvas_h, 'yuv420p'
+        stream.options = {'crf': '20', 'preset': 'fast'}
         for frame_index, bgr in decoder(source, cached):
-            original = cv2.resize(bgr, (panel_w,panel_h))
+            original = cv2.resize(bgr[top:bottom,left:right], (panel_w,panel_h))
             panels = [original.copy(),original.copy(),original.copy()]
+            if zones is not None:
+                for panel in panels[1:]:
+                    for name, shade in [('outside',(70,220,90)),('inside',(240,190,50))]:
+                        polygon = np.rint(display_points(zones[name])).astype(np.int32)
+                        cv2.polylines(panel,[polygon],True,shade,2)
             for row in tracked[frame_index]['detections']:
                 if not row.get('observed',False) or not row.get('confirmed',True):
                     continue
                 sid, chain = mapping[(frame_index,row['track_id'])]
-                x1,y1,x2,y2 = [int(round(v)) for v in np.array(row['bbox'])*[panel_w,panel_h,panel_w,panel_h]]
-                for panel,label,key in [(1,f'raw {row["track_id"]}',str(row['track_id'])),(2,f'{chain}/{sid}',chain)]:
+                x1,y1,x2,y2 = np.rint(display_points(np.asarray(row['bbox']).reshape(2,2))).astype(int).ravel()
+                for panel,label,key in [(1,f'raw {row["track_id"]}/{sid}',str(row['track_id'])),
+                                        (2,f'{chain}/{sid} raw {row["track_id"]}',chain)]:
                     cv2.rectangle(panels[panel],(x1,y1),(x2,y2),color(key),2)
                     cv2.putText(panels[panel], label, (x1,max(15,y1-4)),cv2.FONT_HERSHEY_SIMPLEX,.45,color(key),1)
-            canvas = np.zeros((panel_h+64, panel_w*3,3),dtype=np.uint8)
-            canvas[64:] = np.concatenate(panels,axis=1)
-            for i,title in enumerate(['ORIGINAL','MEASURED RAW IDs','OFFLINE LINKED IDs - NOT LIVE']):
+            canvas = np.zeros((canvas_h, panel_w*3,3),dtype=np.uint8)
+            canvas[header_h:header_h+panel_h] = np.concatenate(panels,axis=1)
+            for i,title in enumerate(['ORIGINAL'+(' - DISPLAY ZOOM' if display_region else ''),'MEASURED RAW IDs','OFFLINE LINKED IDs - NOT LIVE']):
                 cv2.putText(canvas,title,(i*panel_w+8,22),cv2.FONT_HERSHEY_SIMPLEX,.52,(255,255,255),1)
             pts = cached[frame_index]['pts']
-            due = [e for e in events if e['confirmed_at'] <= pts]
-            cv2.putText(canvas,f'SOURCE PTS {pts:.3f} | retrospective candidates {len(due)}',
+            cv2.putText(canvas,f'SOURCE PTS {pts:.3f} | OFFLINE available_after PTS {cached[-1]["pts"]:.3f} | identity unverified',
                         (8,49),cv2.FONT_HERSHEY_SIMPLEX,.55,(200,240,255),1)
-            writer.write(canvas)
+            cv2.putText(canvas,'Regions: green OUTSIDE / blue INSIDE; transition excluded; candidates are not climb proof',
+                        (8,74),cv2.FONT_HERSHEY_SIMPLEX,.52,(210,210,210),1)
+            for panel, candidate_list, label in [(1,control,'UNLINKED'),(2,events,'LINKED')]:
+                due = [e for e in candidate_list if e['confirmed_at'] <= pts]
+                cv2.putText(canvas,f'Same regions {label}: {len(due)} / {len(candidate_list)} candidates',
+                            (panel*panel_w+8,99),cv2.FONT_HERSHEY_SIMPLEX,.48,(200,240,255),1)
+                if due:
+                    latest = max(due,key=lambda e:e['confirmed_at'])
+                    cv2.putText(canvas,f'{latest["chain_id"]} {latest["direction"]} @ {latest["confirmed_at"]:.3f}',
+                                (panel*panel_w+8,125),cv2.FONT_HERSHEY_SIMPLEX,.46,(200,240,255),1)
+            video = av.VideoFrame.from_ndarray(canvas,format='bgr24')
+            video.pts, video.time_base = count, dt
+            for packet in stream.encode(video):
+                writer.mux(packet)
             count += 1
-    finally:
-        writer.release()
-    cap = cv2.VideoCapture(str(path))
-    decoded = 0
-    try:
-        while True:
-            ok,_ = cap.read()
-            if not ok:
-                break
-            decoded += 1
-    finally:
-        cap.release()
+        for packet in stream.encode():
+            writer.mux(packet)
+    with av.open(str(path)) as reader:
+        media = reader.streams.video[0]
+        codec = media.codec_context.name
+        pixel_format = media.codec_context.format.name
+        decoded = sum(1 for _ in reader.decode(media))
     if count != len(cached) or decoded != count:
         raise ValueError('Rendered comparison frame count mismatch')
+    if codec != 'h264' or pixel_format != 'yuv420p':
+        raise ValueError('Browser comparison requires H264 yuv420p')
     return dict(frames=count, decoded_frames=decoded, timing='constant-fps display; source PTS in header',
-                review='not_yet_human_reviewed', sha256=sha256(path))
+                codec=codec,pixel_format=pixel_format,faststart=True,
+                display_region=view,display_only=True,
+                regions_visible=zones is not None,unlinked_candidates=len(control),linked_candidates=len(events),
+                available_after_pts=cached[-1]['pts'],review='not_yet_human_reviewed', sha256=sha256(path))
 
 
 def run(cache_directory, track_path, source, weights, output_directory,
@@ -252,6 +299,8 @@ def run(cache_directory, track_path, source, weights, output_directory,
     if sha256(weights) != REID_SHA:
         raise ValueError('Use the existing pinned EXP-0028 ReID checkpoint')
     segments = build_tracklets(tracked,settings)
+    selections = {s['id']:{end:endpoint_rows(s,end,settings) for end in ('head','tail')}
+                  for s in segments if s['eligible']}
     zones = None
     if zones_path is not None:
         zones = validate_zones(json.loads(Path(zones_path).read_text(encoding='utf-8')))
@@ -263,22 +312,24 @@ def run(cache_directory, track_path, source, weights, output_directory,
         reused = json.loads(Path(features_path).read_text(encoding='utf-8'))
         if reused.get('binding') != feature_binding:
             raise ValueError('Feature cache belongs to other inputs/settings/model')
+        validate_features(reused.get('features'),selections)
     output.mkdir(parents=True,exist_ok=False)
     started = time.perf_counter()
     try:
-        selections = {s['id']:{end:endpoint_rows(s,end,settings) for end in ('head','tail')}
-                      for s in segments if s['eligible']}
         if reused is not None:
             features, extraction = reused['features'], dict(encoder_calls=0,encoded_crops=0,reused=True)
         elif selections:
             encoder = (encoder_factory or create_encoder)(weights,interval)
             features,selections,extraction = encode_selected(source,cached,segments,settings,encoder,decoder,output/'representatives')
             extraction['reused'] = False
+            session = getattr(getattr(encoder,'model',None),'session',None)
+            if session is not None:
+                extraction.update(device=str(encoder.device),providers=session.get_providers(),
+                                  fp16=encoder.fp16,imgsz=list(encoder.imgsz))
         else:
             features, extraction = {}, dict(encoder_calls=0,encoded_crops=0,reused=False)
-        for ends in features.values():
-            for values in ends.values():
-                unit_features(values)
+        validate_features(features,selections)
+        extraction_finished = time.perf_counter()
         associations = link_tracklets(segments,features,settings)
         events = [] if zones is None else region_events(segments,associations,zones,interval,
                           max_gap_seconds=settings.max_gap_seconds,available_after_pts=cached[-1]['pts'])
@@ -286,7 +337,13 @@ def run(cache_directory, track_path, source, weights, output_directory,
         unlinked = dict(chains=[dict(id=s['id'],segments=[s['id']]) for s in segments])
         control = [] if zones is None else region_events(segments,unlinked,zones,interval,
                           max_gap_seconds=settings.max_gap_seconds,available_after_pts=cached[-1]['pts'])
-        write_json(output/'features.local.json',dict(binding=feature_binding,features=features))
+        association_finished = time.perf_counter()
+        code_hashes = {Path(__file__).name:sha256(__file__),
+                      'tracklet_linking.py':sha256(Path(__file__).with_name('tracklet_linking.py')),
+                      'practical_reid.py':sha256(Path(__file__).with_name('practical_reid.py'))}
+        write_json(output/'features.local.json',dict(binding=feature_binding,features=features,
+            extraction_provenance=reused.get('extraction_provenance') if reused is not None else
+                dict(code_sha256=code_hashes,extraction=extraction)))
         write_json(output/'representatives.json',selections)
         write_json(output/'tracklets.json',segments)
         write_json(output/'associations.json',associations)
@@ -302,11 +359,15 @@ def run(cache_directory, track_path, source, weights, output_directory,
             identity_verified=False,cctv_accuracy=None,uses_finetuned_model=False,
             source_hashes=hashes,settings=asdict(settings),
             weights_sha256=REID_SHA,regions_sha256=sha256(zones_path) if zones_path else None,
-            code_sha256={Path(__file__).name:sha256(__file__),
-                         'tracklet_linking.py':sha256(Path(__file__).with_name('tracklet_linking.py'))})
+            code_sha256=code_hashes)
+        render_started = time.perf_counter()
         if render:
             summary['render'] = render_comparison(source,cached,tracked,segments,associations,
-                                                  events,output/'original_raw_linked.mp4',decoder)
+                                                  events,output/'original_raw_linked.mp4',decoder,zones,control)
+        render_finished = time.perf_counter()
+        summary['phase_wall_seconds'] = dict(extraction=extraction_finished-started,
+            linking_and_events=association_finished-extraction_finished,
+            rendering=render_finished-render_started if render else 0.)
         for name,path in [('metadata',Path(cache_directory)/'run.json'),('cache',Path(cache_directory)/'person_cache.jsonl'),
                           ('tracks',track_path),('video',source)]:
             if sha256(path) != hashes[name]:

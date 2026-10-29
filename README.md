@@ -1,5 +1,7 @@
 # SceneGuard
 
+**EXP-0029:** 기존 관측을 보존한 사후 tracklet 연결을 실제030·007연속구간에서 비교했습니다.030연결0,007연결1은 같은raw ID의 공백복원이며 넘기 전후 연결 개선은 확인되지 않았습니다. 원본/기존ID/연결ID 비교4영상과 실패 사례를 남기고 기본 적용을 보류합니다. [실제 결과](docs/experiments/EXP-0029-results.md) · [전달 확인](docs/experiments/EXP-0029-delivery.md).
+
 **EXP-0026:** YOLO26m Detection의 첫20epoch 탐색 학습을 완료했습니다(약3분44초). C6의90·94초 검출0개가 유지되고84초는3→1개로 감소해 적용을 보류합니다. 학습 실행 성공과 실제 검출 개선을 구분하며 미검수 라벨의 의미 검수는 남아 있습니다. 기존 모델 기본값을 유지합니다. [실험 결과](docs/experiments/EXP-0026-exploratory-person-finetune.md) · [고정 계획](docs/experiments/EXP-0026-exploratory-training-plan.md).
 
 **BATCH-0006:** C6 ROI의 입력 해상도만640→960으로 바꾼 세 장 비교를 완료했습니다. 사용자 검수상84초는 양호하고94초 문 위 사람을 새로 포착했지만,90초는 출력0개로 핵심 누락이 지속됩니다. 기본 적용·행동 판단 확대는 보류합니다. [종합 결과](docs/experiments/BATCH-0006-summary.md) · [실험 보고서](docs/experiments/EXP-0025-c6-pose-960.md) · [전달 기록](docs/experiments/BATCH-0006-delivery.md).

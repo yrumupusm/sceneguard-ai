@@ -71,6 +71,18 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(summary['candidates'],1)
             self.assertEqual(summary['unlinked_region_candidates'],0)
             self.assertEqual(summary['render']['decoded_frames'],46)
+            self.assertEqual(summary['render']['codec'],'h264')
+            self.assertEqual(summary['render']['pixel_format'],'yuv420p')
+            self.assertTrue(summary['render']['regions_visible'])
+            self.assertEqual(summary['render']['available_after_pts'],4.5)
+            self.assertEqual(summary['render']['unlinked_candidates'],0)
+            self.assertEqual(summary['render']['linked_candidates'],1)
+            import av
+            with av.open('outputs/test/original_raw_linked.mp4') as container:
+                frames=list(container.decode(video=0))
+                self.assertAlmostEqual(float(frames[-1].pts*frames[-1].time_base),4.5)
+            media=Path('outputs/test/original_raw_linked.mp4').read_bytes()
+            self.assertLess(media.index(b'moov'),media.index(b'mdat'))
             self.assertFalse(summary['identity_verified'])
             self.assertTrue((Path('outputs/test')/'representatives').is_dir())
 
@@ -95,6 +107,28 @@ class RunnerTests(unittest.TestCase):
             self.assertTrue(summary['extraction']['reused'])
             self.assertEqual(summary['candidates'],1)
 
+    def test_incomplete_reused_features_rejected_before_output(self):
+        with tempfile.TemporaryDirectory() as directory,cwd(directory):
+            cache,tp,src,w,z,c,t=fixture(Path(directory))
+            with patch.object(runner,'REID_SHA',runner.sha256(w)):
+                runner.run(cache,tp,src,w,Path('outputs/first'),encoder_factory=lambda *a:Encoder(),decoder=decoder)
+                fp=Path('outputs/first/features.local.json')
+                original=json.loads(fp.read_text())
+                for damage in ('missing_segment','extra_segment','missing_end','extra_end','count','dimension'):
+                    record=json.loads(json.dumps(original));features=record['features']
+                    sid=next(iter(features))
+                    if damage=='missing_segment':del features[sid]
+                    elif damage=='extra_segment':features['unrequested']=features[sid]
+                    elif damage=='missing_end':del features[sid]['tail']
+                    elif damage=='extra_end':features[sid]['extra']=features[sid]['head']
+                    elif damage=='count':features[sid]['head'].pop()
+                    elif damage=='dimension':features[sid]['head']=[[1.,0.,0.] for _ in features[sid]['head']]
+                    damaged=Path('damaged.json');damaged.write_text(json.dumps(record))
+                    with self.subTest(damage=damage),self.assertRaises(ValueError):
+                        runner.run(cache,tp,src,w,Path('outputs/rejected'),features_path=damaged,
+                                   encoder_factory=lambda *a:self.fail('must not infer'))
+                    self.assertFalse(Path('outputs/rejected').exists())
+
     def test_encoder_receives_center_xywh(self):
         with tempfile.TemporaryDirectory() as directory:
             _,_,src,_,_,cached,tracked=fixture(Path(directory))
@@ -108,6 +142,14 @@ class RunnerTests(unittest.TestCase):
             Path('outputs/existing').mkdir(parents=True)
             with self.assertRaises(FileExistsError):
                 runner.run('bad','bad','bad','bad',Path('outputs/existing'))
+
+    def test_render_not_overwritten(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);_,_,src,_,_,cached,tracked=fixture(root)
+            output=root/'comparison.mp4';output.write_bytes(b'existing-media')
+            with self.assertRaises(FileExistsError):
+                runner.render_comparison(src,cached,tracked,[],{},[],output,decoder)
+            self.assertEqual(output.read_bytes(),b'existing-media')
 
     def test_outside_outputs_rejected(self):
         with tempfile.TemporaryDirectory() as directory,cwd(directory):

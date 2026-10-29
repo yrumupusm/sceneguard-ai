@@ -1910,6 +1910,70 @@
       "task_id": "task_6e9c22520b45",
       "title": "EXP-0028 practical tracking and gap comparison",
       "worker_opinion": "Exact strict replay verified; gap suppresses the prior007 approach candidates without resolving030 identity breaks. ReID preserves numeric IDs longer in007 but identity mix is unverified and an approach candidate returns."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T18:22:16.574039+00:00",
+      "attempt_id": "exp0029-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_8d48c0450481",
+      "evaluated_model": "Pinned FCOS COCO_V1 + existing ByteTrack gap + pretrained YOLO26n-ReID CPU offline tracklets",
+      "evidence": [
+        {
+          "artifact_id": "exp0029-030-full",
+          "kind": "video",
+          "label": "030 전체화면 원본 / raw ID / 사후 연결 ID"
+        },
+        {
+          "artifact_id": "exp0029-030-focus",
+          "kind": "video",
+          "label": "030 표시 확대: 영역 밖 후기 인물은 전체화면 참고"
+        },
+        {
+          "artifact_id": "exp0029-007-full",
+          "kind": "video",
+          "label": "007 전체화면 원본 / raw ID / 사후 연결 ID"
+        },
+        {
+          "artifact_id": "exp0029-007-focus",
+          "kind": "video",
+          "label": "007 표시 확대: 영역 밖 후기 인물은 전체화면 참고"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0029",
+      "limitations": [
+        "Development scenes, no exhaustive person ground truth or accuracy.",
+        "Offline full-window analysis; linked IDs are retrospective.",
+        "Partial and mixed-person boxes, concurrent duplicates and missing observations remain.",
+        "Same-region candidates0 include missed actual climbing and geometry coverage limits.",
+        "Historical EXP27 migration-backup fixture failed; new extension and canonical queue tests passed.",
+        "Focused display may omit post-pillar people; use full-frame comparison."
+      ],
+      "metric_definitions": "records/EXP-0029/metrics.json",
+      "metrics_path": "records/EXP-0029/metrics.json",
+      "metrics_sha256": "22329c20fa14147777ef65f61d55ce1b4ac60a4f21fdb9799c7091d0c0728baf",
+      "next_step": "Review a few stored single-person endpoint pairs to separate crop quality from appearance discrimination; no automatic new experiment.",
+      "reasoning_effective": "high",
+      "registration_sha256": "3d1a305d69c0bc1c7aa92426a2b768f0cf6cd4062660b9d96233c4727084eb28",
+      "report_path": "docs/experiments/EXP-0029-results.md",
+      "report_sha256": "35570b46bb4f13172631acc02ae484d22f09d51d74e71bd1af81f5e21b5dd177",
+      "review_binding_path": "docs/reviews/EXP-0029.binding.json",
+      "review_path": "docs/reviews/EXP-0029-independent-review.md",
+      "review_sha256": "ded76c38bfc806ffb81ecae4d9c7f59097ab0e8790bf44650647f554af87b279",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "22329c20fa14147777ef65f61d55ce1b4ac60a4f21fdb9799c7091d0c0728baf",
+      "reviewed_report_sha256": "35570b46bb4f13172631acc02ae484d22f09d51d74e71bd1af81f5e21b5dd177",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "030 연결0,007 연결1은 같은 raw ID 공백복원. 전후 동일인물 연결 개선 미확인, 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_09fbd5d636c5",
+      "title": "EXP-0029 offline tracklet linking",
+      "worker_opinion": "Actual2190frames/146representative crops and four videos complete; no verified pre/post identity recovery."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
