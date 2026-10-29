@@ -1,5 +1,13 @@
 # 신규 승인 및 다음 실행 — BATCH-0006 / EXP-0025 C6 ROI 960 해상도 비교 (2026-10-29)
 
+## 현재 승인 — EXP-0027 낮은 점수 Detection 진단·라벨 검수 준비
+
+2026-10-29. 사용자 지시에 따라 GitHub `b79a9eb`의 [신규 진단 계획](experiments/EXP-0027-detection-low-confidence-diagnosis-plan.md)을 실행한다. EXP-0026 종료/추가 학습 금지는 보존하고, 이번 범위에서는 기존 Detection 두 가중치×기존7프레임에 conf0.05만 적용하는 최대14회 추론을 승인한다. 기존0.25 결과·모델·입력·ROI·라벨/113검수 패널을 보존한다. 추가 학습·새 모델/프레임·threshold sweep·기본값 변경은 없다.
+
+기존 Orca Run/단일GPU큐·Sol high 담당·Astra high 독립 검토를 사용한다. 먼저CPU 무결성과 라벨 검수 목록을 정리하고 소스·입력 사전검토 후 실행한다. 새 낮은 점수 결과의>=0.25 부분과 과거 캐시를 대조한다. 낮은 점수 출력도 내부 전체 후보가 아니며 박스 수를 사람 검출 성공으로 바꾸지 않는다. 모든 라벨 이미지 의미는 사람 검수 전 review_pending이다. 코드·집계·검토·기존 웹/GitHub 전달 후 종료한다.
+
+---
+
 ## 최신 결과 — EXP-0026 탐색 학습 완료·채택 보류
 
 2026-10-29. [실행 결과](experiments/EXP-0026-exploratory-person-finetune.md)를 우선한다. YOLO26m Detection으로 미검수 train210/valid20을 사용해 고정20epoch를 기존 단일 GPU 큐에서 완료했다(학습223.544초,오류/OOM/retry0). test17은 미사용했고 원본·과거 준비 metadata·기존 결과/환경/모델 기본값을 보존했다. 기존42jobs/attempts에 신규1회만 추가했다.

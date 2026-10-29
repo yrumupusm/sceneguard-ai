@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0027",
+  "settings": {
+    "api": "YOLO.predict",
+    "ultralytics": "8.4.192",
+    "predict_kwargs": {
+      "imgsz": 640,
+      "rect": false,
+      "batch": 1,
+      "conf": 0.05,
+      "device": "cuda:0",
+      "quantize": null,
+      "nms": false,
+      "max_det": 300,
+      "iou": 0.7,
+      "agnostic_nms": false,
+      "classes": [
+        0
+      ],
+      "augment": false,
+      "compile": false,
+      "channels_last": false,
+      "save": false,
+      "save_txt": false,
+      "save_crop": false,
+      "show": false,
+      "verbose": false,
+      "stream": false,
+      "visualize": false,
+      "embed": null
+    },
+    "minimum_gpu_free_mib": 6144,
+    "maximum_sample_calls": 14,
+    "maximum_queue_seconds": 900,
+    "automatic_retry": false,
+    "execution_error_retries_max": 0,
+    "training": false,
+    "visual_quality": "unreviewed",
+    "behavior": "unmeasured",
+    "default_application": false
+  },
+  "models": {
+    "pretrained": {
+      "path": "weights/yolo26m.pt",
+      "sha256": "401cea9ab23ad19246ff7744859816bc599f350e93c9dd30367b6f0a0745d0b7",
+      "nc": 80,
+      "cached_phase": "baseline"
+    },
+    "fine_tuned": {
+      "path": "outputs/batch0007/EXP-0026/train_compare/616f05a480c7434f82253e90ae7a096e/training/weights/best.pt",
+      "sha256": "1b120a24c8983507e137304ec3ef814a2415d97c866113df80a6cb61c260dd4f",
+      "nc": 1,
+      "cached_phase": "after"
+    }
+  },
+  "frames": [
+    "030_084",
+    "030_090",
+    "030_094",
+    "030_050",
+    "030_055",
+    "007_047p5",
+    "007_052p5"
+  ],
+  "evaluation_manifest_sha256": "d5f55a213f002a335da610cafdd42803fc9b1f96dc205bc47e0de980451187cf",
+  "historical_summary_sha256": "ba1fdb049f2c030576817b7d781ff6180e9337a077ffd148679ee1ddd044cc99"
+}
