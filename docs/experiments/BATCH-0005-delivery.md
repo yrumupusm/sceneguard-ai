@@ -47,3 +47,18 @@ report `0978d472573ac037a268483b8b358b8d8b5b359f7557c372fc621f9a1dab1e36`, metri
 | `exp0023-030-094-c6-comparison` | `9159f3e50ae10fc86f96f2fe04b794e2f5d33512966fb57f2bac73efd2705d22` |
 
 서비스가 읽은 report/metrics/review/binding은 위 검토 bytes와 일치했다. JS SHA256은 기존 `cae122f859102f7a6f0dd3255d9e4a7ec5491814f340dc9a4e28fff6ba8b9fcd`로 웹 기능/디자인 변경이 없다. 정지 이미지 실험이므로 **동영상 재생/seek는 해당 없음**이다. 이미지 전용 로컬 검사로 확인했으며 CCTV 픽셀을 클라우드에 전달하거나 사람 관절 정합성이 확인된 것으로 기록하지 않았다. 실제 receipt는 로컬 `runtime/BATCH-0005/delivery/browser-images.json`에 보관했다.
+
+## GitHub 게시와 종료 확인
+
+최종 결과14개 공개 코드/문서/집계 파일을 `f934e3afbecb3abb89930fcb7f909a679c5314e9`로 정상 commit/push했다. staged 경로·diff와 Git 제외 규칙을 확인해 원본/프레임/오버레이·native Results/관절 원시값·tensor·weights·환경·runtime/DB/log/receipt는 포함하지 않았다. 2026-10-29 05:55 UTC에 origin/main SHA 및 Git 객체의 report/metrics/review/binding bytes가 위 독립 검토·실제 로컬 서비스 해시와 같은지 별도 검증해 PASS했다. 실제 GitHub receipt는 로컬 `runtime/BATCH-0005/delivery/github-results.json`이다.
+
+두 native 작업자는 각자의 정확한 Task/Dispatch로 worker_done succeeded를 제출했고 총괄이 수용 후 해당 터미널만 worker-release했다. 종료 뒤 실제 화면에서 EXP-0023 succeeded/accepted_for_comparison/기본 채택 보류·3개 이미지 유지와 담당3의 진행 중 표시 해제를 확인했다. 과거 실패 표시는 다른 보존된 실험 이력이며 이번 실패가 아니다. reclaimable worker0, canonical queue37 succeeded/4 failed, queued/running0이다. 다른 사용자 작업자는 종료하지 않았다.
+
+| 커밋 | 내용 |
+| --- | --- |
+| `62fe072` | 고정 C6 비교 구현·입력·CPU 테스트·담당 배정 |
+| `f934e3a` | 신규5회/캐시1개 실측·3시점 해석·독립 검토·웹 등록·최신 작업 문서 |
+
+이 전달 증거 문단은 별도 문서 커밋으로 게시하고 최종 HEAD를 다시 원격 검증한다. 공개 보고서/metrics/review/binding은 수정하지 않는다. 최종 검증 receipt는 로컬에만 보관한다.
+
+**종료 판정:** 구현·CPU 검사·승인된5회 실제 추론·독립 기술/보고 검토·기존 웹 이미지 표시·GitHub 게시 확인은 완료했다. 실제 bbox/관절 대응은 요청한 세 이미지의 사용자 답변 전 미확정이며, 행동 성능은 이번에 평가하지 않았다. ROI 출력 증가만으로 복원 성공을 선언하거나 기본 모델을 교체하지 않는다. 기존 결과와 라벨을 보존했고 새 GPU/추적/규칙/자동 후속 실험은 예약하지 않았다.
