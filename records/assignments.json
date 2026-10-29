@@ -194,6 +194,19 @@
       "synthetic": false,
       "task_id": "task_5df19346a61c",
       "title": "BATCH-0004 YOLO26m-Pose official API recovery"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T05:44:41.563191+00:00",
+      "dispatch_id": "ctx_f85d0a3a38de",
+      "experiment_id": "EXP-0023",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_000a7c6dec59",
+      "title": "BATCH-0005 C6 pose ROI comparison"
     }
   ],
   "schema_version": 1

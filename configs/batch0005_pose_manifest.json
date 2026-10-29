@@ -1,0 +1,302 @@
+{
+  "batch": "BATCH-0005",
+  "cached": {
+    "artifacts": {
+      "comparison": {
+        "path": "outputs/batch0004/EXP-0022/smoke/6509c805b40e4d7a8137f770cfa04a05/030_090-comparison.png",
+        "sha256": "9a2d55712a117fbf68ebef3a72bde23d1a5ce9b85505c7df3619f9441e11bf11"
+      },
+      "input.npy": {
+        "path": "outputs/batch0004/EXP-0022/smoke/6509c805b40e4d7a8137f770cfa04a05/030_090-input.npy",
+        "sha256": "9726b3f92e7fd5a138ca7fc7c76fa042d0465af39ee8a0fbdbe8d94d51eafb03"
+      },
+      "official-events.local.json": {
+        "path": "outputs/batch0004/EXP-0022/smoke/6509c805b40e4d7a8137f770cfa04a05/030_090-official-events.local.json",
+        "sha256": "977ce33ccbe928c71d52cfdcfabec5ff8d45a7818d262c8ff284b19b0309b26d"
+      },
+      "original": {
+        "path": "outputs/batch0004/EXP-0022/smoke/6509c805b40e4d7a8137f770cfa04a05/030_090-original.png",
+        "sha256": "e47ebe17847fe8b84abd69c1aad76c91d3daaa4584eb222ff0a3bfd734f2d142"
+      },
+      "overlay": {
+        "path": "outputs/batch0004/EXP-0022/smoke/6509c805b40e4d7a8137f770cfa04a05/030_090-overlay.png",
+        "sha256": "e47ebe17847fe8b84abd69c1aad76c91d3daaa4584eb222ff0a3bfd734f2d142"
+      },
+      "results.pt": {
+        "path": "outputs/batch0004/EXP-0022/smoke/6509c805b40e4d7a8137f770cfa04a05/030_090-results.pt",
+        "sha256": "e4ddc88ec334e9acb5174dc0f8d4e3bf38b286aa1baeae39c712ec6646d00c56"
+      }
+    },
+    "condition_id": "030_090_full",
+    "summary_path": "outputs/batch0004/EXP-0022/smoke/6509c805b40e4d7a8137f770cfa04a05/summary.json",
+    "summary_sha256": "84905e3841a7394f0e3a0e214f7298746f33226fdaa3fafb703c3ded40cf5cde"
+  },
+  "camera": {
+    "calibrated": true,
+    "camera_id": "C6",
+    "legacy_boundary_config": {
+      "band": 0.005,
+      "boundary_id": "C6_fence",
+      "camera_group": "C6",
+      "cooldown_seconds": 1.0,
+      "directions": [
+        "negative_to_positive",
+        "positive_to_negative"
+      ],
+      "dwell_seconds": 0.1,
+      "line": [
+        [
+          0.36667,
+          0.46296
+        ],
+        [
+          0.625,
+          0.58148
+        ]
+      ],
+      "max_gap_seconds": 0.1,
+      "min_iou": 0.3,
+      "roi": [
+        0.28,
+        0.2,
+        0.75,
+        0.8
+      ],
+      "score_threshold": 0.5,
+      "selection": "manual static PTS 0 background; no prediction tuning",
+      "version": "development-v1-pre-inference"
+    },
+    "roi": [
+      0.28,
+      0.2,
+      0.75,
+      0.8
+    ],
+    "selection": "manual static PTS 0 background; no prediction tuning",
+    "selection_source": "EXP-0004 preserved cache030 config"
+  },
+  "camera_config_sha256": "d37fbc699a84fae72ae236f4ae40e01bfb8d58b2fbe3b746eba0e6fb55624f18",
+  "conditions": [
+    "030_090_C6",
+    "030_084_full",
+    "030_084_C6",
+    "030_094_full",
+    "030_094_C6"
+  ],
+  "crop_bytes_sha256": {
+    "030_084": "606eb9eb562ee05562aa677c316e210a0391741675142e7d758456c9815559ec",
+    "030_090": "0e63def8e3e6d9235b3a45355fbbaf2f8d3dc6cc47558d63d6caaae93c921208",
+    "030_094": "97471e12915ff4bc65c3e9ec35fee24f27afc20facf3ca4efba343f55afb095e"
+  },
+  "environment": {
+    "file_index": "runtime/BATCH-0003/environment-files.local.json",
+    "files": {
+      ".venv-pose-batch03/bin/python": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      ".venv-pose-batch03/pyvenv.cfg": "db6c8a96f25493eda9f74f23f0b5f248a8b50a5b469b15c5ee7313875b416364",
+      "requirements-pose-batch03-lock.txt": "66882e94f9b144ea48c69ec477a216e88a2cbb87a2daff9459ae8f68e5f599a9",
+      "runtime/BATCH-0003/cpu-import-check.json": "3295949a18996e482d085150be460d227fac6763464e6b0b8fd688cd54a84c5e",
+      "runtime/BATCH-0003/environment-files.local.json": "65885e839cb80cb622dc6ecfff08375e975a4abf7018ea0f9ab44be87abb0a51",
+      "runtime/BATCH-0003/environment-inventory.json": "67ebc50c242d8cba255554d06102fe5e6361e6977f1944d1a87239d0d2d7b4aa",
+      "runtime/BATCH-0003/frame-binding.json": "3a580c51544b4781b69523684b79ec5d9e2eab3317f5a2d91fd737dacb78edd5",
+      "runtime/BATCH-0003/official-source-parity.json": "df3fafe41bb8ddbfecb2c3613d487de243ee4da3f2b53e77fdb27419ec682bb1",
+      "runtime/BATCH-0003/official/checkpoint-verification.json": "13ad4a428c5de9791864cb4ed794716e4ee9bf6d7facf48c8341d34cb723b76f",
+      "runtime/BATCH-0003/preservation-before.json": "cfbbd07b327bfda49b2946d12892854fcc53ed80f9b99a844f4aeab90e39a294"
+    },
+    "packages": {
+      "Jinja2": "3.1.6",
+      "MarkupSafe": "3.0.3",
+      "PyYAML": "6.0.3",
+      "av": "16.0.1",
+      "certifi": "2026.10.23",
+      "charset-normalizer": "3.5.2",
+      "contourpy": "1.3.2",
+      "cycler": "0.12.1",
+      "filelock": "4.1.0",
+      "fonttools": "4.65.0",
+      "fsspec": "2026.9.0",
+      "idna": "3.20",
+      "kiwisolver": "1.5.1",
+      "matplotlib": "3.10.9",
+      "mpmath": "1.3.0",
+      "networkx": "3.4.2",
+      "numpy": "2.2.6",
+      "nvidia-cublas-cu12": "12.4.5.8",
+      "nvidia-cuda-cupti-cu12": "12.4.127",
+      "nvidia-cuda-nvrtc-cu12": "12.4.127",
+      "nvidia-cuda-runtime-cu12": "12.4.127",
+      "nvidia-cudnn-cu12": "9.1.0.70",
+      "nvidia-cufft-cu12": "11.2.1.3",
+      "nvidia-curand-cu12": "10.3.5.147",
+      "nvidia-cusolver-cu12": "11.6.1.9",
+      "nvidia-cusparse-cu12": "12.3.1.170",
+      "nvidia-ml-py": "13.615.71",
+      "nvidia-nccl-cu12": "2.21.5",
+      "nvidia-nvjitlink-cu12": "12.4.127",
+      "nvidia-nvtx-cu12": "12.4.127",
+      "opencv-python": "4.12.0.88",
+      "packaging": "26.3",
+      "pillow": "12.3.0",
+      "pip": "22.0.2",
+      "polars": "2.0.0",
+      "polars-runtime-32": "2.0.0",
+      "psutil": "7.2.2",
+      "pyparsing": "3.3.3",
+      "python-dateutil": "3.0.0",
+      "requests": "2.34.2",
+      "setuptools": "59.6.0",
+      "six": "1.17.0",
+      "sympy": "1.13.1",
+      "torch": "2.5.1+cu124",
+      "torchvision": "0.20.1+cu124",
+      "triton": "3.1.0",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.6",
+      "ultralytics": "8.4.192",
+      "ultralytics-thop": "2.2.3",
+      "urllib3": "2.8.0"
+    }
+  },
+  "experiment_id": "EXP-0023",
+  "frames": [
+    {
+      "cache_path": "outputs/cv_phase2d/cache030/person_cache.jsonl",
+      "diagnostic": true,
+      "fcos_person_count": 3,
+      "frame_id": "030_084",
+      "native_pts": 1290240,
+      "pts_seconds": 84.0,
+      "requested_seconds": 84,
+      "rgb_bytes_sha256": "013bc46ccb8962a2f42aa81a7a5ed7188c16f294dfd38baef54f55b05ba17ace",
+      "rgb_path": "outputs/batch0003/inputs/030_084.npy",
+      "rgb_sha256": "88b5a7899b20cdf464aefafc3787b0ffadf869c7b4de33cba2107b9557e16b1d",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_030",
+      "source_path": "data/TS_\uce68\uc785/E01_030.mp4",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360",
+      "windows": []
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache030/person_cache.jsonl",
+      "diagnostic": true,
+      "fcos_person_count": 0,
+      "frame_id": "030_090",
+      "native_pts": 1382400,
+      "pts_seconds": 90.0,
+      "requested_seconds": 90,
+      "rgb_bytes_sha256": "41f2bb0bd075b02cd15a53f1d411da6c46eaa882febf547abb99ceb49e54126f",
+      "rgb_path": "outputs/batch0003/inputs/030_090.npy",
+      "rgb_sha256": "fb8277b3114f3e18f1c0295f5238a6be66604842b526c133678e6ab28ad211c9",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_030",
+      "source_path": "data/TS_\uce68\uc785/E01_030.mp4",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360",
+      "windows": [
+        "climb030"
+      ]
+    },
+    {
+      "cache_path": "outputs/cv_phase2d/cache030/person_cache.jsonl",
+      "diagnostic": true,
+      "fcos_person_count": 0,
+      "frame_id": "030_094",
+      "native_pts": 1443840,
+      "pts_seconds": 94.0,
+      "requested_seconds": 94,
+      "rgb_bytes_sha256": "d7100a03cdfeb415031cba0c97923d75c9e271c593beec5c425b134710a39d3f",
+      "rgb_path": "outputs/batch0003/inputs/030_094.npy",
+      "rgb_sha256": "6c87e2f0ea8ad11140e1a82001d19ed95568ab69679502aaee6b596248f8b6a3",
+      "rgb_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "source_id": "E01_030",
+      "source_path": "data/TS_\uce68\uc785/E01_030.mp4",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "time_base": "1/15360",
+      "windows": []
+    }
+  ],
+  "historical_manifest_sha256": "dcd6501ef11cd8b7a06aeb2d0bf6c303acb6665ac65dc3a4f6e5d45bba8c4c98",
+  "model": {
+    "bytes": 49036866,
+    "license": "AGPL-3.0; local research evaluation only; integration/public deployment requires separate license review",
+    "name": "YOLO26m-Pose",
+    "official_digest": "sha256:2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+    "package": "ultralytics",
+    "sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+    "source_commit": "922563eab42b778445e55a2edbabb6974eed8e4b",
+    "tag": "v8.4.192",
+    "url": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26m-pose.pt",
+    "version": "8.4.192"
+  },
+  "schema_version": 1,
+  "settings": {
+    "api": "YOLO.predict",
+    "crop_xyxy": [
+      537,
+      216,
+      1440,
+      864
+    ],
+    "dtype": "float32",
+    "execution_error_retries_max": 1,
+    "joint_confidence": 0.5,
+    "minimum_gpu_free_mib": 6144,
+    "predict_kwargs": {
+      "agnostic_nms": false,
+      "augment": false,
+      "batch": 1,
+      "channels_last": false,
+      "classes": [
+        0
+      ],
+      "compile": false,
+      "conf": 0.25,
+      "device": "cuda:0",
+      "embed": null,
+      "imgsz": 640,
+      "iou": 0.7,
+      "max_det": 300,
+      "nms": false,
+      "quantize": null,
+      "rect": false,
+      "save": false,
+      "save_crop": false,
+      "save_txt": false,
+      "show": false,
+      "stream": false,
+      "verbose": false,
+      "visualize": false
+    },
+    "roi": [
+      0.28,
+      0.2,
+      0.75,
+      0.8
+    ],
+    "ultralytics": "8.4.192"
+  }
+}
