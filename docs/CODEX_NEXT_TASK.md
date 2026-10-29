@@ -1,3 +1,21 @@
+# 다음 작업 — BATCH-0004 YOLO26m-Pose 공식 API 복구 (신규 승인)
+
+2026-10-29 KST. 사용자는 BATCH-0003에서 실행 어댑터가 실패한 YOLO26m-Pose를 **같은 체크포인트와 기존 원본 입력으로, 공식 public YOLO.predict 경로로 복구**하고 **030_090/007_064의 실제 관절 결과 두 장을 먼저 확보**한 후 조건에 따라 고정 입력을 분석하는 신규 작업을 승인했다. 이 배치에 대한 구체 상한/차단/출력 계약: [BATCH-0004-yolo26-pose-recovery-plan.md](experiments/BATCH-0004-yolo26-pose-recovery-plan.md).
+
+## 총괄 실행 지시
+
+1. **역사적 BATCH-0003 실패 기록 불변:** EXP-0021 실패 2건/한도 소진 및 소스 freeze, BATCH-0002 포함 모든 과거 결과·settings·모델/weight/정답은 덮어쓰지 않는다. 새 BATCH-0004 / EXP-0022 결과 ID·새 코드/queue job 및 출력 디렉터리만 사용한다. 새로운 승인은 이전 실패 job의 세 번째 retry 허가가 아니다. 기존 Run과 canonical queue, Astra max 총괄·Sol high 담당 최대2·Astra high 독립 검토, 최소 free VRAM 6144MiB 게이트를 사용한다.
+2. **기존 환경/입력 재활용:** ultralytics 8.4.192, .venv-pose-batch03, 기존 공식 yolo26m-pose.pt SHA와 고정 267개 source/native PTS/RGB 입력을 검증 후 재사용. 새 모델·weight 다운로드, 학습·파인튜닝·Qwen/VLM 호출·최적화 튜닝 금지.
+3. **이번에 바꿀 유일한 기술 축:** 새 batch04_pose의 실행 경로에서 **공식 YOLO.predict() API를 사용**. 원본 RGB 배열은 연속 BGR ndarray로 변환, full frame/640/FP32/conf0.25/rectFalse/nmsFalse/배치1 유지. 공식 Results.boxes/Results.keypoints.data 17×3를 원본 좌표로 읽는다. 지원 안 되는 visualize/private inner kwargs, 모델 head 수동 경로, 좌표 이중 scaling 등을 제거. 공식 predictor가 **fuse=True 및 최초 warmup을 수행**하는 차이를 분명히 측정·보고한다. 이전 실패 runner 소스는 그대로 둔다.
+4. **CPU preflight 필수:** pinned v8.4.192 public 호출 키와 내부 signature 검증, BGR/색상·좌표·17관절/0 검출/unknown·원본/manifest binding·큐/실패 보존 테스트와 독립 Astra 사전 검토. 설치 패키지/공식 소스 기준으로 실제 kwargs 전체를 검사하고 코드와 입력을 먼저 Git commit 해시로 고정한다. GPU/모델 로드는 canonical queue 외 금지.
+5. **첫 GPU 결과:** 030:90 정확한 native frame 한 장 + 007:64 한 장만 공식 API로 smoke. 실제 returned Results, 사람/관절, confidence, 시간·메모리 및 original-vs-pose overlay **두 장**을 로컬에 출력. 중간 오류 시 추가 GPU 무인 반복 없이 먼저 CPU contract 수정; 새 배치의 기술 오류 retry 최대1회/독립 검토·별도 기록. 정상 API 출력에 사람0명일 수 있으므로 실행 실패와 품질 실패를 분리한다.
+6. **통과 조건부 remaining:** 모델이 실제 인물의 관절을 유용하게 추정했다는 근거가 확인된 경우에만, 기존 고정 267개 중 smoke 2개를 제외한 remaining 265개를 **재생성 없이 한 번만** 실행한다. 손목·엉덩이·무릎·발목의 실제 대응·가림·중복·프레임 간 단절을 원본/오버레이로 검토. 불확실하면 2개 자료를 사람에게 묶어 검수 요청하고 충분하지 않으면 여기서 멈춘다. 규칙·추적은 정확한 사람별 관절과 물리적 경계가 확인된 경우에만 제한된 별도 하위 단계, 불충분 시 미실행. 실제 넘기 완료·위법성/정량 recall/F1/FPR을 새로 만들지 않는다.
+7. **전체 전달:** 실제 실행, 근거, 독립 리뷰, EXP-0022 신규 report/metrics/binding, 기존 읽기 전용 웹의 이미지/재생·seek/지표 확인, GitHub push와 원격 SHA 대조까지 각각 분리 완료. CCTV/프레임/weights/raw coords/overlay/runtime/credentials는 로컬만. 완료 후 **실제 관절 두 장의 품질·나머지 실행 수·미실행 이유·비용·다음 한 선택**을 요약하고 새 GPU 작업 예약 없이 멈춘다.
+
+이번 승인은 **기본 호출 오류를 해결해 실제 사람 관절을 확인하는 것**에 초점이 있다. 코드/테스트/해시만 많이 만드는 것으로 성공이라고 보고하지 않는다. 필요한 단계별 작은 재승인을 반복 요청하지 않고 실행과 검토를 연결한다.
+
+---
+
 # 다음 작업 — BATCH-0003 한도 종료, 품질 평가 미완료
 
 2026-10-29 KST. [종합 결과](experiments/BATCH-0003-summary.md), [EXP-0021](experiments/EXP-0021-yolo26m-pose.md), [전달 기록](experiments/BATCH-0003-delivery.md)을 우선한다. 267개 입력 준비 뒤 최초 smoke와 허용된 단 한 번의 retry가 실행 어댑터 오류로 실패했다. 관절 출력0개로 사람/관절 품질·행동 구분은 평가하지 못했다. 모델 자체 성능 부족이나 GPU 메모리 부족으로 해석하지 않는다.
