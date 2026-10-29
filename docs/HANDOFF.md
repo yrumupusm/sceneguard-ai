@@ -1,3 +1,14 @@
+# 신규 인수인계 — BATCH-0004 공식 YOLO26m-Pose API 복구 (2026-10-29)
+
+- 사용자는 **BATCH-0003의 두 실험이 모델 품질 문제가 아닌 자체 adapter의 end2end 및 visualize 인자 오류**였음을 확인하고, **같은 공식 yolo26m-pose.pt를 YOLO.predict() 공개 API로 고쳐 실제 원본 두 프레임의 관절 출력을 확보**하도록 별도 신규 범위를 승인했다. **실행 명세:** [BATCH-0004 계획](experiments/BATCH-0004-yolo26-pose-recovery-plan.md) + [현재 지시](CODEX_NEXT_TASK.md).
+- **역사 보존:** BATCH-0003/EXP-0021은 실제 모델 load2/정상 출력0/두 adapter 오류/남은265장 미실행으로 종료했다. 그 실패 jobs/reviews/metrics/과거 소스 freeze를 덮거나 세 번째 재시도 하지 않는다. 이번 실행은 **BATCH-0004/EXP-0022의 새 코드·job/attempt/보고서**로 기록한다.
+- **동일 자료:** ultralytics 8.4.192 및 공식 pose checkpoint SHA 2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4, .venv-pose-batch03, frozen267 source/native PTS/RGB. 다른 모델/학습 없이 새 구현의 **공식 YOLO.predict** 실행, 원본 RGB→연속 BGR numpy, Results 박스/17관절 데이터를 직접 사용. 원래 low-level inference와 달리 공식 predictor는 fuse+warmup을 수행하므로 실제 실행 조건·시간을 별도 구분.
+- **실행 전 CPU 게이트:** 정확한 공식 함수 signature/모든 인자 확인 + RGB/BGR/Results/unknown0명/NaN/좌표·해시·native PTS·큐 보존 synthetic tests, 별도 source freeze 및 Astra 독립 검토. GPU는 기존 Run/canonical queue/free≥6144MiB·live lease만 사용.
+- **실측 우선:** 030_090, 007_064 정확한 source native PTS에서 실제 **2개 pose 결과 및 원본/관절 overlay**를 먼저 만든다. 인물·관절이 원본에 맞게 보이는지 확인하고 품질이 충분한 경우에만 smoke2 재사용 + remaining265장 한 번. 실패/품질 불충분 시 규칙·추적·fusion하지 않는다. 개발 장면의 사건 완료/사람별 정확도/F1/FPR은 근거 없음.
+- **전달:** 신규 결과 독립 리뷰와 로컬 원본/overlay·보고서·metrics 기존 웹 등록/실제 재생·seek 및 GitHub remote commit/hash를 각각 확인. 미디어/weights/raw coordinates/receipts 등은 로컬 전용. 이번 approval을 끝내면 새로운 무인 GPU 작업·모델 개선은 시작하지 않는다. **현재 GitHub 문서 게시 자체는 실제 로컬 실행이 아니다.**
+
+---
+
 # 최신 인수인계 — BATCH-0003 실행 실패·종료
 
 2026-10-29 KST. [종합 결과](experiments/BATCH-0003-summary.md), [EXP-0021](experiments/EXP-0021-yolo26m-pose.md), [독립 검토](reviews/EXP-0021-independent-review.md), [전달 기록](experiments/BATCH-0003-delivery.md).
