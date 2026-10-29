@@ -1,0 +1,12 @@
+{
+  "max_gap_seconds": 5.0,
+  "split_gap_seconds": 1.0,
+  "min_observations": 3,
+  "min_span_seconds": 0.1,
+  "representative_count": 3,
+  "endpoint_seconds": 1.0,
+  "min_similarity": 0.65,
+  "ambiguity_margin": 0.05,
+  "max_distance": 0.30,
+  "max_area_ratio": 4.0
+}
