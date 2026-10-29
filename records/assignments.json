@@ -233,6 +233,19 @@
       "synthetic": false,
       "task_id": "task_259c3da684ec",
       "title": "BATCH-0006 C6 pose 640 vs 960"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T08:42:09.851546+00:00",
+      "dispatch_id": "ctx_76b9a0360296",
+      "experiment_id": "EXP-0026",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_96b539b1624d",
+      "title": "EXP-0026 exploratory person Detection fine-tuning"
     }
   ],
   "schema_version": 1
