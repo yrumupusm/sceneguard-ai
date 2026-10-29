@@ -2,6 +2,16 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
+## 신규 명시 승인 — BATCH-0004 공식 YOLO 추론 경로 복구 (2026-10-29)
+
+**지금의 최우선 과제:** [BATCH-0004 기술 복구 계획](docs/experiments/BATCH-0004-yolo26-pose-recovery-plan.md), [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md). 기존 BATCH-0003은 **두 smoke에서 adapter 호출 문제로 실패한 종료 기록**이고 새 GPU 실행 권한이 없었다. 사용자가 **이번 별도 BATCH-0004/EXP-0022에 한해** 같은 pretrained YOLO26m-Pose/가중치·동일 267개 원본 입력으로 공식 public YOLO.predict() API를 통한 재실행을 새로 승인했다. 이력 소스·큐 row·등록/해시·라벨은 그대로 보존하고, 이전 실패 작업을 다시 시도하지 않는다.
+
+**필수 실행 순서:** 공식 Ultralytics 8.4.192 호출 signature/전체 kwargs, source RGB→BGR ndarray, Results.boxes/keypoints Nx17x3 및 empty/unknown 처리의 **CPU 호환성 테스트**를 기존 GPU queue 실행 전에 마련하고 독립 검토한다. 이전의 잘못된 inner.predict(visualize=False) 및 수동 head 설정/좌표 재변환을 새 경로에 복제하지 않는다. 공식 predictor의 fuse/첫 warmup은 이번 실행과 과거 unfused/no-warmup 실패 경로의 차이로 보고한다. 실행은 기존 Astra max 총괄·Sol high 담당 최대2·Astra high reviewer, 같은 Run/canonical GPU 직렬 큐/free VRAM≥6144MiB, 정확한 source/config/weights/PTS hash·lease 보호 안에서만 한다. 새 환경·weight/학습·외부 API·VLM 재추론·정책 완화 금지.
+
+**산출물 우선순위:** 원본030:90/007:64의 두 native frame에서 **실제 새 pose Results 및 원본/관절 오버레이 두 장**을 먼저 확보; 정상 반환 0명과 기술 실패를 분리. **인물·관절의 정합성이 확인되는 경우에만** 나머지 기존265 프레임 처리와 시도/접근 구간 비교로 확대. 관절·person ID·경계 top/far-side 의미 불명확 시 규칙/추적/결합 보류. 기술 smoke·시각 품질·행동 구분·독립 검토·기존 로컬 웹·GitHub remote byte를 각각 따로 기록한다. 사람별 정밀 GT/정확도/F1/FPR/위법성 판정을 창작하지 않는다.
+
+**실험 기록:** 새로운 EXP-0022 / BATCH-0004 계정과 분리된 결과 디렉터리만 사용. 기존 EXP-0021 실패를 수정하거나 세 번째 재시도 처리하지 않는다. 새 배치에서 오류 수정 재시도도 최대1번, 실패 시 근거 기록 후 중단. 영상·이미지·raw 관절 좌표/weights/runtime/receipts는 로컬 전용, 배포/AGPL 조건 유지. 이 승인 이후 별도 GPU 작업·새 모델/무인 개선을 자동 시작하지 않는다.
+
 ## 최신 상태 — BATCH-0003 실행 실패·재시도 한도 종료 (2026-10-29)
 
 [종합 결과](docs/experiments/BATCH-0003-summary.md)와 [전달 기록](docs/experiments/BATCH-0003-delivery.md)을 우선한다. 공식 YOLO26m-Pose 한 모델과 267개 입력을 준비했으나, 두 smoke가 각각 head 초기화 누락/지원하지 않는 visualize 인자로 실패했다. 실제 모델 로딩은 2회, 완료 forward·pose 출력은 0개다. 이는 어댑터 호환성 실패이며 모델 관절 품질 실패라는 뜻이 아니다. 한 번의 논리적 retry를 소진했고 나머지265개·행동 규칙은 실행하지 않았다. **추가 GPU 실행·세 번째 시도·모델 변경을 자동 시작하지 않는다.** 기존 CV/VLM·공식 라벨·결과와 기본 적용 보류를 유지한다. 다음 별도 범위 전에는 실패 기록/CPU 검사와 전달 증거만 활용한다.
