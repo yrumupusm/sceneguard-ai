@@ -181,6 +181,19 @@
       "synthetic": false,
       "task_id": "task_7c8a851c6d27",
       "title": "BATCH-0003 YOLO26m-Pose"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T04:34:58.183579+00:00",
+      "dispatch_id": "ctx_9a8df3d90186",
+      "experiment_id": "EXP-0022",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot2",
+      "synthetic": false,
+      "task_id": "task_5df19346a61c",
+      "title": "BATCH-0004 YOLO26m-Pose official API recovery"
     }
   ],
   "schema_version": 1
