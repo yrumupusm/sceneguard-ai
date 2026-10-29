@@ -3,7 +3,7 @@
 **새 사용자 승인:** E01_030 84/90/94초에서 사전 고정 카메라 C6 ROI를 이용해 YOLO26m-Pose 사람·관절 누락이 개선되는지 비교한다. [이번 고정 실험 계획](experiments/BATCH-0005-c6-pose-roi-comparison-plan.md), [CODEX_NEXT_TASK](CODEX_NEXT_TASK.md) 최우선.
 
 - 이전 BATCH-0004/EXP-0022의 **공식 YOLO.predict(030_090 full-frame) 사람0/관절0 실제 Results를 그대로 재사용**, 이전 007_064 full-frame 출력2행/추정23은 다른 장면 참고 결과로만 보존한다. 이전 실험 이력·코드/weight/기준·queue/검토 등은 불변.
-- **총 6개 조건, 새5회만**: 030 84 full/C6, 030 90 full(기존 재사용)/C6, 030 94 full/C6. C6 normalized xyxy \`[0.28,0.20,0.75,0.80]\`; 원본1920×1080의 crop \`RGB[216:864,537:1440]\`이며 사람/라벨에 맞춰 ROI를 다시 선택하지 않는다. 같은 공식 YOLO26m-Pose 8.4.192 / 640 / FP32 / conf0.25 / nmsFalse public API, weight/학습/새 데이터/VLM 재추론 없음.
+- **총 6개 조건, 새5회만**: 030 84 full/C6, 030 90 full(기존 재사용)/C6, 030 94 full/C6. C6 normalized xyxy `[0.28,0.20,0.75,0.80]`; 원본1920×1080의 crop `RGB[216:864,537:1440]`이며 사람/라벨에 맞춰 ROI를 다시 선택하지 않는다. 같은 공식 YOLO26m-Pose 8.4.192 / 640 / FP32 / conf0.25 / nmsFalse public API, weight/학습/새 데이터/VLM 재추론 없음.
 - 별도 batch05_pose/EXP-0023 경로, CPU 색상/좌표 offset·PTS·legacy raw90 hash 테스트 → source/config 고정 및 Astra 독립 검토 → 기존 Run/canonical GPU queue 직렬·free≥6144MiB 게이트 → 실제5회 실행. 90 C6가 0개여도 기술 성공이라면 나머지84/94까지 비교.
 - ROI 결과는 local crop coordinates: 원본 좌표로 x+537,y+216 **한 번만**. full-frame 결과는 원래 native 원본좌표. 실제 사람 bbox/손목·엉덩이·무릎·발목 일치 여부, crop 절단·가림·중복/오검출을 **원본/원래 Full overlay/C6 overlay 3시점**으로 검수. 개수만으로 복원이라 말하지 않음; 물리 울타리 상단/완료/추적/규칙/결합 판단 이번 배치 아님.
 - 독립 리뷰/metrics/기존 웹 등록·이미지 display 검증/GitHub remote byte 확인까지 진행. CCTV·좌표·weights·오버레이/raw artifact/receipt는 **로컬만**, 코드/비식별 결론만 GitHub. 배치 종료 뒤 자동 후속 모델·실험 예약하지 않음. 현재 문서 게시 = **로컬 추론 시작 아님**.
