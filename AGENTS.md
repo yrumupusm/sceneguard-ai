@@ -2,6 +2,16 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
+## 최신 신규 승인 — BATCH-0006 YOLO26m-Pose C6 640→960 한 축 비교 (2026-10-29)
+
+**최우선 실행:** [BATCH-0006 전체 계획](docs/experiments/BATCH-0006-c6-pose-960-resolution-plan.md)과 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md). 사용자가 EXP-0024의 **84초 자세 양호/90초 오른쪽1명 관절 오류·다른2명 누락/94초 보이는2명 모두 누락**을 검토한 후, **기존 사전학습 YOLO26m-Pose/고정 C6 ROI에서 입력 해상도만 640→960**으로 변경하는 새 소규모 GPU 검증을 승인했다. 기존 '추가 GPU 작업 금지'는 이전 종료 배치의 이력이며 이번 BATCH-0006 / EXP-0025의 **신규 3회**에 한해서만 대체한다.
+
+**상한:** 원본 E01_030 exact native PTS **84/90/94초**, 기존 정적 C6 ROI **x537:1440,y216:864**. **640 기준 EXP-0023 native Results 3개는 해시 검증 후 읽기 전용 재사용·재추론0**, 새 C6 **960 공식 YOLO.predict 최대3회**. `PREDICT_KWARGS` 복사본에서 `imgsz` **한 개만 960으로 변경**, 640 baseline 및 batch04/batch05 소스/환경/weights/공식 라벨/기존 검토·queue 불변. pretrained 공식 YOLO26m-Pose, Ultralytics 8.4.192, FP32/rectFalse/conf.25/nmsFalse/max_det300/클래스·정식 공개 API 나머지 동일. 새 모델/재학습/프롬프트·ROI 조정/threshold sweep/SAHI/VLM 추론 없음.
+
+**실행·검토:** 기존 Astra max 총괄1/Sol high 담당 최대2/Astra high 독립 리뷰1 및 Run `run_3d23462a014a`/canonical 단일 GPU 직렬 큐/freeVRAM≥6144MiB/실제 lease·source/commit/input SHA 게이트 유지. 먼저 **CPU에서 입력/640 cached artifacts/API kwargs 1축 diff/ROI local→원본 offset(+537,+216)·960 tensor shape/unknown·empty 처리**를 검증하고 새 EXP-0025 소스·manifest freeze 및 독립 검토. GPU에서는 세 시점을 각 1회만 실행하며 90초 정상 0명이어도 84/94는 수행. OOM/오류 시 자동 축소/큐 우회 금지. 사람 수·관절 수 증가만으로 실제 사람 복원 성공을 확정하지 않고 **실제 손목/무릎/발목·몸의 위치 검수**를 별도 요구한다.
+
+**전달·종료:** 로컬 **세 시점 original/640 cached/960 new** 이미지, person box/joint 계수 및 품질·실행 비용, 미평가 행동 성능 분리 보고. 기존 complete/읽기 전용 로컬 웹 이미지 렌더·Astra 독립 리뷰/해시 binding·GitHub 원격 bytes 확인. 프레임·영상·좌표·가중치·입력 tensor·raw 응답·오버레이·DB/로그/receipts는 로컬 전용, 공개는 코드/비식별 집계만. 모델 default 적용/추적/행동 규칙/완전 영상 처리/추가 실험 자동 예약 금지. 이번 한도를 마친 후 보고하고 종료한다.
+
 ## 최신 사용자 검수 — EXP-0024 넘기 자세의 관절 근거 부족
 
 2026-10-29. [사용자 검수 기록](docs/experiments/EXP-0024-user-pose-review.md)을 최신 판단으로 사용한다. EXP-0023의 실행·출력·검토본은 변경하지 않는다. 이번 기록은 기존 자료에 대한 사용자 정성 검수이며 신규 GPU 추론은0회다.
