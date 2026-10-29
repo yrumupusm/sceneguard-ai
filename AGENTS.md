@@ -2,6 +2,16 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
+## 현재 신규 승인 — BATCH-0005 C6 ROI 자세 추정 비교 (2026-10-29)
+
+**최신 작업 지침:** [BATCH-0005 비교 계획](docs/experiments/BATCH-0005-c6-pose-roi-comparison-plan.md)과 [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md). 사용자가 이전 BATCH-0004의 실제 원본/관절 오버레이(030 90초 full-frame 검출0, 007 64초 출력2행)를 보고, **E01_030 84/90/94초 원본 전체화면과 기존 C6 고정 ROI를 비교**하도록 새 범위를 승인했다. 이전 '추가 GPU 실험 금지'는 **해당 종료 배치에 대한 기록**이며 이번 BATCH-0005 / EXP-0023의 신규 5개 조건으로만 대체한다. 이전 실험/보고/실패 원본·설정·가중치/큐를 변경하지 않는다.
+
+**정확한 한도:** 기존 030:90 full-frame 결과 **재사용**. 새 공식 YOLO26m-Pose \`YOLO.predict\` **딱5개**: 030:84 full/C6, 030:90 C6, 030:94 full/C6. 동일 공식 Ultralytics8.4.192·weight·640/FP32/conf.25/nmsFalse/공개 kwargs, 새 weight/학습/VLM 없음. 고정 \`configs/mvp0001_cameras.json\` C6 ROI \`[.28,.2,.75,.8]\` → 원본1920×1080 **x537:1440,y216:864**. source SHA/native PTS/RGB 및 crop SHA 확인. ROI local Results boxes/keypoints는 원본 좌표로 offset(+537,+216)을 **한 번만** 적용; full Results는 무변경. 90 ROI가 empty여도 84/94의 사전 지정된 비교를 생략하지 않는다.
+
+**실행:** 기존 Astra max 총괄1/Sol high 담당 최대2/Astra high 독립 리뷰1, Run \`run_3d23462a014a\`와 **한 개 canonical 직렬 GPU 큐**, free VRAM≥6144MiB gate, 사전 CPU crop/color/offset/해시/오프라인·공식 API 계약 테스트와 source commit/review. 새 단순 batch05_pose 구현만 작성하고 검증된 batch04_pose 공식 경로/기존 03090 Results는 **읽기 전용** 사용. 실제 원본/전체/ROI 오버레이 3시점의 bbox·관절 시각 대응을 평가해, **계수만으로 사람/관절 복원 성공을 주장하지 않음**. C6 ROI의 calibrated 플래그가 실제 fence top/far-side 교정은 아니므로 추적/규칙/CV+VLM 결합과 완전 행동 성능/F1/FPR은 범위 밖.
+
+**전달:** 실제5회/재사용1회 분리 계수와 비용·사람 관절 일치 미확정·실패 사유를 신규 EXP-0023 report/metrics/review/binding, 기존 웹 이미지 표시, GitHub 원격 해시로 확인. CCTV 원본·프레임·raw bbox/관절 좌표·오버레이·weights·runtime/receipts·민감정보는 로컬만, 공개는 코드/비식별 요약. 완료 후 새 GPU 작업 자동 진행 없음.
+
 ## 최신 관측 — BATCH-0004 공식 추론 성공·확대 보류 (2026-10-29)
 
 [종합 결과](docs/experiments/BATCH-0004-summary.md), [EXP-0022](docs/experiments/EXP-0022-yolo26-public-predict.md), [전달 기록](docs/experiments/BATCH-0004-delivery.md)을 우선한다. 같은 모델/환경/입력으로 public YOLO.predict 두 프레임이 성공했고 원본/관절 비교 이미지2개를 로컬에 확보했다. 오류/retry0, sample forward2와 warmup1을 구분한다. 030:90은 기존 사용자 관찰상 사람이 있지만 정상 반환0행으로 관절 근거를 얻지 못했다. 007:64는2행/관절 추정23개이며 실제 위치 검수는 별도다. **remaining265·규칙·추적·추가 GPU 실행을 자동 시작하지 않는다.** 기술 복구 성공이 관절 품질/행동 성능 충족은 아니며 기존 기본 구성과 과거 실패를 보존한다.
