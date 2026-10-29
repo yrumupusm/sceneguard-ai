@@ -1,3 +1,21 @@
+# 다음 작업 — BATCH-0006 / EXP-0025 C6 ROI 해상도 640→960 단일 실험 (사용자 승인)
+
+2026-10-29 KST. 사용자는 [EXP-0024 사용자 검수](experiments/EXP-0024-user-pose-review.md) 이후, **기존 pretrained YOLO26m-Pose의 C6 고정 ROI에 대해 입력 해상도만 640에서 960으로 바꾸는 1차 검증**을 새 범위로 명시 승인했다. **최우선 고정 계약:** [BATCH-0006 계획](experiments/BATCH-0006-c6-pose-960-resolution-plan.md). **이번 승인 전의 '추가 GPU 작업 없음'은 BATCH-0005/EXP-0024 종료 기록**이며, 오직 이번 3회 GPU 추론 범위 안에서만 대체된다.
+
+## 기존 Orca 총괄에 대한 실행 지시
+
+1. **BATCH-0006 / EXP-0025 새로운 결과 ID/별도 코드·job만 생성**. 종료된 EXP-0023/0024·이전 모든 sourcefreeze/원본·모델/라벨·리뷰/binding/큐 기록을 덮거나 재실행하지 않는다. 기존 Run `run_3d23462a014a`, Astra max 총괄1/Sol high 구현·실험 최대2/Astra high 독립 리뷰1, existing canonical single GPU queue/free VRAM≥6144MiB gate/lease/parent-child·source/commit/input hash를 유지한다.
+2. **입력 정확히 E01_030의 84/90/94초 원본 native PTS**. 기존 `configs/mvp0001_cameras.json` C6 ROI normalized [0.28,0.20,0.75,0.80] = original 1920×1080의 **RGB[216:864,537:1440]**(648×903) 그대로. 원본 SHA/PTS, ROI/crop hash와 이전 결과를 검증해 재사용. 사건에 맞춰 crop 변경 금지. **기존 EXP-0023 C6 640 3개 Results는 재추론하지 않는다.**
+3. **유일한 설정 차이:** 원래 `orchestration/batch04_pose_command.py`의 공식 v8.4.192 public YOLO.predict kwargs를 신규 dict에 복제하여 **`imgsz=960` 한 값만 변경**. 나머지 FP32/rectFalse/batch1/conf0.25/nmsFalse/classes[0]/max_det300/외부API금지 등 설정, 공식 `yolo26m-pose.pt` weight SHA/설치 가상환경/모델은 동일. 신규 가중치0/재학습0/다른 모델·VLM0. 기존 `batch04_pose`, `batch05_pose` 불변; 필요한 코드만 작게 별도 경로에 작성.
+4. **실행 전 CPU 계약:** 전체 kwargs 중 해상도 외 값 동등, PTS/RGB/crop/source hash, cached 640 Results/binding, BGR·ROI offset(+537,+216) 한 번, 17관절/empty/unknown/복수사람, 960 공개 API/type/expected tensor 1×3×960×960, 전용 큐 stage/새 결과 ID 검증. 정확한 설치 소스 확인, code/input manifest 커밋과 독립 Astra high 사전 검토 뒤 실제 GPU 실행 허가.
+5. **실제 GPU:** 기존 큐에서 **960 C6 세 프레임만, 각 1회**. 권장 순서 `030_090_C6_960`→`030_084_C6_960`→`030_094_C6_960`, 한 번의 모델 로드와 공식 warmup(샘플 예측과 별도). **90에서 정상 0명이라도 84/94 계속**. OOM·호환 예외는 정확히 보고하고 무음 설정 하향/프로세스 강제 종료하지 않는다. 오류 코드 correction 최대1회(원인 증거·CPU 회귀/독립검토·새 freeze 필요), 성공 프레임 재생성 금지.
+6. **비교:** **640 cached vs 960 new** 세 PTS를 로컬 원본 위에 좌표 복원해 원본/640관절/960관절 triptych 3장. 사람 후보 수와 retained 관절 수뿐 아니라 **실제 사람별 bbox 대응·손목/골반/무릎/발목 위치/가림·오배정**을 품질 판단과 구분. 기존 사용자 관찰은 84에서3명 대체로 양호, 90에서 넘는3명 중 오른쪽1명만 잘못된 관절, 94에서 보이는2명 모두 누락. 새 출력을 시각 검수하지 않고 개선 성공이라 하지 않는다. 인물별 GT·정밀F1/recall/FPR/완료 여부 창작 금지.
+7. **납품:** 기존 `orchestration.complete` 결과 등록/독립 리뷰 및 hash binding → 로컬 페이지에 **이미지3장 실재 표시**·보고서/지표 확인 → GitHub push/원격 byte 확인. 원본 영상/프레임·weights/raw 좌표·원본/960 이미지·tensor·logs/DB/receipts는 로컬에만. 최종 **시각별 640/960 표, 90/94 검출 누락 감소 여부·실제 관절 대응, GPU/시간 비용, 미확정·다음 하나**를 보고한 뒤 **추가 모델/해상도/SAHI/추적/규칙/VLM 결합/전체 영상 처리 없이 멈춘다**.
+
+이 배치는 **해상도 한 축만의 통제 비교**이며, 기존 완료 배치에 허가되지 않은 자동 재실험을 재개하는 지시가 아니다. 승인된 3개 입력·독립검토·기존 웹/원격 전달은 세부 재승인을 반복 요구하지 말고 완료한다. 사용자 이미지 품질 판정이 필요한 부분은 실제 로컬 3장 자료로 한 번 묶어 요청할 수 있으나 판단 전에는 미확정으로 명시한다.
+
+---
+
 # 다음 판단 — 사용자 검수 반영, 추가 실험 자동 진행 없음
 
 2026-10-29. [사용자 검수 기록](experiments/EXP-0024-user-pose-review.md)을 최신 판단으로 사용한다. EXP-0023의 실행·출력·검토본은 변경하지 않는다. 이번 기록은 기존 자료에 대한 사용자 정성 검수이며 신규 GPU 추론은0회다.
