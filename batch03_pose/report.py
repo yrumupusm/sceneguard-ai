@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import time
 from batch03_pose.prepare import sha
-from orchestration.batch03_pose_command import ROOT,LOCAL,MANIFEST,manifest,output_path,COCO17
+from orchestration.batch03_pose_command import ROOT,LOCAL,MANIFEST,manifest,output_path,COCO17,smoke_summary_path,FAILED_SMOKE
 from orchestration.mock_job import atomic_json
 SKELETON=((5,6),(5,7),(7,9),(6,8),(8,10),(5,11),(6,12),(11,12),(11,13),(13,15),(12,14),(14,16),(0,1),(0,2),(1,3),(2,4))
 
@@ -13,7 +13,7 @@ SKELETON=((5,6),(5,7),(7,9),(6,8),(8,10),(5,11),(6,12),(11,12),(11,13),(13,15),(
 def records_for(smoke,remaining):
     d=manifest();summaries=[];paths=[]
     for stage,attempt in [('smoke',smoke),('remaining',remaining)]:
-        path=output_path(stage,attempt)/'summary.json';s=json.loads(path.read_text())
+        path=smoke_summary_path(attempt) if stage=='smoke' else output_path(stage,attempt)/'summary.json';s=json.loads(path.read_text())
         if s['status']!='succeeded' or not s['technical_pass']:raise ValueError('both fixed stages must pass')
         summaries.append(s);paths.append(path)
     records=[r for s in summaries for r in s['results']]
@@ -124,8 +124,13 @@ def build(smoke,remaining,media=False):
         n=len(s['results'])
         for key,unit in [('model_construction_load_seconds','seconds'),('run_entry_wall_seconds','seconds'),('load_peak_allocated_bytes','bytes'),('load_peak_reserved_bytes','bytes')]:
             metrics.append(dict(label=stage+' '+key,value=s[key],unit=unit,sample_n=n,scope='Instrumented run-entry wall/load (run function begins before validation; Python/module startup excluded); no warmup; allocator peak includes resident model; not device-wide total',source=str(p.relative_to(ROOT)),source_sha256=sha(p),source_pointer=[key],verification='saved_summary'))
+    import sqlite3
+    from orchestration.batch03_pose_command import RUNTIME
+    with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro',uri=True) as db:
+        queue_attempts=[dict(attempt_id=r[0],status=r[1],queue_attempt_wall_seconds=r[3]-r[2]) for r in db.execute("SELECT a.attempt_id,a.status,a.started_at,a.finished_at FROM attempts a JOIN jobs j USING(job_id) WHERE j.command='batch03-pose' ORDER BY a.started_at")]
+    failed_path=output_path('smoke',FAILED_SMOKE)/'summary.json';failed=json.loads(failed_path.read_text())
     costs={stage:{k:sum(r[k] for r in s['results']) for k in ['input_read_verify_seconds','preprocess_seconds','inference_seconds','postprocess_seconds','save_seconds','frame_wall_seconds']} for stage,s in zip(('smoke','remaining'),summaries)}
-    cost= dict(stages=costs,preparation=json.loads((LOCAL/'frame-binding.json').read_text())['decode'],
+    cost= dict(queue_attempts=queue_attempts,failed_pre_forward_attempt=dict(attempt_id=FAILED_SMOKE,summary_sha256=sha(failed_path),model_load_seconds=failed['model_construction_load_seconds'],run_entry_wall_seconds=failed['run_entry_wall_seconds'],forward_count=0,error=failed['error']),stages=costs,preparation=json.loads((LOCAL/'frame-binding.json').read_text())['decode'],
         model_load_seconds=[s['model_construction_load_seconds'] for s in summaries],
         inference_only_fps=len(records)/sum(v['inference_seconds'] for v in costs.values()),
         measured_frame_wall_fps=len(records)/sum(v['frame_wall_seconds'] for v in costs.values()),

@@ -19,3 +19,11 @@ COCO 순서는 nose, left/right eye, left/right ear, left/right shoulder, left/r
 기존 C3/C6 crossing line은 fence-top/far-side 해석이 검증되지 않았다. 관절·사람 대응 및 동일 인물의 시간적 관측과 실제 경계 geometry가 모두 검증되지 않으면 규칙을 건너뛴다. 이번 가설을 뒤집는 근거는 기술 출력 성공이 아닌 로컬 사람/관절 검수와 시간 단서의 충분성이다. 정확도/F1/FPR/완료율은 null로 둔다.
 
 공식 근거: [PyPI8.4.192](https://pypi.org/project/ultralytics/8.4.192/), [release](https://github.com/ultralytics/ultralytics/releases/tag/v8.4.192), [pose](https://docs.ultralytics.com/tasks/pose), [YOLO26](https://docs.ultralytics.com/models/yolo26), [predict 설정](https://docs.ultralytics.com/modes/predict), [고정 source](https://github.com/ultralytics/ultralytics/tree/922563eab42b778445e55a2edbabb6974eed8e4b).
+
+## 첫 smoke 실패와 단 한 번의 초기화 수정 검토
+
+첫 source commit `b52ac221a2e43924f86efd8fbd32a0df4973ceec`의 실제 queue smoke는 official architecture/end2end guard에서 실패했다. 체크포인트 구성/로드는 실행됐지만 forward0, 입력 프레임 추론0, warmup0이며 자원 gate7172MiB는 통과했다. 실패 원문과 원래 queue/source binding은 불변으로 보존한다.
+
+로컬 ZIP/pickletools opcode와 FloatStorage 검사만으로 checkpoint의 kpt_shape17x3, person0, stride8/16/32, legacy end2end=True와 `_end2end` 직렬화 부재를 확인했다. 모델을 CPU에서 구성하거나 unpickle하지 않았다. 설치된 공식 getter는 `_end2end`가 없으면 unfused dual-head에서 False를 반환한다. 첫 실패 summary에는 실제 조건별 attribute가 없어 정확히 어느 항이 실패했는지는 런타임 관측으로 확정하지 않았다. 공식 [PyTorch backend lines57–58](https://github.com/ultralytics/ultralytics/blob/v8.4.192/ultralytics/nn/backends/pytorch.py#L57)은 `nms=False`에서 받은 override를 `model.end2end=True` setter로 적용하며 [predictor](https://github.com/ultralytics/ultralytics/blob/v8.4.192/ultralytics/engine/predictor.py#L475)도 이 선택을 명시한다.
+
+후속 수정은 이미 사전 등록한 end2end=True를 공식 setter로 초기화하고 max_det300/agnostic=False를 명시하며, assertion 이전에 전체 architecture_pre/post를 기록하는 최소 보완이다. 모델/가중치/환경/manifest/입력/threshold/FP32/rect/비융합 조건은 동일하다. 별도 고정 `batch0003-exp0021-pose-smoke-retry1` key (stage smoke 동일) 하나는 첫 실패 SHA와 zero-forward/원래 queue row를 검증해야 하고, 원래 실패 job의 source/code hash를 변경하지 않는다. 이 correction은 논리적 smoke의 유일한 retry이며 correction job을 재시도하거나 원래 job을 되살리는 경로를 거부한다. 수정 source를 커밋하고 총괄·독립 검토 후 재승인된 queue 실행만 가능하다. 이후 기술 통과 시 remaining265개를 처음 한 번 실행한다.

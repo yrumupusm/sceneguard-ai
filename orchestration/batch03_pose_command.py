@@ -97,14 +97,50 @@ def output_path(stage,attempt):
     return ROOT/'outputs/batch0003/EXP-0021'/stage/attempt
 
 
+FAILED_SMOKE='152d45f0113f4c94b44c69961a677023'
+FAILED_SUMMARY_SHA='593ebd605f6555dba9f426b81d6499878e03a8adfad0686ea5602bd3cb33eadb'
+
+
+def smoke_summary_path(attempt):
+    choices=[output_path('smoke',attempt)/'summary.json']
+    existing=[p for p in choices if p.is_file()]
+    if len(existing)!=1:raise ValueError('one exact smoke result path required')
+    return existing[0]
+
+
+def correction_guard():
+    import sqlite3
+    path=output_path('smoke',FAILED_SMOKE)/'summary.json'
+    if file_hash(path)!=FAILED_SUMMARY_SHA or (path.parent/'inference-started.json').exists():raise ValueError('original failed smoke/zero-forward binding changed')
+    s=json.loads(path.read_text())
+    if s['status']!='failed' or s['forward_count']!=0 or s['results']!=[]:raise ValueError('only original zero-forward failed smoke permits correction')
+    with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro',uri=True) as db:
+        db.row_factory=sqlite3.Row
+        old=db.execute('SELECT a.status AS attempt_status,a.attempt_no,j.* FROM attempts a JOIN jobs j USING(job_id) WHERE a.attempt_id=?',(FAILED_SMOKE,)).fetchone()
+        if old is None or old['attempt_status']!='failed' or old['status']!='failed' or old['attempt_no']!=1 or old['command']!='batch03-pose' or old['job_key']!='batch0003-exp0021-pose-smoke':raise ValueError('original failed native queue row required')
+        if old['code_sha']!='b52ac221a2e43924f86efd8fbd32a0df4973ceec' or old['source_hash']!='1096a4f9c6322a6e7da7f3f6fa204a54fc6b3f095ff618156453e431a8f339e0':raise ValueError('original source provenance must remain unchanged')
+        for key in ('job_id','run_id','task_id','dispatch_id','code_sha','source_hash','input_hash','config_hash'):
+            if old[key]!=s['registration'][key]:raise ValueError('original failed queue provenance differs: '+key)
+        if json.loads(old['config_json'])!=dict(stage='smoke',settings=SETTINGS):raise ValueError('original fixed smoke config differs')
+        jobs=db.execute("SELECT j.job_key,COUNT(a.attempt_id) AS n FROM jobs j LEFT JOIN attempts a USING(job_id) WHERE j.command='batch03-pose' AND json_extract(j.config_json,'$.stage') ='smoke' GROUP BY j.job_key").fetchall()
+        if any(r['job_key'] not in ('batch0003-exp0021-pose-smoke','batch0003-exp0021-pose-smoke-retry1') or r['n']>1 for r in jobs) or sum(r['n'] for r in jobs)>2:raise ValueError('logical smoke attempt budget exceeded')
+    return dict(original_failed_attempt=FAILED_SMOKE,original_summary_sha256=FAILED_SUMMARY_SHA,logical_smoke_attempts_max=2)
+
+
+def job_key(stage):
+    if stage not in STAGES:raise ValueError('fixed pose stage required')
+    return 'batch0003-exp0021-pose-smoke-retry1' if stage=='smoke' else 'batch0003-exp0021-pose-remaining'
+
+
 def successful_smoke():
+    correction_guard()
     import sqlite3
     from orchestration.queue import digest
     with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro',uri=True) as db:
-        rows=db.execute("SELECT a.attempt_id,j.source_hash,j.input_json FROM attempts a JOIN jobs j USING(job_id) WHERE j.command='batch03-pose' AND a.status='succeeded' AND j.status='succeeded' AND json_extract(j.config_json,'$.stage')='smoke'").fetchall()
+        rows=db.execute("SELECT a.attempt_id,j.source_hash,j.input_json FROM attempts a JOIN jobs j USING(job_id) WHERE j.command='batch03-pose' AND a.status='succeeded' AND j.status='succeeded' AND json_extract(j.config_json,'$.stage') ='smoke'").fetchall()
     matching=[]
     for attempt,source,inputs in rows:
-        p=output_path('smoke',attempt)/'summary.json'
+        p=smoke_summary_path(attempt)
         if source!=digest(sources()) or json.loads(inputs)!=input_contract('smoke') or not p.is_file():continue
         s=json.loads(p.read_text())
         if s['status']=='succeeded' and s.get('technical_pass') is True and [r['frame_id'] for r in s['results']]==list(SMOKE):matching.append(attempt)
@@ -115,14 +151,17 @@ def successful_smoke():
 def validate(config,inputs,runtime):
     if not isinstance(config,dict) or set(config)!={'stage','settings'} or config['stage'] not in STAGES or not same(config['settings'],SETTINGS):raise ValueError('fixed pose stage/settings required')
     if Path(runtime).resolve()!=RUNTIME or not INTERPRETER.is_file():raise ValueError('canonical queue and isolated pose interpreter required')
+    if config['stage']=='smoke':correction_guard()
     if inputs!=input_contract(config['stage']):raise ValueError('pose inputs differ')
     if config['stage']=='remaining':successful_smoke()
     return config['stage']
 
 
-def retry_guard(db,job):
+def retry_guard(db,job,for_execution=False):
     # A crash after a forward-start marker cannot regenerate even one success.
     config=json.loads(job['config_json'])
+    if config['stage']=='smoke' and not for_execution:
+        raise ValueError('original and correction smoke immutable; single logical retry budget, no third attempt')
     for row in db.execute('SELECT attempt_id FROM attempts WHERE job_id=?',(job['job_id'],)):
         if (output_path(config['stage'],row[0])/'inference-started.json').exists():raise ValueError('pose forward began; preserve partial results without regeneration')
 

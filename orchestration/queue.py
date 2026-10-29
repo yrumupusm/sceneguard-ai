@@ -270,10 +270,10 @@ class Queue:
                     or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
                 raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
         elif command == 'batch03-pose':
-            from orchestration.batch03_pose_command import validate, validate_assignment
+            from orchestration.batch03_pose_command import validate, validate_assignment, job_key as pose_job_key
             validate(config, input_value, self.runtime)
             validate_assignment(run_id, task_id, dispatch_id)
-            if job_key != 'batch0003-exp0021-pose-' + config['stage']:
+            if job_key != pose_job_key(config['stage']):
                 raise ValueError('one fixed pose job key per stage required')
         elif command == 'vlm-batch02':
             from orchestration.batch02_vlm_command import validate, validate_assignment, job_key as vlm_job_key

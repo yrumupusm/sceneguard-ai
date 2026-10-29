@@ -132,17 +132,37 @@ def pose_rows(boxes, keypoints, width, height):
     return persons
 
 
+def architecture(inner):
+    head=inner.model[-1]
+    return dict(names=inner.names,kpt_shape=list(head.kpt_shape),stride=int(inner.stride.max()),
+        end2end=bool(head.end2end),legacy_model_end2end=inner.__dict__.get('end2end'),
+        serialized_end2end=head.__dict__.get('_end2end'),one2one_present=getattr(head,'one2one_cv2',None) is not None,
+        max_det=head.max_det,export=bool(head.export),fused=False)
+
+
+def initialize_head(inner):
+    # Mirror official v8.4.192 PyTorchBackend override for explicit nms=False before fusion.
+    # This selects an existing checkpoint branch; never builds/loads another model or runs a forward.
+    inner.end2end=True
+    inner.set_head_attr(max_det=300,agnostic_nms=False)
+    if not inner.model[-1].end2end:raise ValueError('official one-to-one branch unavailable; no fallback')
+
+
 def run(stage,attempt,fd):
     from types import SimpleNamespace
     whole=time.perf_counter()
     config=dict(stage=stage,settings=SETTINGS)
     job=verify_lease(config,attempt,fd)
     from orchestration.batch03_pose_command import retry_guard, COCO17
-    with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro',uri=True) as db:retry_guard(db,job)
+    with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro',uri=True) as db:retry_guard(db,job,for_execution=True)
+    correction=None
+    if stage=='smoke':
+        from orchestration.batch03_pose_command import correction_guard
+        correction=correction_guard()
     d=manifest();folder=output_path(stage,attempt);folder.mkdir(parents=True,exist_ok=False)
     summary=dict(status='preflight',config=config,attempt_id=attempt,results=[],technical_pass=False,
         registration={k:job[k] for k in ('job_id','run_id','task_id','dispatch_id','code_sha','source_hash','input_hash','config_hash')},
-        warmup_frames=0,forward_count=0,precision=None,recall=None,f1=None,accuracy=None,false_positive_rate=None,
+        correction_binding=correction,warmup_frames=0,forward_count=0,precision=None,recall=None,f1=None,accuracy=None,false_positive_rate=None,
         adoption='adopt_on_hold',visual_review='unknown',rules='not_run; independent human pose/boundary evidence gate required')
     summary['initial_validation_seconds']=time.perf_counter()-whole
     monitor=None
@@ -163,6 +183,9 @@ def run(stage,attempt,fd):
         t=time.perf_counter();model=YOLO(str(WEIGHT),task='pose');inner=model.model.float().to('cuda:0').eval();torch.cuda.synchronize()
         summary.update(model_construction_load_seconds=time.perf_counter()-t,device=torch.cuda.get_device_name(0),torch=torch.__version__,cuda=torch.version.cuda,
             load_peak_allocated_bytes=torch.cuda.max_memory_allocated(),load_peak_reserved_bytes=torch.cuda.max_memory_reserved())
+        summary['architecture_initial']=architecture(inner)
+        initialize_head(inner)
+        summary['architecture_selected']=architecture(inner)
         head=inner.model[-1]
         if model.task!='pose' or inner.names!={0:'person'} or list(head.kpt_shape)!=[17,3] or not head.end2end or int(inner.stride.max())!=32:raise ValueError('official pose architecture/end2end differs')
         if {str(p.device) for p in inner.parameters()}!={'cuda:0'} or {p.dtype for p in inner.parameters()}!={torch.float32}:raise ValueError('FP32 CUDA0 model required')

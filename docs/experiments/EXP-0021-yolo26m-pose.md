@@ -11,3 +11,7 @@
 재현 준비: `.venv-pose-batch03/bin/python -m batch03_pose.prepare`, CPU import/source parity, `.venv-pose-batch03/bin/python -m batch03_pose.freeze`. 실행은 총괄의 source commit·authorization 및 Astra 검토 뒤 `.venv-pose-batch03/bin/python -m batch03_pose.cli enqueue --stage smoke`와 `run-once`, 기술 통과 후 remaining 동일 절차다. `batch03_pose.report`는 저장 결과만으로 공개 비식별 집계/metrics와 로컬 원본·pose 비교 자료를 반복 생성한다.
 
 기술 실행, 실제 사람/관절 품질, 행동 구분, 독립 리뷰, 웹/GitHub 전달은 각각 별도 판정한다. 원본·좌표·이미지·영상·가중치·raw arrays·runtime/log/receipt는 로컬 전용이다. 완료 등록과 실제 웹/영상 playback·seek, GitHub 원격 byte 확인은 총괄 담당이며 본 준비 완료로 대체하지 않는다.
+
+## 실제 첫 smoke 오류 보존
+
+첫 commit `b52ac221a2e43924f86efd8fbd32a0df4973ceec`의 실제 smoke는 architecture/end2end assertion에서 중단됐다. 모델 load0.347499초·load allocator98,152,448bytes, freeVRAM7172MiB가 관측됐고 forward0·처리입력0이다. smoke 성공이나 pose 품질 결과가 아니다. 실패 attempt의 원래 source/config/input/RunTaskDispatch와 원문은 보존한다. 공식 head 선택 초기화의 최소 수정과 bounded correction1에 대한 새 source 검토가 진행 중이며, 나머지 입력은 실행하지 않았다. 전체 비용은 이 실패 load도 따로 포함한다.

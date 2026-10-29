@@ -101,8 +101,8 @@ class PoseTests(unittest.TestCase):
             db=sqlite3.connect(':memory:');db.execute('CREATE TABLE attempts(attempt_id TEXT,job_id TEXT)');db.execute('INSERT INTO attempts VALUES (?,?)',('a'*32,'j'))
             path=Path(t)/'output';path.mkdir();job=dict(job_id='j',config_json=json.dumps({'stage':'smoke'}))
             with patch.object(command,'output_path',return_value=path):
-                command.retry_guard(db,job);(path/'inference-started.json').write_text('{}')
-                with self.assertRaisesRegex(ValueError,'without regeneration'):command.retry_guard(db,job)
+                command.retry_guard(db,job,for_execution=True);(path/'inference-started.json').write_text('{}')
+                with self.assertRaisesRegex(ValueError,'without regeneration'):command.retry_guard(db,job,for_execution=True)
 
     def test_manifest_identity_source_membership_and_native_parity(self):
         from copy import deepcopy
@@ -130,6 +130,31 @@ class PoseTests(unittest.TestCase):
         if not command.INTERPRETER.exists():self.skipTest('local isolated interpreter not installed')
         self.assertTrue(command.INTERPRETER.resolve().is_relative_to(command.ROOT))
         self.assertFalse(command.INTERPRETER.is_symlink())
+
+    def test_official_head_selection_without_model_construction(self):
+        class Head:
+            def __init__(self):self._selected=False;self.max_det=99;self.agnostic_nms=True
+            @property
+            def end2end(self):return self._selected
+        class Model:
+            def __init__(self):self.model=[Head()]
+            @property
+            def end2end(self):return self.model[-1].end2end
+            @end2end.setter
+            def end2end(self,value):self.model[-1]._selected=value
+            def set_head_attr(self,**kwargs):
+                for k,v in kwargs.items():setattr(self.model[-1],k,v)
+        model=Model();self.assertFalse(model.end2end);runner.initialize_head(model)
+        self.assertTrue(model.end2end);self.assertEqual(model.model[-1].max_det,300);self.assertFalse(model.model[-1].agnostic_nms)
+        class Missing(Model):
+            @Model.end2end.setter
+            def end2end(self,value):pass
+        with self.assertRaisesRegex(ValueError,'no fallback'):runner.initialize_head(Missing())
+
+    def test_no_third_logical_smoke_attempt(self):
+        db=sqlite3.connect(':memory:')
+        for stage in ('smoke',):
+            with self.assertRaises(ValueError):command.retry_guard(db,dict(config_json=json.dumps(dict(stage=stage)),job_id='j'))
 
     def test_network_and_output_identity(self):
         with self.assertRaises(RuntimeError):runner.deny_network()
