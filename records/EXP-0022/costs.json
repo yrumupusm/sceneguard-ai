@@ -1,0 +1,103 @@
+{
+  "allocator_peak_allocated_bytes": 204846592,
+  "allocator_peak_reserved_bytes": 228589568,
+  "constructor_checkpoint_cpu_seconds": 0.2214873929915484,
+  "device_sampler_errors": 0,
+  "device_wide_max_sampled_used_mib": 2704.0,
+  "device_wide_min_sampled_free_mib": 7350.0,
+  "device_wide_sample_count": 13,
+  "experiment_id": "EXP-0022",
+  "frames": [
+    {
+      "frame_id": "030_090",
+      "frame_wall_seconds": 1.2226893269980792,
+      "input_read_convert_verify_seconds": 0.01593004900496453,
+      "official_events": [
+        {
+          "returned_value": false,
+          "seconds": 0.4087266830028966,
+          "stage": "setup_model",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.022499530983623117,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.344751948985504,
+          "stage": "network_predict",
+          "warmup": true
+        },
+        {
+          "returned_value": false,
+          "seconds": 0.4251341930066701,
+          "stage": "warmup",
+          "warmup": true
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.012466901011066511,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.01259431999642402,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "public_predict_wall_seconds": 0.9093708290020004,
+      "results_speed_ms": {
+        "inference": 12.631882971618325,
+        "postprocess": 20.20767700741999,
+        "preprocess": 34.14455897291191
+      },
+      "tensor_capture_save_seconds": 0.011585955013288185
+    },
+    {
+      "frame_id": "007_064",
+      "frame_wall_seconds": 0.28590154499397613,
+      "input_read_convert_verify_seconds": 0.009395937988301739,
+      "official_events": [
+        {
+          "returned_value": true,
+          "seconds": 0.0008973520016297698,
+          "stage": "preprocess",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.013170282996725291,
+          "stage": "network_predict",
+          "warmup": false
+        },
+        {
+          "returned_value": true,
+          "seconds": 0.01327549698180519,
+          "stage": "inference",
+          "warmup": false
+        }
+      ],
+      "public_predict_wall_seconds": 0.027484183985507116,
+      "results_speed_ms": {
+        "inference": 13.310805981745943,
+        "postprocess": 0.68822898901999,
+        "preprocess": 7.294324022950605
+      },
+      "tensor_capture_save_seconds": 0.006329736992483959
+    }
+  ],
+  "free_vram_before_load_mib": 7864.0,
+  "inference_fps": null,
+  "initial_validation_seconds": 3.750995601993054,
+  "official_setup_model_seconds": 0.4087266830028966,
+  "official_warmup_model_forward_seconds": 0.344751948985504,
+  "official_warmup_seconds": 0.4251341930066701,
+  "queue_attempt_wall_seconds": 11.141387939453125,
+  "run_entry_wall_seconds": 6.463836351002101,
+  "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall."
+}

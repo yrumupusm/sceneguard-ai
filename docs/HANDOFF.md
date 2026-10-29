@@ -1,4 +1,10 @@
-# 신규 인수인계 — BATCH-0004 공식 YOLO26m-Pose API 복구 (2026-10-29)
+# 최신 인수인계 — BATCH-0004 공식 추론 성공·관절 품질 확대 보류
+
+2026-10-29 KST. [종합 결과](experiments/BATCH-0004-summary.md), [EXP-0022](experiments/EXP-0022-yolo26-public-predict.md), [독립 검토](reviews/EXP-0022-independent-review.md), [전달 기록](experiments/BATCH-0004-delivery.md)을 따른다. 공식 public API의 두 Results/비교 이미지 생성은 성공했다. 오류/retry0이며 sample forward2와 warmup1을 구분한다. 030:90은 기존 사람 관찰에도 출력0,007:64는2행/관절 추정23개로 실제 대응은 별도 검수다. 필수030 근거가 없어 remaining265·규칙·추적·추가 GPU 작업을 보류한다. 기존 EXP-0021 실패 및 환경/기본 모델은 유지한다.
+
+---
+
+# 보존된 신규 인수인계 — BATCH-0004 공식 YOLO26m-Pose API 복구 (2026-10-29)
 
 - 사용자는 **BATCH-0003의 두 실험이 모델 품질 문제가 아닌 자체 adapter의 end2end 및 visualize 인자 오류**였음을 확인하고, **같은 공식 yolo26m-pose.pt를 YOLO.predict() 공개 API로 고쳐 실제 원본 두 프레임의 관절 출력을 확보**하도록 별도 신규 범위를 승인했다. **실행 명세:** [BATCH-0004 계획](experiments/BATCH-0004-yolo26-pose-recovery-plan.md) + [현재 지시](CODEX_NEXT_TASK.md).
 - **역사 보존:** BATCH-0003/EXP-0021은 실제 모델 load2/정상 출력0/두 adapter 오류/남은265장 미실행으로 종료했다. 그 실패 jobs/reviews/metrics/과거 소스 freeze를 덮거나 세 번째 재시도 하지 않는다. 이번 실행은 **BATCH-0004/EXP-0022의 새 코드·job/attempt/보고서**로 기록한다.

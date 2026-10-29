@@ -1,0 +1,135 @@
+{
+  "adoption": "adopt_on_hold",
+  "attempt_id": "6509c805b40e4d7a8137f770cfa04a05",
+  "batch": "BATCH-0004",
+  "behavioral_validation": "unmeasured",
+  "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+  "code_sha": "7c281e34bc12bd9b53f7cebe73f313f801f870e2",
+  "completed_unique_frames": 2,
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0022",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "frames": [
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "e9295434c62a2316cb0944c335fbd6e7d1591ea96417a61f8f8d3b113b38c3f0",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifacts_sha256": {
+        "comparison": "9a2d55712a117fbf68ebef3a72bde23d1a5ce9b85505c7df3619f9441e11bf11",
+        "input.npy": "9726b3f92e7fd5a138ca7fc7c76fa042d0465af39ee8a0fbdbe8d94d51eafb03",
+        "official-events.local.json": "977ce33ccbe928c71d52cfdcfabec5ff8d45a7818d262c8ff284b19b0309b26d",
+        "original": "e47ebe17847fe8b84abd69c1aad76c91d3daaa4584eb222ff0a3bfd734f2d142",
+        "overlay": "e47ebe17847fe8b84abd69c1aad76c91d3daaa4584eb222ff0a3bfd734f2d142",
+        "results.pt": "e4ddc88ec334e9acb5174dc0f8d4e3bf38b286aa1baeae39c712ec6646d00c56"
+      },
+      "frame_id": "030_090",
+      "native_pts": 1382400,
+      "original_overlay_hash_equal": true,
+      "person_rows": 0,
+      "pts_seconds": 90.0,
+      "retained_joint_estimates": 0,
+      "source_id": "E01_030",
+      "technical_status": "normal_empty_results",
+      "time_base": "1/15360",
+      "visual_correspondence": "unreviewed"
+    },
+    {
+      "actual_input_tensor": {
+        "device": "cuda:0",
+        "dtype": "float32",
+        "sha256": "81a6a5e63b0c263f5cc45a3e64f85be79282ef6b0260df78d49ac69f84144855",
+        "shape": [
+          1,
+          3,
+          640,
+          640
+        ]
+      },
+      "architecture": {
+        "done_warmup": true,
+        "end2end": true,
+        "format": "pt",
+        "fp16": false,
+        "fused": true,
+        "kpt_shape": [
+          17,
+          3
+        ],
+        "stride": 32
+      },
+      "artifacts_sha256": {
+        "comparison": "618ca08af41083b5085ce5a8b4262675eaf8f127f457cb88f853ea04bf4eff06",
+        "input.npy": "5f63860baa11a3e543dc337c793d65a9100e3fae0e2c7316d707c7e41187dddc",
+        "official-events.local.json": "6c53759ae1f6dd16db40bc4d4a114793d8df7ecec9bfccef3b6ee53eb1f357f7",
+        "original": "e0a973bda8e62af50692b2540d2a7162b4a3c58e5bf5fed2c370a4cdd03ed7ed",
+        "overlay": "866126da9ff97dd8da32d5ba190a06f7ca876c436b6240e36e327b25fcbd1104",
+        "results.pt": "8649167015646de50501903c462dd0cb293061366230d65990195d55567f7ec2"
+      },
+      "frame_id": "007_064",
+      "native_pts": 983040,
+      "original_overlay_hash_equal": false,
+      "person_rows": 2,
+      "pts_seconds": 64.0,
+      "retained_joint_estimates": 23,
+      "source_id": "E01_007",
+      "technical_status": "normal_pose_results",
+      "time_base": "1/15360",
+      "visual_correspondence": "unreviewed"
+    }
+  ],
+  "job_id": "c99e0da0610348e7a74bf38d66d19801",
+  "legacy_public_files_preserved": 70,
+  "logical_retry_consumed": false,
+  "logical_smoke_attempts": 1,
+  "manifest_sha256": "dcd6501ef11cd8b7a06aeb2d0bf6c303acb6665ac65dc3a4f6e5d45bba8c4c98",
+  "model_constructions": 1,
+  "new_checkpoints": 0,
+  "new_environments": 0,
+  "original_queue_rows_preserved": {
+    "attempts": 39,
+    "jobs": 39
+  },
+  "person_joint_quality": "030_090 no pose evidence despite prior user-confirmed people/climbing;007_064 unreviewed; counts/confidence do not establish human correspondence",
+  "planned_unique_frames": 267,
+  "public_predict_calls": 2,
+  "remaining_frames": 265,
+  "remaining_status": "held_not_enqueued;030_090 has no pose despite prior user-confirmed people/climbing;007_064 correspondence unreviewed",
+  "rule_status": "not_run",
+  "sample_model_forward_attempts": 2,
+  "sample_model_forward_returns": 2,
+  "schema_version": 1,
+  "scope": "Technical public API smoke only; normal zero-person output at030_090 and two pose rows at007_064 are not person recovery/behavior accuracy",
+  "source_sha256": "1f33d6f8d9e4d1bf92645437b1d04d8abb99ccfeb6c265552c92328767f505a2",
+  "stage_summary_sha256": "84905e3841a7394f0e3a0e214f7298746f33226fdaa3fafb703c3ded40cf5cde",
+  "timing_scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+  "tracker_status": "not_run",
+  "training": false,
+  "warmup_model_forward_attempts": 1,
+  "warmup_model_forward_returns": 1
+}

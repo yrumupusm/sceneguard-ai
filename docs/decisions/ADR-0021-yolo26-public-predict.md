@@ -1,6 +1,6 @@
 # ADR-0021 — YOLO26m-Pose 공식 public predict 경로 복구
 
-2026-10-29. 상태: **CPU 계약 구현·독립 검토 대기, GPU 실행 전**. BATCH-0004 / EXP-0022는 [새 승인 계획](../experiments/BATCH-0004-yolo26-pose-recovery-plan.md)의 별도 배치다. EXP-0021의 두 실패와 소스·queue·결과를 바꾸지 않는다.
+2026-10-29. 상태: **CPU/독립 preflight 후 공식 API smoke2/2 정상 반환, 030 pose 근거 부족으로 확장 보류**. BATCH-0004 / EXP-0022는 [새 승인 계획](../experiments/BATCH-0004-yolo26-pose-recovery-plan.md)의 별도 배치다. EXP-0021의 두 실패와 소스·queue·결과를 바꾸지 않는다.
 
 ## 문제와 선택
 
@@ -31,3 +31,7 @@ CPU에서 설치된 config와 전체 public/downstream signature를 검사하고
 판단을 뒤집을 근거는 테스트/개수가 아닌 실제 public API 반환, 원본과 관절의 사람 검수 및 필요한 시간·경계 근거다. 기술 성공·시각 품질·행동 성능·독립 검토·웹/GitHub 전달을 각각 판정한다.
 
 공식 코드 근거: [Model.predict](https://github.com/ultralytics/ultralytics/blob/v8.4.192/ultralytics/engine/model.py), [predictor](https://github.com/ultralytics/ultralytics/blob/v8.4.192/ultralytics/engine/predictor.py), [PyTorch backend](https://github.com/ultralytics/ultralytics/blob/v8.4.192/ultralytics/nn/backends/pytorch.py), [AutoBackend warmup](https://github.com/ultralytics/ultralytics/blob/v8.4.192/ultralytics/nn/autobackend.py), [pose Results](https://github.com/ultralytics/ultralytics/blob/v8.4.192/ultralytics/models/yolo/pose/predict.py). 설치 파일의 해시와 signature는 로컬 CPU audit에 남긴다.
+
+## 실제 관측에 따른 결정
+
+source `7c281e34bc12bd9b53f7cebe73f313f801f870e2`의 smoke는 정상 Results2개/오류0/retry0를 남겼다. 공식 fuseTrue와 첫 warmup1회+sample forward2회를 실제 관측했다. 030_090은 정상 empty로 person0, 007_064는2행/retained23개이며 후자는 원본 대응 미검수다. 기존 사용자 확인 사람이 있는030에서 pose 근거를 얻지 못했으므로 총괄은 remaining265/규칙/추적을 보류했다. 이 관측은 public API 선택의 기술 복구 근거이지만 사람·관절·행동 품질 채택 근거는 아니다. 새 모델이나 threshold 변경/empty 재시도는 실행하지 않는다. 최종 측정·범위는 [EXP-0022](../experiments/EXP-0022-yolo26-public-predict.md)를 따른다.

@@ -1,0 +1,414 @@
+{
+  "adoption": "adopt_on_hold",
+  "behavioral_validation": "unmeasured",
+  "comparison_group": "EXP-0022",
+  "comparison_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+  "comparison_source": "records/EXP-0022/comparison.json",
+  "cross_experiment_comparable": false,
+  "execution_status": "succeeded",
+  "experiment_id": "EXP-0022",
+  "formal_behavior_metrics": {
+    "accuracy": null,
+    "f1": null,
+    "false_positive_rate": null,
+    "precision": null,
+    "recall": null
+  },
+  "metrics": [
+    {
+      "label": "completed_unique_frames",
+      "sample_n": 2,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "completed_unique_frames"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "frames",
+      "value": 2,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "public_predict_calls",
+      "sample_n": 2,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "public_predict_calls"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "calls",
+      "value": 2,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "sample_model_forward_returns",
+      "sample_n": 2,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "sample_model_forward_returns"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "forwards",
+      "value": 2,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "warmup_model_forward_returns",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "warmup_model_forward_returns"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "forwards",
+      "value": 1,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "constructor_checkpoint_cpu_seconds",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "constructor_checkpoint_cpu_seconds"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "seconds",
+      "value": 0.2214873929915484,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "official_setup_model_seconds",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "official_setup_model_seconds"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "seconds",
+      "value": 0.4087266830028966,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "official_warmup_seconds",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "official_warmup_seconds"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "seconds",
+      "value": 0.4251341930066701,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "run_entry_wall_seconds",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "run_entry_wall_seconds"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "seconds",
+      "value": 6.463836351002101,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "queue_attempt_wall_seconds",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "queue_attempt_wall_seconds"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "seconds",
+      "value": 11.141387939453125,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "allocator_peak_allocated_bytes",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "allocator_peak_allocated_bytes"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "bytes",
+      "value": 204846592,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "allocator_peak_reserved_bytes",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "allocator_peak_reserved_bytes"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "bytes",
+      "value": 228589568,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "free_vram_before_load_mib",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "free_vram_before_load_mib"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "MiB",
+      "value": 7864.0,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "030_090 person_rows",
+      "sample_n": 1,
+      "scope": "Model output only; unreviewed person/joint correspondence, not GT or accuracy",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "person_rows"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "rows",
+      "value": 0,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "030_090 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output only; unreviewed person/joint correspondence, not GT or accuracy",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "estimated joints",
+      "value": 0,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "030_090 preprocess",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "results_speed_ms",
+        "preprocess"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "ms",
+      "value": 34.14455897291191,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "030_090 inference",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "results_speed_ms",
+        "inference"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "ms",
+      "value": 12.631882971618325,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "030_090 postprocess",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "frames",
+        0,
+        "results_speed_ms",
+        "postprocess"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "ms",
+      "value": 20.20767700741999,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "007_064 person_rows",
+      "sample_n": 1,
+      "scope": "Model output only; unreviewed person/joint correspondence, not GT or accuracy",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "person_rows"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "rows",
+      "value": 2,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "007_064 retained_joint_estimates",
+      "sample_n": 1,
+      "scope": "Model output only; unreviewed person/joint correspondence, not GT or accuracy",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "retained_joint_estimates"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "estimated joints",
+      "value": 23,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "007_064 preprocess",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "results_speed_ms",
+        "preprocess"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "ms",
+      "value": 7.294324022950605,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "007_064 inference",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "results_speed_ms",
+        "inference"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "ms",
+      "value": 13.310805981745943,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "007_064 postprocess",
+      "sample_n": 1,
+      "scope": "One instrumented two-frame diagnostic, not throughput/quality benchmark. CPU YOLO checkpoint constructor+sync excludes first predictor deepcopy/fuse/CUDA setup. Official stage observations use Python profiler and CUDA synchronization; setup/warmup return None by contract, not failures. Warmup includes one actual-input model forward and synthetic random-box NMS, excluded from sample predictions and Results.speed. Results.speed preprocess includes observer tensor copy/save and synchronization; inference/postprocess retain profiler overhead. Public predict wall includes setup/first warmup/metadata save; frame wall also source read/verification/native Results and PNG/JSON save. Run-entry includes lease/input validation but excludes interpreter startup/final summary save; queue attempt includes parent validation/child startup. Allocator reset after imports before constructor through final frame; device-wide samples include other processes and are sampled, not exact peaks. Nested network/warmup/inference observations overlap; never sum them as disjoint wall.",
+      "source": "records/EXP-0022/costs.json",
+      "source_pointer": [
+        "frames",
+        1,
+        "results_speed_ms",
+        "postprocess"
+      ],
+      "source_sha256": "1c1af575ed64fc8570cf2ecc732345e6fbae0b48e8903e14e70c914599bccaef",
+      "unit": "ms",
+      "value": 0.68822898901999,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "accuracy",
+      "sample_n": 0,
+      "scope": "No person/joint/action GT; no formal performance metric",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "accuracy"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "precision",
+      "sample_n": 0,
+      "scope": "No person/joint/action GT; no formal performance metric",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "precision"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "recall",
+      "sample_n": 0,
+      "scope": "No person/joint/action GT; no formal performance metric",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "recall"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "f1",
+      "sample_n": 0,
+      "scope": "No person/joint/action GT; no formal performance metric",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "f1"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    },
+    {
+      "label": "false_positive_rate",
+      "sample_n": 0,
+      "scope": "No person/joint/action GT; no formal performance metric",
+      "source": "records/EXP-0022/comparison.json",
+      "source_pointer": [
+        "formal_behavior_metrics",
+        "false_positive_rate"
+      ],
+      "source_sha256": "7c3f9f6c69ce2d83f395aee80956c318d61265a9fe73651a856a67ccf926ef37",
+      "unit": "unmeasured",
+      "value": null,
+      "verification": "saved_native_results_summary_and_exact_queue_receipt"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Technical public API smoke only; normal zero-person output at030_090 and two pose rows at007_064 are not person recovery/behavior accuracy",
+  "source_bindings": {
+    "checkpoint_sha256": "2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4",
+    "execution_commits": [
+      "7c281e34bc12bd9b53f7cebe73f313f801f870e2"
+    ],
+    "manifest_sha256": "dcd6501ef11cd8b7a06aeb2d0bf6c303acb6665ac65dc3a4f6e5d45bba8c4c98",
+    "report_builder_sha256": "c4d70ddcf2ec4af53cc04a88eaf8a5cfb11d093a5b8ed187125aad7e2452e81f",
+    "stage_summary_sha256": [
+      "84905e3841a7394f0e3a0e214f7298746f33226fdaa3fafb703c3ded40cf5cde"
+    ]
+  }
+}

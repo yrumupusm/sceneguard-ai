@@ -1,4 +1,12 @@
-# 다음 작업 — BATCH-0004 YOLO26m-Pose 공식 API 복구 (신규 승인)
+# 다음 작업 — BATCH-0004 기술 복구 확인·확대 보류
+
+2026-10-29 KST. [종합 결과](experiments/BATCH-0004-summary.md), [EXP-0022](experiments/EXP-0022-yolo26-public-predict.md), [전달 기록](experiments/BATCH-0004-delivery.md)을 우선한다. 공식 API로030_090/007_064의 실제 Results 및 원본/overlay 두 장을 생성했다. 오류/retry0이다. 030은 사람/관절0,007은 사람 후보2행/관절 추정23개이며 위치 정확성과 별개다. 030의 기존 사용자 관찰과 대비해 필수 넘기 장면의 관절 근거가 없으므로 remaining265·규칙·추적은 미실행한다. 새 GPU 작업이나 설정 변경을 자동 예약하지 않는다.
+
+007의 새 관절 위치는 두 로컬 이미지로 한 번 묶어 검수 요청했고 미확정 내용은 유지한다. 다음 별도 판단에는 핵심 누락에서 관절 단서를 확보할 근거가 필요하다. 기존 EXP-0021 실패·CV/VLM·공식 라벨·기본 모델은 바꾸지 않는다. 아래 승인 지시는 이 실행의 범위 이력이다.
+
+---
+
+# 보존된 다음 작업 — BATCH-0004 YOLO26m-Pose 공식 API 복구 (신규 승인)
 
 2026-10-29 KST. 사용자는 BATCH-0003에서 실행 어댑터가 실패한 YOLO26m-Pose를 **같은 체크포인트와 기존 원본 입력으로, 공식 public YOLO.predict 경로로 복구**하고 **030_090/007_064의 실제 관절 결과 두 장을 먼저 확보**한 후 조건에 따라 고정 입력을 분석하는 신규 작업을 승인했다. 이 배치에 대한 구체 상한/차단/출력 계약: [BATCH-0004-yolo26-pose-recovery-plan.md](experiments/BATCH-0004-yolo26-pose-recovery-plan.md).
 

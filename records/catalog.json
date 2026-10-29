@@ -1435,6 +1435,60 @@
       "task_id": "task_7c8a851c6d27",
       "title": "BATCH-0003 YOLO26m-Pose",
       "worker_opinion": "기술 실행 실패로 사람·관절 품질을 평가하지 못했다. 출력0개를 정상 판별이나 모델 성능 실패로 해석하지 않으며 기존 구성을 유지한다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-29T04:34:58.183579+00:00",
+      "attempt_id": "6509c805b40e4d7a8137f770cfa04a05",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_9a8df3d90186",
+      "evaluated_model": "YOLO26m-Pose COCO17 / Ultralytics8.4.192 public predict / full-frame640 FP32",
+      "evidence": [
+        {
+          "artifact_id": "exp0022-030-090-pose-comparison",
+          "kind": "image",
+          "label": "030 90초 원본(왼쪽) / 관절 추정(오른쪽): 정상 반환0개"
+        },
+        {
+          "artifact_id": "exp0022-007-064-pose-comparison",
+          "kind": "image",
+          "label": "007 64초 원본(왼쪽) / 관절 추정(오른쪽):2행·23추정, 실제 대응 미검수"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0022",
+      "limitations": [
+        "기존267입력 중2프레임만 실행한 개발 진단이다. 나머지265는 미실행이다.",
+        "030은 기존 사용자 확인 사람이 있지만 pose0;007의 실제 관절 대응은 미검수다.",
+        "행동 규칙·tracker·VLM 결합·개인별 완료 판단은 하지 않았다.",
+        "공식 fusion/첫 warmup을 사용하며 과거 unfused 실패 경로와 비용 범위가 다르다.",
+        "계측과 동기화가 시간에 포함된다. 두 프레임으로 일반 FPS나 정확도/F1/FPR을 주장하지 않는다.",
+        "이미지는 실제 원본/pose 비교이고 영상 또는 연속 추적 결과가 아니다."
+      ],
+      "metric_definitions": "records/EXP-0022/metrics.json",
+      "metrics_path": "records/EXP-0022/metrics.json",
+      "metrics_sha256": "c75ef5f7ebca3698e1ec37601492a808daffe4956dc08ad447733b2e91f29e71",
+      "next_step": "한 번 요청한007 원본/관절 대응 검수를 기록한다. 030누락에 대한 근거 없는 확대·설정 변경·추가 GPU 작업은 자동 실행하지 않는다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "f9611e11a59d58c14d071c438afaa2e0938675ae7802e734549cd28030e3c5c1",
+      "report_path": "docs/experiments/EXP-0022-yolo26-public-predict.md",
+      "report_sha256": "d7a988aafae7b14a184b128ef1f240d85944a4f48ec31d0ecb04257b4347ae3f",
+      "review_binding_path": "docs/reviews/EXP-0022.binding.json",
+      "review_path": "docs/reviews/EXP-0022-independent-review.md",
+      "review_sha256": "66eb0d7422fb587eb55b162685c3fb0411d9ef9993f8df3188ccff630dd501a9",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "c75ef5f7ebca3698e1ec37601492a808daffe4956dc08ad447733b2e91f29e71",
+      "reviewed_report_sha256": "d7a988aafae7b14a184b128ef1f240d85944a4f48ec31d0ecb04257b4347ae3f",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot2",
+      "summary": "공식 YOLO.predict의 두 프레임 추론과 실제 원본/관절 비교 이미지 생성 성공. 03090은0행/관절0,00764는2행/관절 추정23개로 실제 대응은 미검수다. 필수030의 관절 근거가 없어 remaining265와 행동 규칙은 보류했다.",
+      "synthetic": false,
+      "task_id": "task_5df19346a61c",
+      "title": "BATCH-0004 YOLO26m-Pose official API recovery",
+      "worker_opinion": "연결 코드의 기술 복구는 성공했다. 030의0출력은 정상 API 반환이며 정상 행동 판정이나 기술 오류가 아니다. 007의 행/관절 수를 실제 사람 대응 성공으로 해석하지 않는다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

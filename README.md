@@ -1,5 +1,7 @@
 # SceneGuard
 
+**BATCH-0004:** 공식 YOLO.predict로 두 프레임의 실제 추론과 관절 비교 이미지 생성에 성공했습니다. 030의90초는 사람 후보0개로 관절 근거를 얻지 못했고,007의64초는2개 후보/관절 추정23개로 실제 위치 검수는 별도입니다. 나머지265프레임·행동 규칙·기본 교체는 보류합니다. [종합 결과](docs/experiments/BATCH-0004-summary.md) · [전달 기록](docs/experiments/BATCH-0004-delivery.md).
+
 **BATCH-0003 종료:** YOLO26m-Pose의 두 smoke가 실행 어댑터 호환성 오류로 실패해 재시도 한도를 소진했습니다. 관절 출력0개로 품질·행동 구분은 미측정이며 기존 모델을 유지합니다. [종합 결과](docs/experiments/BATCH-0003-summary.md) · [전달 기록](docs/experiments/BATCH-0003-delivery.md).
 
 **CCTV 행동 후보와 근거 구간을 저장하는 로컬 프로토타입 — MVP-0001 코드·실제 전체 영상 실행 완료, 행동 성능 검증·채택 보류**

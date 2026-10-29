@@ -2,7 +2,11 @@
 
 **최우선:** 이 저장소는 완성한 시스템을 꾸미는 곳이 아니라, **근거에 기반한 설계·실험·문제 해결 과정**을 남기는 포트폴리오 프로젝트다. 코드를 만들기 전 `README.md`, `docs/PROJECT_CHARTER.md`, `docs/WORK_PLAN.md`, `docs/decisions/`를 읽는다.
 
-## 신규 명시 승인 — BATCH-0004 공식 YOLO 추론 경로 복구 (2026-10-29)
+## 최신 관측 — BATCH-0004 공식 추론 성공·확대 보류 (2026-10-29)
+
+[종합 결과](docs/experiments/BATCH-0004-summary.md), [EXP-0022](docs/experiments/EXP-0022-yolo26-public-predict.md), [전달 기록](docs/experiments/BATCH-0004-delivery.md)을 우선한다. 같은 모델/환경/입력으로 public YOLO.predict 두 프레임이 성공했고 원본/관절 비교 이미지2개를 로컬에 확보했다. 오류/retry0, sample forward2와 warmup1을 구분한다. 030:90은 기존 사용자 관찰상 사람이 있지만 정상 반환0행으로 관절 근거를 얻지 못했다. 007:64는2행/관절 추정23개이며 실제 위치 검수는 별도다. **remaining265·규칙·추적·추가 GPU 실행을 자동 시작하지 않는다.** 기술 복구 성공이 관절 품질/행동 성능 충족은 아니며 기존 기본 구성과 과거 실패를 보존한다.
+
+## 보존된 명시 승인 — BATCH-0004 공식 YOLO 추론 경로 복구 (2026-10-29)
 
 **지금의 최우선 과제:** [BATCH-0004 기술 복구 계획](docs/experiments/BATCH-0004-yolo26-pose-recovery-plan.md), [CODEX_NEXT_TASK](docs/CODEX_NEXT_TASK.md). 기존 BATCH-0003은 **두 smoke에서 adapter 호출 문제로 실패한 종료 기록**이고 새 GPU 실행 권한이 없었다. 사용자가 **이번 별도 BATCH-0004/EXP-0022에 한해** 같은 pretrained YOLO26m-Pose/가중치·동일 267개 원본 입력으로 공식 public YOLO.predict() API를 통한 재실행을 새로 승인했다. 이력 소스·큐 row·등록/해시·라벨은 그대로 보존하고, 이전 실패 작업을 다시 시도하지 않는다.
 
