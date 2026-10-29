@@ -30,6 +30,9 @@ def digest(value):
 
 
 def source_hash(command="cpu-mock", config=None):
+    if command == 'batch03-pose':
+        from orchestration.batch03_pose_command import sources
+        return digest(sources(config))
     if command == 'vlm-batch02':
         from orchestration.batch02_vlm_command import sources
         return digest(sources(config))
@@ -128,10 +131,10 @@ class Queue:
             queue.migrate_commands()
         return queue
 
-    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False):
+    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False, include_pose=False):
         """Backup then atomically rebuild only the old command CHECK; keep every row."""
-        if include_mvp or include_cv or include_vlm_batch02:
-            target = "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
+        if include_mvp or include_cv or include_vlm_batch02 or include_pose:
+            target = "'batch03-pose'" if include_pose else "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
                 if target in sql:
@@ -141,7 +144,14 @@ class Queue:
                 raise ValueError('cannot migrate while a queue reservation is held')
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
-                if include_vlm_batch02:
+                if include_pose:
+                    if "'batch03-pose'" in sql:
+                        return
+                    old_check = "CHECK(command IN ('cpu-mock','vlm-batch01','mvp-0001','batch02-cv','vlm-batch02'))"
+                    if old_check not in sql:
+                        raise ValueError('pose registration requires preserved batch02 queue schema')
+                    new_check = "CHECK(command IN ('cpu-mock','vlm-batch01','mvp-0001','batch02-cv','vlm-batch02','batch03-pose'))"
+                elif include_vlm_batch02:
                     if "'vlm-batch02'" in sql:
                         return
                     allowed = ("CHECK(command='cpu-mock')",
@@ -183,7 +193,7 @@ class Queue:
                 db.execute('BEGIN IMMEDIATE')
                 if db.execute("SELECT 1 FROM jobs WHERE status IN ('running','unknown')").fetchone():
                     raise ValueError('unresolved queue prevents schema migration')
-                migration = 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
+                migration = 'batch03-pose' if include_pose else 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
                 backup = self.runtime / f'queue-before-{migration}-{uuid.uuid4().hex}.sqlite3'
                 # Separate reader copies committed state while this write lock
                 # prevents enqueues. Backup precedes the first schema mutation.
@@ -246,8 +256,8 @@ class Queue:
     def enqueue(self, *, job_key, run_id, task_id, dispatch_id, owner,
                 command="cpu-mock", input_value=None, config=None, timeout=10,
                 expected_input_hash=None, expected_config_hash=None):
-        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02"}:
-            raise ValueError("only registered cpu-mock/vlm-batch01/mvp-0001/batch02-cv/vlm-batch02 commands are permitted")
+        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose"}:
+            raise ValueError("only registered cpu-mock/vlm-batch01/mvp-0001/batch02-cv/vlm-batch02/batch03-pose commands are permitted")
         if any(not isinstance(x, str) or not x.strip() for x in
                (job_key, run_id, task_id, dispatch_id, owner)):
             raise ValueError("job key, run/task/dispatch and owner are required")
@@ -259,6 +269,12 @@ class Queue:
             if (type(seconds) not in (int, float) or not math.isfinite(seconds)
                     or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
                 raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
+        elif command == 'batch03-pose':
+            from orchestration.batch03_pose_command import validate, validate_assignment
+            validate(config, input_value, self.runtime)
+            validate_assignment(run_id, task_id, dispatch_id)
+            if job_key != 'batch0003-exp0021-pose-' + config['stage']:
+                raise ValueError('one fixed pose job key per stage required')
         elif command == 'vlm-batch02':
             from orchestration.batch02_vlm_command import validate, validate_assignment, job_key as vlm_job_key
             validate(config, input_value, self.runtime)
@@ -297,6 +313,8 @@ class Queue:
                       config_json=json.dumps(config, sort_keys=True),
                       input_hash=ih, config_hash=ch, source_hash=source_hash(command, config),
                       code_sha=sha, timeout=timeout)
+        if command == 'batch03-pose':
+            self.migrate_commands(include_pose=True)
         if command == 'vlm-batch02':
             self.migrate_commands(include_vlm_batch02=True)
         if command == 'batch02-cv':
@@ -359,6 +377,10 @@ class Queue:
             mvp = job['command'] == 'mvp-0001'
             cv = job['command'] == 'batch02-cv'
             vlm02 = job['command'] == 'vlm-batch02'
+            pose = job['command'] == 'batch03-pose'
+            if pose:
+                from orchestration.batch03_pose_command import INTERPRETER as POSE_PYTHON, output_path as pose_output_path
+                pose_config = json.loads(job['config_json'])
             if vlm02:
                 from orchestration.batch02_vlm_command import INTERPRETER as VLM02_PYTHON, output_path as vlm02_output_path
                 vlm02_config = json.loads(job['config_json'])
@@ -371,16 +393,16 @@ class Queue:
             if mvp:
                 from orchestration.mvp_command import INTERPRETER, output_path as mvp_output_path
                 mvp_config = json.loads(job['config_json'])
-            atomic_json(manifest, {"schema_version": 1, "synthetic": not (real or mvp or cv or vlm02),
+            atomic_json(manifest, {"schema_version": 1, "synthetic": not (real or mvp or cv or vlm02 or pose),
                         "execution_status": status,
                         "registration": {"command": job['command'],
-                                         "script": str(ROOT / 'batch02_vlm/runner.py') if vlm02 else str(ROOT / 'batch02_cv/runner.py') if cv else str(ROOT / 'mvp/runner.py') if mvp else (str(ROOT / 'vlm_batch/run.py') if real else str(MOCK)),
-                                         "cwd": str(ROOT), "interpreter": str(VLM02_PYTHON) if vlm02 else str(CV_PYTHON) if cv else str(INTERPRETER) if mvp else (str(ASSETS / MODELS[adapter][1]) if real else sys.executable)},
+                                         "script": str(ROOT / 'batch03_pose/runner.py') if pose else str(ROOT / 'batch02_vlm/runner.py') if vlm02 else str(ROOT / 'batch02_cv/runner.py') if cv else str(ROOT / 'mvp/runner.py') if mvp else (str(ROOT / 'vlm_batch/run.py') if real else str(MOCK)),
+                                         "cwd": str(ROOT), "interpreter": str(POSE_PYTHON) if pose else str(VLM02_PYTHON) if vlm02 else str(CV_PYTHON) if cv else str(INTERPRETER) if mvp else (str(ASSETS / MODELS[adapter][1]) if real else sys.executable)},
                         "job": {**job, "status": status}, "attempt": {**row, "status": status,
                         "exit_code": exit_code, "finished_at": finished, "reason": reason},
-                        "result": str(vlm02_output_path(vlm02_config['condition_id'], attempt)) if vlm02 else str(cv_output_path(cv_config['stage'], attempt)) if cv else str(mvp_output_path(mvp_config['phase'], attempt)) if mvp else (str(output_path(adapter, attempt)) if real else str(manifest.with_name("mock-result.json"))),
-                        "mock_result": None if real or mvp or cv or vlm02 else str(manifest.with_name("mock-result.json")),
-                        "limitations": ["Queue exit alone does not establish model quality"] if real or mvp or cv or vlm02 else
+                        "result": str(pose_output_path(pose_config['stage'], attempt)) if pose else str(vlm02_output_path(vlm02_config['condition_id'], attempt)) if vlm02 else str(cv_output_path(cv_config['stage'], attempt)) if cv else str(mvp_output_path(mvp_config['phase'], attempt)) if mvp else (str(output_path(adapter, attempt)) if real else str(manifest.with_name("mock-result.json"))),
+                        "mock_result": None if real or mvp or cv or vlm02 or pose else str(manifest.with_name("mock-result.json")),
+                        "limitations": ["Queue exit alone does not establish model quality"] if real or mvp or cv or vlm02 or pose else
                                         ["CPU mock timing only; no GPU/model performance measured"]})
             db.execute("BEGIN IMMEDIATE")
             db.execute("UPDATE attempts SET status=?,exit_code=?,finished_at=?,heartbeat=?,"
@@ -427,6 +449,9 @@ class Queue:
                 count = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job_id,)).fetchone()[0]
                 if row is None or row["status"] not in RETRYABLE or count != 1:
                     raise ValueError("one explicit retry allowed only after a known failed/cancelled/interrupted attempt")
+                if row['command']=='batch03-pose':
+                    from orchestration.batch03_pose_command import retry_guard
+                    retry_guard(db,dict(row))
                 if row['command']=='vlm-batch02':
                     from orchestration.batch02_vlm_command import retry_guard
                     retry_guard(db,dict(row))
@@ -469,7 +494,10 @@ class Queue:
                 if digest(json.loads(job["input_json"])) != job["input_hash"] or digest(json.loads(job["config_json"])) != job["config_hash"]:
                     raise ValueError("stored input/config hash mismatch")
                 config = json.loads(job["config_json"])
-                if job['command'] == 'vlm-batch02':
+                if job['command'] == 'batch03-pose':
+                    from orchestration.batch03_pose_command import command
+                    argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
+                elif job['command'] == 'vlm-batch02':
                     from orchestration.batch02_vlm_command import command
                     argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
                 elif job['command'] == 'batch02-cv':
@@ -543,7 +571,7 @@ def main(argv=None):
     enqueue = commands.add_parser("enqueue", help="register one allowlisted job (idempotent job key)")
     for field in ("job-key", "run-id", "task-id", "dispatch-id", "owner"):
         enqueue.add_argument("--" + field, required=True)
-    enqueue.add_argument("--command", choices=["cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02"], default="cpu-mock")
+    enqueue.add_argument("--command", choices=["cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose"], default="cpu-mock")
     enqueue.add_argument("--input-json", type=json.loads, default={"synthetic": True})
     enqueue.add_argument("--config-json", type=json.loads, default={"seconds": 0.1, "exit_code": 0})
     enqueue.add_argument("--expected-input-hash")
