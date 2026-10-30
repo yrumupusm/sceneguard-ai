@@ -376,6 +376,19 @@
       "synthetic": false,
       "task_id": "task_84fc4af07a12",
       "title": "EXP-0037 MVP 분석·사건 카드·검토 저장"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T16:08:26.477270+00:00",
+      "dispatch_id": "ctx_96e9b26e3a5a",
+      "experiment_id": "EXP-0038",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_5e783fa73799",
+      "title": "EXP-0038 Qwen 8B NF4 외형 비교"
     }
   ],
   "schema_version": 1

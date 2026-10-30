@@ -12,6 +12,7 @@ import json
 import math
 from pathlib import Path
 import statistics
+import subprocess
 import time
 from types import SimpleNamespace
 
@@ -21,6 +22,23 @@ PHASE = 'appearance-8b'
 BASELINE_MANIFEST_SHA256 = '996ecdb638b624d69c54a70ff0e44027c95a3d2dd04a78efa00a69856af3ec90'
 PAIR_IMAGE_COUNTS = [5, 5, 5, 4, 4, 4]
 MIN_FREE_MIB = 8192
+ROOT = Path(__file__).resolve().parents[1]
+LOCAL = ROOT / 'runtime/EXP-0038'
+MODEL_DIR = ROOT / 'weights/Qwen3-VL-8B-Instruct'
+CHECKPOINT = LOCAL / 'checkpoint.json'
+AUTHORIZATION = LOCAL / 'appearance-execution-authorization.json'
+INTERPRETER = ROOT / '.venv-vlm-batch02/bin/python'
+ENVIRONMENT = ROOT / 'runtime/BATCH-0002/vlm/environment.json'
+BASELINE_OUTPUT = ROOT / 'outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/appearance_results.json'
+QUANTIZATION = dict(load_in_4bit=True, bnb_4bit_quant_type='nf4',
+    bnb_4bit_compute_dtype='bfloat16', bnb_4bit_quant_storage='uint8',
+    bnb_4bit_use_double_quant=True, llm_int8_skip_modules=['model.visual', 'lm_head'],
+    llm_int8_enable_fp32_cpu_offload=False)
+SETTINGS = dict(seed=0, batch_size=1, do_sample=False, max_new_tokens=192,
+    repetition_penalty=1.0, attention='sdpa', device='cuda:0', dtype='bfloat16',
+    quantization=QUANTIZATION, minimum_gpu_free_mib=MIN_FREE_MIB,
+    execution_error_retries_max=0, model_loads=1, maximum_generate_calls=6,
+    warmup_generations=0)
 REQUIRED_FILES = {
     'config.json', 'generation_config.json', 'preprocessor_config.json',
     'tokenizer.json', 'tokenizer_config.json', 'chat_template.json',
@@ -87,15 +105,104 @@ def require_phase(context: dict) -> None:
         raise ValueError('A new canonical appearance-8b phase is required')
 
 
+def environment_binding() -> dict:
+    """Verify the preserved installed environment before loading, never per pair."""
+    env = json.loads(ENVIRONMENT.read_text())
+    if sha256(INTERPRETER) != env['interpreter_sha256'] or not env.get('files'):
+        raise ValueError('Preserved batch02 Python environment required')
+    for name, expected in env['files'].items():
+        path = ROOT / name
+        if not path.is_relative_to(ROOT) or '..' in Path(name).parts or sha256(path) != expected:
+            raise ValueError('Preserved batch02 environment changed: ' + name)
+    return dict(receipt_sha256=sha256(ENVIRONMENT),
+                interpreter_sha256=sha256(INTERPRETER), versions=env['versions'],
+                files=env['files'])
+
+
+def input_contract() -> dict:
+    from mvp.exp0034_appearance import load_manifest, MANIFEST, bind_inputs
+    manifest = load_manifest()
+    verify_pair_manifest(manifest, MANIFEST)
+    receipt = json.loads(CHECKPOINT.read_text())
+    checked = verify_checkpoint(MODEL_DIR, receipt)
+    return dict(bind_inputs(), model_files=checked, model_id=MODEL_ID, revision=REVISION,
+        checkpoint_receipt_sha256=sha256(CHECKPOINT),
+        checkpoint_receipt_path=str(CHECKPOINT.relative_to(ROOT)),
+        model_directory=str(MODEL_DIR.relative_to(ROOT)),
+        environment=environment_binding(), quantization=QUANTIZATION)
+
+
+def validate_authorization(job=None) -> dict:
+    """Current dispatch GO; cheap frozen bindings on repeated generation leases."""
+    from orchestration.mvp_command import sources
+    from orchestration.queue import digest
+    authorization = json.loads(AUTHORIZATION.read_text())
+    identity = tuple(authorization.get(k) for k in ('run_id', 'task_id', 'dispatch_id'))
+    from mvp.exp0034_appearance import IDENTITY as old_identity
+    if (any(not isinstance(v, str) or not v for v in identity)
+            or identity[1] == old_identity[1] or identity[2] == old_identity[2]):
+        raise ValueError('A new live EXP-0038 Task/Dispatch is required')
+    if any(authorization.get(k) is not True for k in
+           ('confirmed', 'inference_authorized', 'independent_review_passed')):
+        raise ValueError('Explicit coordinator GO and independent preflight required')
+    if (authorization.get('maximum_generate_calls') != 6
+            or authorization.get('model_loads') != 1
+            or authorization.get('warmup_generations') != 0):
+        raise ValueError('One load, six generations, no warmup required')
+    if (authorization.get('sources') != sources({'phase': PHASE})
+            or authorization.get('checkpoint_receipt_sha256') != sha256(CHECKPOINT)
+            or authorization.get('code_sha') != subprocess.check_output(
+                ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()):
+        raise ValueError('Reviewed source/checkpoint/HEAD freeze differs')
+    if job is None:
+        expected_input = digest(input_contract())
+    else:
+        require_phase(job)
+        if tuple(job[k] for k in ('run_id', 'task_id', 'dispatch_id')) != identity:
+            raise ValueError('Current authorized queue Task/Dispatch required')
+        expected_input = job['input_hash']
+        if digest(json.loads(job['input_json'])) != expected_input:
+            raise ValueError('Queue input hash differs')
+    if authorization.get('input_contract_sha256') != expected_input:
+        raise ValueError('Reviewed input contract differs')
+    return authorization
+
+
+def verify_live_dispatch(job, attempt, previous) -> None:
+    """Repeated cheap lease checks exclude old authorization and phase retries."""
+    validate_authorization(job)
+    cursor, matches = None, []
+    while True:
+        argv = ['orca-ide', 'orchestration', 'worker-list', '--run', job['run_id'], '--json']
+        if cursor:
+            argv += ['--cursor', cursor]
+        snapshot = json.loads(subprocess.check_output(argv, text=True, timeout=25))
+        if not snapshot.get('ok'):
+            raise ValueError('EXP-0038 native dispatch lookup failed')
+        result = snapshot.get('result', {})
+        matches += [w for w in result.get('workers', [])
+            if w.get('taskId') == job['task_id'] and w.get('dispatchId') == job['dispatch_id']
+            and w.get('dispatchStatus') == 'dispatched'
+            and w.get('projection', {}).get('liveness', {}).get('verdict') == 'live']
+        page = result.get('page', {})
+        if not page.get('hasMore'):
+            break
+        next_cursor = page.get('nextCursor')
+        if not next_cursor or next_cursor == cursor:
+            raise ValueError('EXP-0038 native dispatch pagination failed')
+        cursor = next_cursor
+    if len(matches) != 1:
+        raise ValueError('EXP-0038 native dispatch must be live')
+    selected = [r for r in previous if json.loads(r[2]).get('phase') == PHASE]
+    if len(selected) != 1 or tuple(selected[0][:2]) != (job['job_id'], attempt):
+        raise ValueError('Only one EXP-0038 job/attempt; automatic retry forbidden')
+
+
 def load_kwargs(torch, bitsandbytes_config) -> dict:
     """Same NF4 route as EXP-0020; language only, no CPU/disk offload."""
-    q = bitsandbytes_config(
-        load_in_4bit=True, bnb_4bit_quant_type='nf4',
-        bnb_4bit_compute_dtype=torch.bfloat16,
-        bnb_4bit_quant_storage=torch.uint8, bnb_4bit_use_double_quant=True,
-        llm_int8_skip_modules=['model.visual', 'lm_head'],
-        llm_int8_enable_fp32_cpu_offload=False,
-    )
+    values = dict(QUANTIZATION, bnb_4bit_compute_dtype=torch.bfloat16,
+                  bnb_4bit_quant_storage=torch.uint8)
+    q = bitsandbytes_config(**values)
     return dict(local_files_only=True, trust_remote_code=False,
                 torch_dtype=torch.bfloat16, attn_implementation='sdpa',
                 device_map={'': 'cuda:0'}, quantization_config=q)
@@ -112,7 +219,13 @@ def load_analyzer(directory: Path, receipt: dict):
     from mvp.runner import verify_environment_lease, check_resources
     context = verify_environment_lease()
     require_phase(context)
+    validation_started = time.perf_counter()
+    if Path(directory) != MODEL_DIR or receipt != json.loads(CHECKPOINT.read_text()):
+        raise ValueError('Use the bound EXP-0038 checkpoint receipt and model directory')
     checked = verify_checkpoint(Path(directory), receipt)
+    if checked != json.loads(context['input_json'])['model_files']:
+        raise ValueError('Loaded checkpoint differs from registered 8B input')
+    checkpoint_validation_seconds = time.perf_counter() - validation_started
     gate = check_resources({'minimum_gpu_free_mib': MIN_FREE_MIB})
 
     import torch
@@ -121,6 +234,8 @@ def load_analyzer(directory: Path, receipt: dict):
     # vision/output weights, and that all parameters/quant states are on CUDA0.
     from batch02_vlm.runner import inventory
 
+    if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
+        raise ValueError('CUDA0 BF16 required')
     torch.manual_seed(0)
     torch.cuda.synchronize()
     torch.cuda.reset_peak_memory_stats()
@@ -141,6 +256,9 @@ def load_analyzer(directory: Path, receipt: dict):
     torch.cuda.synchronize()
     load_seconds = time.perf_counter() - started
     placement = inventory(model)
+    if (model.config.tie_word_embeddings is not False
+            or model.get_input_embeddings().weight is model.get_output_embeddings().weight):
+        raise ValueError('Preserve the official 8B untied BF16 output head')
     footprint = dict(peak_allocated_bytes=int(torch.cuda.max_memory_allocated()),
                      peak_reserved_bytes=int(torch.cuda.max_memory_reserved()),
                      resident_allocated_bytes=int(torch.cuda.memory_allocated()),
@@ -151,7 +269,9 @@ def load_analyzer(directory: Path, receipt: dict):
         last_input_metadata=None, last_generated_token_ids=[])
     return analyzer, dict(model_id=MODEL_ID, revision=REVISION,
         model_files_sha256=checked, loading_and_quantization_seconds=load_seconds,
+        checkpoint_validation_seconds=checkpoint_validation_seconds,
         load_memory=footprint, inventory=placement, resource_gate=gate,
+        whole_device_after_load=check_resources({'minimum_gpu_free_mib': 0}),
         offload=False, model_loads=1, warmup_generations=0)
 
 
@@ -241,14 +361,13 @@ def run_six_pairs(directory: Path, receipt: dict, folder: Path, context: dict,
                                        verify_native_crops, run_appearance)
     from orchestration.mock_job import atomic_json
     folder = Path(folder)
-    root = Path(__file__).resolve().parents[1]
+    root = ROOT
     if (not folder.resolve().is_relative_to(root/'outputs/mvp0001/EXP-0038')
             or folder.is_symlink() or any(p.is_symlink() for p in folder.parents)
             or (folder/'appearance_results.json').exists()):
         raise ValueError('Use a fresh EXP-0038 canonical queue output directory')
     folder.mkdir(parents=True, exist_ok=True)
     baseline_output = Path(baseline_output)
-    baseline_sha = sha256(baseline_output)
     begun = time.perf_counter()
     load = None
     stage = 'cpu_input_validation'
@@ -260,7 +379,7 @@ def run_six_pairs(directory: Path, receipt: dict, folder: Path, context: dict,
         if native['native_crops_checked'] != 27:
             raise ValueError('Incomplete original crop verification')
         atomic_json(folder/'input_binding.json', dict(
-            baseline_output_sha256=baseline_sha, source_inputs=bound,
+            source_inputs=bound,
             native_validation=native, semantic_labels_supplied=False))
         validation_seconds = time.perf_counter() - begun
         stage = 'model_loading'
@@ -273,8 +392,8 @@ def run_six_pairs(directory: Path, receipt: dict, folder: Path, context: dict,
         six_pair_wall = time.perf_counter() - measured
         stats = summarize_rows(rows)
         stage = 'post_generation_comparison'
-        if sha256(baseline_output) != baseline_sha:
-            raise ValueError('Historical result changed')
+        # Do not even open historical response bytes until every generation ends.
+        baseline_sha = sha256(baseline_output)
         previous = json.loads(baseline_output.read_text(encoding='utf-8'))
         if previous.get('partial') is not False:
             raise ValueError('Historical six-pair run is incomplete')
@@ -283,6 +402,7 @@ def run_six_pairs(directory: Path, receipt: dict, folder: Path, context: dict,
         result = dict(experiment='EXP-0038', status='completed_pending_visual_review',
             model_id=MODEL_ID, revision=REVISION, statistics=stats,
             cpu_input_validation_seconds=validation_seconds,
+            checkpoint_validation_seconds=load['checkpoint_validation_seconds'],
             loading_and_quantization_seconds=load['loading_and_quantization_seconds'],
             six_pair_wall_including_artifact_writes_seconds=six_pair_wall,
             total_function_wall_seconds=time.perf_counter()-begun,
@@ -293,10 +413,23 @@ def run_six_pairs(directory: Path, receipt: dict, folder: Path, context: dict,
         atomic_json(folder/'exp0038_summary.json', result)
         return result
     except Exception as exc:
+        memory = None
+        # Failure reporting must not initialize CUDA after a CPU validation error.
+        import sys
+        torch_ref = sys.modules.get('torch')
+        if torch_ref is not None and torch_ref.cuda.is_initialized():
+            try:
+                memory = dict(allocated_bytes=torch_ref.cuda.memory_allocated(),
+                    reserved_bytes=torch_ref.cuda.memory_reserved(),
+                    peak_allocated_bytes=torch_ref.cuda.max_memory_allocated(),
+                    peak_reserved_bytes=torch_ref.cuda.max_memory_reserved())
+            except Exception as memory_error:
+                memory = dict(error=repr(memory_error))
         atomic_json(folder/'exp0038_failure.json', dict(
             experiment='EXP-0038', status='failed', stage=stage,
             error_type=type(exc).__name__, error=str(exc),
             elapsed_seconds=time.perf_counter()-begun,
+            gpu_memory=memory,
             model_load_recorded=load is not None, automatic_retry=False,
             automatic_offload_fallback=False, actual_pairs='see appearance_results.json if present'))
         raise

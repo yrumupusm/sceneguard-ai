@@ -569,8 +569,9 @@ class Queue:
                 from orchestration.vlm_command import ASSETS, MODELS, output_path
                 adapter = json.loads(job['config_json'])['adapter']
             if mvp:
-                from orchestration.mvp_command import INTERPRETER, output_path as mvp_output_path
+                from orchestration.mvp_command import interpreter_for_phase, output_path as mvp_output_path
                 mvp_config = json.loads(job['config_json'])
+                INTERPRETER = interpreter_for_phase(mvp_config['phase'])
             atomic_json(manifest, {"schema_version": 1, "synthetic": not (real or mvp or cv or vlm02 or pose),
                         "execution_status": status,
                         "registration": {"command": job['command'],

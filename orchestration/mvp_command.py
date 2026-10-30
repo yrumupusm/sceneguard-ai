@@ -11,7 +11,7 @@ MODEL_DIR = ASSETS / 'weights/Qwen3-VL-2B-Instruct'
 INTERPRETER = ASSETS / '.venv-vlm/bin/python'
 PINNED_MODEL_SHA256 = '7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0'
 CONFIG_NAMES = ('mvp0001_sources.json', 'mvp0001_cameras.json', 'mvp0001_settings.json')
-PHASES = ('dev', 'full', 'prompt-regression', 'candidate-vlm', 'appearance-compare') + INDEPENDENT_PHASES
+PHASES = ('dev', 'full', 'prompt-regression', 'candidate-vlm', 'appearance-compare', 'appearance-8b') + INDEPENDENT_PHASES
 REGRESSION_RUN = 'run_3d23462a014a'
 REGRESSION_MANIFEST = 'mvp_exp0016_manifest.json'
 REGRESSION_PROMPT = 'mvp_exp0016_prompt.txt'
@@ -78,6 +78,10 @@ def load_regression_manifest():
 
 
 def validate_run(phase, run_id):
+    if phase == 'appearance-8b':
+        from mvp.exp0038 import validate_authorization
+        if validate_authorization()['run_id'] != run_id:
+            raise ValueError('EXP-0038 requires its current authorized Orca run')
     if phase == 'appearance-compare':
         from mvp.exp0034_appearance import IDENTITY, validate_authorization
         if run_id != IDENTITY[0]:
@@ -97,6 +101,12 @@ def sources(config=None):
     if config and config.get('phase') == 'appearance-compare':
         names += ['mvp/exp0034_appearance.py', 'sceneguard/appearance_support.py',
                   'tests_mvp/test_exp0034_appearance.py']
+    if config and config.get('phase') == 'appearance-8b':
+        names += ['mvp/exp0038.py', 'mvp/exp0034_appearance.py',
+                  'sceneguard/appearance_support.py', 'batch02_vlm/__init__.py',
+                  'batch02_vlm/runner.py', 'orchestration/batch02_vlm_command.py',
+                  'requirements-vlm-batch02-lock.txt', 'tests_mvp/test_exp0038.py',
+                  'tests_mvp/test_exp0038_queue.py']
     if config and config.get('phase') == 'candidate-vlm':
         names += ['mvp/candidate_vlm.py', 'configs/exp0033_cv_vlm_manifest.json',
                   'configs/exp0033_cv_vlm_prompt.txt']
@@ -111,6 +121,9 @@ def sources(config=None):
 def input_contract(phase):
     if phase not in PHASES:
         raise ValueError('registered MVP phase required')
+    if phase == 'appearance-8b':
+        from mvp.exp0038 import input_contract as bind_8b
+        return bind_8b()
     source, _, _ = load_configs()
     files = sorted(p for p in MODEL_DIR.rglob('*') if p.is_file()
                    and not any(s.startswith('.') for s in p.relative_to(MODEL_DIR).parts))
@@ -172,15 +185,17 @@ def validate(config, inputs, runtime):
         raise ValueError('EXP-0033 uses the existing fixed camera ROI only')
     if config['phase'] == 'appearance-compare' and config['view'] != 'full_frame':
         raise ValueError('EXP-0034 uses exact stored native target crops only')
+    if config['phase'] == 'appearance-8b' and config['view'] != 'full_frame':
+        raise ValueError('EXP-0038 uses exact stored native target crops only')
     if config['phase'] == 'dev' and config['view'] != 'fixed_roi':
         raise ValueError('development B outputs must be reused, not rerun')
     if config['phase'] in INDEPENDENT_PHASES and config['view'] != 'full_frame':
         raise ValueError('independent comparison permits full_frame only; no frozen camera ROI')
-    if not same(config['settings'], SETTINGS):
+    if not same(config['settings'], settings_for_phase(config['phase'])):
         raise ValueError('baseline generation settings required')
     if Path(runtime).resolve() != RUNTIME:
         raise ValueError('existing canonical GPU queue required')
-    if not INTERPRETER.is_file():
+    if not interpreter_for_phase(config['phase']).is_file():
         raise ValueError('existing offline VLM interpreter unavailable')
     if inputs != input_contract(config['phase']):
         raise ValueError('registered model/input/config hashes differ')
@@ -194,7 +209,7 @@ def command(config, inputs, runtime, attempt, lock_fd):
     phase, view = validate(config, inputs, runtime)
     if not isinstance(attempt, str) or not re.fullmatch('[0-9a-f]{32}', attempt):
         raise ValueError('invalid queue attempt')
-    return [str(INTERPRETER), '-I', str(ROOT / 'mvp/runner.py'), '--phase', phase,
+    return [str(interpreter_for_phase(phase)), '-I', str(ROOT / 'mvp/runner.py'), '--phase', phase,
             '--view', view, '--attempt', attempt, '--lock-fd', str(lock_fd)]
 
 
@@ -205,8 +220,23 @@ def output_path(phase, attempt):
         path = ASSETS / 'outputs/mvp0001/EXP-0016/independent' / phase / attempt
     else:
         experiment = {'dev': 'EXP-0011', 'full': 'EXP-0012', 'prompt-regression': 'EXP-0016',
-                      'candidate-vlm': 'EXP-0033', 'appearance-compare': 'EXP-0034'}[phase]
+                      'candidate-vlm': 'EXP-0033', 'appearance-compare': 'EXP-0034',
+                      'appearance-8b': 'EXP-0038'}[phase]
         path = ASSETS / 'outputs/mvp0001' / experiment / attempt
-    if phase in ('prompt-regression', 'candidate-vlm', 'appearance-compare', *INDEPENDENT_PHASES) and path.resolve() != path:
+    if phase in ('prompt-regression', 'candidate-vlm', 'appearance-compare', 'appearance-8b', *INDEPENDENT_PHASES) and path.resolve() != path:
         raise ValueError('EXP-0016 output must be a new local attempt without symlink redirection')
     return path
+
+
+def settings_for_phase(phase):
+    if phase == 'appearance-8b':
+        from mvp.exp0038 import SETTINGS as settings
+        return settings
+    return SETTINGS
+
+
+def interpreter_for_phase(phase):
+    if phase == 'appearance-8b':
+        from mvp.exp0038 import INTERPRETER as interpreter
+        return interpreter
+    return INTERPRETER

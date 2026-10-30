@@ -18,7 +18,7 @@ from orchestration.mock_job import atomic_json
 from orchestration.queue import digest, process_state, source_hash
 from orchestration.mvp_command import (ASSETS, ROOT, RUNTIME, MODEL_DIR, SETTINGS,
                                        PHASES, load_configs, load_regression_manifest,
-                                       output_path, validate, validate_run)
+                                       output_path, validate, validate_run, settings_for_phase)
 
 
 def verify_lease(config, attempt, lock_fd):
@@ -42,9 +42,17 @@ def verify_lease(config, attempt, lock_fd):
             raise ValueError('canonical reservation is not held')
     with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro', uri=True) as db:
         db.row_factory = sqlite3.Row
-        row = db.execute('SELECT a.status AS attempt_status,a.supervisor_pid,a.supervisor_identity,'
+        query = ('SELECT a.status AS attempt_status,a.supervisor_pid,a.supervisor_identity,'
                          'a.child_pid,a.child_identity,j.* FROM attempts a JOIN jobs j USING(job_id) '
-                         'WHERE a.attempt_id=?', (attempt,)).fetchone()
+                         'WHERE a.attempt_id=?')
+        row = db.execute(query, (attempt,)).fetchone()
+        if config['phase'] == 'appearance-8b':
+            # Popen returns before the supervisor can persist its exact child PID.
+            for _ in range(100):
+                if row is None or row['child_pid'] is not None:
+                    break
+                time.sleep(.01)
+                row = db.execute(query, (attempt,)).fetchone()
     if row is None or row['attempt_status'] != 'running' or row['status'] != 'running' or row['command'] != 'mvp-0001':
         raise ValueError('live MVP queue attempt required')
     if row['supervisor_pid'] != os.getppid() or process_state(row['supervisor_pid'], row['supervisor_identity']) != 'live':
@@ -73,7 +81,16 @@ def verify_lease(config, attempt, lock_fd):
         appearance=[r for r in previous if json.loads(r[2]).get('phase')=='appearance-compare']
         if len(appearance)!=1 or appearance[0][0]!=row['job_id'] or appearance[0][1]!=attempt:
             raise ValueError('Only one EXP-0034 job/attempt; automatic retry forbidden')
-    validate_run(config['phase'], row['run_id'])
+    if config['phase'] == 'appearance-8b':
+        from mvp.exp0038 import verify_live_dispatch
+        if row['child_pid'] != os.getpid():
+            raise ValueError('EXP-0038 exact child receipt required')
+        with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro', uri=True) as db:
+            previous = db.execute("SELECT j.job_id,a.attempt_id,j.config_json FROM jobs j "
+                "LEFT JOIN attempts a USING(job_id) WHERE j.command='mvp-0001'").fetchall()
+        verify_live_dispatch(dict(row), attempt, previous)
+    else:
+        validate_run(config['phase'], row['run_id'])
     return dict(row)
 
 
@@ -258,7 +275,8 @@ def run_prompt_regression(analyzer, folder, sources, cameras, context):
 
 
 def run(phase, view, attempt, lock_fd):
-    config = {'phase': phase, 'view': view, 'settings': SETTINGS}
+    config = {'phase': phase, 'view': view, 'settings': settings_for_phase(phase)}
+    validation_started = time.perf_counter()
     job = verify_lease(config, attempt, lock_fd)
     inputs = json.loads(job['input_json'])
     if digest(inputs) != job['input_hash'] or digest(config) != job['config_hash'] or source_hash('mvp-0001', config) != job['source_hash']:
@@ -271,12 +289,34 @@ def run(phase, view, attempt, lock_fd):
                    code_sha=job['code_sha'], source_hash=job['source_hash'], input_hash=job['input_hash'],
                    config_hash=job['config_hash'], pipeline_settings=pipeline_settings,
                    python_version=sys.version, results=[], generation_retries=0)
+    if phase == 'appearance-8b':
+        # Legacy video-window settings are neither used nor effective for this phase.
+        summary.pop('pipeline_settings')
+        summary['effective_settings'] = config['settings']
     from mvp.independent import PHASES as INDEPENDENT_PHASES, run_comparison
-    if phase in ('prompt-regression', 'candidate-vlm', 'appearance-compare', *INDEPENDENT_PHASES):
+    if phase in ('prompt-regression', 'candidate-vlm', 'appearance-compare', 'appearance-8b', *INDEPENDENT_PHASES):
         from orchestration.mvp_command import sources as code_sources
         summary['bindings'] = {'inputs': inputs, 'code_files': code_sources(config)}
     monitor = None
     try:
+        summary['queue_contract_validation_seconds'] = time.perf_counter() - validation_started
+        os.environ.update(HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1', HF_HUB_DISABLE_TELEMETRY='1',
+            SCENEGUARD_MVP_CONFIG=json.dumps(config), SCENEGUARD_MVP_ATTEMPT=attempt,
+            SCENEGUARD_MVP_LOCK_FD=str(lock_fd))
+        if phase == 'appearance-8b':
+            from mvp.exp0038 import run_six_pairs, MODEL_DIR as model_8b, CHECKPOINT, BASELINE_OUTPUT
+            from vlm_batch.run import MemoryMonitor
+            # The 8B entrypoint owns the resource gate and its sole NF4 model load.
+            # In particular, never construct the historical 2B QwenAnalyzer here.
+            monitor = MemoryMonitor()
+            monitor.start()
+            context = {k: job[k] for k in ('run_id', 'task_id', 'dispatch_id', 'code_sha',
+                                           'source_hash', 'input_hash', 'config_hash')}
+            context.update(attempt_id=attempt, phase=phase, view=view)
+            summary['results'] = run_six_pairs(model_8b, json.loads(CHECKPOINT.read_text()),
+                                               folder, context, BASELINE_OUTPUT)
+            summary['status'] = 'succeeded'
+            return
         if phase == 'appearance-compare':
             from mvp.exp0034_appearance import verify_native_crops
             summary['native_crop_verification'] = verify_native_crops()
