@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0032",
+  "purpose": "Evaluate confirmed 5s window-presence and provisional broader incident windows without claiming completed-crossing recall",
+  "selection": "Development clips chosen from prior publicly documented behavior, not a blind test. Predictor is the same pretrained FCOS+ByteTrack gap line rule for all cameras.",
+  "unit": "camera-time episode: merge gap-line event emissions within 2.0 seconds; no person-ID matching",
+  "source_of_truth": "User-confirmed EXP-0015 5-s windows only. Official intervals and Codex visual observations are provisional.",
+  "videos": [
+    {
+      "video_id": "E01_007",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+      "camera_group": "C3",
+      "role": "development_only",
+      "evaluated_window": [
+        48,
+        105
+      ],
+      "cache_metadata": "outputs/exp0029/cache007/run.json",
+      "replay_summary": "outputs/exp0029/replay007/summary.json",
+      "prediction_file": "outputs/exp0029/replay007/gap/events.jsonl",
+      "reference_windows": [
+        {
+          "window_id": "007_q02_subset",
+          "interval": [
+            48,
+            52.5
+          ],
+          "status": "confirmed_negative_window",
+          "evidence": "configs/mvp_small_eval_labels_r1.json:q02, subset [48,52.5) of user-reviewed [47.5,52.5)",
+          "review_basis": "human_confirmed_for_window"
+        },
+        {
+          "window_id": "007_q03",
+          "interval": [
+            52.5,
+            57.5
+          ],
+          "status": "confirmed_negative_window",
+          "evidence": "configs/mvp_small_eval_labels_r1.json:q03",
+          "review_basis": "human_confirmed_for_window"
+        },
+        {
+          "window_id": "007_q04",
+          "interval": [
+            62.5,
+            67.5
+          ],
+          "status": "confirmed_positive_window",
+          "evidence": "configs/mvp_small_eval_labels_r1.json:q04 attempt/progress (completion not observed)",
+          "review_basis": "human_confirmed_for_window"
+        },
+        {
+          "window_id": "007_official_continuation",
+          "interval": [
+            67.5,
+            73.733
+          ],
+          "status": "provisional_positive_window",
+          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md and EXP-0030: approximate post-q04 continuation, not reviewed full episode",
+          "review_basis": "official_reference_and_codex_visual_draft"
+        }
+      ]
+    },
+    {
+      "video_id": "E01_030",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+      "camera_group": "C6",
+      "role": "development_only",
+      "evaluated_window": [
+        84,
+        100
+      ],
+      "cache_metadata": "outputs/cv_phase2d/cache030/run.json",
+      "replay_summary": "outputs/exp0028/practical-v1/track030/summary.json",
+      "prediction_file": "outputs/exp0028/practical-v1/track030/gap/events.jsonl",
+      "reference_windows": [
+        {
+          "window_id": "030_coarse_official",
+          "interval": [
+            88.933,
+            96.933
+          ],
+          "status": "provisional_positive_window",
+          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md; official video event span, NOT per-person climb onset",
+          "review_basis": "official_reference_and_codex_visual_draft"
+        }
+      ]
+    },
+    {
+      "video_id": "E01_006",
+      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
+      "camera_group": "C3",
+      "role": "development_only",
+      "evaluated_window": [
+        117,
+        133.67
+      ],
+      "cache_metadata": "outputs/cv_phase2d/cache006/run.json",
+      "replay_summary": "outputs/exp0032/replay006/summary.json",
+      "prediction_file": "outputs/exp0032/replay006/gap/events.jsonl",
+      "reference_windows": [
+        {
+          "window_id": "006_hard_negative_candidate",
+          "interval": [
+            119,
+            132
+          ],
+          "status": "provisional_negative_window",
+          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md: user-proposed approx range, not yet fully verified non-event",
+          "review_basis": "user_proposed_requires_full_window_confirmation"
+        }
+      ]
+    },
+    {
+      "video_id": "E01_031",
+      "source_sha256": "daf7b1075c21fdfad6789604bea5922f0e8bfdf34fc5fa54d822212b2ba9d37f",
+      "camera_group": "C7",
+      "role": "development_only",
+      "evaluated_window": [
+        30,
+        46
+      ],
+      "cache_metadata": "outputs/cv_phase2d/cache031/run.json",
+      "replay_summary": "outputs/exp0032/replay031/summary.json",
+      "prediction_file": "outputs/exp0032/replay031/gap/events.jsonl",
+      "reference_windows": [
+        {
+          "window_id": "031_contact_attempt_uncertain",
+          "interval": [
+            33,
+            46
+          ],
+          "status": "provisional_positive_window",
+          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md: contact near33s, not all completed by source end; no exact onset",
+          "review_basis": "user_contact_observation_plus_codex_visual_draft"
+        }
+      ]
+    },
+    {
+      "video_id": "E01_001",
+      "source_sha256": "0218fdc8561260a89780c29270b16d9c13d4e5a4b0098908280bc62a4d08ea71",
+      "camera_group": "C1",
+      "role": "development_only",
+      "evaluated_window": [
+        58,
+        98
+      ],
+      "cache_metadata": "outputs/exp0032/cache001/run.json",
+      "replay_summary": "outputs/exp0032/replay001/summary.json",
+      "prediction_file": "outputs/exp0032/replay001/gap/events.jsonl",
+      "reference_windows": [
+        {
+          "window_id": "001_official_action_span",
+          "interval": [
+            60.867,
+            95.133
+          ],
+          "status": "provisional_positive_window",
+          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md and SAMPLE_AUDIT.md: official span, exact physical onset not confirmed",
+          "review_basis": "official_reference_and_codex_visual_draft"
+        }
+      ]
+    }
+  ]
+}
