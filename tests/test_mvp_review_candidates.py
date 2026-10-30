@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from mvp_review_candidates import appearance_diagnostics,propose_links,review_events,make_feed
+from sceneguard.mvp_review_candidates import appearance_diagnostics,propose_links,review_events,make_feed
 
 
 class MVPReviewTests(unittest.TestCase):
