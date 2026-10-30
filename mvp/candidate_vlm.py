@@ -256,10 +256,60 @@ def posthoc_reference_review(model_output, reference=REFERENCE):
     reviews={x["case_id"]:x for x in labels["references"]}
     if set(reviews)!={x["case_id"] for x in record["results"]}:
         raise ValueError("Reference/case mismatch")
+    def preliminary(model, status):
+        # A reference/claim contrast, NOT an independently checked video verdict.
+        positive = model == "model_claims_climbing_needs_human_review"
+        negative = model == "model_did_not_claim_climbing_not_verified_negative"
+        if status == "no_climbing_human_confirmed_in_window":
+            return ("contradicts_confirmed_no_attempt_window" if positive else
+                    "no_climbing_claim_consistent_with_reference" if negative else "indeterminate")
+        if status == "climbing_attempt_seen_user_coarse":
+            return ("claim_temporally_consistent_requires_evidence_review" if positive else
+                    "model_did_not_claim_observed_attempt" if negative else "indeterminate")
+        return "no_supported_reference_for_comparison"
     return [{"case_id":x["case_id"],"model_claim":x["model_claim"],
              "human_observation_scope":reviews[x["case_id"]]["reference_status"],
              "completion_reference":reviews[x["case_id"]]["completion"],
              "review_source":reviews[x["case_id"]]["evidence"],
+             "preliminary_alignment":preliminary(x["model_claim"],reviews[x["case_id"]]["reference_status"]),
              "visual_agreement_verified":False,
              "requires_original_video_review":True}
             for x in record["results"]]
+
+
+def main():
+    import argparse
+    p=argparse.ArgumentParser(description="EXP-0033 fixed CPU preflight or post-model review")
+    sub=p.add_subparsers(dest="action",required=True)
+    sub.add_parser("preflight")
+    review=sub.add_parser("review")
+    review.add_argument("--results",type=Path,required=True)
+    review.add_argument("--output",type=Path,required=True)
+    args=p.parse_args()
+    if args.action=="preflight":
+        m=frozen_manifest()
+        matched=verify_candidate_events(m)
+        for video in m["videos"]:
+            path=ROOT/video["path"]
+            if sha256(path)!=video["source_sha256"]:
+                raise ValueError("Original source video hash differs")
+        print(json.dumps({"cases":len(m["cases"]),"sources":len(m["videos"]),
+                          "verified_cv_trigger_cases":len(matched),
+                          "negative_controls_without_cv_gate":1,
+                          "gpu_or_model_used":False},ensure_ascii=False))
+    else:
+        out=args.output
+        if (not out.resolve().is_relative_to((ROOT/"outputs").resolve()) or
+                out.exists() or out.is_symlink() or any(x.is_symlink() for x in out.parents)):
+            raise FileExistsError("Only new local ignored outputs/ JSON file is permitted")
+        review=posthoc_reference_review(args.results)
+        out.parent.mkdir(parents=True,exist_ok=True)
+        with out.open("x",encoding="utf-8") as stream:
+            json.dump({"experiment_id":"EXP-0033","status":"reference_contrast_not_independent_truth",
+                       "reviews":review},stream,indent=2,ensure_ascii=False,allow_nan=False)
+            stream.write("\n")
+        print(json.dumps({"reviews":len(review),"visual_agreement_verified":False},ensure_ascii=False))
+
+
+if __name__=="__main__":
+    main()
