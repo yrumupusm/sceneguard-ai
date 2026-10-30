@@ -33,7 +33,7 @@ python -m orchestration.lab --config LOCAL_CONFIG start
 
 ## 등록·게시 확인
 
-결과 보고서·metrics·독립 검토를 정확한 해시로 완료 등록했고 실제 서비스의 보고서/그래프/검토/미디어를 대조했다. GitHub 게시 검증은 별도로 기록한다.
+결과 보고서·metrics·독립 검토를 정확한 해시로 완료 등록했고 실제 서비스의 보고서/그래프/검토/미디어를 대조했다. GitHub 게시 검증도 별도로 완료했다.
 
 등록 후 실제 담당3/EXP-0036에서 원문 펼치기·측정표11행·그래프2개·독립 검토·기존 영상2개의 디코드/재생/seek와 자동 폴링 유지가 통과했다. 두 artifact의 HTTP 바이트도 원본 로컬 MP4와 일치한다. 별도 카드 재생 부분에서도00710알림/2카드와0308알림/3카드가 표시되고, 재생·폴링 중 같은 video/card와 펼친 원래 참조가 유지되며 중복 토스트0임을 다시 확인했다.
 
@@ -48,4 +48,10 @@ python -m orchestration.lab --config LOCAL_CONFIG start
 
 `browser-media.json`과 `cards-registered-result.json`이 완료 등록 뒤의 실제 화면 receipt다. 최초 알림 시험과 원래 JSON의 분류 정확도를 혼동하지 않는다. 이번 세 작업자는 완료 후 release했고 미정리 worker0이다. 이전 retained 작업자는 그대로다.
 
-코드·문서·공개 집계/등록 기록만 명시적으로 staging했다. 미디어·원시 결과·로컬 설정·DB·로그는 제외하며, GitHub 원격 main과 위 네 파일 바이트의 최종 게시 확인을 이어서 기록한다.
+코드·문서·공개 집계/등록 기록16파일만 명시적으로 staging했다. 미디어·원시 결과·로컬 설정·DB·로그는 제외했다.
+
+결과 commit **`431fe803eb262f133913f798f53145fb607e9cd9`**을 GitHub main에 푸시했다.2026-10-30 13:19:24 UTC에 원격 main이 해당 commit인지 확인했고, catalog/assignment 및 위 보고서·metrics·독립 검토·binding4파일의 게시 바이트가 실제 서비스/로컬과 일치했다. 서비스가 제공한 app.js/style.css도 Git commit의 바이트와 정확히 같았다. 영수증은 로컬 `github-result-commit.json`, `github-served-assets.json`이다.
+
+이 전달 확인 문서는 후속 문서 commit으로 게시하며 검토 결속된4파일이나 코드·결과를 바꾸지 않는다. 최종 원격 main과 동일 검토본 확인 receipt는 `github-final-commit.json`에 로컬 보관한다.
+
+**사건 카드 기능·최초1회/무음 갱신·실제 기존 화면 적용·GitHub 게시 확인 완료.** 기존 침입 의심 조건·모델·영역과 판별 성능의 한계는 그대로이며 추가 실험을 시작하지 않는다.
