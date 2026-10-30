@@ -43,8 +43,8 @@ class ManifestAndPromptTests(unittest.TestCase):
             out=Path(p)/"output.json"
             out.write_text(json.dumps(dict(
               status="three_cases_analyzed_not_automatically_verified",
-              results=[dict(case_id=k) for k, *_ in cv.EXPECTED if False] or
-                 [dict(case_id=x[0],model_claim="model_undetermined") for x in cv.EXPECTED])))
+              results=[dict(case_id=x[0],model_claim="model_undetermined")
+                       for x in cv.EXPECTED])))
             observed=cv.posthoc_reference_review(out)
             self.assertEqual(len(observed),3)
             self.assertTrue(all(not x["visual_agreement_verified"] for x in observed))
