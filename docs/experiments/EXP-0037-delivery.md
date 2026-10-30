@@ -46,4 +46,6 @@
 
 기존 Run의 구현 Sol high, 화면 Terra high, 독립 Astra high 배정과 실제 실효 설정을 확인했다. 완료된 이번 작업자4개 배정은 모두 해제했고 정리 대기0이다. 기존 retained 세션22개는 건드리지 않았다. 같은 화면 작업자의 첫 배정 종료 뒤 실제 인수 시험 수정만 후속 배정했으며 총괄 추가 생성/동시 작업자3명 초과는 없다.
 
-GitHub 원격 반영 검증은 게시 후 아래에 기록한다.
+## GitHub 게시 확인
+
+구현·결과 커밋 `ea582925935a5ea71ee9171e9c4ecaba20a7b8ee`를 `origin/main`에 푸시했다. 완료 검증 CLI로 원격 커밋 및 보고서·측정값·독립 검토·검토 결속의 네 원문 해시 일치를 확인했다(`github-result-commit.json`, passed). 실제 서비스가 제공하는 JS/HTML도 게시된 `origin/main` 및 로컬 파일과 바이트가 같았다(`posted-service-version.json`). 브라우저 시연은 별도 `browser-media.json`에서 확인했으며 GitHub 검증만으로 화면 확인을 대신하지 않았다. 이 전달 기록은 결과 커밋 이후 문서 커밋으로 추가한다.
