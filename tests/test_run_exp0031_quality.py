@@ -2,6 +2,7 @@
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 
@@ -24,6 +25,9 @@ class RunnerAdapterContract(unittest.TestCase):
             self.assertEqual(feats['t1']['head'],feats['t1']['tail'])
             self.assertEqual(stats['distinct_new_crops'],0)
             self.assertEqual(stats['encoder_calls'],0)
+            self.assertEqual(stats['selected_slots'],2)
+            self.assertEqual(stats['distinct_reused_crops'],1)
+            self.assertEqual(stats['real_model_forwards'],0)
             self.assertFalse((Path(t)/'crops').exists())
 
     def test_new_crop_decoded_once_and_encoded_only_if_needed(self):
@@ -31,8 +35,22 @@ class RunnerAdapterContract(unittest.TestCase):
         selected={'t1':{'head':[row],'tail':[row]}}
         source=[dict(source_size=[32,32])]
         calls=[]
+        class Model:
+            session=SimpleNamespace(get_providers=lambda:['CPUExecutionProvider'],
+                get_inputs=lambda:[SimpleNamespace(shape=['batch',3,448,448])])
+            def register_forward_pre_hook(self,callback):
+                self.callback=callback
+                return SimpleNamespace(remove=lambda:setattr(self,'callback',None))
+            def __call__(self):
+                self.callback(self,(SimpleNamespace(shape=(1,3,448,448)),))
         class Fake:
+            model=Model()
+            imgsz=(448,448)
+            batch_size=None
+            fp16=False
+            device='cpu'
             def __call__(self,bgr,xywh):
+                self.model()
                 calls.append(xywh.copy())
                 self_test.assertEqual(xywh.shape,(1,4))
                 return [np.ones(512)]
@@ -45,6 +63,12 @@ class RunnerAdapterContract(unittest.TestCase):
                 encoder_factory=encoder,decoder=decode)
             self.assertEqual(stats['distinct_new_crops'],1)
             self.assertEqual(stats['encoder_calls'],1)
+            self.assertEqual(stats['real_model_forwards'],1)
+            self.assertEqual(stats['model_forward_batch_sizes'],[1])
+            self.assertEqual(stats['new_embedding_slots'],2)
+            self.assertEqual(stats['distinct_selected_crops'],1)
+            self.assertGreaterEqual(stats['crop_encoder_elapsed_seconds'],0)
+            self.assertIsNone(Fake.model.callback)
             self.assertEqual(len(calls),1)
             self.assertAlmostEqual(np.linalg.norm(feats['t1']['head'][0]),1)
             self.assertEqual(len(list((Path(t)/'crops').glob('*.jpg'))),1)

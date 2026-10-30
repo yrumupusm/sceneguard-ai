@@ -10,6 +10,7 @@ from dataclasses import asdict
 import json
 import math
 from pathlib import Path
+import time
 
 import numpy as np
 
@@ -36,8 +37,23 @@ def encode_alternatives(video, cached, selected, old_map, *, weights,
                for r in rows if (r['frame_index'],r['cache_index']) not in old_map}
     new_map = {}
     calls=0
+    load_seconds=encode_seconds=encode_cpu_seconds=0.
+    model_batches=[]
+    model_info={}
+    forward_hook=None
     if needed:
+        started=time.perf_counter()
         encoder=encoder_factory(weights, interval)
+        load_seconds=time.perf_counter()-started
+        model=getattr(encoder,'model',None)
+        if model is not None:
+            # Observe real model calls without changing crop selection or inference.
+            forward_hook=model.register_forward_pre_hook(
+                lambda _model,args: model_batches.append(int(args[0].shape[0])))
+            model_info=dict(providers=model.session.get_providers(),
+                            input_shape=model.session.get_inputs()[0].shape,
+                            crop_size=list(encoder.imgsz),batch_size=encoder.batch_size,
+                            fp16=encoder.fp16,device=str(encoder.device))
         by_frame={}
         for key, row in needed.items():
             by_frame.setdefault(key[0],[]).append((key,row))
@@ -53,7 +69,11 @@ def encode_alternatives(video, cached, selected, old_map, *, weights,
             xywh=boxes.copy()
             xywh[:,2:]-=xywh[:,:2]
             xywh[:,:2]+=xywh[:,2:]/2
+            started=time.perf_counter()
+            cpu_started=time.process_time()
             returned=encoder(bgr, xywh)
+            encode_cpu_seconds+=time.process_time()-cpu_started
+            encode_seconds+=time.perf_counter()-started
             calls+=1
             if len(returned)!=len(batch):
                 raise ValueError('ReID feature count mismatch')
@@ -71,6 +91,8 @@ def encode_alternatives(video, cached, selected, old_map, *, weights,
                     raise ValueError('Could not write local representative crop')
         if set(new_map)!=set(needed):
             raise ValueError('Not all required native frames were decoded/encoded')
+        if forward_hook is not None:
+            forward_hook.remove()
     features={}
     for sid,endpoints in selected.items():
         features[sid]={}
@@ -79,10 +101,19 @@ def encode_alternatives(video, cached, selected, old_map, *, weights,
                                  if (r['frame_index'],r['cache_index']) in old_map
                                  else new_map[(r['frame_index'],r['cache_index'])]).tolist()
                                 for r in rows]
+    selected_keys=[(r['frame_index'],r['cache_index'])
+        for endpoints in selected.values() for rows in endpoints.values() for r in rows]
     return features,dict(previous_embeddings_reused=sum(
         (r['frame_index'],r['cache_index']) in old_map
         for endpoints in selected.values() for rows in endpoints.values() for r in rows),
         distinct_new_crops=len(new_map),encoder_calls=calls,
+        selected_slots=len(selected_keys),distinct_selected_crops=len(set(selected_keys)),
+        distinct_reused_crops=len(set(selected_keys)&set(old_map)),
+        new_embedding_slots=sum(key not in old_map for key in selected_keys),
+        real_model_forwards=len(model_batches) if model_info or not needed else None,
+        model_forward_batch_sizes=model_batches,encoder_runtime=model_info,
+        encoder_initialization_including_any_warmup_seconds=load_seconds,
+        crop_encoder_elapsed_seconds=encode_seconds,crop_encoder_process_cpu_seconds=encode_cpu_seconds,
         original_feature_count=len(old_map),device='existing_pinned_CPU_ReID_only_if_needed')
 
 
@@ -115,6 +146,8 @@ def question_comparison(video_key, segments, baseline_features, alternate_featur
 
 def run(cache, tracks, video, prior, weights, out, policy=SelectionPolicy(),
         *, encoder_factory=create_encoder, decoder=decode_native):
+    started=time.perf_counter()
+    cpu_started=time.process_time()
     policy.validate()
     out=Path(out)
     if (not out.resolve().is_relative_to(Path('outputs').resolve())
@@ -180,6 +213,8 @@ def run(cache, tracks, video, prior, weights, out, policy=SelectionPolicy(),
                      reuse=reuse,identity_verified=False,accuracy=None,
                      polygon_status='untouched_current_user_config',
                      detector_forwards=0,tracker_forwards=0,
+                     elapsed_seconds_through_comparison=time.perf_counter()-started,
+                     process_cpu_seconds_through_comparison=time.process_time()-cpu_started,
                      note='Fixed quality-aware selection package (window and risk ranking); alternate associations are experimental only')
         for name,value in (('selected_representatives',selected),('selection_audit',audit),
                            ('alternative_features.local',dict(features=alternate_features)),

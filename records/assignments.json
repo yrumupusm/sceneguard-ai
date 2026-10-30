@@ -298,6 +298,19 @@
       "synthetic": false,
       "task_id": "task_04c50ae15a64",
       "title": "EXP-0030 current-region MVP review integration"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T05:59:52.577398+00:00",
+      "dispatch_id": "ctx_12993797141f",
+      "experiment_id": "EXP-0031",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_b26b4ef3c0f1",
+      "title": "EXP-0031 대표 크롭 품질 비교"
     }
   ],
   "schema_version": 1

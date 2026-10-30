@@ -1,3 +1,15 @@
+## 2026-10-30 — EXP-0031 실제 비교 종료
+
+[결과](experiments/EXP-0031-representative-quality-comparison.md) · [독립 검토](reviews/EXP-0031-independent-review.md) · [웹/GitHub 전달](experiments/EXP-0031-delivery.md).
+
+030/007 각1회 CPU 실행, 새 크롭14/47개와 기존 고유 특징19/44개 재사용. wall5.100877/7.966272초, 모델 실행 오류/retry0. 알고리즘 수락0→0/1→2이며 추가A01(raw17→19)은 일반 보행자의 동일인 연결로 보이는 총괄 초안이다. Q01–Q08 판정은 그대로이고 Q02 첫 의심 크롭·Q08 두 사람 크롭·007 가림이 남아 월장 전후 복원은 미충족, 기본 적용 보류다.
+
+로컬 결과 `outputs/exp0031/track030/v1`, `track007/v1`; 전후26패널 `outputs/exp0031/review-v1/index.html`; 고정 위험 부록 `risk-audit.html`; 총괄 수기 초안과 A01 native 연속 확인판 `outputs/exp0031/coordinator-v1/`. 기존 unknown 양식/원본/과거 결과/공식 라벨/사용자 영역 모두 보존.25tests,81crop/78nativeframe 결합,461보호파일 및45jobs/45attempts 불변 확인. Sol high 담당2명과 Astra high 독립 검토의 실제 영수증은 `runtime/EXP-0031/`에 있다.
+
+GPU·새 모델·학습·영역 입력/수정·임계값 탐색은 없다. 한 차례 비교 종료 후 추가 실험을 자동 시작하지 않는다. Git에는 코드·문서·비식별 집계만 반영한다. 아래는 이전 이력이다.
+
+---
+
 ## 최신 사용자 승인 — EXP-0031 대표 이미지 품질/ID 혼합 개선 시도
 
 2026-10-30: EXP-0030 검토 흐름은 완료, 동일 인물 자동 복원은 미달이다. 사용자가 후속 EXP-0031 한 번을 승인했다. [실행 계약](CODEX_EXP0031.md)과 신규 코드 sceneguard/exp0031_quality.py, run_exp0031_quality.py를 따른다. 이전 EXP-0029의 대표 선택과 같은 tracklet/사전학습 ReID/연결 기준을 유지하되, 겹침·박스 크기 급변·상대적 부분 박스 위험을 고려해 대체 대표를 선정하고 저장된 임베딩은 재사용한다. 새 대표만 CPU ReID 실행 후 Q01~Q08의 사람 검수/오연결을 구분한다. **GitHub 코드+합성 테스트 준비 완료, 실제 로컬 원본 영상 비교 미실행**이다. 현재 사용자 영역 불변, 영역 변경 테스트 없음, EXP-0030 raw ID/사건 후보 불변. 결과가 나와야 개선 여부를 논의한다.

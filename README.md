@@ -1,5 +1,7 @@
 # SceneGuard
 
+> 최신 EXP-0031: 두 영상의 대표 크롭 선택을 실제 비교했습니다. 일반 보행자 한 쌍의 연결은 개선 초안이지만 월장 전후 연결은 해결되지 않아 기본 적용을 보류합니다. [결과·실행 명령](docs/experiments/EXP-0031-representative-quality-comparison.md) · [웹/GitHub 전달 확인](docs/experiments/EXP-0031-delivery.md).
+
 **EXP-0030:** 사용자 수정 영역을 유지한 채030·007의 저장 관측2,190프레임에서 사건 검토 후보, 자동/검토 연결과 원본 근거를 통합했습니다. 비교 영상2개를 포함한 연속8영상과 짧은 근거34클립을 실제 생성했습니다. 서로 다른ID 자동 복원과 행동 성능은 미충족이며 후보를 확정 사건으로 처리하지 않습니다. [결과](docs/experiments/EXP-0030-mvp-review-integration.md) · [실행 방법](docs/design/MVP_REVIEW_CLI.md) · [웹/GitHub 확인](docs/experiments/EXP-0030-delivery.md).
 
 
