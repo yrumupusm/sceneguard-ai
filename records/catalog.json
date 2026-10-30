@@ -2517,6 +2517,139 @@
       "task_id": "task_346d88014dbc",
       "title": "EXP-0034 접근·소실과 외형 비교",
       "worker_opinion": "CPU 두 영상 각1회,단일 GPU job/attempt6회 생성 완료.외형 호환은 동일인 확인이 아니며 미비교 경쟁 후보로 연결 제안0."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T11:36:17.813965+00:00",
+      "attempt_id": "cpu-once-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_0cef69d9c18e",
+      "evaluated_model": "Preserved FCOS/ByteTrack observations only; CPU relaxed rule; no model inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0035-007-comparison",
+          "kind": "video",
+          "label": "007 원본 / EXP-0034 / EXP-0035 · 동일 영역 · 원본 PTS"
+        },
+        {
+          "artifact_id": "exp0035-007-status",
+          "kind": "video",
+          "label": "007 전체 시야 상세 · 새 상태 / 실제 관측과 예측 구분"
+        },
+        {
+          "artifact_id": "exp0035-030-comparison",
+          "kind": "video",
+          "label": "030 원본 / EXP-0034 / EXP-0035 · 동일 영역 · 원본 PTS"
+        },
+        {
+          "artifact_id": "exp0035-030-status",
+          "kind": "video",
+          "label": "030 전체 시야 상세 · 새 상태 / 실제 관측과 예측 구분"
+        },
+        {
+          "artifact_id": "exp0035-007-s0001",
+          "kind": "image",
+          "label": "007 s0001 raw1 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0002",
+          "kind": "image",
+          "label": "007 s0002 raw2 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0003",
+          "kind": "image",
+          "label": "007 s0003 raw5 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0005",
+          "kind": "image",
+          "label": "007 s0005 raw7 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0006",
+          "kind": "image",
+          "label": "007 s0006 raw8 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0007",
+          "kind": "image",
+          "label": "007 s0007 raw9 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0008",
+          "kind": "image",
+          "label": "007 s0008 raw9 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0009",
+          "kind": "image",
+          "label": "007 s0009 raw11 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-007-s0011",
+          "kind": "image",
+          "label": "007 s0011 raw13 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-030-s0001",
+          "kind": "image",
+          "label": "030 s0001 raw1 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-030-s0002",
+          "kind": "image",
+          "label": "030 s0002 raw2 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-030-s0003",
+          "kind": "image",
+          "label": "030 s0003 raw3 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-030-s0004",
+          "kind": "image",
+          "label": "030 s0004 raw4 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        },
+        {
+          "artifact_id": "exp0035-030-s0008",
+          "kind": "image",
+          "label": "030 s0008 raw11 마지막 실제 관측 / 판단 시각 · 정체 미확정"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0035",
+      "limitations": [
+        "기존 사용자 관찰/EXP34 시각 초안 재사용;새 사용자 정답 없음",
+        "007 정상 접근 및 직후 추가 오탐3행",
+        "007 한 ID의 사람 혼합과030 같은 segment 중복 의심",
+        "원본 전체가 아닌 두 개발 구간의 사후 처리",
+        "관련107테스트 통과;전체 저장소 회귀는 환경/과거 fixture 문제 미완료"
+      ],
+      "metric_definitions": "records/EXP-0035/metrics.json",
+      "metrics_path": "records/EXP-0035/metrics.json",
+      "metrics_sha256": "610d158ac1fd702f9737fedee7aef06cf055412329cb5df094302f8eefd7b5a1",
+      "next_step": "이번 비교 종료.추가 의심의 실제 소실/검출 단절/동일 장면 중복을 로컬 근거로 검토하되 추가 추론·영역·임계값 변경은 자동 시작하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "ec5b0e13cb462021a7a77105b617e8668c6cc7e63d388bb24f362097d3601b54",
+      "report_path": "docs/experiments/EXP-0035-results.md",
+      "report_sha256": "b611739f36c54994ecdebf9abbe11562b964119a370407904466349b8f791869",
+      "review_binding_path": "docs/reviews/EXP-0035.binding.json",
+      "review_path": "docs/reviews/EXP-0035-independent-review.md",
+      "review_sha256": "2d6c8add8d2b44e8279b108e8cf97711c871a2c2a7faf6cd3099297e7fafd424",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "610d158ac1fd702f9737fedee7aef06cf055412329cb5df094302f8eefd7b5a1",
+      "reviewed_report_sha256": "b611739f36c54994ecdebf9abbe11562b964119a370407904466349b8f791869",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "저장 관측2,190프레임 CPU 각1회.007 의심0→9,0301→6.가림 소실 raw8·13 후보 복원과 정상 접근 오탐3행 증가를 함께 확인.자동 확정·기본 교체 없음.",
+      "synthetic": false,
+      "task_id": "task_dc6d3f8432b9",
+      "title": "EXP-0035 침입 의심 조건 완화",
+      "worker_opinion": "두 영상 각1회 CPU 적용.기존 ID·박스·PTS·이벤트 보존;후보 증가는 실제 사람·사건 수나 정확도 개선이 아님."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

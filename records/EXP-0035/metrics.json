@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0035",
+  "metrics": [
+    {
+      "label": "007 기존 의심",
+      "value": 0,
+      "unit": "rows",
+      "sample_n": 20,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/007-v1.json",
+      "source_sha256": "341cb82bce3cc505c661e8aa21e68d67cb6f7be1a7d9d34620b8fdbde5edf432",
+      "source_pointer": "$.relaxation_summary.baseline_suspicions",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "007 추가 소실 의심",
+      "value": 9,
+      "unit": "rows",
+      "sample_n": 20,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/007-v1.json",
+      "source_sha256": "341cb82bce3cc505c661e8aa21e68d67cb6f7be1a7d9d34620b8fdbde5edf432",
+      "source_pointer": "$.relaxation_summary.added_loss_candidates",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "007 새 의심 합계",
+      "value": 9,
+      "unit": "rows",
+      "sample_n": 20,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/007-v1.json",
+      "source_sha256": "341cb82bce3cc505c661e8aa21e68d67cb6f7be1a7d9d34620b8fdbde5edf432",
+      "source_pointer": "$.relaxation_summary.total_suspicion_rows",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "007 자동 침입 확인",
+      "value": 0,
+      "unit": "rows",
+      "sample_n": 20,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/007-v1.json",
+      "source_sha256": "341cb82bce3cc505c661e8aa21e68d67cb6f7be1a7d9d34620b8fdbde5edf432",
+      "source_pointer": "$.relaxation_summary.automatic_confirmations",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "007 CPU process wall",
+      "value": 0.46072999300668016,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "CPU application process including IO/hash; not model FPS",
+      "source": "outputs/exp0035/apply007-execution-v1.json",
+      "source_sha256": "ca25f057a7e2a7649de9c9c58bb156a40f1dedbd2ba8992309eac7261a00e509",
+      "source_pointer": "$.wall_seconds",
+      "verification": "actual single subprocess timing receipt"
+    },
+    {
+      "label": "030 기존 의심",
+      "value": 1,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/030-v1.json",
+      "source_sha256": "9cc7b7f4b849a21cf1fa8fe4977bfb234736df6ba4a331d4c1e8488daedec463",
+      "source_pointer": "$.relaxation_summary.baseline_suspicions",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "030 추가 소실 의심",
+      "value": 5,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/030-v1.json",
+      "source_sha256": "9cc7b7f4b849a21cf1fa8fe4977bfb234736df6ba4a331d4c1e8488daedec463",
+      "source_pointer": "$.relaxation_summary.added_loss_candidates",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "030 새 의심 합계",
+      "value": 6,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/030-v1.json",
+      "source_sha256": "9cc7b7f4b849a21cf1fa8fe4977bfb234736df6ba4a331d4c1e8488daedec463",
+      "source_pointer": "$.relaxation_summary.total_suspicion_rows",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "030 자동 침입 확인",
+      "value": 0,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/030-v1.json",
+      "source_sha256": "9cc7b7f4b849a21cf1fa8fe4977bfb234736df6ba4a331d4c1e8488daedec463",
+      "source_pointer": "$.relaxation_summary.automatic_confirmations",
+      "verification": "actual immutable local output; baseline and source equality audited"
+    },
+    {
+      "label": "030 CPU process wall",
+      "value": 0.25562241399893537,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "CPU application process including IO/hash; not model FPS",
+      "source": "outputs/exp0035/apply030-execution-v1.json",
+      "source_sha256": "f4d762acacc9d3e3acf8756e013b5e9b488a5c7f0f801c49739d65d170967113",
+      "source_pointer": "$.wall_seconds",
+      "verification": "actual single subprocess timing receipt"
+    },
+    {
+      "label": "007 정상 접근 및 직후 추가 오탐",
+      "value": 3,
+      "unit": "rows",
+      "sample_n": 28,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/coordinator-summary-v1.json",
+      "source_sha256": "6736501ed803bd4bc3cad3ca064b361a2e8d04f514a67f761473785ee5c56410",
+      "source_pointer": "$.normal007_alert_rows",
+      "verification": "saved outputs with prior user normal observation; not new ground truth"
+    },
+    {
+      "label": "007 raw8·13 신규 의심 segment",
+      "value": 2,
+      "unit": "rows",
+      "sample_n": 28,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/coordinator-summary-v1.json",
+      "source_sha256": "6736501ed803bd4bc3cad3ca064b361a2e8d04f514a67f761473785ee5c56410",
+      "source_pointer": "$.raw8_raw13_new_suspicion_segments",
+      "verification": "saved outputs with prior user normal observation; not new ground truth"
+    },
+    {
+      "label": "030 기존 의심 segment 추가 알림",
+      "value": 1,
+      "unit": "rows",
+      "sample_n": 28,
+      "scope": "Saved segment candidate diagnostics; not people or accuracy",
+      "source": "outputs/exp0035/coordinator-summary-v1.json",
+      "source_sha256": "6736501ed803bd4bc3cad3ca064b361a2e8d04f514a67f761473785ee5c56410",
+      "source_pointer": "$.same_segment030_repeat_alert_rows",
+      "verification": "saved outputs with prior user normal observation; not new ground truth"
+    }
+  ]
+}
