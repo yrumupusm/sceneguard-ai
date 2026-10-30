@@ -2703,6 +2703,74 @@
       "task_id": "task_d4d957340ef8",
       "title": "EXP-0036 출입구별 사건 카드·1회 알림",
       "worker_opinion": "각영상1회CPU처리와기존웹카드기능구현완료.최초알림즉시표시,같은카드무음갱신,원래알림모두보존."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T14:04:14.144359+00:00",
+      "attempt_id": "mvp-finish-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_aa34fb234146",
+      "evaluated_model": "Existing FCOS COCO_V1 + ByteTrack gap + unchanged suspicion rules; no new model",
+      "evidence": [
+        {
+          "artifact_id": "exp0037-007-original",
+          "kind": "video",
+          "label": "007 원본48–105초 · 캐시 분석·카드·검토"
+        },
+        {
+          "artifact_id": "exp0037-030-original",
+          "kind": "video",
+          "label": "030 원본84–100초 · 캐시 분석·카드·검토"
+        },
+        {
+          "artifact_id": "exp0037-smoke-original",
+          "kind": "video",
+          "label": "007 원본45–48초 · 새 검출1회 이후 캐시 재사용 · 행동 정답 미평가"
+        },
+        {
+          "artifact_id": "exp0037-007-comparison",
+          "kind": "video",
+          "label": "007 기존 원본/의심 비교 자료 · 후처리 감소0"
+        },
+        {
+          "artifact_id": "exp0037-030-comparison",
+          "kind": "video",
+          "label": "030 기존 원본/의심 비교 자료 · 후처리 감소0"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0037",
+      "limitations": [
+        "정상접근오탐·검출누락·ID혼합·가림문제유지",
+        "C3/C6 원본30fps 선택구간만실제시연; 전체원본/독립/실시간평가미수행",
+        "새GPU성공이후 exact-job보호는CPU시험만수행; 재추론0",
+        "시험용수동메모는Codex기능검증이며사용자정답아님",
+        "저장영상알림·캐시재사용속도는실시간탐지지연/추론FPS아님"
+      ],
+      "metric_definitions": "records/EXP-0037/metrics.json",
+      "metrics_path": "records/EXP-0037/metrics.json",
+      "metrics_sha256": "f9fb9fa35d49da89e146a53992672796077b275559a840d99f2815b91064249b",
+      "next_step": "이번마무리종료. 추가성능실험/모델/학습/영역변경을자동시작하지않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "c385532b2835f574e27358a8f336f8ef6786654f4bf127f0fba980f4fc0b5f35",
+      "report_path": "docs/experiments/EXP-0037-results.md",
+      "report_sha256": "1dc079d8b13ab45d3bce903ef14abdced68a598e6a3908fb0b21f52f04ebafec",
+      "review_binding_path": "docs/reviews/EXP-0037.binding.json",
+      "review_path": "docs/reviews/EXP-0037-independent-review.md",
+      "review_sha256": "3389c76d0d6b8492b6a2a44aa060cd7c7daca352217c34750b044885b42407a9",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "f9fb9fa35d49da89e146a53992672796077b275559a840d99f2815b91064249b",
+      "reviewed_report_sha256": "1dc079d8b13ab45d3bce903ef14abdced68a598e6a3908fb0b21f52f04ebafec",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "후처리007·030각1회에서감소0으로미채택. 원본선택→분석→카드·근거→기존화면등록→검토저장실제연결. 새검출90프레임1회, 정상접근오탐유지.",
+      "synthetic": false,
+      "task_id": "task_84fc4af07a12",
+      "title": "EXP-0037 MVP 분석·사건 카드·검토 저장",
+      "worker_opinion": "선택구간분석·근거·등록·버전검토저장기능완료; 후처리성능효과없어기본규칙유지"
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

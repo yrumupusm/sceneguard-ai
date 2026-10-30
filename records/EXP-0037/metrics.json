@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0037",
+  "metrics": [
+    {
+      "label": "007 baseline 알림",
+      "value": 10,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Fixed continuation comparison; counts are not true incidents",
+      "source": "outputs/exp0037/007-v1/receipt.json",
+      "source_sha256": "1a89f28caad61961d24f6a3431b980841b3d2197adc50fcb3eb2285a84be1041",
+      "source_pointer": "$.baseline_counts.unique_alerts",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "007 proposed 알림",
+      "value": 10,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Fixed continuation comparison; counts are not true incidents",
+      "source": "outputs/exp0037/007-v1/receipt.json",
+      "source_sha256": "1a89f28caad61961d24f6a3431b980841b3d2197adc50fcb3eb2285a84be1041",
+      "source_pointer": "$.proposed_counts.unique_alerts",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "007 검토 전용 이동",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Fixed continuation comparison; counts are not true incidents",
+      "source": "outputs/exp0037/007-v1/receipt.json",
+      "source_sha256": "1a89f28caad61961d24f6a3431b980841b3d2197adc50fcb3eb2285a84be1041",
+      "source_pointer": "$.review_only_alerts",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "030 baseline 알림",
+      "value": 8,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Fixed continuation comparison; counts are not true incidents",
+      "source": "outputs/exp0037/030-v1/receipt.json",
+      "source_sha256": "dacb9c5d9deaa9047964de5d63b0fe3b794b40834c1962882a17e3603a7a3387",
+      "source_pointer": "$.baseline_counts.unique_alerts",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "030 proposed 알림",
+      "value": 8,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Fixed continuation comparison; counts are not true incidents",
+      "source": "outputs/exp0037/030-v1/receipt.json",
+      "source_sha256": "dacb9c5d9deaa9047964de5d63b0fe3b794b40834c1962882a17e3603a7a3387",
+      "source_pointer": "$.proposed_counts.unique_alerts",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "030 검토 전용 이동",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Fixed continuation comparison; counts are not true incidents",
+      "source": "outputs/exp0037/030-v1/receipt.json",
+      "source_sha256": "dacb9c5d9deaa9047964de5d63b0fe3b794b40834c1962882a17e3603a7a3387",
+      "source_pointer": "$.review_only_alerts",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "007 캐시 분석·근거 저장",
+      "value": 39.67852221301291,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "Cached CPU pipeline including source decode and H264 evidence; not inference FPS",
+      "source": "runtime/EXP-0037/worker-resume-verification.json",
+      "source_sha256": "f1189fb6b7464ed7d0572a1c205858b27483ef635898faa915feddb6c5828b5b",
+      "source_pointer": "$.runs[0].initial_execution.elapsed_seconds",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "007 완료 단계 재사용",
+      "value": 0.22267518998705782,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "Byte-verified completed-stage reuse; not inference FPS",
+      "source": "runtime/EXP-0037/worker-resume-verification.json",
+      "source_sha256": "f1189fb6b7464ed7d0572a1c205858b27483ef635898faa915feddb6c5828b5b",
+      "source_pointer": "$.runs[0].resume.elapsed_seconds",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "030 캐시 분석·근거 저장",
+      "value": 16.22386259501218,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "Cached CPU pipeline including source decode and H264 evidence; not inference FPS",
+      "source": "runtime/EXP-0037/worker-resume-verification.json",
+      "source_sha256": "f1189fb6b7464ed7d0572a1c205858b27483ef635898faa915feddb6c5828b5b",
+      "source_pointer": "$.runs[1].initial_execution.elapsed_seconds",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "030 완료 단계 재사용",
+      "value": 0.24267175199929625,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "Byte-verified completed-stage reuse; not inference FPS",
+      "source": "runtime/EXP-0037/worker-resume-verification.json",
+      "source_sha256": "f1189fb6b7464ed7d0572a1c205858b27483ef635898faa915feddb6c5828b5b",
+      "source_pointer": "$.runs[1].resume.elapsed_seconds",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "새 검출 프레임",
+      "value": 90,
+      "unit": "frames",
+      "sample_n": 90,
+      "scope": "One uncached 3-second functionality smoke; no behavior ground truth",
+      "source": "runtime/EXP-0037/independent-gpu-audit.json",
+      "source_sha256": "844cef14dc89ef997bf03fad5072e4ce8ff0cdd0545c9e07a9d34708c43bf93e",
+      "source_pointer": "$.sample_frames",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "새 분석 전체 시간",
+      "value": 24.98869985001511,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "Single fresh 3-second analysis including queue and evidence; not realtime latency",
+      "source": "runtime/EXP-0037/independent-gpu-audit.json",
+      "source_sha256": "844cef14dc89ef997bf03fad5072e4ce8ff0cdd0545c9e07a9d34708c43bf93e",
+      "source_pointer": "$.pipeline_elapsed_seconds",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "GPU peak allocated",
+      "value": 455169024,
+      "unit": "bytes",
+      "sample_n": 90,
+      "scope": "PyTorch post-warmup peak; excludes other GPU processes",
+      "source": "outputs/exp0037/detector/e852959a32d84224a96e795f16545233/cache/run.json",
+      "source_sha256": "f01d71a18b30aa0f6bf885d46c52f1816bac27300e0f1cfe8f611c0f5274e24a",
+      "source_pointer": "$.peak_allocated_bytes",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "GPU peak reserved",
+      "value": 494927872,
+      "unit": "bytes",
+      "sample_n": 90,
+      "scope": "PyTorch post-warmup peak; excludes other GPU processes",
+      "source": "outputs/exp0037/detector/e852959a32d84224a96e795f16545233/cache/run.json",
+      "source_sha256": "f01d71a18b30aa0f6bf885d46c52f1816bac27300e0f1cfe8f611c0f5274e24a",
+      "source_pointer": "$.peak_reserved_bytes",
+      "verification": "actual local measurement and independent source audit"
+    },
+    {
+      "label": "침입 판별 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "No independent labeled evaluation; developer observations only",
+      "source": "docs/experiments/EXP-0037-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}

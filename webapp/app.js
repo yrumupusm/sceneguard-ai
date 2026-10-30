@@ -67,7 +67,7 @@ async function selectReport(id) {
   const item = (catalogData.experiments || []).find(x => x.experiment_id === id && x.slot === selectedSlot);
   if (!item) return selectPending(id);
   const request = ++selectionRequest;
-  selectedReport = id;
+  selectedReport = id; storageSet('selected-report', id); storageSet('selected-slot', selectedSlot);
   loadedFingerprint = JSON.stringify(item);
   pendingRefresh = false;
   document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
@@ -117,6 +117,7 @@ async function selectReport(id) {
       evidence.append(block);
     });
     if (id === 'EXP-0036') addIncidentFlows(detail, request);
+    if (id === 'EXP-0037') addFinishFlows(detail, request);
     heading(detail, '담당 의견').append(node('p', show(d.worker_opinion)));
     const review = heading(detail, '총괄 검토');
     review.dataset.section = 'review';
@@ -139,6 +140,109 @@ async function selectReport(id) {
   }
 }
 
+
+function storageGet(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function storageSet(key, value) { try { localStorage.setItem(key, value); } catch { /* storage optional */ } }
+
+async function addFinishFlows(detail, request) {
+  const section = heading(detail, '사건 카드 재생과 검토');
+  section.dataset.section = 'incident-flows';
+  try {
+    const response = await fetch('/api/incident-registrations', {cache:'no-store'});
+    if (!response.ok) throw Error('unavailable');
+    const entries = await response.json();
+    if (request !== selectionRequest || !section.isConnected) return;
+    if (!entries.length) { section.append(node('p', '등록된 카드 자료가 없습니다.')); return; }
+    const source = node('select'); source.dataset.exp37Source = '';
+    const view = node('select'); view.dataset.exp37View = '';
+    const holder = node('div', undefined, 'incident-flow');
+    const sources = [...new Set(entries.map(e => e.source_label))];
+    for (const label of sources) { const opt = node('option', label); opt.value = label; source.append(opt); }
+    source.value = sources.includes(storageGet('exp37-source')) ? storageGet('exp37-source') : sources[0];
+    const sourceLabel = node('label', '영상 선택 '); sourceLabel.append(source);
+    const viewLabel = node('label', '결과 선택 '); viewLabel.append(view);
+    section.append(sourceLabel, viewLabel, holder);
+    let epoch = 0;
+    async function display() {
+      const current = ++epoch;
+      const entry = entries.find(e => e.source_label === source.value && e.id === view.value);
+      if (!entry) return;
+      storageSet('exp37-source', source.value); storageSet('exp37-view', view.value);
+      holder.dataset.bundle = entry.id; holder.replaceChildren(node('p', '카드 자료를 불러오는 중입니다.'));
+      try {
+        const r = await fetch(`/api/incidents/${encodeURIComponent(entry.id)}`, {cache:'no-store'});
+        if (!r.ok) throw Error('unavailable');
+        const data = await r.json();
+        if (current !== epoch || !holder.isConnected) return;
+        holder.replaceChildren(); renderIncidentFlow(holder, entry.id, data);
+      } catch { if (current === epoch) holder.textContent = '카드 자료를 사용할 수 없습니다.'; }
+    }
+    function chooseViews() {
+      const choices = entries.filter(e => e.source_label === source.value);
+      view.replaceChildren();
+      for (const entry of choices) {
+        const range = entry.source_window ? ` · ${entry.source_window[0]}–${entry.source_window[1]}초` : '';
+        const opt = node('option', `${entry.view_label}${range} · ${entry.provenance_label}`); opt.value = entry.id; view.append(opt);
+      }
+      const saved = storageGet('exp37-view');
+      view.value = (choices.find(e => e.id === saved) || choices.find(e => e.view_label === saved) || choices[0]).id;
+      display();
+    }
+    source.addEventListener('change', chooseViews); view.addEventListener('change', display); chooseViews();
+  } catch { if (request === selectionRequest) section.append(node('p', '등록된 카드 자료를 불러올 수 없습니다.')); }
+}
+
+function addReview(block, bundleId, incidentId, bundleSha, sessionId) {
+  const panel = node('details'); panel.dataset.reviewPanel = incidentId;
+  const openKey = `review-open:${bundleId}:${bundleSha}:${incidentId}`;
+  panel.open = storageGet(openKey) === 'true';
+  panel.addEventListener('toggle', () => storageSet(openKey, String(panel.open)));
+  panel.append(node('summary', '수동 검토 및 이력'));
+  const status = node('select'); status.dataset.reviewStatus = incidentId;
+  for (const text of ['침입 의심', '침입 확인', '침입 아님', '판단 불가']) { const o = node('option', text); o.value = text; status.append(o); }
+  const reviewer = node('input'); reviewer.dataset.reviewer = incidentId; reviewer.placeholder = '검토자'; reviewer.maxLength = 128;
+  const note = node('textarea'); note.dataset.reviewNote = incidentId; note.placeholder = '메모'; note.maxLength = 2000;
+  const save = node('button', '검토 저장'); save.dataset.reviewSave = incidentId;
+  save.disabled = true;
+  const message = node('p'); message.dataset.reviewMessage = incidentId; message.setAttribute('role', 'status');
+  const history = node('ol'); history.dataset.reviewHistory = incidentId;
+  const current = node('p'); current.dataset.reviewCurrent = incidentId;
+  panel.append(status, reviewer, note, save, message, current, node('p', '변경 이력'), history); block.append(panel);
+  let version = 0;
+  const edited = new Set();
+  for (const field of [status, reviewer, note]) {
+    field.addEventListener('input', () => edited.add(field));
+    field.addEventListener('change', () => edited.add(field));
+  }
+  const url = `/api/incidents/${encodeURIComponent(bundleId)}/reviews/${encodeURIComponent(incidentId)}`;
+  function showState(data, fill) {
+    version = data.review?.version || 0;
+    current.textContent = data.review ? `저장된 검토: ${data.review.status} · ${data.review.reviewer} · 버전 ${version} · ${data.review.updated_utc} (UTC) · ${data.review.note}` : '저장된 검토 없음';
+    history.replaceChildren();
+    for (const item of data.history) history.append(node('li', `버전 ${item.version} · ${item.status} · ${item.reviewer} · ${item.updated_utc} (UTC) · ${item.note}`));
+    if (fill && data.review) {
+      for (const [field, value] of [[status, data.review.status], [reviewer, data.review.reviewer], [note, data.review.note]]) {
+        if (!edited.has(field)) field.value = value;
+      }
+    }
+  }
+  fetch(`${url}?bundle_sha256=${encodeURIComponent(bundleSha)}&session_id=${encodeURIComponent(sessionId)}`, {cache:'no-store'}).then(r => {
+    if (r.status === 409) { message.textContent = '카드 자료가 변경되었습니다. 작성 중인 내용을 복사하고 페이지를 새로고침하세요.'; return null; }
+    if (!r.ok) throw Error(); return r.json();
+  }).then(data => { if (data) { showState(data, true); save.disabled = false; } }).catch(() => { message.textContent = '검토를 불러오지 못했습니다. 작성 중인 내용을 복사하고 페이지를 새로고침하세요.'; });
+  save.addEventListener('click', async () => {
+    save.disabled = true;
+    try {
+      const r = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status:status.value, reviewer:reviewer.value, note:note.value, expected_version:version, bundle_sha256:bundleSha, session_id:sessionId})});
+      if (r.status === 409) { const state = await r.json(); if (Object.hasOwn(state, 'history')) { showState(state, false); message.textContent = '다른 수정이 저장되어 최신 상태를 불러왔습니다. 작성 중인 내용은 유지됩니다. 확인 후 다시 저장하세요.'; } else { message.textContent = '카드 자료가 변경되었습니다. 작성 중인 내용을 복사하고 페이지를 새로고침하세요.'; } return; }
+      if (!r.ok) throw Error();
+      showState(await r.json(), false); message.textContent = '검토가 저장되었습니다.';
+      panel.dispatchEvent(new CustomEvent('incident-review-saved', {bubbles:true, detail:{incidentId, version}}));
+    } catch { message.textContent = '검토 저장에 실패했습니다. 입력을 확인하세요.'; }
+    finally { save.disabled = false; }
+  });
+}
+
 // Saved timeline snapshots are presented at their original decision PTS.
 async function addIncidentFlows(detail, request) {
   const section = heading(detail, '사건 카드 재생');
@@ -159,7 +263,7 @@ async function addIncidentFlows(detail, request) {
   }
 }
 function renderIncidentFlow(holder, id, data) {
-  holder.append(node('h3', `${id} · 기존 비교 영상`));
+  holder.append(node('h3', `${data.source_label || id} · ${data.view_label || '기존 비교 영상'}`));
   const video = node('video'); video.controls = true; video.preload = 'metadata';
   video.dataset.incidentVideo = id; video.src = `/artifacts/${encodeURIComponent(data.media_artifact_id)}`;
   const clock = node('p'); clock.dataset.incidentClock = id;
@@ -168,11 +272,23 @@ function renderIncidentFlow(holder, id, data) {
   const toast = node('div', '', 'incident-toast'); toast.dataset.incidentToast = id;
   toast.dataset.paintedCount = '0'; toast.hidden = true; toast.setAttribute('role', 'status');
   holder.append(video, clock, counter, cards, toast);
+  if (data.provenance_label) holder.append(node('p', `출처: ${data.provenance_label}`, 'muted'));
+  if (data.review_only_alerts) {
+    const only = node('details'); only.dataset.reviewOnly = id;
+    only.append(node('summary', `검토 전용 알림 ${data.review_only_alerts.length}개`));
+    if (!data.review_only_alerts.length) only.append(node('p', '검토 전용 알림 없음'));
+    for (const e of data.review_only_alerts) only.append(node('p', `${e.decision_time_pts.toFixed(3)}초 · ${e.source_ref.source_pointer} · ${e.event_id}`));
+    holder.append(only);
+  }
   const events = new Map(data.events.map(e => [e.event_id, e]));
   const [start, end] = data.source_window;
+  const mediaStart = data.media_start_pts ?? start;
   let previous = start, generation = 0, timer;
   const pending = new Set();
   const cardNodes = new Map();
+  const stateId = `${id}:${data.bundle_sha256 || 'legacy'}`;
+  const savedTime = storageGet(`incident-time:${stateId}`);
+  video.currentTime = savedTime !== null && Number.isFinite(Number(savedTime)) ? Number(savedTime) : start - mediaStart;
   function render(pts) {
     const snapshots = new Map(); let raw = 0;
     for (const item of data.timeline) {
@@ -182,7 +298,7 @@ function renderIncidentFlow(holder, id, data) {
     clock.textContent = `원본 시각 ${pts.toFixed(3)}초`;
     counter.textContent = `개별 알림 ${raw}개 · 사건 카드 ${snapshots.size}개`;
     for (const [cardId, entry] of cardNodes) {
-      if (!snapshots.has(cardId)) { entry.block.remove(); cardNodes.delete(cardId); }
+      if (!snapshots.has(cardId)) { entry.block.remove(); entry.attached = false; }
     }
     for (const card of snapshots.values()) {
       let entry = cardNodes.get(card.incident_id);
@@ -190,12 +306,17 @@ function renderIncidentFlow(holder, id, data) {
         const block = node('div', undefined, 'incident-card'); block.dataset.incidentId = card.incident_id;
         const title = node('strong'), summary = node('p'), details = node('details'), list = node('ul');
         const evidence = node('button', '근거 시점 보기'); evidence.dataset.incidentSeek = card.incident_id;
-        evidence.addEventListener('click', () => { video.pause(); video.currentTime = Math.max(start, card.first_alert_pts - 3) - start; });
+        evidence.addEventListener('click', () => { video.pause(); video.currentTime = Math.max(start, card.first_alert_pts - 3) - mediaStart; });
+        details.open = storageGet(`incident-details:${stateId}:${card.incident_id}`) === 'true';
+        details.addEventListener('toggle', () => storageSet(`incident-details:${stateId}:${card.incident_id}`, String(details.open)));
         details.append(node('summary', '원래 알림 참조'), list);
         block.append(title, summary, details, evidence); cards.append(block);
         entry = {block, title, summary, details, list, fingerprint: null};
+        entry.attached = true;
+        if (data.bundle_sha256) addReview(block, id, card.incident_id, data.bundle_sha256, data.session_id);
         cardNodes.set(card.incident_id, entry);
       }
+      if (!entry.attached) { cards.append(entry.block); entry.attached = true; }
       const fingerprint = JSON.stringify(card);
       if (entry.fingerprint === fingerprint) continue;
       entry.fingerprint = fingerprint;
@@ -224,18 +345,18 @@ function renderIncidentFlow(holder, id, data) {
     } catch { /* no delivery claim on network error */ }
     finally { pending.delete(item.notification_key); }
   }
-  video.addEventListener('seeking', () => { generation++; previous = Math.min(end, start + video.currentTime); render(previous); });
-  video.addEventListener('seeked', () => { previous = Math.min(end, start + video.currentTime); render(previous); });
+  video.addEventListener('seeking', () => { generation++; previous = Math.max(start, Math.min(end, mediaStart + video.currentTime)); render(previous); });
+  video.addEventListener('seeked', () => { previous = Math.max(start, Math.min(end, mediaStart + video.currentTime)); render(previous); });
   video.addEventListener('timeupdate', () => {
-    const pts = Math.min(end, start + video.currentTime);
+    const pts = Math.max(start, Math.min(end, mediaStart + video.currentTime));
     if (!video.paused && !video.seeking && pts >= previous) {
       for (const item of data.timeline) {
-        if (item.notify && item.decision_time_pts > previous + 1e-9 && item.decision_time_pts <= pts + 1e-9) notify(item, generation);
+        if ((data.notification_enabled ?? (id === '007' || id === '030')) && item.notify && item.decision_time_pts > previous + 1e-9 && item.decision_time_pts <= pts + 1e-9) notify(item, generation);
       }
     }
-    previous = pts; render(pts);
+    previous = pts; storageSet(`incident-time:${stateId}`, String(video.currentTime)); render(pts);
   });
-  render(start);
+  render(Math.max(start, Math.min(end, mediaStart + video.currentTime)));
 }
 
 // Native status is usable only for an exact, fresh, connected observation.
@@ -302,7 +423,7 @@ function renderChoices() {
   });
 }
 function selectPending(id) {
-  selectionRequest++; selectedReport = id; loadedFingerprint = null; pendingRefresh = false;
+  selectionRequest++; selectedReport = id; storageSet('selected-report', id); storageSet('selected-slot', selectedSlot); loadedFingerprint = null; pendingRefresh = false;
   const assignment = (catalogData.assignments || []).find(x => x.slot === selectedSlot && x.experiment_id === id);
   const detail = $('#detail'); detail.dataset.id = id; detail.dataset.result = 'pending';
   delete detail.dataset.executionStatus;
@@ -311,6 +432,7 @@ function selectPending(id) {
     node('p', `Orca 작업: ${observationText(nativeObservation(assignment, statusData))}`, 'muted'),
     node('p', `요청 모델: ${show(assignment?.agent_model_requested)} · 실효 모델: ${show(assignment?.agent_model_effective)} · 실효 effort: ${show(assignment?.reasoning_effective)}`, 'muted'));
   if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
+  if (id === 'EXP-0037') addFinishFlows(detail, selectionRequest);
   renderChoices();
 }
 function selectSlot(id) {
@@ -346,7 +468,10 @@ async function refresh() {
       card.append(node('h3', coordinator.label), node('p', `${coordinator.model} · ${coordinator.effort}`), node('p', coordinator.note, 'muted'));
       $('#coordinator').replaceChildren(card);
       (catalogData.roles.setup_workers || []).forEach(item => $('#workers').append(node('p', `${show(item.role)} · ${show(item.model)} · ${show(item.effort)} · ${show(item.status)}`)));
-      selectSlot('unassigned');
+      const savedSlot = storageGet('selected-slot') || 'unassigned';
+      const savedReport = storageGet('selected-report');
+      selectSlot(savedSlot);
+      if (savedReport && slotItems(catalogData, savedSlot).some(x => x.id === savedReport)) selectReport(savedReport);
     } else { renderSlots(); renderChoices(); refreshSelectedIfChanged(); }
   } else if (!catalogData) $('#detail').textContent = '카탈로그를 불러올 수 없습니다.';
   else {

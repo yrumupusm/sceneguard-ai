@@ -82,6 +82,56 @@ class IncidentWebTests(unittest.TestCase):
         self.write_bundle(); self.config['incident_bundles']['007']['sha256'] = self.sha(); self.write_config()
         self.assertEqual(self.client.get('/api/incidents/007').status_code, 404)
 
+    def test_registered_review_conflict_history_and_authorization(self):
+        cid = self.bundle['timeline'][0]['incident_id']
+        url = f'/api/incidents/007/reviews/{cid}'
+        headers = {'Origin':'http://localhost'}
+        draft = {'status':'침입 확인', 'reviewer':'검토자', 'note':'<b>plain</b>', 'expected_version':0, 'session_id':'fixture', 'bundle_sha256':self.sha()}
+        query = {'session_id':'fixture', 'bundle_sha256':self.sha()}
+        self.assertEqual(self.client.get(url, params=query).json(), {'review':None, 'history':[]})
+        self.assertEqual(self.client.get(url, params={**query, 'bundle_sha256':'0'*64}).status_code, 409)
+        self.assertEqual(self.client.post(url, json={**draft, 'bundle_sha256':'0'*64}, headers=headers).status_code, 409)
+        self.assertEqual(self.client.post(url, json=draft).status_code, 403)
+        self.assertEqual(self.client.post(url, json=draft, headers={'Origin':'http://evil'}).status_code, 403)
+        self.assertEqual(self.client.post(url, json={**draft, 'path':'/tmp/x'}, headers=headers).status_code, 400)
+        self.assertEqual(self.client.post('/api/incidents/007/reviews/incident-000000000000000000000000', json=draft, headers=headers).status_code, 404)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            responses = list(pool.map(lambda _: self.client.post(url, json=draft, headers=headers), range(2)))
+        self.assertEqual(sorted(r.status_code for r in responses), [200,409])
+        conflict = next(r.json() for r in responses if r.status_code == 409)
+        self.assertEqual(conflict['review']['version'], 1)
+        updated = self.client.post(url, json={**draft, 'status':'판단 불가', 'expected_version':1}, headers=headers)
+        self.assertEqual(updated.status_code, 200)
+        self.assertEqual([h['version'] for h in updated.json()['history']], [1,2])
+        self.assertEqual(updated.json()['history'][0]['note'], '<b>plain</b>')
+        self.assertEqual(self.client.get(url, params=query).json()['review']['version'], 2)
+        self.assertTrue((self.root/'runtime/incident-reviews.sqlite3').exists())
+        self.assertFalse((self.root/'runtime/exp0036-notification-receipts.sqlite3').exists())
+        self.path.write_text('{}')
+        self.assertEqual(self.client.get(url, params=query).status_code, 404)
+
+    def test_generic_registration_and_session_binding(self):
+        entry = dict(self.config['incident_bundles']['007'], experiment_id='EXP-0037', session_id='fixture',
+                     source_label='007', view_label='baseline', provenance_label='저장 결과 재생')
+        self.config['incident_bundles']['exp37-007-baseline'] = entry
+        self.assignments.write_text(json.dumps({'assignments':[{'experiment_id':'EXP-0036'},{'experiment_id':'EXP-0037'}]}))
+        self.write_config()
+        self.assertEqual(self.client.get('/api/incidents/exp37-007-baseline').status_code, 200)
+        self.assertEqual(self.client.get('/api/incident-registrations').json()[0]['id'], 'exp37-007-baseline')
+        key = self.bundle['timeline'][0]['notification_key']
+        url = '/api/incidents/exp37-007-baseline/claim'
+        self.assertEqual(self.client.post(url, json={'notification_key':key}, headers={'Origin':'http://localhost'}).status_code, 404)
+        entry['notification_enabled'] = True; self.write_config()
+        self.assertTrue(self.client.post(url, json={'notification_key':key}, headers={'Origin':'http://localhost'}).json()['claimed'])
+        (self.root/'outputs/original.mp4').write_bytes(b'original')
+        self.config['artifacts']['original'] = {'path':str(self.root/'outputs/original.mp4'), 'kind':'video'}
+        entry['media_artifact_id'] = 'original'; self.write_config()
+        self.assertEqual(self.client.get('/artifacts/original').content, b'original')
+        entry['session_id'] = 'wrong'; self.write_config()
+        self.assertEqual(self.client.get('/api/incidents/exp37-007-baseline').status_code, 404)
+        self.assertEqual(self.client.get('/api/incident-registrations').json(), [])
+        self.assertEqual(self.client.get('/artifacts/original').status_code, 404)
+
     def test_claim_guard_idempotent_and_concurrent(self):
         key = self.bundle['timeline'][0]['notification_key']
         self.assertEqual(self.claim(key, {'Origin':'http://evil.example'}).status_code, 403)

@@ -204,7 +204,20 @@ def media(artifact_id: str, request: Request):
         c = config()
         # An allowlisted file is served only if referenced by a registered experiment.
         if not any(e.get('artifact_id') == artifact_id for x in catalog(c)['experiments'] for e in x.get('evidence', [])):
-            raise ValueError('unregistered')
+            # An assigned EXP-0037 may expose only media bound to a validated registered bundle.
+            from .incident import load_bundle
+            allowed = False
+            for bundle_id, entry in c.get('incident_bundles', {}).items():
+                if entry.get('experiment_id') != 'EXP-0037' or entry.get('media_artifact_id') != artifact_id:
+                    continue
+                try:
+                    load_bundle(c, bundle_id)
+                    allowed = True
+                    break
+                except (OSError, ValueError, TypeError, KeyError, AttributeError, json.JSONDecodeError):
+                    continue
+            if not allowed:
+                raise ValueError('unregistered')
         f, ext = artifact(c, artifact_id)
     except (OSError, ValueError, KeyError, TypeError):
         raise HTTPException(404, 'artifact unavailable')

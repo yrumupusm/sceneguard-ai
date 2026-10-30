@@ -30,6 +30,9 @@ def digest(value):
 
 
 def source_hash(command="cpu-mock", config=None):
+    if command == 'video-cards':
+        from orchestration.video_cards_command import sources
+        return digest(sources(config))
     if command == 'exp29-cache007':
         from orchestration.exp29_cache_command import sources
         return digest(sources(config))
@@ -149,10 +152,10 @@ class Queue:
             queue.migrate_commands()
         return queue
 
-    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False, include_pose=False, include_public_pose=False, include_roi_pose=False, include_resolution_pose=False, include_detect=False, include_exp27_detect=False, include_exp29_cache=False):
+    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False, include_pose=False, include_public_pose=False, include_roi_pose=False, include_resolution_pose=False, include_detect=False, include_exp27_detect=False, include_exp29_cache=False, include_video_cards=False):
         """Backup then atomically rebuild only the old command CHECK; keep every row."""
-        if include_mvp or include_cv or include_vlm_batch02 or include_pose or include_public_pose or include_roi_pose or include_resolution_pose or include_detect or include_exp27_detect or include_exp29_cache:
-            target = "'exp29-cache007'" if include_exp29_cache else "'exp27-detect'" if include_exp27_detect else "'batch07-detect'" if include_detect else "'batch06-pose'" if include_resolution_pose else "'batch05-pose'" if include_roi_pose else "'batch04-pose'" if include_public_pose else "'batch03-pose'" if include_pose else "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
+        if include_video_cards or include_mvp or include_cv or include_vlm_batch02 or include_pose or include_public_pose or include_roi_pose or include_resolution_pose or include_detect or include_exp27_detect or include_exp29_cache:
+            target = "'video-cards'" if include_video_cards else "'exp29-cache007'" if include_exp29_cache else "'exp27-detect'" if include_exp27_detect else "'batch07-detect'" if include_detect else "'batch06-pose'" if include_resolution_pose else "'batch05-pose'" if include_roi_pose else "'batch04-pose'" if include_public_pose else "'batch03-pose'" if include_pose else "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
                 if target in sql:
@@ -162,7 +165,15 @@ class Queue:
                 raise ValueError('cannot migrate while a queue reservation is held')
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
-                if include_exp29_cache:
+                if include_video_cards:
+                    if "'video-cards'" in sql:
+                        return
+                    found = re.search(r"CHECK\(command IN \([^)]*\)\)", sql)
+                    if found is None or "'cpu-mock'" not in found.group(0):
+                        raise ValueError('unrecognized queue command schema')
+                    old_check = found.group(0)
+                    new_check = old_check[:-2] + ",'video-cards'))"
+                elif include_exp29_cache:
                     if "'exp29-cache007'" in sql:
                         return
                     old_check = "CHECK(command IN ('cpu-mock','vlm-batch01','mvp-0001','batch02-cv','vlm-batch02','batch03-pose','batch04-pose','batch05-pose','batch06-pose','batch07-detect','exp27-detect'))"
@@ -253,7 +264,7 @@ class Queue:
                 db.execute('BEGIN IMMEDIATE')
                 if db.execute("SELECT 1 FROM jobs WHERE status IN ('running','unknown')").fetchone():
                     raise ValueError('unresolved queue prevents schema migration')
-                migration = 'exp29-cache007' if include_exp29_cache else 'exp27-detect' if include_exp27_detect else 'batch07-detect' if include_detect else 'batch06-pose' if include_resolution_pose else 'batch05-pose' if include_roi_pose else 'batch04-pose' if include_public_pose else 'batch03-pose' if include_pose else 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
+                migration = 'video-cards' if include_video_cards else 'exp29-cache007' if include_exp29_cache else 'exp27-detect' if include_exp27_detect else 'batch07-detect' if include_detect else 'batch06-pose' if include_resolution_pose else 'batch05-pose' if include_roi_pose else 'batch04-pose' if include_public_pose else 'batch03-pose' if include_pose else 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
                 backup = self.runtime / f'queue-before-{migration}-{uuid.uuid4().hex}.sqlite3'
                 # Separate reader copies committed state while this write lock
                 # prevents enqueues. Backup precedes the first schema mutation.
@@ -316,7 +327,7 @@ class Queue:
     def enqueue(self, *, job_key, run_id, task_id, dispatch_id, owner,
                 command="cpu-mock", input_value=None, config=None, timeout=10,
                 expected_input_hash=None, expected_config_hash=None):
-        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "batch04-pose", "batch05-pose", "batch06-pose", "batch07-detect", "exp27-detect", "exp29-cache007"}:
+        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "batch04-pose", "batch05-pose", "batch06-pose", "batch07-detect", "exp27-detect", "exp29-cache007", "video-cards"}:
             raise ValueError("only registered cpu-mock/vlm-batch01/mvp-0001/batch02-cv/vlm-batch02/batch03-pose/batch04-pose commands are permitted")
         if any(not isinstance(x, str) or not x.strip() for x in
                (job_key, run_id, task_id, dispatch_id, owner)):
@@ -329,6 +340,12 @@ class Queue:
             if (type(seconds) not in (int, float) or not math.isfinite(seconds)
                     or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
                 raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
+        elif command == 'video-cards':
+            from orchestration.video_cards_command import validate
+            validate(config, input_value, self.runtime)
+            if (config['context'] != dict(run_id=run_id, task_id=task_id, dispatch_id=dispatch_id, owner=owner)
+                    or job_key != 'video-cards-' + config['request_sha256']):
+                raise ValueError('Exact current video analysis assignment and request key required')
         elif command == 'exp29-cache007':
             from orchestration.exp29_cache_command import validate, validate_assignment, job_key as exp29_job_key
             validate(config, input_value, self.runtime)
@@ -424,6 +441,8 @@ class Queue:
                       config_json=json.dumps(config, sort_keys=True),
                       input_hash=ih, config_hash=ch, source_hash=source_hash(command, config),
                       code_sha=sha, timeout=timeout)
+        if command == 'video-cards':
+            self.migrate_commands(include_video_cards=True)
         if command == 'exp29-cache007':
             self.migrate_commands(include_exp29_cache=True)
         if command == 'exp27-detect':
@@ -466,14 +485,17 @@ class Queue:
                     "jobs": jobs,
                     "attempts": [dict(r) for r in db.execute("SELECT * FROM attempts ORDER BY started_at")]}
 
-    def _claim(self):
+    def _claim(self, job_id=None):
         with self.connection() as db:
             db.execute("BEGIN IMMEDIATE")
             # Unresolved identity is a queue-wide fail-closed condition.
             if db.execute("SELECT 1 FROM jobs WHERE status IN ('running','unknown')").fetchone():
                 db.commit()
                 return None
-            row = db.execute("SELECT * FROM jobs WHERE status='queued' ORDER BY created_at LIMIT 1").fetchone()
+            if job_id is None:
+                row = db.execute("SELECT * FROM jobs WHERE status='queued' ORDER BY created_at LIMIT 1").fetchone()
+            else:
+                row = db.execute("SELECT * FROM jobs WHERE status='queued' AND job_id=?", (job_id,)).fetchone()
             if row is None:
                 db.commit()
                 return None
@@ -496,6 +518,20 @@ class Queue:
             manifest = self.runtime / "attempts" / attempt / "manifest.json"
             manifest.parent.mkdir(parents=True, exist_ok=True)
             finished = time.time()
+            if job['command'] == 'video-cards':
+                from orchestration.video_cards_command import output_path, INTERPRETER
+                atomic_json(manifest, dict(schema_version=1, synthetic=False, execution_status=status,
+                    registration={k: job[k] for k in ('command','job_id','run_id','task_id','dispatch_id',
+                        'owner','code_sha','source_hash','input_hash','config_hash')},
+                    attempt_id=attempt, interpreter=str(INTERPRETER),
+                    result_path=str(output_path('fcos-cache', attempt)),
+                    limitations=['Queue exit alone does not establish model quality']))
+                db.execute('BEGIN IMMEDIATE')
+                db.execute('UPDATE attempts SET status=?,exit_code=?,finished_at=?,heartbeat=?,result_manifest=?,reason=? '
+                           'WHERE attempt_id=?', (status,exit_code,finished,finished,str(manifest),reason,attempt))
+                db.execute('UPDATE jobs SET status=? WHERE job_id=?', (status,row['job_id']))
+                db.commit()
+                return
             real = job['command'] == 'vlm-batch01'
             mvp = job['command'] == 'mvp-0001'
             cv = job['command'] == 'batch02-cv'
@@ -591,6 +627,9 @@ class Queue:
                 count = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job_id,)).fetchone()[0]
                 if row is None or row["status"] not in RETRYABLE or count != 1:
                     raise ValueError("one explicit retry allowed only after a known failed/cancelled/interrupted attempt")
+                if row['command']=='video-cards':
+                    from orchestration.video_cards_command import retry_guard
+                    retry_guard(db,dict(row))
                 if row['command']=='exp29-cache007':
                     from orchestration.exp29_cache_command import retry_guard
                     retry_guard(db,dict(row))
@@ -630,7 +669,7 @@ class Queue:
             db.commit()
         return {"job_id": job_id, "cancel_requested": True}
 
-    def supervise_once(self):
+    def supervise_once(self, job_id=None):
         # Fail before claiming if this Linux runtime cannot bind signals to PIDs.
         if not callable(getattr(signal, "pidfd_send_signal", None)):
             raise ValueError("this runtime requires signal.pidfd_send_signal")
@@ -639,7 +678,7 @@ class Queue:
         # The supervisor owns this lock before claim and throughout child lifetime.
         with self.gpu_lock() as lock:
             self._recover_locked()
-            claimed = self._claim()
+            claimed = self._claim(job_id)
             if claimed is None:
                 return {"status": "idle_or_unresolved"}
             job, attempt = claimed
@@ -654,7 +693,10 @@ class Queue:
                 if digest(json.loads(job["input_json"])) != job["input_hash"] or digest(json.loads(job["config_json"])) != job["config_hash"]:
                     raise ValueError("stored input/config hash mismatch")
                 config = json.loads(job["config_json"])
-                if job['command'] == 'exp29-cache007':
+                if job['command'] == 'video-cards':
+                    from orchestration.video_cards_command import command
+                    argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
+                elif job['command'] == 'exp29-cache007':
                     from orchestration.exp29_cache_command import command
                     argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
                 elif job['command'] == 'exp27-detect':
@@ -732,9 +774,11 @@ class Queue:
             return {"job_id": job["job_id"], "attempt_id": attempt,
                     "status": next(j["status"] for j in self.status()["jobs"] if j["job_id"] == job["job_id"])}
 
-    def run_once(self):
+    def run_once(self, job_id=None):
         # Detached supervisor survives loss of this caller; it claims its own job.
         argv = [sys.executable, "-m", "orchestration.queue", "--runtime", str(self.runtime), "_supervise"]
+        if job_id is not None:
+            argv += ['--job-id', job_id]
         with (self.runtime / "supervisor.log").open("ab") as output:
             process = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL,
                                        stdout=output, stderr=subprocess.STDOUT, start_new_session=True)
@@ -761,7 +805,8 @@ def main(argv=None):
     for action in ("retry", "cancel"):
         item = commands.add_parser(action, help="explicit " + action)
         item.add_argument("job_id")
-    commands.add_parser("_supervise", help=argparse.SUPPRESS)
+    supervise = commands.add_parser("_supervise", help=argparse.SUPPRESS)
+    supervise.add_argument('--job-id', help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     try:
         queue = Queue.initialize(args.runtime) if args.action == "init" else Queue(args.runtime)
@@ -777,7 +822,7 @@ def main(argv=None):
             result = {"canonical_runtime": str(queue.runtime), "status": "initialized", "synthetic": True}
         else:
             method = {"run-once": "run_once", "_supervise": "supervise_once"}.get(args.action, args.action)
-            result = getattr(queue, method)()
+            result = getattr(queue, method)(args.job_id) if args.action == '_supervise' else getattr(queue, method)()
         print(json.dumps(result, sort_keys=True))
         return 0
     except (ValueError, OSError, sqlite3.Error, subprocess.SubprocessError) as error:
