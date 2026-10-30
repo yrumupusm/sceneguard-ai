@@ -22,3 +22,35 @@
 코드·테스트·1회 실행 기록·비식별 집계·원본 근거를 가진 로컬 비교 영상 및 후보 목록을 만든다. 테스트 통과, 후보 수 증가, ReID 점수를 실제 동일 인물/물리 통과 성공으로 포장하지 않는다. 가능하면 '전후 자동 연결 / 전후 검토 제안 / 연결 불가'를 따로 집계한다. 기존 EXP-0029의 보고서·검토 결속·자료를 덮어쓰지 않고 새로운 출력 위치를 사용한다.
 
 **문서 추가만으로 완료 처리하지 말고 실제 로컬 입력으로 실행·시각 확인하고 결과를 남겨라.** 원본 CCTV, 프레임, crop, 특징, 좌표, 로컬 polygon, weights는 Git 제외로 보존한다. 새로운 성능 수치·비식별 결론만 GitHub에 게시하고 종료한다. 실패하면 확인된 원인과 남은 사용성 한계를 보고하며 자동으로 다른 모델을 더 붙이지 않는다.
+
+
+## 이미 추가된 CPU 검토 피드 (중복 구현하지 말 것)
+- 코드: sceneguard/mvp_review_candidates.py
+- 단위 테스트: tests/test_mvp_review_candidates.py (합성 테스트 10개, 실제 CCTV 성능 검증 아님).
+- EXP-0029의 기존 associations.json, tracklets.json, features.local.json과 ByteTrack gap events.jsonl을 읽어 **자동 수락 / 검토할 유사 후보 / 기존 경계 움직임 후보**를 별개로 기록한다. 저장된 대표 특징의 head/tail 내부 일관성 수치도 함께 만든다. 후보가 떠도 동일인이나 실제 완료를 자동 확정하지 않는다.
+- 현재 사용자 수정 polygon을 사용한 **정상 MVP 실행**에서 region events가 새로 나온 경우에만 --region-events로 추가할 수 있다. 예전 EXP-0029 폴리곤에서 계산된 events.json을 최신 결과인 양 입력하지 않는다. 현행 polygon으로 실행하더라도 과거 polygon과의 A/B 비교는 하지 않는다.
+- 이 모듈은 JSON 검토 피드만 만든다. 실제 근거 동영상 clip/뷰어 연결, 혼합·부분 crop 검수, 같은 사람의 raw ID가 이동하는 문제 해결은 **로컬 Codex의 남은 실작업**이다.
+
+실행 예시 (기존 로컬 cache와 저장 특징이 있는 저장소 루트):
+
+~~~bash
+.venv/bin/python -m unittest discover -s tests -p test_mvp_review_candidates.py -v
+
+.venv/bin/python -m sceneguard.mvp_review_candidates \
+  --video-id E01_030 --start 84 --end 100 \
+  --gap-events outputs/exp0028/practical-v1/track030/gap/events.jsonl \
+  --associations outputs/exp0029/track030/v1/associations.json \
+  --tracklets outputs/exp0029/track030/v1/tracklets.json \
+  --features outputs/exp0029/track030/v1/features.local.json \
+  --output outputs/mvp_review/030.json
+
+.venv/bin/python -m sceneguard.mvp_review_candidates \
+  --video-id E01_007 --start 48 --end 105 \
+  --gap-events outputs/exp0029/replay007/gap/events.jsonl \
+  --associations outputs/exp0029/track007/v1/associations.json \
+  --tracklets outputs/exp0029/track007/v1/tracklets.json \
+  --features outputs/exp0029/track007/v1/features.local.json \
+  --output outputs/mvp_review/007.json
+~~~
+
+명령은 **과거 line 후보 및 외형 증거를 정리**할 뿐, 최신 수정 영역의 성능을 주장하지 않는다. 출력은 기존 파일을 덮지 않는 새로운 경로다. 실제 데이터의 파일 이름과 형식은 확인한 뒤 사용하고, 오류가 나면 해당 원인만 수정한다.
