@@ -2650,6 +2650,59 @@
       "task_id": "task_dc6d3f8432b9",
       "title": "EXP-0035 침입 의심 조건 완화",
       "worker_opinion": "두 영상 각1회 CPU 적용.기존 ID·박스·PTS·이벤트 보존;후보 증가는 실제 사람·사건 수나 정확도 개선이 아님."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T13:01:56.368931+00:00",
+      "attempt_id": "cpu-cards-once-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_3089225530c8",
+      "evaluated_model": "CPU entrance incident grouping + existing video replay; no model inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0036-007-comparison",
+          "kind": "video",
+          "label": "007 기존 원본/이전/완화 비교 영상 · 아래 사건 카드 재생에서 1회 알림 확인"
+        },
+        {
+          "artifact_id": "exp0036-030-comparison",
+          "kind": "video",
+          "label": "030 기존 원본/이전/완화 비교 영상 · 아래 사건 카드 재생에서 1회 알림 확인"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0036",
+      "limitations": [
+        "카드수는사람수나정답사건수가아님;정상접근오탐유지",
+        "고정3초/최대10초묶음으로상황이합쳐지거나분리될수있음",
+        "저장영상재생데모;실시간CCTV감지지연미측정",
+        "영수증선점은최대1회이며실제사용자수신을보장하지않음",
+        "검증에서이미표시한동일녹화세션재생은영수증에따라무음"
+      ],
+      "metric_definitions": "records/EXP-0036/metrics.json",
+      "metrics_path": "records/EXP-0036/metrics.json",
+      "metrics_sha256": "b9d3fe40d2acb3f1153666e8bb66eba241d77a60a7f6c63de79f2178341d048b",
+      "next_step": "승인된기능범위종료.기존의심·모델·영역유지;침입판별성능개선으로해석하거나추가실험자동시작하지않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "cc0142d1d6fd51e618b428afadd023b6660dbfaa4c83a15c916a141dcf2ee2de",
+      "report_path": "docs/experiments/EXP-0036-results.md",
+      "report_sha256": "c17c18a2c848256511fd9b92c77a7a3bd11f85f0a3dc641a83f57a145045fa4c",
+      "review_binding_path": "docs/reviews/EXP-0036.binding.json",
+      "review_path": "docs/reviews/EXP-0036-independent-review.md",
+      "review_sha256": "941b26a07409bb49c4ba151d477669846ef15aadaf383db0ecf82725191ba830",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "b9d3fe40d2acb3f1153666e8bb66eba241d77a60a7f6c63de79f2178341d048b",
+      "reviewed_report_sha256": "c17c18a2c848256511fd9b92c77a7a3bd11f85f0a3dc641a83f57a145045fa4c",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "기존알림00710행→2카드,0308행→3카드.실제첫토스트5회/무음갱신13회,재시작·새로고침·되감기중복0.판별조건은그대로이며오탐을삭제하지않음.",
+      "synthetic": false,
+      "task_id": "task_d4d957340ef8",
+      "title": "EXP-0036 출입구별 사건 카드·1회 알림",
+      "worker_opinion": "각영상1회CPU처리와기존웹카드기능구현완료.최초알림즉시표시,같은카드무음갱신,원래알림모두보존."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

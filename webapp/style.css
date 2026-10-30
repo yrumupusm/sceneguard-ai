@@ -143,3 +143,7 @@ article {
 .integrity-warning { color:#8a3800; background:#fff2dd; padding:12px; }
 @media(max-width:900px) { .grid { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:600px) { .grid { grid-template-columns:1fr; } }
+.incident-flow { border:1px solid #d7e2df; border-radius:8px; margin:16px 0; padding:16px; }
+.incident-card { border-left:4px solid #428b78; background:#f3f8f6; margin:10px 0; padding:12px; }
+.incident-card ul { overflow-wrap:anywhere; }
+.incident-toast:not([hidden]) { position:fixed; right:20px; bottom:20px; z-index:10; color:white; background:#123c45; border-radius:8px; padding:14px; }

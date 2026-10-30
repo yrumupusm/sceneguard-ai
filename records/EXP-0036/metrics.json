@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0036",
+  "metrics": [
+    {
+      "label": "007 원래 개별 알림",
+      "value": 10,
+      "unit": "count",
+      "sample_n": 10,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/007-cards-v1.json",
+      "source_sha256": "51a41601d9c03f12003e222b4615e5fb4aad85914dd5f658dc526791e787db7b",
+      "source_pointer": "$.counts.input_alert_rows",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "007 사건 카드",
+      "value": 2,
+      "unit": "count",
+      "sample_n": 10,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/007-cards-v1.json",
+      "source_sha256": "51a41601d9c03f12003e222b4615e5fb4aad85914dd5f658dc526791e787db7b",
+      "source_pointer": "$.counts.incident_cards",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "007 최초 알림 의도",
+      "value": 2,
+      "unit": "count",
+      "sample_n": 10,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/007-cards-v1.json",
+      "source_sha256": "51a41601d9c03f12003e222b4615e5fb4aad85914dd5f658dc526791e787db7b",
+      "source_pointer": "$.counts.notification_intents",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "007 무음 갱신",
+      "value": 8,
+      "unit": "count",
+      "sample_n": 10,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/007-cards-v1.json",
+      "source_sha256": "51a41601d9c03f12003e222b4615e5fb4aad85914dd5f658dc526791e787db7b",
+      "source_pointer": "$.counts.silent_card_updates",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "030 원래 개별 알림",
+      "value": 8,
+      "unit": "count",
+      "sample_n": 8,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/030-cards-v1.json",
+      "source_sha256": "f11b550ad0766d3ca76c48d810da948bb806e98dfa415c65e165b38fdff8ecf2",
+      "source_pointer": "$.counts.input_alert_rows",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "030 사건 카드",
+      "value": 3,
+      "unit": "count",
+      "sample_n": 8,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/030-cards-v1.json",
+      "source_sha256": "f11b550ad0766d3ca76c48d810da948bb806e98dfa415c65e165b38fdff8ecf2",
+      "source_pointer": "$.counts.incident_cards",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "030 최초 알림 의도",
+      "value": 3,
+      "unit": "count",
+      "sample_n": 8,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/030-cards-v1.json",
+      "source_sha256": "f11b550ad0766d3ca76c48d810da948bb806e98dfa415c65e165b38fdff8ecf2",
+      "source_pointer": "$.counts.notification_intents",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "030 무음 갱신",
+      "value": 5,
+      "unit": "count",
+      "sample_n": 8,
+      "scope": "Presentation grouping counts; not people, true incidents or accuracy",
+      "source": "outputs/exp0036/030-cards-v1.json",
+      "source_sha256": "f11b550ad0766d3ca76c48d810da948bb806e98dfa415c65e165b38fdff8ecf2",
+      "source_pointer": "$.counts.silent_card_updates",
+      "verification": "actual immutable bundle; exact original event coverage independently audited"
+    },
+    {
+      "label": "007 CPU process wall",
+      "value": 0.039544330997159705,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "CPU grouping process including JSON IO; no inference",
+      "source": "runtime/EXP-0036/cpu-execution.json",
+      "source_sha256": "274a2f44b20e6319e666056bceb766d324bbda46136d3bf70e74b6797e2aa4fc",
+      "source_pointer": "$.applications[0].wall_seconds",
+      "verification": "actual single process timing"
+    },
+    {
+      "label": "030 CPU process wall",
+      "value": 0.030870349000906572,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "CPU grouping process including JSON IO; no inference",
+      "source": "runtime/EXP-0036/cpu-execution.json",
+      "source_sha256": "274a2f44b20e6319e666056bceb766d324bbda46136d3bf70e74b6797e2aa4fc",
+      "source_pointer": "$.applications[1].wall_seconds",
+      "verification": "actual single process timing"
+    },
+    {
+      "label": "재시작·새로고침 후 중복 토스트",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 5,
+      "scope": "Actual browser replay of five previously displayed notification keys",
+      "source": "runtime/EXP-0036/delivery/cards-restart-navigation-result.json",
+      "source_sha256": "dbc89aca7b0fc5d977ebb0d7f2954b4a3b28bded09c83c6650efefaaaba644e5",
+      "source_pointer": "$.newToastCount",
+      "verification": "actual browser replay and persistent SQLite rows unchanged"
+    }
+  ]
+}
