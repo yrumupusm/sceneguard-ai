@@ -33,4 +33,8 @@ API의 현재 source hash와 실제 DOM source hash가 위 버전과 일치했�
 
 ## GitHub 게시
 
-이 문서의 최초 기록 시점에는 push 전이다. 실제 게시 커밋과 원격 파일 확인은 push 후 이 절에 별도로 남긴다. 웹 등록 성공이 GitHub 게시 완료를 뜻하지 않는다.
+실행·코드·보고서·검토·집계·등록 기록15파일은 GitHub main의 `1a0f84fa39c28397d5aa9e12b772db913d8f34de`에 게시했다. 실제 push 성공 후 `ls-remote`로 원격 SHA를 확인했고 fresh fetch의 `origin/main`에서15파일을 모두 읽어 로컬 바이트와 일치시켰다. 별도 GitHub 전달 검증도 보고서·metrics·독립 검토·binding 및 카탈로그/배정의 일치를 통과했다.
+
+이 절의 게시 확인 보충은 후속 문서 커밋으로 반영한다. 보충은 이미 독립 검토·화면 확인된 보고서/측정값/검토/binding 바이트를 바꾸지 않는다. 실제 웹이 읽은 위4개 SHA와 게시된 SHA는 같으며, 기존 viewer JavaScript도 동일하다. 최초 게시 영수증은 로컬 `runtime/EXP-0031/delivery/github-result.json`,15파일의 원격 대조는 `remote-all-files.json`이다.
+
+기능 실행과 자료 제작은 완료했지만 월장 전후 동일인 연결 목표는 미충족이다. 일반 보행자 개선 초안1개를 근거로 기본 구성을 바꾸지 않으며, 이번 한 차례 비교와 전달을 마친 뒤 멈춘다.
