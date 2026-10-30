@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0033",
+  "metrics": [
+    {
+      "label": "030 CV generation",
+      "value": 5.167265372001566,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One fixed window generation; not live event latency or video FPS",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000001/result.json",
+      "source_sha256": "cdb573b5b246bcf3ff30e41621e5b14e74b94a3b0587e63870558e52556b3a68",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "030 CV preprocessing",
+      "value": 0.0792649669747334,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One fixed window processor and device transfer; excludes source decoding",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000001/result.json",
+      "source_sha256": "cdb573b5b246bcf3ff30e41621e5b14e74b94a3b0587e63870558e52556b3a68",
+      "source_pointer": "$.timing.prepare_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "030 CV GPU allocated peak",
+      "value": 4.377569198608398,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated per window including resident model; other GPU use excluded",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000001/result.json",
+      "source_sha256": "cdb573b5b246bcf3ff30e41621e5b14e74b94a3b0587e63870558e52556b3a68",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes (bytes / 2^30)",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "030 CV generated tokens",
+      "value": 152,
+      "unit": "tokens",
+      "sample_n": 1,
+      "scope": "One fixed window output length, not behavioral performance",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000001/result.json",
+      "source_sha256": "cdb573b5b246bcf3ff30e41621e5b14e74b94a3b0587e63870558e52556b3a68",
+      "source_pointer": "$.output_tokens",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 CV generation",
+      "value": 3.6351086189970374,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One fixed window generation; not live event latency or video FPS",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000002/result.json",
+      "source_sha256": "0937fdc88c11871a2cacc1e0332d3f08d1f4882f0f421384ea367eb56e07cfc8",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 CV preprocessing",
+      "value": 0.030138514994177967,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One fixed window processor and device transfer; excludes source decoding",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000002/result.json",
+      "source_sha256": "0937fdc88c11871a2cacc1e0332d3f08d1f4882f0f421384ea367eb56e07cfc8",
+      "source_pointer": "$.timing.prepare_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 CV GPU allocated peak",
+      "value": 4.366909503936768,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated per window including resident model; other GPU use excluded",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000002/result.json",
+      "source_sha256": "0937fdc88c11871a2cacc1e0332d3f08d1f4882f0f421384ea367eb56e07cfc8",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes (bytes / 2^30)",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 CV generated tokens",
+      "value": 133,
+      "unit": "tokens",
+      "sample_n": 1,
+      "scope": "One fixed window output length, not behavioral performance",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000002/result.json",
+      "source_sha256": "0937fdc88c11871a2cacc1e0332d3f08d1f4882f0f421384ea367eb56e07cfc8",
+      "source_pointer": "$.output_tokens",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 approach generation",
+      "value": 3.8122548190003727,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One fixed window generation; not live event latency or video FPS",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000003/result.json",
+      "source_sha256": "3103d982d4797df300ade83f084e612b95e013f75871451e5f5b7dd99089218f",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 approach preprocessing",
+      "value": 0.032643542013829574,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One fixed window processor and device transfer; excludes source decoding",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000003/result.json",
+      "source_sha256": "3103d982d4797df300ade83f084e612b95e013f75871451e5f5b7dd99089218f",
+      "source_pointer": "$.timing.prepare_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 approach GPU allocated peak",
+      "value": 4.366909503936768,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated per window including resident model; other GPU use excluded",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000003/result.json",
+      "source_sha256": "3103d982d4797df300ade83f084e612b95e013f75871451e5f5b7dd99089218f",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes (bytes / 2^30)",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "007 approach generated tokens",
+      "value": 128,
+      "unit": "tokens",
+      "sample_n": 1,
+      "scope": "One fixed window output length, not behavioral performance",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/windows/w000003/result.json",
+      "source_sha256": "3103d982d4797df300ade83f084e612b95e013f75871451e5f5b7dd99089218f",
+      "source_pointer": "$.output_tokens",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "Model loading",
+      "value": 2.4244879679754376,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One batch loading and CUDA placement",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/summary.json",
+      "source_sha256": "432d9aa43d4c21c87ea97ca0da50167aedd1eb928a4aa8370c2529ac2693eab8",
+      "source_pointer": "$.load_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "Queue supervisor elapsed",
+      "value": 70.28062566398876,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One whole queued job including checks, load, decode, generate and evidence encoding",
+      "source": "runtime/EXP-0033/execution-owner/supervisor-receipt.json",
+      "source_sha256": "24842c930b7996bf2d349f6b2e8cf4c26e44099c85e278031256a1cabfc3488d",
+      "source_pointer": "$.supervisor_wall_seconds",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "Strict schema-valid replies",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 3,
+      "scope": "Three fixed development responses; format count, not accuracy",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/candidate_vlm_results.json",
+      "source_sha256": "818c41a0eb62708c9fe13071467b723da15423971e75ec0c3d40ee0b9caad225",
+      "source_pointer": "results[*].parse_status.strict_parsed nonnull count",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "Fence-removal schema-valid replies",
+      "value": 2,
+      "unit": "count",
+      "sample_n": 3,
+      "scope": "Three fixed development responses; formatting-only cleanup, not accuracy",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/candidate_vlm_results.json",
+      "source_sha256": "818c41a0eb62708c9fe13071467b723da15423971e75ec0c3d40ee0b9caad225",
+      "source_pointer": "results[*].parse_status.postprocessed_parsed nonnull count",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "Observed completion in validated replies",
+      "value": 2,
+      "unit": "count",
+      "sample_n": 3,
+      "scope": "Model claim count only; no confirmed completion count",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/candidate_vlm_results.json",
+      "source_sha256": "818c41a0eb62708c9fe13071467b723da15423971e75ec0c3d40ee0b9caad225",
+      "source_pointer": "results[*].crossing_completion_claim observed count",
+      "verification": "local artifact validation and independent numerical audit"
+    },
+    {
+      "label": "Whole-device sampled peak",
+      "value": 6807.0,
+      "unit": "MiB",
+      "sample_n": 1,
+      "scope": "Whole-device nvidia-smi sampled maximum includes external processes; not model-only allocation",
+      "source": "outputs/mvp0001/EXP-0033/6a318ed0ba2c43a7a2e9518c810adbac/gpu_memory_samples.json",
+      "source_sha256": "fe94023ef8452b4a4b4ce3626c0f9d22e62d4053f578836fec175dd572e55efc",
+      "source_pointer": "max(samples[*].used_mib)",
+      "verification": "local artifact validation and independent numerical audit"
+    }
+  ]
+}

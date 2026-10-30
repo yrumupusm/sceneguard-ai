@@ -9,6 +9,8 @@ import html
 import json
 import math
 from pathlib import Path
+import time
+import traceback
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "configs/exp0033_cv_vlm_manifest.json"
@@ -178,6 +180,8 @@ def run_candidate_review(analyzer, folder, context, cameras, registered_inputs):
     """Run inside existing canonical mvp-0001 queue after model+lease preflight."""
     from orchestration.mock_job import atomic_json
     from mvp.evidence import save_evidence
+    from mvp.pipeline import _clear_diagnostics, _failure_diagnostics
+    import numpy as np
 
     manifest = frozen_manifest()
     events = verify_candidate_events(manifest)
@@ -192,18 +196,33 @@ def run_candidate_review(analyzer, folder, context, cameras, registered_inputs):
         target=folder/"windows"/wid
         target.mkdir(parents=True,exist_ok=False)
         video=ROOT/source_rows[case["source_id"]]["path"]
+        started=time.perf_counter()
         rgb, source=sample_original(video,case["start"],case["end"],case["samples"])
+        decode_seconds=time.perf_counter()-started
+        if len(rgb) != case["samples"]:
+            raise ValueError("Fixed pilot requires ten genuine sampled frames per case")
         metadata={**{k:case[k] for k in ("case_id","window_id","source_id","camera_id","start","end","mode")},
                   "source_sha256":source_rows[case["source_id"]]["source_sha256"],
                   "original_cv_event":events.get(case["case_id"]),
                   "roi":cameras["cameras"][case["camera_id"]]["roi"],
-                  "source_timing":source}
+                  "source_timing":source, "run_context":context}
         atomic_json(target/"input_provenance.json",metadata)
         # Model sees ONLY original RGB, timing metadata, anonymized ID and same static prompt.
         analyzer.artifact_root=folder/"windows"
-        result=analyzer.analyze(rgb,source,wid,list(metadata["roi"]))
+        _clear_diagnostics(analyzer)
+        try:
+            result=analyzer.analyze(rgb,source,wid,list(metadata["roi"]))
+        except Exception:
+            atomic_json(target/"failure.json",{"status":"failed",
+                "traceback":traceback.format_exc(), **_failure_diagnostics(analyzer)})
+            if getattr(analyzer,"last_processor_frames",None) is not None:
+                np.save(target/"processor_rgb.npy",analyzer.last_processor_frames,allow_pickle=False)
+            raise
         atomic_json(target/"result.json",result)
         (target/"raw_response.txt").write_text(result.get("raw_response",""),encoding="utf-8")
+        (target/"expanded_prompt.txt").write_text(analyzer.last_expanded_prompt,encoding="utf-8")
+        np.save(target/"processor_rgb.npy",analyzer.last_processor_frames,allow_pickle=False)
+        np.save(target/"generated_token_ids.npy",np.array(analyzer.last_generated_token_ids,dtype="int64"))
         parsed=result.get("parsed")
         outcome=dict(case_id=case["case_id"],window_id=wid, source_id=case["source_id"],
                      mode=case["mode"],original_cv_verified=case["case_id"] in events,
@@ -218,9 +237,14 @@ def run_candidate_review(analyzer, folder, context, cameras, registered_inputs):
                      model_output_tokens=result.get("output_tokens"),
                      identity_verified=False,physical_completion_verified=False)
         # Always preserve the same uncropped source for a reviewer, including control.
+        started=time.perf_counter()
         clip=save_evidence(video,target/"original_clip.mp4",
                            interval=[case["start"],case["end"]],
                            source_bounds=[0,case["end"]],context_seconds=0)
+        outcome["cost_seconds"]={"source_decode_sampling":decode_seconds,
+            "prepare":result.get("timing",{}).get("prepare_seconds"),
+            "generation":result.get("timing",{}).get("generation_seconds"),
+            "evidence_clip":time.perf_counter()-started}
         outcome["evidence_file"]=str(Path("windows")/wid/"original_clip.mp4")
         outcome["source_original_frames"]=clip["frames"]
         atomic_json(target/"review_record.json",outcome)

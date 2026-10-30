@@ -2297,6 +2297,98 @@
       "task_id": "task_b26b4ef3c0f1",
       "title": "EXP-0031 대표 크롭 품질 비교",
       "worker_opinion": "실제 실행·26개 전후 자료 제작·25tests 완료. 61개 새 CPU 임베딩, 기존 특징63개 재사용. 자동 수락 증가를 월장 성능 개선으로 해석하지 않음."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T08:02:39.265695+00:00",
+      "attempt_id": "6a318ed0ba2c43a7a2e9518c810adbac",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_1d8f65bffc9f",
+      "evaluated_model": "Existing Qwen3-VL-2B-Instruct / BF16 CUDA0 / fixed C3,C6 ROI / 10 actual frames per window",
+      "evidence": [
+        {
+          "artifact_id": "exp0033-w000001-original",
+          "kind": "video",
+          "label": "030 CV 후보 원본85–95초 · MP4는0초부터 시작"
+        },
+        {
+          "artifact_id": "exp0033-w000001-processor-1",
+          "kind": "image",
+          "label": "w000001 실제 모델 입력·원본 PTS (1/2)"
+        },
+        {
+          "artifact_id": "exp0033-w000001-processor-2",
+          "kind": "image",
+          "label": "w000001 실제 모델 입력·원본 PTS (2/2)"
+        },
+        {
+          "artifact_id": "exp0033-w000002-original",
+          "kind": "video",
+          "label": "007 CV 후보 원본64–74초 · MP4는0초부터 시작"
+        },
+        {
+          "artifact_id": "exp0033-w000002-processor-1",
+          "kind": "image",
+          "label": "w000002 실제 모델 입력·원본 PTS (1/2)"
+        },
+        {
+          "artifact_id": "exp0033-w000002-processor-2",
+          "kind": "image",
+          "label": "w000002 실제 모델 입력·원본 PTS (2/2)"
+        },
+        {
+          "artifact_id": "exp0033-w000003-original",
+          "kind": "video",
+          "label": "007 정상 접근 원본52.5–57.5초 · MP4는0초부터 시작"
+        },
+        {
+          "artifact_id": "exp0033-w000003-processor-1",
+          "kind": "image",
+          "label": "w000003 실제 모델 입력·원본 PTS (1/2)"
+        },
+        {
+          "artifact_id": "exp0033-w000003-processor-2",
+          "kind": "image",
+          "label": "w000003 실제 모델 입력·원본 PTS (2/2)"
+        },
+        {
+          "artifact_id": "exp0033-source-endpoints",
+          "kind": "image",
+          "label": "세 창 마지막 원본 프레임·표시용 확대"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0033",
+      "limitations": [
+        "세 장면은 개발 자료;범용 정확도/F1/recall 평가 아님",
+        "CV 미후보 사건의 누락은 해결하지 못함",
+        "영상 판독은 총괄 초안;개인별 완료·정체 정답 미확정",
+        "schema-valid도 행동·완료 근거의 일관성을 보장하지 않음"
+      ],
+      "metric_definitions": "records/EXP-0033/metrics.json",
+      "metrics_path": "records/EXP-0033/metrics.json",
+      "metrics_sha256": "7dd258034ebe87c93d5d2d1881087b072f220f706e1800ec8fb47aafb13bcc45",
+      "next_step": "이번 단발성 비교 종료.기본 CV 후보를 유지하고 새 승인 전 추가 추론·튜닝·모델 변경 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "59e24d625ca14b749b0d038f2c20ce964100647f73a511cdd126d8e5de879126",
+      "report_path": "docs/experiments/EXP-0033-results.md",
+      "report_sha256": "0cdba1cb54746cd051a3545201fc25ff3fb11aaadadfe3d4c8022d962e2aefb7",
+      "review_binding_path": "docs/reviews/EXP-0033.binding.json",
+      "review_path": "docs/reviews/EXP-0033-independent-review.md",
+      "review_sha256": "456422107868af46b3a7b0c2ca270b70c6cc77db1156db8f05e50d5aea1dd293",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "7dd258034ebe87c93d5d2d1881087b072f220f706e1800ec8fb47aafb13bcc45",
+      "reviewed_report_sha256": "0cdba1cb54746cd051a3545201fc25ff3fb11aaadadfe3d4c8022d962e2aefb7",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "기존 Qwen 세 장면 실제 실행 완료.030 형식·행동 근거 실패,007 접근 위주 설명과 완료 과신,정상 접근도 완료 필드 모순.자동 채택 보류.",
+      "synthetic": false,
+      "task_id": "task_98f33fa59488",
+      "title": "EXP-0033 CV 후보 Qwen 3장면 검토",
+      "worker_opinion": "한 job·세 generate 완료,기존 parser 기준030 invalid/007 후보 claim/정상 completion contradiction;실행 성공과 행동 판단 실패를 구분."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

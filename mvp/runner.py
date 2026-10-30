@@ -253,7 +253,7 @@ def run(phase, view, attempt, lock_fd):
                    config_hash=job['config_hash'], pipeline_settings=pipeline_settings,
                    python_version=sys.version, results=[], generation_retries=0)
     from mvp.independent import PHASES as INDEPENDENT_PHASES, run_comparison
-    if phase in ('prompt-regression', *INDEPENDENT_PHASES):
+    if phase in ('prompt-regression', 'candidate-vlm', *INDEPENDENT_PHASES):
         from orchestration.mvp_command import sources as code_sources
         summary['bindings'] = {'inputs': inputs, 'code_files': code_sources(config)}
     monitor = None
