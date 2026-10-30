@@ -34,3 +34,7 @@
 |`docs/reviews/EXP-0038.binding.json`|`7788688f2da992f0bca6a058f56f622f750acccfeebd6b71b0e68aa23c16dc03`|
 
 코드 준비는 기존 `eb6e6fb`에 게시돼 있다. 이번 결과·검토·측정값·등록 문서를 명시적으로 스테이징하며, GitHub 최종 게시 확인은 아래 후속 기록에 남긴다.
+
+## GitHub 게시 확인
+
+결과·검토·측정·등록 커밋 `3071a7dd23013a07bc3fc664426b58e75af758be`를 origin/main에 푸시했고 완료 검증 CLI로 원격 커밋과 보고서/측정/독립 검토/결속4파일 바이트 일치를 확인했다(`github-result-commit.json`, passed). 실제 서비스 JS/CSS/HTML과 EXP-0038 API의 검토 결속도 게시 커밋 및 로컬과 일치했다(`posted-service-version.json`). 웹 기능은 변경하지 않았다. 이는 위에 명시한 이미지 DOM 확인 미완료를 해소한 것으로 주장하지 않는다. 이 게시 확인 문단은 별도 문서 커밋으로 남긴다.
