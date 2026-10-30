@@ -284,7 +284,10 @@ def run(phase, view, attempt, lock_fd):
         atomic_json(folder / 'loading.json', summary)
         context = {key: job[key] for key in ('run_id', 'task_id', 'dispatch_id', 'code_sha', 'source_hash', 'input_hash', 'config_hash')}
         context.update(attempt_id=attempt, view=view, phase=phase)
-        summary['results'] = (run_development(analyzer, folder, sources, cameras, inputs) if phase == 'dev' else
+        from mvp.candidate_vlm import run_candidate_review
+        summary['results'] = (run_candidate_review(analyzer, folder, context, cameras, inputs)
+                              if phase == 'candidate-vlm' else
+            run_development(analyzer, folder, sources, cameras, inputs) if phase == 'dev' else
             run_comparison(analyzer, folder, context) if phase in INDEPENDENT_PHASES else
             run_prompt_regression(analyzer, folder, sources, cameras, context) if phase == 'prompt-regression' else
             run_full(analyzer, folder, sources, cameras, pipeline_settings, config, inputs, context))

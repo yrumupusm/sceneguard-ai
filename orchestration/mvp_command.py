@@ -11,7 +11,7 @@ MODEL_DIR = ASSETS / 'weights/Qwen3-VL-2B-Instruct'
 INTERPRETER = ASSETS / '.venv-vlm/bin/python'
 PINNED_MODEL_SHA256 = '7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0'
 CONFIG_NAMES = ('mvp0001_sources.json', 'mvp0001_cameras.json', 'mvp0001_settings.json')
-PHASES = ('dev', 'full', 'prompt-regression') + INDEPENDENT_PHASES
+PHASES = ('dev', 'full', 'prompt-regression', 'candidate-vlm') + INDEPENDENT_PHASES
 REGRESSION_RUN = 'run_3d23462a014a'
 REGRESSION_MANIFEST = 'mvp_exp0016_manifest.json'
 REGRESSION_PROMPT = 'mvp_exp0016_prompt.txt'
@@ -89,6 +89,9 @@ def sources(config=None):
     names += ['mvp/' + name + '.py' for name in
               ('method', 'compare', 'runner', 'windows', 'events', 'evidence', 'pipeline', 'cli', 'independent')]
     names += ['configs/' + name for name in CONFIG_NAMES]
+    if config and config.get('phase') == 'candidate-vlm':
+        names += ['mvp/candidate_vlm.py', 'configs/exp0033_cv_vlm_manifest.json',
+                  'configs/exp0033_cv_vlm_prompt.txt']
     if config and config.get('phase') == 'prompt-regression':
         names += ['configs/' + REGRESSION_MANIFEST, 'configs/' + REGRESSION_PROMPT]
     if config and config.get('phase') in INDEPENDENT_PHASES:
@@ -113,6 +116,19 @@ def input_contract(phase):
     if phase in INDEPENDENT_PHASES:
         from mvp.independent import bind_inputs
         inputs.update(bind_inputs())
+        return inputs
+    if phase == 'candidate-vlm':
+        # The evaluation reference file is intentionally excluded from the model contract.
+        from mvp.candidate_vlm import frozen_manifest, verify_candidate_events
+        pilot = frozen_manifest()
+        original_events = verify_candidate_events(pilot)
+        inputs['videos'] = {r['source_id']: file_hash(ASSETS / r['path'])
+                            for r in pilot['videos']}
+        if inputs['videos'] != {r['source_id']: r['source_sha256'] for r in pilot['videos']}:
+            raise ValueError('Original CCTV source differs from the fixed pilot manifest')
+        inputs['pilot_event_hashes'] = {k: v['sha256'] for k, v in original_events.items()}
+        inputs['pilot_manifest_sha256'] = file_hash(ROOT / 'configs/exp0033_cv_vlm_manifest.json')
+        inputs['pilot_prompt_sha256'] = file_hash(ROOT / 'configs/exp0033_cv_vlm_prompt.txt')
         return inputs
     if phase == 'dev':
         inputs['clips'] = {r['clip_id']: {name: file_hash(ASSETS / r['cache_dir'] / name)
@@ -140,6 +156,8 @@ def validate(config, inputs, runtime):
         raise ValueError('fixed phase/view/settings config required')
     if config['phase'] not in PHASES or config['view'] not in ('fixed_roi', 'full_frame'):
         raise ValueError('unregistered phase/view')
+    if config['phase'] == 'candidate-vlm' and config['view'] != 'fixed_roi':
+        raise ValueError('EXP-0033 uses the existing fixed camera ROI only')
     if config['phase'] == 'dev' and config['view'] != 'fixed_roi':
         raise ValueError('development B outputs must be reused, not rerun')
     if config['phase'] in INDEPENDENT_PHASES and config['view'] != 'full_frame':
@@ -172,8 +190,9 @@ def output_path(phase, attempt):
     if phase in INDEPENDENT_PHASES:
         path = ASSETS / 'outputs/mvp0001/EXP-0016/independent' / phase / attempt
     else:
-        experiment = {'dev': 'EXP-0011', 'full': 'EXP-0012', 'prompt-regression': 'EXP-0016'}[phase]
+        experiment = {'dev': 'EXP-0011', 'full': 'EXP-0012', 'prompt-regression': 'EXP-0016',
+                      'candidate-vlm': 'EXP-0033'}[phase]
         path = ASSETS / 'outputs/mvp0001' / experiment / attempt
-    if phase in ('prompt-regression', *INDEPENDENT_PHASES) and path.resolve() != path:
+    if phase in ('prompt-regression', 'candidate-vlm', *INDEPENDENT_PHASES) and path.resolve() != path:
         raise ValueError('EXP-0016 output must be a new local attempt without symlink redirection')
     return path

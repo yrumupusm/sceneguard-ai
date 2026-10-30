@@ -19,6 +19,9 @@ def analyzer_prompt(window_id, phase='full'):
     from orchestration.mvp_command import PHASES, REGRESSION_PROMPT
     if phase not in PHASES:
         raise ValueError('unregistered prompt phase')
+    if phase == 'candidate-vlm':
+        from mvp.candidate_vlm import candidate_prompt
+        return candidate_prompt(window_id)
     from mvp.independent import PHASES as INDEPENDENT_PHASES, prompt
     if phase in INDEPENDENT_PHASES:
         return prompt(window_id, phase)
