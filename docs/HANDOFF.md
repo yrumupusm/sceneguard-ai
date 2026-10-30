@@ -1,3 +1,9 @@
+## 2026-10-30 최신 방향 정정 — FCOS 확대 실험 중단, 행동 인식 학습 필요성 검토
+
+사용자 지적에 따라 [EXP-0032 수정 계획](CODEX_EXP0032.md) 우선. 사전학습 사람 검출+ByteTrack/ReID는 월장 중 누락·혼합·신원 단절, EXP-0026 기존 소량 fine-tuning도 실패했다. **사전학습 FCOS로 E01_001 신규 GPU 추론 / E01_006·031 추가 replay / 감시 영역 신규 설정은 지금 진행하지 않는다.** 새 evaluator/합성 테스트는 작성됐으나 실제 평가 실행 및 행동 성능 개선은 아직 미수행. 우선 목표는 짧은 원본 시간 구간의 월장 시도 vs 접근 행동 판별을 위한 제대로 검수된 데이터·방법으로 방향 재정립. 과거 결과와 현행 사용자 polygon·EXP-0030/31 그대로 보존. 새 모델 학습은 별도 사용자 승인 후에만.
+
+---
+
 ## 2026-10-30 — EXP-0031 실제 비교 종료
 
 [결과](experiments/EXP-0031-representative-quality-comparison.md) · [독립 검토](reviews/EXP-0031-independent-review.md) · [웹/GitHub 전달](experiments/EXP-0031-delivery.md).

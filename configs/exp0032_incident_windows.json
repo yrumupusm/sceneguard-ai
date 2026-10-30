@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "experiment_id": "EXP-0032",
-  "purpose": "Evaluate confirmed 5s window-presence and provisional broader incident windows without claiming completed-crossing recall",
-  "selection": "Development clips chosen from prior publicly documented behavior, not a blind test. Predictor is the same pretrained FCOS+ByteTrack gap line rule for all cameras.",
+  "purpose": "Existing-output baseline limitation audit only; not a new detector run, not a way to improve physical climbing recognition",
+  "selection": "Only previously computed 007/030 gap events; no new GPU/CPU tracking replay; no new footage; no polygon retuning",
   "unit": "camera-time episode: merge gap-line event emissions within 2.0 seconds; no person-ID matching",
   "source_of_truth": "User-confirmed EXP-0015 5-s windows only. Official intervals and Codex visual observations are provisional.",
   "videos": [
@@ -85,81 +85,21 @@
           "review_basis": "official_reference_and_codex_visual_draft"
         }
       ]
+    }
+  ],
+  "status": "not_executed_pending_explicit_go; do_not_infer_improvement",
+  "excluded_or_deferred": [
+    {
+      "video_id": "E01_001",
+      "reason": "Removed planned FCOS GPU inference: repeating pretrained person detector does not address climbing action learning"
     },
     {
       "video_id": "E01_006",
-      "source_sha256": "2023ba4592064ce4b9e2547c2d93e912718a156f9e70fa0c22bc91bc29770678",
-      "camera_group": "C3",
-      "role": "development_only",
-      "evaluated_window": [
-        117,
-        133.67
-      ],
-      "cache_metadata": "outputs/cv_phase2d/cache006/run.json",
-      "replay_summary": "outputs/exp0032/replay006/summary.json",
-      "prediction_file": "outputs/exp0032/replay006/gap/events.jsonl",
-      "reference_windows": [
-        {
-          "window_id": "006_hard_negative_candidate",
-          "interval": [
-            119,
-            132
-          ],
-          "status": "provisional_negative_window",
-          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md: user-proposed approx range, not yet fully verified non-event",
-          "review_basis": "user_proposed_requires_full_window_confirmation"
-        }
-      ]
+      "reason": "Not part of current verified event evaluation; purported normal segment remains provisional and external to current scope"
     },
     {
       "video_id": "E01_031",
-      "source_sha256": "daf7b1075c21fdfad6789604bea5922f0e8bfdf34fc5fa54d822212b2ba9d37f",
-      "camera_group": "C7",
-      "role": "development_only",
-      "evaluated_window": [
-        30,
-        46
-      ],
-      "cache_metadata": "outputs/cv_phase2d/cache031/run.json",
-      "replay_summary": "outputs/exp0032/replay031/summary.json",
-      "prediction_file": "outputs/exp0032/replay031/gap/events.jsonl",
-      "reference_windows": [
-        {
-          "window_id": "031_contact_attempt_uncertain",
-          "interval": [
-            33,
-            46
-          ],
-          "status": "provisional_positive_window",
-          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md: contact near33s, not all completed by source end; no exact onset",
-          "review_basis": "user_contact_observation_plus_codex_visual_draft"
-        }
-      ]
-    },
-    {
-      "video_id": "E01_001",
-      "source_sha256": "0218fdc8561260a89780c29270b16d9c13d4e5a4b0098908280bc62a4d08ea71",
-      "camera_group": "C1",
-      "role": "development_only",
-      "evaluated_window": [
-        58,
-        98
-      ],
-      "cache_metadata": "outputs/exp0032/cache001/run.json",
-      "replay_summary": "outputs/exp0032/replay001/summary.json",
-      "prediction_file": "outputs/exp0032/replay001/gap/events.jsonl",
-      "reference_windows": [
-        {
-          "window_id": "001_official_action_span",
-          "interval": [
-            60.867,
-            95.133
-          ],
-          "status": "provisional_positive_window",
-          "evidence": "docs/data/AIHUB_INTRUSION_USER_REVIEW.md and SAMPLE_AUDIT.md: official span, exact physical onset not confirmed",
-          "review_basis": "official_reference_and_codex_visual_draft"
-        }
-      ]
+      "reason": "No exact attempt/completion window ground truth; defer adding more scene without clear training/evaluation purpose"
     }
   ]
 }
