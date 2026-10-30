@@ -1974,6 +1974,125 @@
       "task_id": "task_09fbd5d636c5",
       "title": "EXP-0029 offline tracklet linking",
       "worker_opinion": "Actual2190frames/146representative crops and four videos complete; no verified pre/post identity recovery."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T04:20:53.161900+00:00",
+      "attempt_id": "exp0030-current-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_8c8358922a83",
+      "evaluated_model": "Existing FCOS / ByteTrack gap / saved pretrained ReID features; CPU review only",
+      "evidence": [
+        {
+          "artifact_id": "exp0030-030-comparison",
+          "kind": "video",
+          "label": "030 원본 / 기존 ID / 자동 연결 / 검토 제안 — 원본 PTS 표시, 정체·완료 미확정"
+        },
+        {
+          "artifact_id": "exp0030-030-event-line-0001",
+          "kind": "video",
+          "label": "030 event-line-0001 원본 근거 86.400–98.400s — 검토 후보, 완료 미확정"
+        },
+        {
+          "artifact_id": "exp0030-030-event-line-0002",
+          "kind": "video",
+          "label": "030 event-line-0002 원본 근거 86.667–98.667s — 검토 후보, 완료 미확정"
+        },
+        {
+          "artifact_id": "exp0030-030-event-region-0001",
+          "kind": "video",
+          "label": "030 event-region-0001 원본 근거 88.000–99.967s — 검토 후보, 완료 미확정"
+        },
+        {
+          "artifact_id": "exp0030-007-comparison",
+          "kind": "video",
+          "label": "007 원본 / 기존 ID / 자동 연결 / 검토 제안 — 원본 PTS 표시, 정체·완료 미확정"
+        },
+        {
+          "artifact_id": "exp0030-007-event-line-0001",
+          "kind": "video",
+          "label": "007 event-line-0001 원본 근거 66.133–78.133s — 검토 후보, 완료 미확정"
+        },
+        {
+          "artifact_id": "exp0030-007-context-0001",
+          "kind": "video",
+          "label": "007 context-0001 원본 근거 53.700–59.700s — 사용자 확인 접근, 알고리즘 사건 아님"
+        },
+        {
+          "artifact_id": "exp0030-q01-inputs",
+          "kind": "image",
+          "label": "Q01 030 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0030-q02-inputs",
+          "kind": "image",
+          "label": "Q02 030 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0030-q03-inputs",
+          "kind": "image",
+          "label": "Q03 030 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0030-q04-inputs",
+          "kind": "image",
+          "label": "Q04 007 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0030-q05-inputs",
+          "kind": "image",
+          "label": "Q05 007 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0030-q06-inputs",
+          "kind": "image",
+          "label": "Q06 007 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0030-q07-inputs",
+          "kind": "image",
+          "label": "Q07 007 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0030-q08-inputs",
+          "kind": "image",
+          "label": "Q08 007 기존 대표 입력·박스·PTS·유사도 — 재사용, 동일인 미확정"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0030",
+      "limitations": [
+        "개발 구간이며 독립 정확도 정답 없음",
+        "Q02 의심 첫 대표를 수치 플래그가 찾지 못함; Q08 복수 인물 크롭 지속",
+        "약한 연결 제안·잘못된 제안 가능성, 자동 ID 병합 없음",
+        "박스 하단 중심점은 발 위치가 아니며 두 측면 후보도 완료 확정 아님",
+        "사후 전체 구간 처리; CPU 영상 제작 시간을 실시간 추론 FPS로 해석 금지",
+        "region 배너 단일raw는None 표시; 대응raw3/t0003/p0003은 인덱스와 패널 참조"
+      ],
+      "metric_definitions": "records/EXP-0030/metrics.json",
+      "metrics_path": "records/EXP-0030/metrics.json",
+      "metrics_sha256": "9e2d800207b1bf91f033795ee5c8ce11e07f1ddf3d04d4b17bb64991ae8140fe",
+      "next_step": "Q쌍의 단일인 대응과 raw ID 혼합 범위를 확인. 이번 범위 종료, 새 영역·모델·임계값 실행 자동 시작 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "0a73df8d598a3eff325d570cee0b2347c506b8244c96f48c20c1224ae6b1f7c5",
+      "report_path": "docs/experiments/EXP-0030-mvp-review-integration.md",
+      "report_sha256": "b0d0f0fa0a1ff2a8691bda3b4ffbf914737ac701fae52ada77fd1dd31ca89188",
+      "review_binding_path": "docs/reviews/EXP-0030.binding.json",
+      "review_path": "docs/reviews/EXP-0030-independent-review.md",
+      "review_sha256": "63a837982ff0d5a37bf120c0bf7268f1f819d177f63a277b01a7271b24995a65",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "9e2d800207b1bf91f033795ee5c8ce11e07f1ddf3d04d4b17bb64991ae8140fe",
+      "reviewed_report_sha256": "b0d0f0fa0a1ff2a8691bda3b4ffbf914737ac701fae52ada77fd1dd31ca89188",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "현행 사용자 영역·저장2190프레임의 사건/연결 검토와 원본 근거 통합. 새 추론0, 다른ID 자동 복원0; 품질 한계와 완료 미확정 유지.",
+      "synthetic": false,
+      "task_id": "task_04c50ae15a64",
+      "title": "EXP-0030 current-region MVP review integration",
+      "worker_opinion": "실제 실행과 검토 근거 생성은 완료.030 motion2/two-side1,007 motion1/two-side0; 22 review proposals are not identity recovery or event successes."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

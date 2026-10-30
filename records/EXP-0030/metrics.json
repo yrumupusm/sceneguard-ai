@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0030",
+  "metrics": [
+    {
+      "label": "030 frames",
+      "value": 480,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "frames"
+      ]
+    },
+    {
+      "label": "030 motion candidates",
+      "value": 2,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "motion_candidates"
+      ]
+    },
+    {
+      "label": "030 current two-side candidates",
+      "value": 1,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "two_side_candidates"
+      ]
+    },
+    {
+      "label": "030 unchanged auto links",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "auto_associations_unverified"
+      ]
+    },
+    {
+      "label": "030 review proposals",
+      "value": 11,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "possible_matches_for_review"
+      ]
+    },
+    {
+      "label": "030 automatic cross-raw links",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "linkage_counts",
+        "automatic_different_raw_ids"
+      ]
+    },
+    {
+      "label": "030 overlapping box-pair rows",
+      "value": 63,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "quality_counts",
+        "concurrent_overlaps"
+      ]
+    },
+    {
+      "label": "030 extent-change rows",
+      "value": 11,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "quality_counts",
+        "extent_changes"
+      ]
+    },
+    {
+      "label": "030 original short clips",
+      "value": 15,
+      "unit": "count",
+      "sample_n": 480,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "render_receipt",
+        "original_clips"
+      ]
+    },
+    {
+      "label": "030 CPU processing and media",
+      "value": 84.8715496060031,
+      "unit": "s",
+      "sample_n": 480,
+      "scope": "Post-validation CPU diagnostics, rendering and media verification; not model inference or alert latency",
+      "source": "outputs/exp0030/current-v1/track030/summary.json",
+      "source_sha256": "1f198bf623ae3d999838c9ecb78cc3c85955b6e5ac1d6e7890d9e20445684cb6",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "wall_seconds"
+      ]
+    },
+    {
+      "label": "007 frames",
+      "value": 1710,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "frames"
+      ]
+    },
+    {
+      "label": "007 motion candidates",
+      "value": 1,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "motion_candidates"
+      ]
+    },
+    {
+      "label": "007 current two-side candidates",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "two_side_candidates"
+      ]
+    },
+    {
+      "label": "007 unchanged auto links",
+      "value": 1,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "auto_associations_unverified"
+      ]
+    },
+    {
+      "label": "007 review proposals",
+      "value": 11,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "counts",
+        "possible_matches_for_review"
+      ]
+    },
+    {
+      "label": "007 automatic cross-raw links",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "linkage_counts",
+        "automatic_different_raw_ids"
+      ]
+    },
+    {
+      "label": "007 overlapping box-pair rows",
+      "value": 237,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "quality_counts",
+        "concurrent_overlaps"
+      ]
+    },
+    {
+      "label": "007 extent-change rows",
+      "value": 17,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "quality_counts",
+        "extent_changes"
+      ]
+    },
+    {
+      "label": "007 original short clips",
+      "value": 19,
+      "unit": "count",
+      "sample_n": 1710,
+      "scope": "Current-region offline development diagnostics; counts are not people or successful crossings",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "render_receipt",
+        "original_clips"
+      ]
+    },
+    {
+      "label": "007 CPU processing and media",
+      "value": 197.47842601299635,
+      "unit": "s",
+      "sample_n": 1710,
+      "scope": "Post-validation CPU diagnostics, rendering and media verification; not model inference or alert latency",
+      "source": "outputs/exp0030/current-v1/track007/summary.json",
+      "source_sha256": "7a66aee1bde06ad35c60c3665beb96a8d71aef94e88e24911302dec397952f3f",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "wall_seconds"
+      ]
+    },
+    {
+      "label": "Whole run post-validation CPU",
+      "value": 282.4795545200177,
+      "unit": "s",
+      "sample_n": 2190,
+      "scope": "Post-validation CPU diagnostics, rendering and media verification; not model inference or alert latency",
+      "source": "outputs/exp0030/current-v1/execution-receipt.json",
+      "source_sha256": "db25f45639ecdcefd0014887ca13cbc994e29f928aaf91b1a6c53790db54a654",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "wall_seconds"
+      ]
+    },
+    {
+      "label": "New detector forwards",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 2190,
+      "scope": "Saved outputs reuse, no model inference",
+      "source": "outputs/exp0030/current-v1/execution-receipt.json",
+      "source_sha256": "db25f45639ecdcefd0014887ca13cbc994e29f928aaf91b1a6c53790db54a654",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "detector_calls"
+      ]
+    },
+    {
+      "label": "New tracker executions",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 2190,
+      "scope": "Saved outputs reuse, no model inference",
+      "source": "outputs/exp0030/current-v1/execution-receipt.json",
+      "source_sha256": "db25f45639ecdcefd0014887ca13cbc994e29f928aaf91b1a6c53790db54a654",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "tracker_calls"
+      ]
+    },
+    {
+      "label": "New ReID forwards",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 2190,
+      "scope": "Saved outputs reuse, no model inference",
+      "source": "outputs/exp0030/current-v1/execution-receipt.json",
+      "source_sha256": "db25f45639ecdcefd0014887ca13cbc994e29f928aaf91b1a6c53790db54a654",
+      "verification": "actual local output; identity and physical completion unverified",
+      "source_pointer": [
+        "encoder_calls"
+      ]
+    },
+    {
+      "label": "Whole CLI wall including validation",
+      "value": 282.92893059097696,
+      "unit": "s",
+      "sample_n": 2190,
+      "scope": "One CPU command including input validation/loading, rendering and output verification; not model inference or real-time delay",
+      "source": "runtime/EXP-0030/command-execution.json",
+      "source_sha256": "1621ae6ca1f2cc2644a51678efdea2086529e0d0c329d48aef83a4a70139e3da",
+      "verification": "actual measured subprocess wall",
+      "source_pointer": [
+        "elapsed_seconds"
+      ]
+    },
+    {
+      "label": "Final identity / physical crossing accuracy",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "No independent identity/completion ground truth; development visual draft only",
+      "source": "docs/experiments/EXP-0030-mvp-review-integration.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}
