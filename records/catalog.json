@@ -2771,6 +2771,109 @@
       "task_id": "task_84fc4af07a12",
       "title": "EXP-0037 MVP 분석·사건 카드·검토 저장",
       "worker_opinion": "선택구간분석·근거·등록·버전검토저장기능완료; 후처리성능효과없어기본규칙유지"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T16:08:26.477270+00:00",
+      "attempt_id": "2045864aebe541f6bda49875a03efc6e",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_96e9b26e3a5a",
+      "evaluated_model": "Qwen3-VL-8B-Instruct language NF4 vs saved Qwen3-VL-2B-Instruct BF16",
+      "evidence": [
+        {
+          "artifact_id": "exp0038-p1-original",
+          "kind": "image",
+          "label": "P1 원본 맥락·기존 입력 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p1-comparison",
+          "kind": "image",
+          "label": "P1 원본 크롭 / 실제2B / 실제8B 입력·응답 비교 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p2-original",
+          "kind": "image",
+          "label": "P2 원본 맥락·기존 입력 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p2-comparison",
+          "kind": "image",
+          "label": "P2 원본 크롭 / 실제2B / 실제8B 입력·응답 비교 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p3-original",
+          "kind": "image",
+          "label": "P3 원본 맥락·기존 입력 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p3-comparison",
+          "kind": "image",
+          "label": "P3 원본 크롭 / 실제2B / 실제8B 입력·응답 비교 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p4-original",
+          "kind": "image",
+          "label": "P4 원본 맥락·기존 입력 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p4-comparison",
+          "kind": "image",
+          "label": "P4 원본 크롭 / 실제2B / 실제8B 입력·응답 비교 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p5-original",
+          "kind": "image",
+          "label": "P5 원본 맥락·기존 입력 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p5-comparison",
+          "kind": "image",
+          "label": "P5 원본 크롭 / 실제2B / 실제8B 입력·응답 비교 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p6-original",
+          "kind": "image",
+          "label": "P6 원본 맥락·기존 입력 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0038-p6-comparison",
+          "kind": "image",
+          "label": "P6 원본 크롭 / 실제2B / 실제8B 입력·응답 비교 · 동일인 미확정"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0038",
+      "limitations": [
+        "기존 시각 초안 재사용; 새 사용자 동일인 정답과 독립 성능 평가 없음",
+        "혼합 인물 호환 오류와 불확실한 하의 match 유지",
+        "다른 의복 대조 최종 unknown 증가를 개선으로 세지 않음",
+        "모델 크기·시각 인코더·양자화가 함께 다름",
+        "담당 카드 최초 배정은 CPU 준비 이력이며 현재 GPU 실행 task와 다름"
+      ],
+      "metric_definitions": "records/EXP-0038/metrics.json",
+      "metrics_path": "records/EXP-0038/metrics.json",
+      "metrics_sha256": "0693e641d56b9791475d2999e0bab4b071b8bee2e98585c2e420b3b7a4eef291",
+      "next_step": "승인된6쌍 비교 종료. 기존 MVP 유지, 추가 추론 자동 시작하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "57c425b5c9f9d478327028d728777a688952f11da8812d75457d6129b0652575",
+      "report_path": "docs/experiments/EXP-0038-results.md",
+      "report_sha256": "216dccffbc2fbeb0e2794dcd6a23b927fe1ac2874a0b7ac5b75a78be77ce655f",
+      "review_binding_path": "docs/reviews/EXP-0038.binding.json",
+      "review_path": "docs/reviews/EXP-0038-independent-review.md",
+      "review_sha256": "9683411d13c5a012bb81aff277d9828d82745d4b2e86621bd0ffc9013d9c73e3",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "0693e641d56b9791475d2999e0bab4b071b8bee2e98585c2e420b3b7a4eef291",
+      "reviewed_report_sha256": "216dccffbc2fbeb0e2794dcd6a23b927fe1ac2874a0b7ac5b75a78be77ce655f",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "1적재·6쌍 완료. JSON 형식 개선·P6 가림 유보, P5 혼합 오류 유지·P3/P4 거부 손실로 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_5e783fa73799",
+      "title": "EXP-0038 Qwen 8B NF4 외형 비교",
+      "worker_opinion": "실행 성공과 형식 개선 확인; 동일인 구분 품질 충분하지 않아 기본 교체 보류"
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
