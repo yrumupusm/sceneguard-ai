@@ -33,4 +33,8 @@ CPU 관련 77개, MVP 전체 167개, 큐 14개 테스트가 통과했다. 기존
 
 ## GitHub 게시
 
-이 문서의 첫 기록 시점에는 실제 화면 확인을 마쳤고 코드·결과 커밋의 게시를 진행 중이다. 게시 후 원격 main의 커밋과 보고서/검토/metrics/등록 결속 바이트 일치를 별도 확인하여 아래에 완료 기록을 추가한다. 로컬 화면 확인만으로 GitHub 게시 완료를 주장하지 않는다.
+**결과 커밋 게시와 원격 main 확인 완료:** `d3a0e30866d4759d57d0975bce06bb44841f8729` — Run EXP-0034 disappearance and appearance review with preserved observations.
+
+2026-10-30 10:39:54 UTC, GitHub 원격 main이 이 커밋을 가리킴을 `git ls-remote`로 확인했다. 해당 커밋의 catalog/assignment 및 보고서·실측값·독립 검토·등록 결속 바이트가 현재 로컬과 같았다. 이 네 해시는 앞서 실제 서비스 API/브라우저가 읽은 해시와도 일치한다. 공개 코드·문서·요약 19파일만 게시했고 미디어/runtime/인증 파일은 포함하지 않았다. GitHub 검증 receipt는 로컬 `runtime/EXP-0034/delivery/github-result-commit.json`에 있다.
+
+이 전달 확인 문서 갱신은 별도 후속 문서 커밋으로 게시한다. 검토가 결속된 보고서·metrics·review·binding은 바꾸지 않으며 추가 실행은 없다. **기능 실행/제한된 검수/웹 전달/GitHub 게시 완료, 성능 기준 미충족과 자동 적용 보류**를 구분해 종료한다.
