@@ -183,8 +183,11 @@ def dedup_incidents(events, merge_seconds=2.0):
 
 
 def _window_hit(group, interval):
-    # Use actual output/emission timestamps, not hindsight-estimated crossing time.
-    return any(interval[0] <= t < interval[1] for t in group["member_emission_pts"])
+    # Assign an episode to exactly one review window by its FIRST emission.
+    # Do not double count a continuous alert burst spanning adjacent windows.
+    # This is an episode output clock, not the hindsight-estimated crossing time.
+    t = group["first_emitted_at_pts"]
+    return interval[0] <= t < interval[1]
 
 
 def evaluate_window_presence(manifest, predictions):
