@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0033",
+  "note": "Read ONLY after Qwen completes; not in queue model-input contract.",
+  "references": [
+    {
+      "case_id": "c030_cv",
+      "reference_status": "climbing_attempt_seen_user_coarse",
+      "evidence": "Earlier user observation and docs/data/AIHUB_INTRUSION_USER_REVIEW.md; around 88-90s; exact window-person labels not confirmed",
+      "completion": "unknown"
+    },
+    {
+      "case_id": "c007_cv",
+      "reference_status": "climbing_attempt_seen_user_coarse",
+      "evidence": "Earlier user observation climbing starts ~66s; docs/experiments/EXP-0028-user-tracking-review.md; exact completion/identity unknown",
+      "completion": "unknown"
+    },
+    {
+      "case_id": "c007_control",
+      "reference_status": "no_climbing_human_confirmed_in_window",
+      "evidence": "configs/mvp_small_eval_labels_r1.json q03 52.5-57.5",
+      "completion": "not_assessed"
+    }
+  ]
+}

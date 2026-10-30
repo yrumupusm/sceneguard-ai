@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0033",
+  "purpose": "One fixed 3-window CV-candidate to Qwen3-VL pilot; no model training or threshold changes",
+  "mode": "offline_saved_cv_candidate_to_vlm_review",
+  "sampling": "max 10 actual native-PTS frames uniformly across each fixed source window",
+  "cases": [
+    {
+      "case_id": "c030_cv",
+      "window_id": "w000001",
+      "source_id": "E01_030",
+      "camera_id": "C6",
+      "start": 85,
+      "end": 95,
+      "samples": 10,
+      "mode": "cv_candidate",
+      "original_event_file": "outputs/exp0028/practical-v1/track030/gap/events.jsonl",
+      "original_event_emission_pts": 90.4,
+      "original_event_raw_id": 3
+    },
+    {
+      "case_id": "c007_cv",
+      "window_id": "w000002",
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "start": 64,
+      "end": 74,
+      "samples": 10,
+      "mode": "cv_candidate",
+      "original_event_file": "outputs/exp0029/replay007/gap/events.jsonl",
+      "original_event_emission_pts": 70.13333333333334,
+      "original_event_raw_id": 8
+    },
+    {
+      "case_id": "c007_control",
+      "window_id": "w000003",
+      "source_id": "E01_007",
+      "camera_id": "C3",
+      "start": 52.5,
+      "end": 57.5,
+      "samples": 10,
+      "mode": "independent_negative_control_no_cv_gate"
+    }
+  ],
+  "videos": [
+    {
+      "source_id": "E01_030",
+      "path": "data/TS_침입/E01_030.mp4",
+      "source_sha256": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88"
+    },
+    {
+      "source_id": "E01_007",
+      "path": "data/TS_침입/E01_007.mp4",
+      "source_sha256": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04"
+    }
+  ],
+  "rules": {
+    "no_labels_in_model_prompt": true,
+    "no_existing_model_answer_in_model_prompt": true,
+    "no_trained_reid_identity_as_truth": true,
+    "same_prompt_all_cases": true,
+    "keep_original_cv_candidates": true,
+    "analysis_only_not_automatic_alert": true
+  }
+}
