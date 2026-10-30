@@ -54,6 +54,25 @@ def verify_lease(config, attempt, lock_fd):
         raise ValueError('attempt child identity differs')
     if json.loads(row['config_json']) != config:
         raise ValueError('MVP phase/view/settings differ from live queue attempt')
+    if config['phase'] == 'appearance-compare':
+        from mvp.exp0034_appearance import IDENTITY
+        if tuple(row[k] for k in ('run_id','task_id','dispatch_id')) != IDENTITY:
+            raise ValueError('EXP-0034 requires its exact current Run/Task/Dispatch')
+        # Check actual Orca authority, rather than trusting a copied local row.
+        snapshot=json.loads(subprocess.check_output(['orca-ide','orchestration','worker-list',
+            '--run',IDENTITY[0],'--json'],text=True,timeout=25))
+        matches=[w for w in snapshot.get('result',{}).get('workers',[])
+                 if w.get('taskId')==IDENTITY[1] and w.get('dispatchId')==IDENTITY[2]
+                 and w.get('dispatchStatus')=='dispatched'
+                 and w.get('projection',{}).get('liveness',{}).get('verdict')=='live']
+        if not snapshot.get('ok') or len(matches)!=1:
+            raise ValueError('EXP-0034 current native dispatch must be live')
+        with sqlite3.connect(f'file:{RUNTIME / "queue.sqlite3"}?mode=ro', uri=True) as db:
+            previous=db.execute("SELECT j.job_id,a.attempt_id,j.config_json FROM jobs j "
+                "LEFT JOIN attempts a USING(job_id) WHERE j.command='mvp-0001'").fetchall()
+        appearance=[r for r in previous if json.loads(r[2]).get('phase')=='appearance-compare']
+        if len(appearance)!=1 or appearance[0][0]!=row['job_id'] or appearance[0][1]!=attempt:
+            raise ValueError('Only one EXP-0034 job/attempt; automatic retry forbidden')
     validate_run(config['phase'], row['run_id'])
     return dict(row)
 
@@ -253,11 +272,14 @@ def run(phase, view, attempt, lock_fd):
                    config_hash=job['config_hash'], pipeline_settings=pipeline_settings,
                    python_version=sys.version, results=[], generation_retries=0)
     from mvp.independent import PHASES as INDEPENDENT_PHASES, run_comparison
-    if phase in ('prompt-regression', 'candidate-vlm', *INDEPENDENT_PHASES):
+    if phase in ('prompt-regression', 'candidate-vlm', 'appearance-compare', *INDEPENDENT_PHASES):
         from orchestration.mvp_command import sources as code_sources
         summary['bindings'] = {'inputs': inputs, 'code_files': code_sources(config)}
     monitor = None
     try:
+        if phase == 'appearance-compare':
+            from mvp.exp0034_appearance import verify_native_crops
+            summary['native_crop_verification'] = verify_native_crops()
         summary['resource_gate'] = check_resources(pipeline_settings)
         os.environ.update(HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1', HF_HUB_DISABLE_TELEMETRY='1',
             SCENEGUARD_MVP_CONFIG=json.dumps(config), SCENEGUARD_MVP_ATTEMPT=attempt,
@@ -285,7 +307,9 @@ def run(phase, view, attempt, lock_fd):
         context = {key: job[key] for key in ('run_id', 'task_id', 'dispatch_id', 'code_sha', 'source_hash', 'input_hash', 'config_hash')}
         context.update(attempt_id=attempt, view=view, phase=phase)
         from mvp.candidate_vlm import run_candidate_review
-        summary['results'] = (run_candidate_review(analyzer, folder, context, cameras, inputs)
+        from mvp.exp0034_appearance import run_appearance
+        summary['results'] = (run_appearance(analyzer, folder, context) if phase == 'appearance-compare' else
+            run_candidate_review(analyzer, folder, context, cameras, inputs)
                               if phase == 'candidate-vlm' else
             run_development(analyzer, folder, sources, cameras, inputs) if phase == 'dev' else
             run_comparison(analyzer, folder, context) if phase in INDEPENDENT_PHASES else

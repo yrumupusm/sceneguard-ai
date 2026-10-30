@@ -324,6 +324,19 @@
       "synthetic": false,
       "task_id": "task_98f33fa59488",
       "title": "EXP-0033 CV 후보 Qwen 3장면 검토"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T10:22:08.397714+00:00",
+      "dispatch_id": "ctx_93298a31e489",
+      "experiment_id": "EXP-0034",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_346d88014dbc",
+      "title": "EXP-0034 접근·소실과 외형 비교"
     }
   ],
   "schema_version": 1

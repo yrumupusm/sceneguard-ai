@@ -131,12 +131,14 @@ def motion(rows, size, policy):
     tail=[r for r in rows if rows[-1]['pts']-r['pts']<=policy.direction_window+1e-9]
     vectors=[]
     rejected=0
+    terminal_rejected=False
     for a,b in zip(tail,tail[1:]):
         dt=b['pts']-a['pts']
         aw,ah=a['bbox'][2]-a['bbox'][0],a['bbox'][3]-a['bbox'][1]
         bw,bh=b['bbox'][2]-b['bbox'][0],b['bbox'][3]-b['bbox'][1]
         if dt>policy.max_direction_step or max(aw/bw,bw/aw,ah/bh,bh/ah)>policy.scale_jump:
             rejected+=1
+            terminal_rejected=b is tail[-1]
             continue
         p,q=center(a,size),center(b,size)
         vectors.append(((q[0]-p[0])/dt,(q[1]-p[1])/dt))
@@ -144,10 +146,11 @@ def motion(rows, size, policy):
     velocity=[st.median([v[k] for v in vectors]) for k in (0,1)] if vectors else [0.,0.]
     speed=math.hypot(*velocity)
     consistency=sum(v[0]*velocity[0]+v[1]*velocity[1]>0 for v in vectors)/len(vectors) if vectors and speed else 0.
-    reliable=len(vectors)>=2 and speed*span>=policy.min_motion_pixels and consistency>=0.65
+    reliable=not terminal_rejected and len(vectors)>=2 and speed*span>=policy.min_motion_pixels and consistency>=0.65
     return {'velocity_pixels_per_second':velocity,'reliable':reliable,
             'span_seconds':span,'usable_steps':len(vectors),'rejected_steps':rejected,
-            'consistency':consistency,'origin_pixels':list(center(rows[-1],size))}
+            'consistency':consistency,'terminal_step_rejected':terminal_rejected,
+            'origin_pixels':list(center(rows[-1],size))}
 
 
 def angle_degrees(velocity, displacement):
@@ -197,7 +200,7 @@ def analyze(frames, scene, policy=Policy()):
                     origin=z
                 if stable is not None and stable!=z and entered:
                     # Require observations near the FINITE gate, not merely an infinite line.
-                    height=st.median((r['bbox'][3]-r['bbox'][1])*h for r in rows)
+                    height=st.median((r['bbox'][3]-r['bbox'][1])*h for r in rows if r['pts']<=row['pts'])
                     near=any(line_distance(center(r,(w,h)),scene)<=max(12,height*policy.near_line_heights)
                              for r in rows if r['pts']<=row['pts'])
                     direction=f'{stable}_to_{z}'
@@ -212,7 +215,7 @@ def analyze(frames, scene, policy=Policy()):
             if entered and not in_roi and previous is not None:
                 was_in=polygon(center(previous,(1,1),.65),scene['approach_polygon'])
                 if was_in:
-                    if stable==origin and z==origin and not crossed and not gap_uncertain:
+                    if origin is not None and stable==origin and z==origin and not crossed and not gap_uncertain:
                         events.append({'segment':seg['id'],'raw_id':seg['raw_id'],'pts':row['pts'],
                                        'status':'침입 아님','reason':'observed_same_side_exit',
                                        'scope':'this_observed_episode_only'})

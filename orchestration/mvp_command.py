@@ -11,7 +11,7 @@ MODEL_DIR = ASSETS / 'weights/Qwen3-VL-2B-Instruct'
 INTERPRETER = ASSETS / '.venv-vlm/bin/python'
 PINNED_MODEL_SHA256 = '7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0'
 CONFIG_NAMES = ('mvp0001_sources.json', 'mvp0001_cameras.json', 'mvp0001_settings.json')
-PHASES = ('dev', 'full', 'prompt-regression', 'candidate-vlm') + INDEPENDENT_PHASES
+PHASES = ('dev', 'full', 'prompt-regression', 'candidate-vlm', 'appearance-compare') + INDEPENDENT_PHASES
 REGRESSION_RUN = 'run_3d23462a014a'
 REGRESSION_MANIFEST = 'mvp_exp0016_manifest.json'
 REGRESSION_PROMPT = 'mvp_exp0016_prompt.txt'
@@ -78,6 +78,11 @@ def load_regression_manifest():
 
 
 def validate_run(phase, run_id):
+    if phase == 'appearance-compare':
+        from mvp.exp0034_appearance import IDENTITY, validate_authorization
+        if run_id != IDENTITY[0]:
+            raise ValueError('EXP-0034 requires the existing Orca run')
+        validate_authorization()
     if phase in ('prompt-regression', *INDEPENDENT_PHASES) and run_id != REGRESSION_RUN:
         raise ValueError('EXP-0016 requires the existing Orca run')
 
@@ -89,6 +94,9 @@ def sources(config=None):
     names += ['mvp/' + name + '.py' for name in
               ('method', 'compare', 'runner', 'windows', 'events', 'evidence', 'pipeline', 'cli', 'independent')]
     names += ['configs/' + name for name in CONFIG_NAMES]
+    if config and config.get('phase') == 'appearance-compare':
+        names += ['mvp/exp0034_appearance.py', 'sceneguard/appearance_support.py',
+                  'tests_mvp/test_exp0034_appearance.py']
     if config and config.get('phase') == 'candidate-vlm':
         names += ['mvp/candidate_vlm.py', 'configs/exp0033_cv_vlm_manifest.json',
                   'configs/exp0033_cv_vlm_prompt.txt']
@@ -113,6 +121,10 @@ def input_contract(phase):
         raise ValueError('local Qwen weights differ from pinned revision')
     inputs = {'model_files': model,
               'configs': {name: file_hash(ROOT / 'configs' / name) for name in CONFIG_NAMES}}
+    if phase == 'appearance-compare':
+        from mvp.exp0034_appearance import bind_inputs
+        inputs.update(bind_inputs())
+        return inputs
     if phase in INDEPENDENT_PHASES:
         from mvp.independent import bind_inputs
         inputs.update(bind_inputs())
@@ -158,6 +170,8 @@ def validate(config, inputs, runtime):
         raise ValueError('unregistered phase/view')
     if config['phase'] == 'candidate-vlm' and config['view'] != 'fixed_roi':
         raise ValueError('EXP-0033 uses the existing fixed camera ROI only')
+    if config['phase'] == 'appearance-compare' and config['view'] != 'full_frame':
+        raise ValueError('EXP-0034 uses exact stored native target crops only')
     if config['phase'] == 'dev' and config['view'] != 'fixed_roi':
         raise ValueError('development B outputs must be reused, not rerun')
     if config['phase'] in INDEPENDENT_PHASES and config['view'] != 'full_frame':
@@ -191,8 +205,8 @@ def output_path(phase, attempt):
         path = ASSETS / 'outputs/mvp0001/EXP-0016/independent' / phase / attempt
     else:
         experiment = {'dev': 'EXP-0011', 'full': 'EXP-0012', 'prompt-regression': 'EXP-0016',
-                      'candidate-vlm': 'EXP-0033'}[phase]
+                      'candidate-vlm': 'EXP-0033', 'appearance-compare': 'EXP-0034'}[phase]
         path = ASSETS / 'outputs/mvp0001' / experiment / attempt
-    if phase in ('prompt-regression', 'candidate-vlm', *INDEPENDENT_PHASES) and path.resolve() != path:
+    if phase in ('prompt-regression', 'candidate-vlm', 'appearance-compare', *INDEPENDENT_PHASES) and path.resolve() != path:
         raise ValueError('EXP-0016 output must be a new local attempt without symlink redirection')
     return path

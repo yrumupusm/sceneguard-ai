@@ -2389,6 +2389,134 @@
       "task_id": "task_98f33fa59488",
       "title": "EXP-0033 CV 후보 Qwen 3장면 검토",
       "worker_opinion": "한 job·세 generate 완료,기존 parser 기준030 invalid/007 후보 claim/정상 completion contradiction;실행 성공과 행동 판단 실패를 구분."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-30T10:22:08.397714+00:00",
+      "attempt_id": "565b65a15fee492a8aea0e29bde1cb4e",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_93298a31e489",
+      "evaluated_model": "Existing Qwen3-VL-2B-Instruct / BF16 CUDA0 / 27 whole observed bbox crops / six comparisons",
+      "evidence": [
+        {
+          "artifact_id": "exp0034-030-comparison",
+          "kind": "video",
+          "label": "030 원본 / 실제 관측 / 방향·소실·상태 · 원본 PTS 표시"
+        },
+        {
+          "artifact_id": "exp0034-030-status",
+          "kind": "video",
+          "label": "030 전체 시야 상세 · 초록 실제관측 / 주황 예측 · ±90° 보조"
+        },
+        {
+          "artifact_id": "exp0034-030-static",
+          "kind": "image",
+          "label": "030 기존 영역 + 별도 가림 주석 · 정적 PTS0 검수 초안"
+        },
+        {
+          "artifact_id": "exp0034-007-comparison",
+          "kind": "video",
+          "label": "007 원본 / 실제 관측 / 방향·소실·상태 · 원본 PTS 표시"
+        },
+        {
+          "artifact_id": "exp0034-007-status",
+          "kind": "video",
+          "label": "007 전체 시야 상세 · 초록 실제관측 / 주황 예측 · ±90° 보조"
+        },
+        {
+          "artifact_id": "exp0034-007-static",
+          "kind": "image",
+          "label": "007 기존 영역 + 별도 가림 주석 · 정적 PTS0 검수 초안"
+        },
+        {
+          "artifact_id": "exp0034-p1-pair",
+          "kind": "image",
+          "label": "P1 실제 원본 크롭 비교 · 연결 정답 아님"
+        },
+        {
+          "artifact_id": "exp0034-p2-pair",
+          "kind": "image",
+          "label": "P2 실제 원본 크롭 비교 · 연결 정답 아님"
+        },
+        {
+          "artifact_id": "exp0034-p3-pair",
+          "kind": "image",
+          "label": "P3 실제 원본 크롭 비교 · 연결 정답 아님"
+        },
+        {
+          "artifact_id": "exp0034-p4-pair",
+          "kind": "image",
+          "label": "P4 실제 원본 크롭 비교 · 연결 정답 아님"
+        },
+        {
+          "artifact_id": "exp0034-p5-pair",
+          "kind": "image",
+          "label": "P5 실제 원본 크롭 비교 · 연결 정답 아님"
+        },
+        {
+          "artifact_id": "exp0034-p6-pair",
+          "kind": "image",
+          "label": "P6 실제 원본 크롭 비교 · 연결 정답 아님"
+        },
+        {
+          "artifact_id": "exp0034-p2-processor",
+          "kind": "image",
+          "label": "P2 실제 모델 입력 · 부분/혼합/가림 검토"
+        },
+        {
+          "artifact_id": "exp0034-p5-processor",
+          "kind": "image",
+          "label": "P5 실제 모델 입력 · 부분/혼합/가림 검토"
+        },
+        {
+          "artifact_id": "exp0034-p6-processor",
+          "kind": "image",
+          "label": "P6 실제 모델 입력 · 부분/혼합/가림 검토"
+        },
+        {
+          "artifact_id": "exp0034-030-context",
+          "kind": "image",
+          "label": "030 원본/관측 문맥 · 표시용 확대, 모델 입력 아님"
+        },
+        {
+          "artifact_id": "exp0034-007-context",
+          "kind": "image",
+          "label": "007 원본/관측 문맥 · 표시용 확대, 모델 입력 아님"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0034",
+      "limitations": [
+        "원본 시각 판독은 총괄 초안;새 사용자 동일인 확정 정답0",
+        "007 실제 가림 소실을 침입 의심으로 포착하지 못함",
+        "VLM이 두 사람 혼합을 호환으로 답하고 미관측 부위를 유보하지 못함",
+        "30후보 중24미비교;단일인 연결/침입 정확도 미산출",
+        "원본 전체가 아닌03016초·00757초 개발 구간의 사후 분석"
+      ],
+      "metric_definitions": "records/EXP-0034/metrics.json",
+      "metrics_path": "records/EXP-0034/metrics.json",
+      "metrics_sha256": "ee77952e5240607eb2b5a963b5ce8338f4ca0cf2a0c9abfb4fbb92cb7a182152",
+      "next_step": "실행 한도 종료.007 한 ID 내부 혼합과 가림 전 마지막 관측 근거를 우선 확인하되 추가 추론·영역/임계값 변경은 자동 시작하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "5316bddcd3dcc35fece70ef89c839837eaf365ff2f765ff719340415874cda82",
+      "report_path": "docs/experiments/EXP-0034-results.md",
+      "report_sha256": "c06d3830796f293313169e4bef3ef6a9a3c698707d2f40e7d6cabd662e038602",
+      "review_binding_path": "docs/reviews/EXP-0034.binding.json",
+      "review_path": "docs/reviews/EXP-0034-independent-review.md",
+      "review_sha256": "6ee24cbd91b66deef9e516dbdebef8e0472bacedda8816ab506a6605dda41243",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "ee77952e5240607eb2b5a963b5ce8338f4ca0cf2a0c9abfb4fbb92cb7a182152",
+      "reviewed_report_sha256": "c06d3830796f293313169e4bef3ef6a9a3c698707d2f40e7d6cabd662e038602",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "저장 관측2,190프레임 CPU 적용 및 기존Qwen 외형6쌍 실행 완료.030 침입 의심1,007 가림 소실 판단 불가;혼합 크롭 호환과 가림 미유보 실패로 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_346d88014dbc",
+      "title": "EXP-0034 접근·소실과 외형 비교",
+      "worker_opinion": "CPU 두 영상 각1회,단일 GPU job/attempt6회 생성 완료.외형 호환은 동일인 확인이 아니며 미비교 경쟁 후보로 연결 제안0."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

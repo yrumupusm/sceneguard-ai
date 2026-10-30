@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0034",
+  "metrics": [
+    {
+      "label": "P1 generation",
+      "value": 1.7951948410191108,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One frozen appearance comparison generation; not video FPS or live event latency",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000001/result.json",
+      "source_sha256": "6c65b54e40d646f89b87b6eb2021f69b69c60ed57cf39efb9982b37a1d66404b",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P1 allocated peak",
+      "value": 4.0874481201171875,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated including resident model; other device processes excluded",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000001/result.json",
+      "source_sha256": "6c65b54e40d646f89b87b6eb2021f69b69c60ed57cf39efb9982b37a1d66404b",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes divided by 2^30",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P2 generation",
+      "value": 0.9960722270188853,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One frozen appearance comparison generation; not video FPS or live event latency",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000002/result.json",
+      "source_sha256": "978df04a8cfa8d49f6c0776dd5788970f3dcae1aa26891ec0cb3f6ee5f44cacc",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P2 allocated peak",
+      "value": 4.087064266204834,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated including resident model; other device processes excluded",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000002/result.json",
+      "source_sha256": "978df04a8cfa8d49f6c0776dd5788970f3dcae1aa26891ec0cb3f6ee5f44cacc",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes divided by 2^30",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P3 generation",
+      "value": 0.7716052529867738,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One frozen appearance comparison generation; not video FPS or live event latency",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000003/result.json",
+      "source_sha256": "3ff6e0e994956021511a45cf3ce3a38deb6157e7b06e6ff5a1b8a4c211e1c97d",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P3 allocated peak",
+      "value": 4.089328289031982,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated including resident model; other device processes excluded",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000003/result.json",
+      "source_sha256": "3ff6e0e994956021511a45cf3ce3a38deb6157e7b06e6ff5a1b8a4c211e1c97d",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes divided by 2^30",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P4 generation",
+      "value": 0.6565949799842201,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One frozen appearance comparison generation; not video FPS or live event latency",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000004/result.json",
+      "source_sha256": "eb3cd2f4cfe149c1e05b613719da16818fe165e2153fd10894cfda2fb97fb3a0",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P4 allocated peak",
+      "value": 4.07481575012207,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated including resident model; other device processes excluded",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000004/result.json",
+      "source_sha256": "eb3cd2f4cfe149c1e05b613719da16818fe165e2153fd10894cfda2fb97fb3a0",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes divided by 2^30",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P5 generation",
+      "value": 0.7460381630226038,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One frozen appearance comparison generation; not video FPS or live event latency",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000005/result.json",
+      "source_sha256": "c06bd28f0c9eee75236f3986a9d9280857c0b096c897faf1b20deffd0d60774c",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P5 allocated peak",
+      "value": 4.0702128410339355,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated including resident model; other device processes excluded",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000005/result.json",
+      "source_sha256": "c06bd28f0c9eee75236f3986a9d9280857c0b096c897faf1b20deffd0d60774c",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes divided by 2^30",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P6 generation",
+      "value": 0.7560427469725255,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One frozen appearance comparison generation; not video FPS or live event latency",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000006/result.json",
+      "source_sha256": "91328148ea4e93d3c7e677ecc5ac509eb3f2f42b034b5a08ce36e09b1008a3bc",
+      "source_pointer": "$.timing.generation_seconds",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "P6 allocated peak",
+      "value": 4.074535846710205,
+      "unit": "GiB",
+      "sample_n": 1,
+      "scope": "Torch peak allocated including resident model; other device processes excluded",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/p000006/result.json",
+      "source_sha256": "91328148ea4e93d3c7e677ecc5ac509eb3f2f42b034b5a08ce36e09b1008a3bc",
+      "source_pointer": "$.gpu_memory.peak_allocated_bytes divided by 2^30",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "Model loading",
+      "value": 10.17819946797681,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "One model load; not total event latency",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/summary.json",
+      "source_sha256": "c0b472910d3f148329db54afbfe1c357a3aff0302072ac36ce2800ee6f3fcc33",
+      "source_pointer": "$.load_seconds",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "Generated pairs",
+      "value": 6,
+      "unit": "count",
+      "sample_n": 6,
+      "scope": "Executed development pairs, not correct identities",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/appearance_results.json",
+      "source_sha256": "e8d0344e1271fe60c99555f6268c3e0d3db985a4fb4982c87789374186cb0387",
+      "source_pointer": "$.completed length",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "Native crop image entries",
+      "value": 27,
+      "unit": "count",
+      "sample_n": 6,
+      "scope": "Input image slots; repeated source frames are not independent observations",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/appearance_results.json",
+      "source_sha256": "e8d0344e1271fe60c99555f6268c3e0d3db985a4fb4982c87789374186cb0387",
+      "source_pointer": "sum completed.images",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "Parser valid after outer fence",
+      "value": 6,
+      "unit": "count",
+      "sample_n": 6,
+      "scope": "Format only, not clothing-grounding success",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/appearance_results.json",
+      "source_sha256": "e8d0344e1271fe60c99555f6268c3e0d3db985a4fb4982c87789374186cb0387",
+      "source_pointer": "sum completed.parsed.valid",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "One-to-one proposals",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 30,
+      "scope": "Complete candidate graph; untested competing edges prevent automatic proposals",
+      "source": "outputs/mvp0001/EXP-0034/565b65a15fee492a8aea0e29bde1cb4e/appearance_results.json",
+      "source_sha256": "e8d0344e1271fe60c99555f6268c3e0d3db985a4fb4982c87789374186cb0387",
+      "source_pointer": "count proposals.link_status == review_link_proposed",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "030 침입 의심",
+      "value": 1,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Frozen measured-observation CPU output, not correct intrusion count",
+      "source": "outputs/exp0034/030-v1.json",
+      "source_sha256": "873efc0805444ae6bdf30dfa4425dcd85c40d5d71012bfc2628981ce1b30712b",
+      "source_pointer": "count events.status == 침입 의심",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "007 침입 의심",
+      "value": 0,
+      "unit": "count",
+      "sample_n": 1,
+      "scope": "Frozen measured-observation CPU output, not correct intrusion count",
+      "source": "outputs/exp0034/007-v1.json",
+      "source_sha256": "d3962b9a4d56eb136b7d698f8e9d642f8b8e31450672e992de82f366be329f31",
+      "source_pointer": "count events.status == 침입 의심",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    },
+    {
+      "label": "Human-verified angle hit fraction",
+      "value": null,
+      "unit": "fraction",
+      "sample_n": 0,
+      "scope": "No newly confirmed same-person pair; coordinator drafts excluded",
+      "source": "outputs/exp0034/root-v1/visual-audit.local.json",
+      "source_sha256": "fdc00fb4f54466ea33ad8ad57a0f5fc1baad9fbf8aa6660e9f206a5729dd6792",
+      "source_pointer": "$.angle_audit.within_90_fraction",
+      "verification": "actual local output and independent numerical audit; not identity accuracy"
+    }
+  ]
+}
