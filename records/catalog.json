@@ -3245,6 +3245,114 @@
       "task_id": "task_60832a6ef58b",
       "title": "EXP-0040 영상 연속성 통지·사건 카드 비교",
       "worker_opinion": "실행·비교 기능 완료, 의미 있는 오탐 감소 목표 미충족. 제외1건 의미 검수 대기, 기본 MVP 유지."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T13:35:18.406654+00:00",
+      "attempt_id": "saved-score-v1-007030",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_1dd117e9d363",
+      "evaluated_model": "EXP0040 saved continuity scores; group all then notify .55/.65/.70; no inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0041-007-s0001",
+          "kind": "video",
+          "label": "007 s0001 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-007-s0003",
+          "kind": "video",
+          "label": "007 s0003 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-007-s0002",
+          "kind": "video",
+          "label": "007 s0002 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-007-s0007",
+          "kind": "video",
+          "label": "007 s0007 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040 · 사용자 확인 문 앞 대기"
+        },
+        {
+          "artifact_id": "exp0041-007-s0008",
+          "kind": "video",
+          "label": "007 s0008 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-007-s0009",
+          "kind": "video",
+          "label": "007 s0009 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-007-s0005",
+          "kind": "video",
+          "label": "007 s0005 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-007-s0007-original",
+          "kind": "video",
+          "label": "007 s0007-original · 원본 검수용 · 기존 영상 재사용"
+        },
+        {
+          "artifact_id": "exp0041-007-context-64-74",
+          "kind": "video",
+          "label": "007 context-64-74 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-007-context-64-74-original",
+          "kind": "video",
+          "label": "007 context-64-74-original · 원본 검수용 · 기존 영상 재사용"
+        },
+        {
+          "artifact_id": "exp0041-007-full-source-window",
+          "kind": "video",
+          "label": "007 full-source-window · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-030-s0002",
+          "kind": "video",
+          "label": "030 s0002 · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        },
+        {
+          "artifact_id": "exp0041-030-full-source-window",
+          "kind": "video",
+          "label": "030 full-source-window · 기존 원본/저장 경로 재사용 · 영상 내 통지 표시는 EXP0040"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0041",
+      "limitations": [
+        "추가62.5/65.3/86.03초 장면 사용자 검수 대기",
+        "기존007 약66초 시작부터70.133초까지의 공백은 해결하지 못함",
+        "raw8은 별도 경계 근거 보호가 작동함",
+        "독립 호환 저장 점수 없음; 정확도/F1 미산출",
+        "영상 속 과거 통지 표시는 EXP0040이며 새 정책은 카드 보기로 확인"
+      ],
+      "metric_definitions": "records/EXP-0041/metrics.json",
+      "metrics_path": "records/EXP-0041/metrics.json",
+      "metrics_sha256": "a19008be2dbea97c76d66afdb736d9bb2caafc58b24b89f21a1441192a7e8808",
+      "next_step": "묶음 질문 세 장면 검수 반영. 저장 점수 기반 개발 후보 유지, 운영 기본 교체나 새 추론 자동 실행 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "1fc5eaa803bfb2a3fdd3b3a281cbc3ee8c57cd97b1dd25a92b4796110ccd9fb5",
+      "report_path": "docs/experiments/EXP-0041-results.md",
+      "report_sha256": "404da2761fb46b18b3b7dccc2605f5685f5a7ef3cdc8e1fa6571950d8966866a",
+      "review_binding_path": "docs/reviews/EXP-0041.binding.json",
+      "review_path": "docs/reviews/EXP-0041-independent-review.md",
+      "review_sha256": "c83009a2eb68de4f1697a35965aaa3548cf3c8cc5f0b61c7a5a17d20eec8e466",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "a19008be2dbea97c76d66afdb736d9bb2caafc58b24b89f21a1441192a7e8808",
+      "reviewed_report_sha256": "404da2761fb46b18b3b7dccc2605f5685f5a7ef3cdc8e1fa6571950d8966866a",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "전체5사건 이력 유지. 0.55는 통지 사건5→3, 필요한70.133/90.4초 첫 의심 유지. 0.65/0.70은5개. 추가 제외 장면 일부 검수 대기, 개발 후보0.55·기본 교체 없음.",
+      "synthetic": false,
+      "task_id": "task_f726b1037136",
+      "title": "EXP-0041 사건 묶음 유지·통지 기준 비교",
+      "worker_opinion": "동일0.70 카드 분리 결함 해소. 0.55 접근 첫 경보 감소로 우선 개발 후보; 추가 장면 의미와 독립 일반화는 구분."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

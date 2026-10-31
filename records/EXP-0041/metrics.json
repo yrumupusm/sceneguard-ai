@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0041",
+  "metrics": [
+    {
+      "label": "007 기존 통지 대상 행",
+      "value": 10,
+      "unit": "rows",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 기존 사건·첫 통지",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.55 통지 대상 행",
+      "value": 3,
+      "unit": "rows",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.55 전체 사건 이력",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.55 통지 사건",
+      "value": 1,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.55 검토 전용 사건",
+      "value": 1,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.65 통지 대상 행",
+      "value": 6,
+      "unit": "rows",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.65 전체 사건 이력",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.65 통지 사건",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.65 검토 전용 사건",
+      "value": 0,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.70 통지 대상 행",
+      "value": 9,
+      "unit": "rows",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.70 전체 사건 이력",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.70 통지 사건",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 0.70 검토 전용 사건",
+      "value": 0,
+      "unit": "cards",
+      "sample_n": 10,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 3기준 재생 시간·직렬화 전",
+      "value": 0.08709184196777642,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/007-v1/summary.json",
+      "source_sha256": "b70ba4444e5f4a2b0dd8e24de3d45561b7a7a4bb25808594ca81c9e0a228d44e",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 기존 통지 대상 행",
+      "value": 8,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 기존 사건·첫 통지",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.55 통지 대상 행",
+      "value": 7,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.55 전체 사건 이력",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.55 통지 사건",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.55 검토 전용 사건",
+      "value": 1,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.65 통지 대상 행",
+      "value": 8,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.65 전체 사건 이력",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.65 통지 사건",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.65 검토 전용 사건",
+      "value": 0,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.70 통지 대상 행",
+      "value": 8,
+      "unit": "rows",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.70 전체 사건 이력",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.70 통지 사건",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 0.70 검토 전용 사건",
+      "value": 0,
+      "unit": "cards",
+      "sample_n": 8,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 3기준 재생 시간·직렬화 전",
+      "value": 0.07566957402741536,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "개발 저장 후보 재생; 정답 사건 수/운영 정확도 아님",
+      "source": "outputs/exp0041/030-v1/summary.json",
+      "source_sha256": "a6882dada420f6f0d25d9886df496357943b2efacdca9d834badeedd862d8522",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "독립 침입 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "독립 호환 점수·정밀 정답 부족",
+      "source": "docs/CODEX_EXP0041.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}
