@@ -18,6 +18,21 @@ Astra high는 CPU 전체14건/420대기프레임, 제안 알림·카드, ROI86�
 
 ## 실제 화면·게시 확인
 
-등록은 완료했고 source/review integrity가 current임을 확인했다. 기존37개 결과와 웹 소스의 불변도 확인했다. 실제 브라우저·게시 확인은 진행 중이며 아직 완료로 선언하지 않는다. 최종 확인 후 이 절만 갱신한다. 서비스는 기존 `http://127.0.0.1:8765/`를 사용하고 웹 기능·서버·페이지 디자인을 변경하지 않는다.
+등록은 완료했고 source/review integrity가 current임을 확인했다. 기존37개 결과와 웹 소스의 불변도 확인했다. 기존 서비스 `http://127.0.0.1:8765/`에서 담당3 → EXP-0039를 선택해 아래를 실제 검증했다. 웹 기능·서버·디자인 변경은 없다.
+
+|구분|확인한 사실|근거|
+|---|---|---|
+|담당 카드|EXP-0039 결과 등록·실제 Sol 작업자 완료 표시|native Task/Dispatch 대조 및 DOM|
+|영상|18개 모두 디코딩·재생 시각 증가·seek 성공, 폴링 후 플레이어 유지|`runtime/EXP-0039/browser-acceptance-1.json`|
+|이미지|20개 모두 브라우저 decode·natural width/height 확인|같은 영수증 images 목록|
+|결과 화면|32지표·그래프2개·펼친 보고서·독립 검토 표시|같은 영수증 observations|
+|GitHub|main `96f9c0fcb4c66c0a14724836c686fa93e8b6a6cd`와 보고서/지표/리뷰/binding·catalog/assignment 일치|`runtime/EXP-0039/delivery/github-96f9c0f.json`|
+|서비스가 읽는 버전|실제 DOM의4개 source SHA와 GitHub 검증 SHA가 모두 일치|브라우저와 게시 영수증 상호 대조|
+
+브라우저의 이전 탭에서 runtime timeout이 발생한 이력은 보존했다. 같은 기존 서비스의 새 탭에서 복구했고 서버 재시작·웹 수정 없이 최종 검증을 완료했다. 이 과정에서 EXP-0038의12이미지도 실제 decode를 확인했지만, 당시 보고서에 남긴 미검증 기록을 소급 변경하지 않았다.
+
+구현 커밋 `4092216`, 결과·등록 커밋 `96f9c0f`가 GitHub에 게시됐다. 이 전달 확인 문서의 후속 커밋은 보고서/지표/리뷰/binding을 바꾸지 않는다. 화면 실제 검증은 미디어 의미의 정답 검수와 다르며 신규 ROI 박스 품질은 여전히 사용자 검수 대기다. 구현·실행·전달 완료 / 오탐 감소 미확인 / 기본 적용 보류로 구분한다.
+
+Orca 실행·독립 검토·화면 검증의 세 작업자는 각각 성공 정산 뒤 release했다. 추가 GPU 실행·새 실험을 예약하지 않았으며 기존 Run/큐/서비스를 유지한다.
 
 로컬 근거는 `outputs/exp0039/007-v1/comparison-v2/`, `outputs/exp0039/030-v1/comparison-v2/`, `outputs/exp0039/roi030/7f59f3d4189d4cb38bd1bdb96bc9b542/comparison-v1/`이다. 보고서·측정값·리뷰를 동결한 뒤 UI/게시 사실은 이 전달 기록에만 추가한다.
