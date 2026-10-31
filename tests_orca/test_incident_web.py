@@ -11,6 +11,7 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 from sceneguard.exp0036_application import make_bundle
 from sceneguard.incident_cards import group_events
+from sceneguard.incident_notifications import group_notifications, notification_cards_at
 from webapp.app import app
 
 
@@ -173,6 +174,44 @@ class IncidentWebTests(unittest.TestCase):
         entry['notification_enabled'] = False; self.write_config()
         self.bundle['review_only_events'][0]['decision_time_pts'] = 19
         self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
+
+    def test_exp0041_causal_partition_and_baseline(self):
+        original = deepcopy(self.bundle)
+        entry = dict(self.config['incident_bundles']['007'], experiment_id='EXP-0041',
+                     session_id='fixture', notification_enabled=False, source_label='007', view_label='baseline')
+        self.config['incident_bundles']['exp41-007-baseline'] = entry
+        self.assignments.write_text(json.dumps({'assignments':[{'experiment_id':'EXP-0041'}]}))
+        self.write_config()
+        url = '/api/incidents/exp41-007-baseline'
+        baseline = self.client.get(url)
+        self.assertEqual(baseline.status_code, 200)
+        self.assertEqual(baseline.json()['contract'], 'group_all_then_notify_v1')
+        self.assertEqual(baseline.json()['counts']['candidate_cards'], 1)
+        events = original['events']
+        proposal = group_notifications(events, [events[0]['event_id']])
+        proposal.update(experiment='EXP-0041', source_window=[10, 20])
+        self.bundle = proposal; self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['events'], events)
+        self.assertEqual(data['review_only_events'], events[:1])
+        first, second = data['timeline']
+        self.assertEqual((first['action'], first['notify'], first['card']['first_notification_pts']), ('created', False, None))
+        self.assertEqual((second['action'], second['notify'], second['card']['first_notification_pts']), ('updated', True, 12))
+        self.assertEqual(notification_cards_at(data['timeline'], 11), [])
+        self.assertEqual(notification_cards_at(data['timeline'], 11, include_review_only=True)[0]['event_ids'], [events[0]['event_id']])
+        self.assertEqual(len(notification_cards_at(data['timeline'], 12)), 1)
+        self.assertEqual(self.client.post(url+'/claim', json={'notification_key':second['notification_key']}, headers={'Origin':'http://localhost'}).status_code, 404)
+        self.assertFalse((self.root/'runtime/exp0036-notification-receipts.sqlite3').exists())
+        self.bundle['timeline'][0]['card'] = deepcopy(second['card'])
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
+        self.bundle = proposal; self.bundle['active_events'] = []
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
+        self.bundle = proposal; self.write_bundle(); entry['sha256'] = self.sha(); entry['notification_enabled'] = True; self.write_config()
         self.assertEqual(self.client.get(url).status_code, 404)
 
 

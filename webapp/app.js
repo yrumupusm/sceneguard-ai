@@ -117,7 +117,7 @@ async function selectReport(id) {
       evidence.append(block);
     });
     if (id === 'EXP-0036') addIncidentFlows(detail, request);
-    if (id === 'EXP-0037' || id === 'EXP-0040') addFinishFlows(detail, request, id);
+    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041') addFinishFlows(detail, request, id);
     heading(detail, '담당 의견').append(node('p', show(d.worker_opinion)));
     const review = heading(detail, '총괄 검토');
     review.dataset.section = 'review';
@@ -153,7 +153,7 @@ async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
     const entries = await response.json();
     if (request !== selectionRequest || !section.isConnected) return;
     if (!entries.length) { section.append(node('p', '등록된 카드 자료가 없습니다.')); return; }
-    if (experimentId === 'EXP-0040') section.append(node('p', '제안에서 통지 제외된 알림은 검토 전용으로 남으며 침입 아님 확정이 아닙니다.', 'muted'));
+    if (experimentId === 'EXP-0040' || experimentId === 'EXP-0041') section.append(node('p', '제안에서 통지 제외된 알림은 검토 전용으로 남으며 침입 아님 확정이 아닙니다.', 'muted'));
     const source = node('select'); source.dataset.exp37Source = '';
     const view = node('select'); view.dataset.exp37View = '';
     const holder = node('div', undefined, 'incident-flow');
@@ -169,6 +169,7 @@ async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
       const entry = entries.find(e => e.source_label === source.value && e.id === view.value);
       if (!entry) return;
       storageSet('exp37-source', source.value); storageSet('exp37-view', view.value);
+      for (const oldVideo of (holder.querySelectorAll?.('video') || [])) { oldVideo.pause(); oldVideo.removeAttribute('src'); oldVideo.load(); }
       holder.dataset.bundle = entry.id; holder.replaceChildren(node('p', '카드 자료를 불러오는 중입니다.'));
       try {
         const r = await fetch(`/api/incidents/${encodeURIComponent(entry.id)}`, {cache:'no-store'});
@@ -270,9 +271,14 @@ function renderIncidentFlow(holder, id, data) {
   const clock = node('p'); clock.dataset.incidentClock = id;
   const counter = node('p'); counter.dataset.incidentCounter = id;
   const cards = node('div'); cards.dataset.incidentCards = id;
+  const isComparison41 = data.contract === 'group_all_then_notify_v1';
+  const reviewHistory = node('details'); reviewHistory.dataset.reviewOnly = id;
+  const reviewSummary = node('summary', '검토 전용 사건 0개');
+  const reviewCards = node('div'); reviewHistory.append(reviewSummary, reviewCards);
   const toast = node('div', '', 'incident-toast'); toast.dataset.incidentToast = id;
   toast.dataset.paintedCount = '0'; toast.hidden = true; toast.setAttribute('role', 'status');
   holder.append(video, clock, counter, cards, toast);
+  if (isComparison41) holder.append(reviewHistory);
   if (data.provenance_label) holder.append(node('p', `출처: ${data.provenance_label}`, 'muted'));
   if (data.review_only_alerts) {
     const only = node('details'); only.dataset.reviewOnly = id;
@@ -297,7 +303,10 @@ function renderIncidentFlow(holder, id, data) {
       snapshots.set(item.incident_id, item.card); raw++;
     }
     clock.textContent = `원본 시각 ${pts.toFixed(3)}초`;
-    counter.textContent = `개별 알림 ${raw}개 · 사건 카드 ${snapshots.size}개`;
+    const eligible = [...snapshots.values()].filter(card => card.notification_eligible);
+    const reviews = [...snapshots.values()].filter(card => !card.notification_eligible);
+    counter.textContent = isComparison41 ? `전체 후보 ${raw}개 · 전체 사건 ${snapshots.size}개 · 통지 사건 ${eligible.length}개` : `개별 알림 ${raw}개 · 사건 카드 ${snapshots.size}개`;
+    if (isComparison41) reviewSummary.textContent = `검토 전용 사건 ${reviews.length}개`;
     for (const [cardId, entry] of cardNodes) {
       if (!snapshots.has(cardId)) { entry.block.remove(); entry.attached = false; }
     }
@@ -311,22 +320,24 @@ function renderIncidentFlow(holder, id, data) {
         details.open = storageGet(`incident-details:${stateId}:${card.incident_id}`) === 'true';
         details.addEventListener('toggle', () => storageSet(`incident-details:${stateId}:${card.incident_id}`, String(details.open)));
         details.append(node('summary', '원래 알림 참조'), list);
-        block.append(title, summary, details, evidence); cards.append(block);
+        block.append(title, summary, details, evidence);
         entry = {block, title, summary, details, list, fingerprint: null};
-        entry.attached = true;
+        entry.attached = false;
         if (data.bundle_sha256) addReview(block, id, card.incident_id, data.bundle_sha256, data.session_id);
         cardNodes.set(card.incident_id, entry);
       }
-      if (!entry.attached) { cards.append(entry.block); entry.attached = true; }
+      const target = isComparison41 && !card.notification_eligible ? reviewCards : cards;
+      if (!entry.attached || entry.target !== target) { target.append(entry.block); entry.target = target; }
+      entry.attached = true;
       const fingerprint = JSON.stringify(card);
       if (entry.fingerprint === fingerprint) continue;
       entry.fingerprint = fingerprint;
       entry.title.textContent = `${card.status} · ${card.gate_id}`;
-      entry.summary.textContent = `${card.first_alert_pts.toFixed(3)}~${card.last_alert_pts.toFixed(3)}초 · 관련 알림 ${card.alert_count}개 · 추적 ID ${card.track_ids.join(', ') || '없음'}`;
+      entry.summary.textContent = `${card.first_alert_pts.toFixed(3)}~${card.last_alert_pts.toFixed(3)}초 · 관련 알림 ${card.alert_count}개 · 추적 ID ${card.track_ids.join(', ') || '없음'}` + (isComparison41 ? ` · 첫 통지 ${card.first_notification_pts === null ? '없음' : card.first_notification_pts.toFixed(3) + '초'}` : '');
       entry.list.replaceChildren();
       for (const eventId of card.event_ids) {
         const event = events.get(eventId); const ref = event.source_ref;
-        entry.list.append(node('li', `${event.decision_time_pts.toFixed(3)}초 · ${ref.source_pointer} · raw ID ${show(ref.raw_id)} · segment ${show(ref.segment)} · event ${eventId}`));
+        entry.list.append(node('li', `${event.decision_time_pts.toFixed(3)}초 · ${ref.source_pointer} · raw ID ${show(ref.raw_id)} · segment ${show(ref.segment)} · event ${eventId}${isComparison41 && card.review_only_event_ids.includes(eventId) ? ' · 검토 전용' : ''}`));
       }
     }
   }
@@ -433,7 +444,7 @@ function selectPending(id) {
     node('p', `Orca 작업: ${observationText(nativeObservation(assignment, statusData))}`, 'muted'),
     node('p', `요청 모델: ${show(assignment?.agent_model_requested)} · 실효 모델: ${show(assignment?.agent_model_effective)} · 실효 effort: ${show(assignment?.reasoning_effective)}`, 'muted'));
   if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
-  if (id === 'EXP-0037' || id === 'EXP-0040') addFinishFlows(detail, selectionRequest, id);
+  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041') addFinishFlows(detail, selectionRequest, id);
   renderChoices();
 }
 function selectSlot(id) {

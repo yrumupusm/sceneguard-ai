@@ -415,6 +415,19 @@
       "synthetic": false,
       "task_id": "task_60832a6ef58b",
       "title": "EXP-0040 영상 연속성 통지·사건 카드 비교"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T13:35:18.406654+00:00",
+      "dispatch_id": "ctx_1dd117e9d363",
+      "experiment_id": "EXP-0041",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_f726b1037136",
+      "title": "EXP-0041 사건 묶음 유지·통지 기준 비교"
     }
   ],
   "schema_version": 1

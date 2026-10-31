@@ -35,6 +35,56 @@ def ref(value):
     return dict(collection=value['collection'], source_pointer=pointer, raw_id=raw, segment=segment)
 
 
+def load_exp0041(data, entry, bundle_id, media):
+    """Validate saved grouping by replaying the same causal, CPU-only contract."""
+    from sceneguard.incident_cards import group_events
+    from sceneguard.incident_notifications import group_notifications
+
+    start, end = data['source_window']
+    number(start); number(end)
+    media_start = number(entry.get('media_start_pts', start))
+    if end <= start or media_start > start or entry.get('notification_enabled') is not False:
+        raise ValueError('invalid comparison registration')
+    if data.get('experiment') == 'EXP-0036':
+        baseline = group_events(data['events'])
+        if any(data[k] != baseline[k] for k in ('policy', 'timeline', 'cards', 'counts')):
+            raise ValueError('invalid baseline grouping')
+        grouped = group_notifications(data['events'])
+    elif data.get('experiment') == 'EXP-0041' and data.get('contract') == 'group_all_then_notify_v1':
+        if data.get('live_notifications_enabled') is not False:
+            raise ValueError('comparison notifications must be disabled')
+        review_ids = [e['event_id'] for e in data['review_only_events']]
+        grouped = group_notifications(data['events'], review_ids)
+        for key in ('policy', 'events', 'active_events', 'review_only_events', 'cards',
+                    'alert_cards', 'review_only_cards', 'timeline', 'counts'):
+            if data[key] != grouped[key]:
+                raise ValueError('invalid notification grouping or partition')
+    else:
+        raise ValueError('invalid comparison contract')
+    if grouped['policy'] != {'gap_seconds': 3.0, 'max_span_seconds': 10.0}:
+        raise ValueError('invalid grouping policy')
+    session = entry.get('session_id')
+    if not isinstance(session, str) or not session or len(session) > 256:
+        raise ValueError('invalid session')
+    ids = set()
+    for event in grouped['events']:
+        eid = event['event_id']
+        if not HEX.fullmatch(eid) or eid in ids or event['session_id'] != session:
+            raise ValueError('invalid event')
+        ids.add(eid)
+        if not start <= number(event['decision_time_pts']) <= end:
+            raise ValueError('event outside window')
+        ref(event['source_ref'])
+        if any(type(i) is not int or i < 0 for i in event['track_ids']):
+            raise ValueError('invalid track ids')
+    return dict(grouped, notification_enabled=False, source_window=[start, end],
+                media_start_pts=media_start, media_artifact_id=media,
+                bundle_sha256=entry['sha256'], session_id=session,
+                source_label=entry.get('source_label', bundle_id),
+                view_label=entry.get('view_label', ''),
+                provenance_label=entry.get('provenance_label', '저장 결과 재생'))
+
+
 def load_bundle(c, bundle_id):
     entry = c['incident_bundles'][bundle_id]
     if not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', bundle_id) or not HEX.fullmatch(entry['sha256']):
@@ -65,6 +115,8 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
+    if entry['experiment_id'] == 'EXP-0041':
+        return load_exp0041(data, entry, bundle_id, media)
     comparison = entry['experiment_id'] == 'EXP-0040'
     if (data['experiment'] not in (('EXP-0036', 'EXP-0040') if comparison else ('EXP-0036',))
             or data['policy'] != {'gap_seconds': 3.0, 'max_span_seconds': 10.0}):
@@ -172,7 +224,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():
