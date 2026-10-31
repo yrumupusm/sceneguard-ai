@@ -441,6 +441,19 @@
       "synthetic": false,
       "task_id": "task_4ff13682abd3",
       "title": "EXP-0042 보이는 중 침입 의심 후보 생성"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T18:03:17.325059+00:00",
+      "dispatch_id": "ctx_a07e5477dd06",
+      "experiment_id": "EXP-0043",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_d2af4d36d22e",
+      "title": "EXP-0043 누락 경로 진단과 단일 수정 비교"
     }
   ],
   "schema_version": 1
