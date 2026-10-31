@@ -3107,6 +3107,144 @@
       "task_id": "task_a9481fc1a850",
       "title": "EXP-0039 검출 상태·원본 특징 연속성 진단",
       "worker_opinion": "진단 실행 성공; 관측 보강·정상 접근 오탐 감소 미확인, 기본 MVP 유지"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T11:04:17.836062+00:00",
+      "attempt_id": "cpu-v1-007030",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_8cdc01935a7d",
+      "evaluated_model": "Stored FCOS/ByteTrack observations + CPU LK practical continuation .70; no new detector inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0040-007-s0001",
+          "kind": "video",
+          "label": "007 s0001 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0003",
+          "kind": "video",
+          "label": "007 s0003 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0002",
+          "kind": "video",
+          "label": "007 s0002 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0007",
+          "kind": "video",
+          "label": "007 s0007 · 원본PTS 표시 · 원본/검출/경로·통지 비교 · 유일 통지 제외 사례 / 의미 검수 대기"
+        },
+        {
+          "artifact_id": "exp0040-007-s0008",
+          "kind": "video",
+          "label": "007 s0008 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0009",
+          "kind": "video",
+          "label": "007 s0009 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0005",
+          "kind": "video",
+          "label": "007 s0005 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0011",
+          "kind": "video",
+          "label": "007 s0011 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0006",
+          "kind": "video",
+          "label": "007 s0006 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-context-64-74",
+          "kind": "video",
+          "label": "007 context-64-74 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-full-source-window",
+          "kind": "video",
+          "label": "007 full-source-window · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-007-s0007-original",
+          "kind": "video",
+          "label": "007 s0007-original · 원본 검수용"
+        },
+        {
+          "artifact_id": "exp0040-007-context-64-74-original",
+          "kind": "video",
+          "label": "007 context-64-74-original · 원본 검수용"
+        },
+        {
+          "artifact_id": "exp0040-030-s0002",
+          "kind": "video",
+          "label": "030 s0002 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-030-s0004",
+          "kind": "video",
+          "label": "030 s0004 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-030-s0001",
+          "kind": "video",
+          "label": "030 s0001 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-030-s0003",
+          "kind": "video",
+          "label": "030 s0003 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-030-s0008",
+          "kind": "video",
+          "label": "030 s0008 · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        },
+        {
+          "artifact_id": "exp0040-030-full-source-window",
+          "kind": "video",
+          "label": "030 full-source-window · 원본PTS 표시 · 원본/검출/경로·통지 비교"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0040",
+      "limitations": [
+        "알림1건 감소와 카드1개 증가는 별개이며 성공으로 세지 않음",
+        "제외1건 특징이 실제 사람을 따르는지는 사용자 답변 대기",
+        "저장 점수 민감도의 추가 제외는 실제 검수된 개선이 아님",
+        "원래 판단PTS 유지와 실제 실시간 출력 지연 미측정 구분",
+        "개발 구간이며 정확도/F1/시간당 오탐률 미산출"
+      ],
+      "metric_definitions": "records/EXP-0040/metrics.json",
+      "metrics_path": "records/EXP-0040/metrics.json",
+      "metrics_sha256": "09c53d0a9c6c6078e9e105011f63d1fbe84e4a6ff4f1efc5fce0390318aae65e",
+      "next_step": "승인된 CPU 비교 종료. 제외1건 사용자 검수 반영, 추가 추론/점수튜닝/기본교체 자동 시작하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "0d2e085fbe20550854ccad1695c1cd385af667c360f77e1e01dea6a4ee80faf6",
+      "report_path": "docs/experiments/EXP-0040-results.md",
+      "report_sha256": "9b97611827b74729d7f542fa309446f11acd33c84f3e2478f0973d574762794c",
+      "review_binding_path": "docs/reviews/EXP-0040.binding.json",
+      "review_path": "docs/reviews/EXP-0040-independent-review.md",
+      "review_sha256": "eb555684f8e88b34b2431aa525aad579d3b2a8223890f6970cf7c77e823718b9",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "09c53d0a9c6c6078e9e105011f63d1fbe84e4a6ff4f1efc5fce0390318aae65e",
+      "reviewed_report_sha256": "9b97611827b74729d7f542fa309446f11acd33c84f3e2478f0973d574762794c",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "14건 CPU 실행 완료. 알림18→17이지만 카드5→6, 정상 접근 오탐3건 그대로. 필요한 의심의 원래 시각 유지, 기본 적용 미채택.",
+      "synthetic": false,
+      "task_id": "task_60832a6ef58b",
+      "title": "EXP-0040 영상 연속성 통지·사건 카드 비교",
+      "worker_opinion": "실행·비교 기능 완료, 의미 있는 오탐 감소 목표 미충족. 제외1건 의미 검수 대기, 기본 MVP 유지."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
