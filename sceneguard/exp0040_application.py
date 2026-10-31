@@ -12,7 +12,46 @@ import json
 import time
 
 from .practical_continuation import (PracticalPolicy, seed_pool, choose_seeds,
-                                     trace, assess, notification_partition)
+                                     trace, assess, notification_partition, seed_decision)
+
+
+def proposal_bundle(baseline, audits, threshold):
+    """Partition the original normalized events without changing their identities."""
+    from .incident_cards import group_events, GroupPolicy
+    decisions=deepcopy(audits)
+    for row in decisions:
+        row.update(seed_decision(row['alternatives'],threshold))
+    active,review=notification_partition(baseline['events'],decisions)
+    proposal=deepcopy(baseline)
+    proposal.update(group_events(active,GroupPolicy(**baseline['policy'])))
+    proposal.update(experiment='EXP-0040',baseline_experiment='EXP-0035',
+        full_original_alerts=deepcopy(baseline['events']),review_only_events=review,
+        notification_policy='experimental_soft_image_continuation',score_threshold=threshold,
+        false_alarm_status='requires_actual_visual_review',accuracy=None,
+        automatic_negative_decisions=0,detector_calls=0,tracker_calls=0,vlm_calls=0)
+    original={e['event_id']:e for e in baseline['events']}
+    partition={e['event_id']:e for e in active+review}
+    if len(partition)!=len(active)+len(review) or partition!=original:
+        raise ValueError('Proposal must exactly partition original normalized alerts')
+    return proposal
+
+
+def timeline_comparison(baseline, proposal):
+    """Match by original event membership and source time, never by new card ID."""
+    rows=[]
+    for card in baseline['cards']:
+        ids=set(card['event_ids'])
+        related=[c for c in proposal['cards'] if ids.intersection(c['event_ids'])]
+        retained=[e for e in proposal['events'] if e['event_id'] in ids]
+        rows.append(dict(original_incident_id=card['incident_id'],
+            original_event_ids=card['event_ids'],source_interval=[card['first_alert_pts'],card['last_alert_pts']],
+            original_first_notification_pts=card['first_notification_pts'],
+            retained_event_ids=[e['event_id'] for e in retained],
+            retained_first_event_pts=min((e['decision_time_pts'] for e in retained),default=None),
+            proposed_cards=[dict(incident_id=c['incident_id'],first_notification_pts=c['first_notification_pts'],
+                                 event_ids=c['event_ids']) for c in related],
+            removed_event_ids=[e for e in card['event_ids'] if e not in {r['event_id'] for r in retained}]))
+    return rows
 
 
 def execute(baseline_path, output, policy=PracticalPolicy()):
@@ -22,7 +61,6 @@ def execute(baseline_path, output, policy=PracticalPolicy()):
     from .gap_observation_support import catalog_frame, audit_loss
     from .run_tracklet_linking import decode_native
     from .exp0036_application import make_bundle
-    from .incident_cards import group_events
     import cv2
 
     policy.validate(); begin=time.perf_counter()
@@ -34,17 +72,26 @@ def execute(baseline_path, output, policy=PracticalPolicy()):
     if baseline.get('experiment')!='EXP-0035' or baseline.get('video_id') not in ('E01_007','E01_030'):
         raise ValueError('Preserved EXP-0035 007/030 baseline required')
     key=baseline['video_id'][-3:]; camera='C3' if key=='007' else 'C6'
+    cards_path=Path('outputs/exp0036')/(key+'-cards-v1.json')
+    baseline_bundle=json.loads(cards_path.read_text(encoding='utf-8'))
+    from .incident_cards import GroupPolicy
+    regenerated=make_bundle(baseline,camera,camera+'_fence',baseline['video_id']+'-original',
+                            GroupPolicy(**baseline_bundle['policy']))
+    if any(regenerated[k]!=baseline_bundle[k] for k in ('events','cards','counts','timeline')):
+        raise ValueError('Canonical original card bundle differs from preserved EXP-0035 source')
     spec,data,scene=validated_inputs(key,baseline['source_paths']['scene'],baseline['input_sha256']['scene'])
     if any(baseline['input_sha256'].get(k)!=v for k,v in data['hashes'].items()):
         raise ValueError('Baseline differs from validated inputs')
     validate_measured_partition(baseline,data['tracked'])
     if baseline['existing_alerts']!=data['gap_events']:
         raise ValueError('Preserved boundary events differ')
-    protected=[baseline_path,Path(spec['video']),Path(spec['tracks']),Path(spec['cache'])/'person_cache.jsonl',
+    protected=[baseline_path,cards_path,Path(spec['video']),Path(spec['tracks']),Path(spec['cache'])/'person_cache.jsonl',
         Path(spec['cache'])/'run.json',Path(baseline['source_paths']['scene']),Path(spec['regions']),
         Path('configs/mvp0001_cameras.json')]
     before={str(p):sha(p) for p in protected}
-    code={str(p):sha(p) for p in (Path(__file__),Path(__file__).with_name('practical_continuation.py'))}
+    code={str(p):sha(p) for p in [Path(__file__),Path(__file__).with_name('practical_continuation.py'),
+        Path(__file__).with_name('exp0040_evidence.py'),Path(__file__).with_name('incident_cards.py'),
+        Path(__file__).with_name('exp0036_application.py'),Path(__file__).with_name('run_tracklet_linking.py')]}
     output.mkdir(parents=True,exist_ok=False)
     catalogs={i:catalog_frame(c,t) for i,(c,t) in enumerate(zip(data['cached'],data['tracked']))}
     stamps={i:f['pts'] for i,f in enumerate(data['cached'])}
@@ -58,6 +105,12 @@ def execute(baseline_path, output, policy=PracticalPolicy()):
         gap=audit_loss(event,seg,data['cached'],data['tracked'])
         pool=seed_pool(seg['rows'],policy); end=gap['timeline'][-1]['frame_index']
         audit=dict(source_pointer=f'/events/{j}',segment=seg['id'],raw_id=seg['raw_id'],
+            original_event_id=next(e['event_id'] for e in baseline_bundle['events']
+                                   if e['source_ref']['source_pointer']==f'/events/{j}'),
+            original_source_ref=next(e['source_ref'] for e in baseline_bundle['events']
+                                    if e['source_ref']['source_pointer']==f'/events/{j}'),
+            original_status=event['status'],last_observed_pts=seg['rows'][-1]['pts'],
+            components=None,
             decision_time_pts=event['decision_time_pts'], evidence_until_pts=event['decision_time_pts'],
             score=0.,recommendation='keep',reason='no_earlier_observed_seed',alternatives=[])
         if pool:
@@ -69,6 +122,9 @@ def execute(baseline_path, output, policy=PracticalPolicy()):
             choices=choose_seeds(seg['rows'],grays,catalogs,scene['source_size'],policy)
             for n,(rank,seed,points,overlap) in enumerate(choices):
                 path=trace(grays,stamps,seed,points,seg['rows'],scene['source_size'],policy)
+                for record in path['records']:
+                    native=data['cached'][record['frame_index']]
+                    record.update(native_pts=native['native_pts'],time_base=native['time_base'])
                 result=assess(path,catalogs,scene['source_size'],scene['line'],
                               seg['rows'][-1]['pts'],overlap,policy)
                 result.update(seed_pts=seed['pts'],seed_frame_index=seed['frame_index'],seed_rank=rank,
@@ -78,30 +134,33 @@ def execute(baseline_path, output, policy=PracticalPolicy()):
             if audit['alternatives']:
                 best=max(audit['alternatives'],key=lambda r:r['score'])
                 audit.update({k:v for k,v in best.items() if k!='evidence_until_pts'})
-                # Different candidate boxes with substantially overlapping support
-                # are duplicates; different spatial endpoints across seeds compete.
-                winners=[r for r in audit['alternatives'] if r['recommendation']=='review_only']
-                def overlap_box(a,b):
-                    x=max(0,min(a[2],b[2])-max(a[0],b[0]));y=max(0,min(a[3],b[3])-max(a[1],b[1]))
-                    return x*y/max(1e-12,min((a[2]-a[0])*(a[3]-a[1]),(b[2]-b[0])*(b[3]-b[1])))
-                if any(overlap_box(a['endpoint_bbox'],b['endpoint_bbox'])<.3
-                       for a in winners for b in winners):
-                    audit.update(recommendation='keep',reason='different_seed_paths_disagree')
+                audit.update(seed_decision(audit['alternatives'],policy.score_threshold))
             del grays
         audits.append(audit)
-        write(output/(seg['id']+'-audit.json'),audit)
-    baseline_bundle=make_bundle(baseline,camera,camera+'_fence',baseline['video_id']+'-original')
-    active,review=notification_partition(baseline_bundle['events'],audits)
-    proposal=deepcopy(baseline_bundle); proposal.update(group_events(active))
-    proposal.update(experiment='EXP-0040',baseline_experiment='EXP-0035',
-        full_original_alerts=deepcopy(baseline_bundle['events']),review_only_events=review,
-        notification_policy='experimental_soft_image_continuation',
-        false_alarm_status='requires_actual_visual_review',accuracy=None,
-        automatic_negative_decisions=0,detector_calls=0,tracker_calls=0,vlm_calls=0)
-    assert len(active)+len(review)==len(baseline_bundle['events'])
+    proposal=proposal_bundle(baseline_bundle,audits,policy.score_threshold)
+    review=proposal['review_only_events']
+    removed_ids={e['event_id'] for e in review}
+    for audit in audits:
+        audit['notification_action']='review_only' if audit['original_event_id'] in removed_ids else 'keep'
+        audit['partition_reason']=audit['reason'] if audit['notification_action']=='review_only' else (
+            'independent_boundary_evidence_preserved' if audit['recommendation']=='review_only' else audit['reason'])
     write(output/'baseline-cards.json',baseline_bundle)
     write(output/'proposed-cards.json',proposal)
     write(output/'audits.json',audits)
+    for audit in audits:
+        write(output/(audit['segment']+'-audit.json'),audit)
+    write(output/'review-only.json',dict(events=review,removed_cases=[a for a in audits
+        if a['notification_action']=='review_only'],identity_verified=False))
+    write(output/'timeline-comparison.json',timeline_comparison(baseline_bundle,proposal))
+    sensitivity=[]
+    for threshold in (.55,.65,.70,.75,.85):
+        diagnostic=proposal_bundle(baseline_bundle,audits,threshold)
+        sensitivity.append(dict(threshold=threshold,counts=diagnostic['counts'],
+            removed_event_ids=[e['event_id'] for e in diagnostic['review_only_events']],
+            removed_source_refs=[e['source_ref'] for e in diagnostic['review_only_events']],
+            timeline=timeline_comparison(baseline_bundle,diagnostic)))
+    write(output/'sensitivity.json',dict(diagnostic_only=True,flow_recomputed=False,
+        adoption_tuning=False,default_threshold=policy.score_threshold,rows=sensitivity))
     if before!={str(p):sha(p) for p in protected} or code!={p:sha(p) for p in code}:
         raise ValueError('Read-only inputs or code changed during comparison')
     report=dict(experiment='EXP-0040',video_id=baseline['video_id'],policy=asdict(policy),

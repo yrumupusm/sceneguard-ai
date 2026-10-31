@@ -4,11 +4,13 @@ import os
 import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 from sceneguard.exp0036_application import make_bundle
+from sceneguard.incident_cards import group_events
 from webapp.app import app
 
 
@@ -143,6 +145,35 @@ class IncidentWebTests(unittest.TestCase):
         self.assertEqual(sum(r.json()['claimed'] for r in responses), 1)
         self.assertFalse(self.claim(key).json()['claimed'])
         self.assertEqual(self.claim(key).json()['delivery'], 'not_verified')
+
+    def test_exp0040_partition_and_existing_registration_isolation(self):
+        original = deepcopy(self.bundle['events'])
+        proposal = deepcopy(self.bundle)
+        proposal.update(group_events(original[:1]))
+        proposal.update(experiment='EXP-0040', full_original_alerts=original,
+                        review_only_events=deepcopy(original[1:]))
+        self.bundle = proposal; self.write_bundle()
+        entry = dict(self.config['incident_bundles']['007'], experiment_id='EXP-0040',
+                     session_id='fixture', source_label='007', view_label='제안', sha256=self.sha())
+        self.config['incident_bundles']['exp40-007-proposed'] = entry
+        self.assignments.write_text(json.dumps({'assignments':[{'experiment_id':'EXP-0036'}, {'experiment_id':'EXP-0040'}]}))
+        self.write_config()
+        url = '/api/incidents/exp40-007-proposed'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual([e['event_id'] for e in data['events']], [original[0]['event_id']])
+        self.assertEqual([e['event_id'] for e in data['review_only_alerts']], [original[1]['event_id']])
+        self.assertNotIn('source_event', response.text)
+        self.assertEqual(self.client.get('/api/incident-registrations').json(), [])
+        self.assertEqual(self.client.get('/api/incident-registrations?experiment_id=EXP-0040').json()[0]['id'], 'exp40-007-proposed')
+        self.assertEqual(self.client.post(url+'/claim', json={'notification_key':data['timeline'][0]['notification_key']}, headers={'Origin':'http://localhost'}).status_code, 404)
+        entry['notification_enabled'] = True; self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
+        entry['notification_enabled'] = False; self.write_config()
+        self.bundle['review_only_events'][0]['decision_time_pts'] = 19
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
 
 
 if __name__ == '__main__': unittest.main()

@@ -234,15 +234,38 @@ def assess(path, catalogs, size, line, last_pts, overlap, policy):
     result.update(score=score, components=best['components'],
         endpoint_cache_index=best['candidate']['cache_index'],
         endpoint_track_ids=best['candidate']['track_ids'], endpoint_bbox=best['candidate']['bbox'],
-        supported_points=best['indices'], evidence_until_pts=path['records'][-1]['pts'],
+        supported_points=best['indices'],
+        supported_point_ids=path['ids'][best['indices']].tolist(),
+        evidence_until_pts=path['records'][-1]['pts'],
         recommendation='review_only' if score>=policy.score_threshold else 'keep',
         reason='image_continuation' if score>=policy.score_threshold else 'weak_or_conflicting_support')
     return result
 
 
+def seed_decision(alternatives, threshold):
+    """Reapply the fixed decision and spatial-conflict gate to SAVED scores only."""
+    if not 0 < threshold <= 1:
+        raise ValueError('Bounded threshold required')
+    winners=[r for r in alternatives if r['score'] >= threshold and r.get('endpoint_bbox')]
+    def overlap(a,b):
+        x=max(0,min(a[2],b[2])-max(a[0],b[0]))
+        y=max(0,min(a[3],b[3])-max(a[1],b[1]))
+        return x*y/max(1e-12,min((a[2]-a[0])*(a[3]-a[1]),(b[2]-b[0])*(b[3]-b[1])))
+    conflict=any(overlap(a['endpoint_bbox'],b['endpoint_bbox']) < .3
+                 for a in winners for b in winners)
+    if conflict:
+        return dict(recommendation='keep',reason='different_seed_paths_disagree')
+    if winners:
+        return dict(recommendation='review_only',reason='image_continuation')
+    return dict(recommendation='keep',reason='weak_or_conflicting_support' if alternatives
+                else 'no_earlier_observed_seed')
+
+
 def notification_partition(events, audits):
     """Partition original normalized alerts; do not renumber or re-hash their IDs."""
     decisions={r['source_pointer']:r for r in audits}
+    if len(decisions) != len(audits):
+        raise ValueError('Duplicate audit source pointer')
     active, review = [], []
     for event in events:
         audit=decisions.get(event['source_ref']['source_pointer'])

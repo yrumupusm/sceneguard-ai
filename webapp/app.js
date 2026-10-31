@@ -117,7 +117,7 @@ async function selectReport(id) {
       evidence.append(block);
     });
     if (id === 'EXP-0036') addIncidentFlows(detail, request);
-    if (id === 'EXP-0037') addFinishFlows(detail, request);
+    if (id === 'EXP-0037' || id === 'EXP-0040') addFinishFlows(detail, request, id);
     heading(detail, '담당 의견').append(node('p', show(d.worker_opinion)));
     const review = heading(detail, '총괄 검토');
     review.dataset.section = 'review';
@@ -144,15 +144,16 @@ async function selectReport(id) {
 function storageGet(key) { try { return localStorage.getItem(key); } catch { return null; } }
 function storageSet(key, value) { try { localStorage.setItem(key, value); } catch { /* storage optional */ } }
 
-async function addFinishFlows(detail, request) {
+async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
   const section = heading(detail, '사건 카드 재생과 검토');
   section.dataset.section = 'incident-flows';
   try {
-    const response = await fetch('/api/incident-registrations', {cache:'no-store'});
+    const response = await fetch(`/api/incident-registrations?experiment_id=${encodeURIComponent(experimentId)}`, {cache:'no-store'});
     if (!response.ok) throw Error('unavailable');
     const entries = await response.json();
     if (request !== selectionRequest || !section.isConnected) return;
     if (!entries.length) { section.append(node('p', '등록된 카드 자료가 없습니다.')); return; }
+    if (experimentId === 'EXP-0040') section.append(node('p', '제안에서 통지 제외된 알림은 검토 전용으로 남으며 침입 아님 확정이 아닙니다.', 'muted'));
     const source = node('select'); source.dataset.exp37Source = '';
     const view = node('select'); view.dataset.exp37View = '';
     const holder = node('div', undefined, 'incident-flow');
@@ -432,7 +433,7 @@ function selectPending(id) {
     node('p', `Orca 작업: ${observationText(nativeObservation(assignment, statusData))}`, 'muted'),
     node('p', `요청 모델: ${show(assignment?.agent_model_requested)} · 실효 모델: ${show(assignment?.agent_model_effective)} · 실효 effort: ${show(assignment?.reasoning_effective)}`, 'muted'));
   if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
-  if (id === 'EXP-0037') addFinishFlows(detail, selectionRequest);
+  if (id === 'EXP-0037' || id === 'EXP-0040') addFinishFlows(detail, selectionRequest, id);
   renderChoices();
 }
 function selectSlot(id) {

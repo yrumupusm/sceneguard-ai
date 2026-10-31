@@ -65,8 +65,20 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
-    if data['experiment'] != 'EXP-0036' or data['policy'] != {'gap_seconds': 3.0, 'max_span_seconds': 10.0}:
+    comparison = entry['experiment_id'] == 'EXP-0040'
+    if (data['experiment'] not in (('EXP-0036', 'EXP-0040') if comparison else ('EXP-0036',))
+            or data['policy'] != {'gap_seconds': 3.0, 'max_span_seconds': 10.0}):
         raise ValueError('invalid bundle')
+    if comparison and data['experiment'] == 'EXP-0040':
+        original, active, excluded = (data['full_original_alerts'], data['events'], data['review_only_events'])
+        if not all(isinstance(rows, list) for rows in (original, active, excluded)):
+            raise ValueError('invalid comparison partition')
+        originals = {e['event_id']: e for e in original}
+        partition = active + excluded
+        if (len(originals) != len(original) or len(partition) != len(original)
+                or len({e['event_id'] for e in partition}) != len(partition)
+                or any(originals.get(e['event_id']) != e for e in partition)):
+            raise ValueError('invalid comparison partition')
     start, end = data['source_window']
     number(start); number(end)
     media_start = number(entry.get('media_start_pts', start))
@@ -135,12 +147,13 @@ def load_bundle(c, bundle_id):
     if not isinstance(session, str) or not session or len(session) > 256:
         raise ValueError('missing session')
     review_only = []
-    for event in data.get('review_only_alerts', []):
+    review_events = data.get('review_only_events', []) if comparison and data['experiment'] == 'EXP-0040' else data.get('review_only_alerts', [])
+    for event in review_events:
         if event['session_id'] != session or not HEX.fullmatch(event['event_id']):
             raise ValueError('invalid review-only alert')
         review_only.append(dict(event_id=event['event_id'], decision_time_pts=number(event['decision_time_pts']), source_ref=ref(event['source_ref'])))
     notification_enabled = entry.get('notification_enabled', bundle_id in ('007', '030'))
-    if type(notification_enabled) is not bool:
+    if type(notification_enabled) is not bool or (comparison and notification_enabled):
         raise ValueError('invalid notification setting')
     result = dict(notification_enabled=notification_enabled, source_window=[start, end], media_start_pts=media_start, media_artifact_id=media, timeline=timeline, events=list(events.values()),
                   bundle_sha256=entry['sha256'], session_id=session, review_only_alerts=review_only,
@@ -158,10 +171,12 @@ def registered(bundle_id):
 
 
 @app.get('/api/incident-registrations')
-def incident_registrations():
+def incident_registrations(experiment_id: str = 'EXP-0037'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040'):
+        return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():
-        if entry.get('experiment_id') != 'EXP-0037':
+        if entry.get('experiment_id') != experiment_id:
             continue
         try:
             bundle = load_bundle(config(), bundle_id)
