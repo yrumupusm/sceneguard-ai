@@ -204,18 +204,21 @@ class ShortImageFlow:
         _mask_rectangle(mask,[b[0]+dx,b[1]+dy,b[2]-dx,b[3]-dy],origin,size,255)
         self.seed_competition = False
         for candidate in candidates:
-            if candidate['score'] >= .25 and candidate['cache_index'] != seed['cache_index']:
+            if candidate['cache_index'] != seed['cache_index']:
                 if intersection(b,candidate['bbox']) > 0:
                     self.seed_competition = True
                 _mask_rectangle(mask,candidate['bbox'],origin,size,0)
         background = np.full_like(gray,255)
         for candidate in candidates:
-            if candidate['score'] >= .25:
-                _mask_rectangle(background,expanded(candidate['bbox'],.15),origin,size,0)
+            _mask_rectangle(background,expanded(candidate['bbox'],.15),origin,size,0)
         _mask_rectangle(background,expanded(b,.15),origin,size,0)
         self.p = self._corners(gray,mask)
         self.bg = self._corners(gray,background)
         self.p0,self.bg0 = self.p.copy(),self.bg.copy()
+        # IDs are allocated once at the seed and filtered with their points.
+        # Array position after dropout is never a correspondence identity.
+        self.point_ids = np.arange(len(self.p),dtype=int)
+        self.background_ids = np.arange(len(self.bg),dtype=int)
         self.initial_count = len(self.p)
         self.prev = gray.copy()
         self.last_pts = finite(seed['pts'])
@@ -261,10 +264,14 @@ class ShortImageFlow:
         if pts-self.last_pts > self.policy.max_gap_seconds+1e-9:
             self.p,self.p0=self.p[:0],self.p0[:0]
             self.bg,self.bg0=self.bg[:0],self.bg0[:0]
+            self.point_ids=self.point_ids[:0]
+            self.background_ids=self.background_ids[:0]
             self.broken=True
         else:
             q,good=self._advance(gray,self.p);self.p,self.p0=q[good],self.p0[good]
+            self.point_ids=self.point_ids[good]
             q,good=self._advance(gray,self.bg);self.bg,self.bg0=q[good],self.bg0[good]
+            self.background_ids=self.background_ids[good]
         self.prev=gray.copy();self.last_pts=pts
         return self._record(pts,index)
 
@@ -276,6 +283,10 @@ class ShortImageFlow:
         row=dict(pts=pts,frame_index=index,point_count=len(self.p),
                  survival_fraction=len(self.p)/self.initial_count if self.initial_count else 0.,
                  points_original_pixels=(self.p+np.asarray(self.origin)).tolist(),
+                 point_ids=self.point_ids.tolist(),
+                 background_point_ids=self.background_ids.tolist(),
+                 background_points_original_pixels=(self.bg+np.asarray(self.origin)).tolist(),
+                 background_point_count=len(self.bg),
                  background_displacement=None if bg is None else bg.tolist(),
                  relative_displacement=None if relative is None else relative.tolist(),
                  image_correspondences_only=True)
@@ -307,6 +318,8 @@ class ShortImageFlow:
             outcome='source_gap_flow_not_used'
         elif not tracked:
             outcome='feature_continuation_unresolved'
+        elif last['background_displacement'] is None:
+            outcome='background_reference_unresolved'
         elif not moved:
             outcome='static_or_background_ambiguous'
         elif self.seed_competition or len(matches)>1:
@@ -318,6 +331,8 @@ class ShortImageFlow:
         return dict(outcome=outcome,seed_pts=self.seed['pts'],seed_frame_index=self.seed['frame_index'],
             initial_points=self.initial_count,endpoint_points=last['point_count'],
             preloss_relative_motion=moved,seed_competition=self.seed_competition,
+            endpoint_background_points=last['background_point_count'],
+            endpoint_background_displacement=last['background_displacement'],
             endpoint_matches=matches,frames=len(self.records),evidence_until_pts=last['pts'],
             cancel_alarm=False,identity_verified=False,baseline_alert_unchanged=True,
             warning='Flow loss is not intrusion; survival is not identity or a negative intrusion verdict.')

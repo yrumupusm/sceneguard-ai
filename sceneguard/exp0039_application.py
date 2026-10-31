@@ -73,7 +73,8 @@ def execute(baseline_path, output, policy=FlowPolicy()):
     protected=[baseline_path,Path(spec['video']),Path(spec['tracks']),Path(spec['cache'])/'run.json',
                Path(spec['cache'])/'person_cache.jsonl',Path(baseline['source_paths']['scene']),Path(spec['regions'])]
     before={str(p):sha(p) for p in protected}
-    sources=[Path(__file__),Path(__file__).with_name('gap_observation_support.py')]
+    sources=[Path(__file__),Path(__file__).with_name('gap_observation_support.py'),
+             Path(__file__).with_name('exp0039_evidence.py')]
     source_hashes={p.name:sha(p) for p in sources}
     by_id={s['id']:s for s in baseline['segments']}
     plans=[]
@@ -89,17 +90,23 @@ def execute(baseline_path, output, policy=FlowPolicy()):
             crop=flow_crop(seed['bbox'],segment['rows'][-1]['bbox'],scene['source_size']) if seed else None))
     output.mkdir(parents=True,exist_ok=False)
     (output/'evidence').mkdir()
+    write(output/'pre-execution-freeze.json',dict(input_sha256=before,code_sha256=source_hashes,
+        policy=policy.__dict__,loss_cases=len(plans),utc=datetime.now(timezone.utc).isoformat()))
     flow_begin=time.perf_counter()
+    decoded_frames=0
+    active_frame_indices=set()
     eligible=[p for p in plans if p['seed'] is not None]
     if eligible:
         first=min(p['seed']['frame_index'] for p in eligible)
         end=max(p['end'] for p in eligible)
         selected=data['cached'][first:end+1]
         for offset,bgr in decode_native(spec['video'],selected):
+            decoded_frames+=1
             index=first+offset
             active=[p for p in eligible if p['seed']['frame_index']<=index<=p['end']]
             if not active:
                 continue
+            active_frame_indices.add(index)
             gray=cv2.cvtColor(bgr,cv2.COLOR_BGR2GRAY)
             candidates=catalog_frame(data['cached'][index],data['tracked'][index])
             pts=data['cached'][index]['pts']
@@ -109,6 +116,8 @@ def execute(baseline_path, output, policy=FlowPolicy()):
                     p['flow']=ShortImageFlow(crop,p['seed'],scene['source_size'],(x1,y1),candidates,policy)
                 else:
                     p['flow'].update(crop,pts,index)
+                p['flow'].records[-1].update(native_pts=data['cached'][index]['native_pts'],
+                    time_base=data['cached'][index]['time_base'])
                 if index in (p['seed']['frame_index'],p['segment']['rows'][-1]['frame_index'],p['end']):
                     filename=f"{p['audit']['segment']}-{index:06d}.jpg"
                     snapshot(bgr,candidates,p['audit'],p['flow'],output/'evidence'/filename)
@@ -140,6 +149,9 @@ def execute(baseline_path, output, policy=FlowPolicy()):
         alarm_changes=0,detector_calls=0,tracker_calls=0,vlm_calls=0,new_labels=0,
         original_inputs_unchanged=True,performance_improvement=None,
         flow_and_evidence_seconds=flow_seconds,total_seconds=time.perf_counter()-begin,
+        source_frames=len(data['cached']),decoded_frames=decoded_frames,
+        active_unique_frames=len(active_frame_indices),
+        flow_frame_evaluations=sum(len(p['flow'].records) for p in eligible),
         limitations=['Nearby boxes can belong to another person.',
           'Flow point survival does not prove target identity or rule out intrusion.',
           'Flow loss does not prove physical disappearance.',

@@ -389,6 +389,19 @@
       "synthetic": false,
       "task_id": "task_5e783fa73799",
       "title": "EXP-0038 Qwen 8B NF4 외형 비교"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T03:14:23.699286+00:00",
+      "dispatch_id": "ctx_e81e74bdb8d9",
+      "experiment_id": "EXP-0039",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_a9481fc1a850",
+      "title": "EXP-0039 검출 상태·원본 특징 연속성 진단"
     }
   ],
   "schema_version": 1

@@ -157,6 +157,47 @@ class RealOpticalFlowTests(unittest.TestCase):
         flow,_=self.moving()
         with self.assertRaises(ValueError):flow.update(self.image()[:100],.3,9)
 
+    def test_point_ids_survive_dropout_without_reassignment(self):
+        from unittest.mock import patch
+        flow=ShortImageFlow(self.image(),self.seed,[300,200],(0,0),self.candidates)
+        original=flow.records[0]
+        def dropout(current, points):
+            keep=self.np.arange(len(points)) % 2 == 1
+            return points+1,keep
+        with patch.object(flow,'_advance',side_effect=dropout):
+            flow.update(self.image(),1/30,1)
+        result=flow.records[-1]
+        self.assertEqual(result['point_ids'],original['point_ids'][1::2])
+        self.assertEqual(result['background_point_ids'],original['background_point_ids'][1::2])
+        self.assertEqual(len(result['point_ids']),len(result['points_original_pixels']))
+        flow.update(self.image(),1.,30)
+        self.assertEqual(flow.records[-1]['point_ids'],[])
+        self.assertEqual(flow.records[-1]['background_point_ids'],[])
+
+    def test_endpoint_background_loss_defers_even_after_preloss_motion(self):
+        flow,end=self.moving()
+        flow.bg=flow.bg[:0];flow.bg0=flow.bg0[:0];flow.background_ids=flow.background_ids[:0]
+        flow.update(self.image(16),9/30,9)
+        result=flow.summary(4/30,end)
+        self.assertTrue(result['preloss_relative_motion'])
+        self.assertEqual(result['outcome'],'background_reference_unresolved')
+        self.assertIsNone(result['endpoint_background_displacement'])
+        self.assertFalse(result['cancel_alarm'])
+
+    def test_below_floor_competing_box_excludes_seed_features(self):
+        candidates=self.candidates+[dict(self.candidates[0],cache_index=1,score=.2)]
+        flow=ShortImageFlow(self.image(),self.seed,[300,200],(0,0),candidates)
+        self.assertTrue(flow.seed_competition)
+        self.assertEqual(flow.initial_count,0)
+
+    def test_below_floor_box_excluded_from_background(self):
+        from sceneguard.gap_observation_support import expanded
+        weak=dict(cache_index=1,score=.2,bbox=[.6,.1,.9,.8])
+        flow=ShortImageFlow(self.image(),self.seed,[300,200],(0,0),self.candidates+[weak])
+        a,b,c,d=expanded(weak['bbox'],.15)
+        for x,y in flow.records[0]['background_points_original_pixels']:
+            self.assertFalse(a*300<=x<c*300 and b*200<=y<d*200)
+
     def test_nonmonotonic_time_rejected(self):
         flow,_=self.moving()
         with self.assertRaises(ValueError):flow.update(self.image(),0.,0)
