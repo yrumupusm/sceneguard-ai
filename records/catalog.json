@@ -2874,6 +2874,239 @@
       "task_id": "task_5e783fa73799",
       "title": "EXP-0038 Qwen 8B NF4 외형 비교",
       "worker_opinion": "실행 성공과 형식 개선 확인; 동일인 구분 품질 충분하지 않아 기본 교체 보류"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T03:14:23.699286+00:00",
+      "attempt_id": "7f59f3d4189d4cb38bd1bdb96bc9b542",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_e81e74bdb8d9",
+      "evaluated_model": "Stored FCOS/ByteTrack + CPU LK diagnostic; same FCOS COCO_V1 fixed ROI comparison",
+      "evidence": [
+        {
+          "artifact_id": "exp0039-007-s0001-flow",
+          "kind": "video",
+          "label": "007 s0001 raw1 · 원본PTS 54.600–56.000 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0001-decision",
+          "kind": "image",
+          "label": "007 s0001 판단시각 56.000 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0003-flow",
+          "kind": "video",
+          "label": "007 s0003 raw5 · 원본PTS 56.367–57.767 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0003-decision",
+          "kind": "image",
+          "label": "007 s0003 판단시각 57.767 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0002-flow",
+          "kind": "video",
+          "label": "007 s0002 raw2 · 원본PTS 56.400–57.800 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0002-decision",
+          "kind": "image",
+          "label": "007 s0002 판단시각 57.800 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0007-flow",
+          "kind": "video",
+          "label": "007 s0007 raw9 · 원본PTS 58.400–59.667 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0007-decision",
+          "kind": "image",
+          "label": "007 s0007 판단시각 59.667 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0008-flow",
+          "kind": "video",
+          "label": "007 s0008 raw9 · 원본PTS 61.100–62.500 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0008-decision",
+          "kind": "image",
+          "label": "007 s0008 판단시각 62.500 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0009-flow",
+          "kind": "video",
+          "label": "007 s0009 raw11 · 원본PTS 63.833–65.233 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0009-decision",
+          "kind": "image",
+          "label": "007 s0009 판단시각 65.233 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0005-flow",
+          "kind": "video",
+          "label": "007 s0005 raw7 · 원본PTS 63.933–65.333 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0005-decision",
+          "kind": "image",
+          "label": "007 s0005 판단시각 65.333 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0011-flow",
+          "kind": "video",
+          "label": "007 s0011 raw13 · 원본PTS 71.067–72.433 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0011-decision",
+          "kind": "image",
+          "label": "007 s0011 판단시각 72.433 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-007-s0006-flow",
+          "kind": "video",
+          "label": "007 s0006 raw8 · 원본PTS 71.200–72.600 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-007-s0006-decision",
+          "kind": "image",
+          "label": "007 s0006 판단시각 72.600 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-030-s0002-flow",
+          "kind": "video",
+          "label": "030 s0002 raw2 · 원본PTS 84.633–86.033 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-030-s0002-decision",
+          "kind": "image",
+          "label": "030 s0002 판단시각 86.033 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-030-s0004-flow",
+          "kind": "video",
+          "label": "030 s0004 raw4 · 원본PTS 91.333–92.733 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-030-s0004-decision",
+          "kind": "image",
+          "label": "030 s0004 판단시각 92.733 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-030-s0001-flow",
+          "kind": "video",
+          "label": "030 s0001 raw1 · 원본PTS 91.833–93.033 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-030-s0001-decision",
+          "kind": "image",
+          "label": "030 s0001 판단시각 93.033 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-030-s0003-flow",
+          "kind": "video",
+          "label": "030 s0003 raw3 · 원본PTS 92.000–93.400 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-030-s0003-decision",
+          "kind": "image",
+          "label": "030 s0003 판단시각 93.400 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-030-s0008-flow",
+          "kind": "video",
+          "label": "030 s0008 raw11 · 원본PTS 97.833–99.233 · 원본/검출/특징 · 의심 유지"
+        },
+        {
+          "artifact_id": "exp0039-030-s0008-decision",
+          "kind": "image",
+          "label": "030 s0008 판단시각 99.233 · 저장 검출·영상 대응점 · 동일인 미확정"
+        },
+        {
+          "artifact_id": "exp0039-030-s0003-original",
+          "kind": "video",
+          "label": "030 s0003 가시성 확인용 원본 · 부분 가림/곧 소실 사용자 관찰"
+        },
+        {
+          "artifact_id": "exp0039-030-s0008-original",
+          "kind": "video",
+          "label": "030 s0008 가시성 확인용 원본 · 부분 가림/곧 소실 사용자 관찰"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0003",
+          "kind": "video",
+          "label": "030 92.0–93.4 원본/저장 전체화면/신규 ROI 검출 · 박스 품질 검수 대기"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0003-00",
+          "kind": "image",
+          "label": "030 92.0–93.4 원본/저장 전체화면/신규 ROI 검출-00 · 박스 품질 검수 대기"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0003-21",
+          "kind": "image",
+          "label": "030 92.0–93.4 원본/저장 전체화면/신규 ROI 검출-21 · 박스 품질 검수 대기"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0003-42",
+          "kind": "image",
+          "label": "030 92.0–93.4 원본/저장 전체화면/신규 ROI 검출-42 · 박스 품질 검수 대기"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0008",
+          "kind": "video",
+          "label": "030 97.833–99.233 원본/저장 전체화면/신규 ROI 검출 · 박스 품질 검수 대기"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0008-00",
+          "kind": "image",
+          "label": "030 97.833–99.233 원본/저장 전체화면/신규 ROI 검출-00 · 박스 품질 검수 대기"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0008-21",
+          "kind": "image",
+          "label": "030 97.833–99.233 원본/저장 전체화면/신규 ROI 검출-21 · 박스 품질 검수 대기"
+        },
+        {
+          "artifact_id": "exp0039-roi-s0008-42",
+          "kind": "image",
+          "label": "030 97.833–99.233 원본/저장 전체화면/신규 ROI 검출-42 · 박스 품질 검수 대기"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0039",
+      "limitations": [
+        "근처 검출/특징점 생존은 동일인 정답이 아님",
+        "14소실 진단과18전체 알림의 분모를 구분",
+        "사용자 원본 가시성 관찰은 새 박스 품질 확인이 아님",
+        "ROI 뒤 추적/카드 재실행 없음; 원래 알림 그대로",
+        "정확도/F1/오탐률·실시간 성능 미측정"
+      ],
+      "metric_definitions": "records/EXP-0039/metrics.json",
+      "metrics_path": "records/EXP-0039/metrics.json",
+      "metrics_sha256": "fe809704346d94e287d183ec847f3da59389d2657526c6363d57d3dd897d1d26",
+      "next_step": "이번 실행 종료. 두 ROI 비교영상의 실제 대상/부분 박스 품질 검수만 남기며 후속 추론 자동 시작하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "27539eeb54efa064b16a784ffe8b500ecd6525ef149e5c2e9fb7fc70cf1903e7",
+      "report_path": "docs/experiments/EXP-0039-results.md",
+      "report_sha256": "220a2b761cab32ed9e8073ec27181f7769f6042dd43cc72d46cc0590fdaf404e",
+      "review_binding_path": "docs/reviews/EXP-0039.binding.json",
+      "review_path": "docs/reviews/EXP-0039-independent-review.md",
+      "review_sha256": "d6ef854ace1af1f41b711bcd8d2111d74654553372ce71afce2782c8145f11c5",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "fe809704346d94e287d183ec847f3da59389d2657526c6363d57d3dd897d1d26",
+      "reviewed_report_sha256": "220a2b761cab32ed9e8073ec27181f7769f6042dd43cc72d46cc0590fdaf404e",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "소실14건 진단·ROI2구간 실행 완료. 연속성 보강0·알림 감소0, 원본18알림/5카드 유지. 확대 검출의 대상 품질은 미확정.",
+      "synthetic": false,
+      "task_id": "task_a9481fc1a850",
+      "title": "EXP-0039 검출 상태·원본 특징 연속성 진단",
+      "worker_opinion": "진단 실행 성공; 관측 보강·정상 접근 오탐 감소 미확인, 기본 MVP 유지"
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
