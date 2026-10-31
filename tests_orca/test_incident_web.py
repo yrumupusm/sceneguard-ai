@@ -214,5 +214,44 @@ class IncidentWebTests(unittest.TestCase):
         self.bundle = proposal; self.write_bundle(); entry['sha256'] = self.sha(); entry['notification_enabled'] = True; self.write_config()
         self.assertEqual(self.client.get(url).status_code, 404)
 
+    def test_exp0042_new_candidate_and_empty_diagnostic(self):
+        original = deepcopy(self.bundle['events'])
+        raw = dict(status='침입 의심', reason='gate_visual_transition', decision_time_pts=12.5,
+                   evidence_until_pts=12.5, evidence=dict(seed_pts=10, reference_pts=12,
+                       window_id='w1', seed_track_ids=[1]))
+        eid = 'a'*64
+        new = dict(session_id='fixture', camera_id='C3', gate_id='C3_fence', event_id=eid,
+                   video_id='fixture', decision_time_pts=12.5, status='침입 의심', track_ids=[1],
+                   source_ref=dict(collection='transition_events', source_pointer='/transition_events/'+eid,
+                                   segment='w1', raw_id=None), source_event=raw)
+        entry = dict(self.config['incident_bundles']['007'], experiment_id='EXP-0042',
+                     session_id='fixture', notification_enabled=False, media_start_pts=10)
+        self.config['incident_bundles']['exp42'] = entry
+        self.assignments.write_text(json.dumps({'assignments':[{'experiment_id':'EXP-0042'}]}))
+        def bundle(rows, mode):
+            result = group_notifications(rows)
+            result.update(experiment='EXP-0042', source_window=[10, 20], comparison_mode=mode,
+                          live_notifications_enabled=False)
+            return result
+        for mode, rows in [('combined', [new]), ('transition-only', [])]:
+            self.bundle = bundle(original + rows if mode == 'combined' else rows, mode)
+            self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+            response = self.client.get('/api/incidents/exp42')
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            self.assertFalse(data['notification_enabled'])
+            if mode == 'combined':
+                self.assertEqual(data['events'][:len(original)], original)
+                self.assertEqual(data['events'][-1], new)
+                self.assertEqual(data['timeline'][-1]['card']['first_notification_pts'], 11)
+                self.assertEqual(data['timeline'][-1]['decision_time_pts'], 12.5)
+            else:
+                self.assertEqual(data['events'], [])
+                self.assertEqual(data['timeline'], [])
+        malformed = deepcopy(new); malformed['source_ref']['source_pointer'] = '/transition_events/' + '0'*64
+        self.bundle = bundle(original + [malformed], 'combined')
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get('/api/incidents/exp42').status_code, 404)
+
 
 if __name__ == '__main__': unittest.main()

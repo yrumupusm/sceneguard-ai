@@ -13,7 +13,7 @@ from .app import app, artifact, catalog, config, safe_open
 
 HEX = re.compile(r'^[0-9a-f]{64}$')
 INCIDENT = re.compile(r'^incident-[0-9a-f]{24}$')
-POINTER = re.compile(r'^/(events|existing_alerts)/[0-9]+$')
+POINTER = re.compile(r'^/(?:(?:events|existing_alerts)/[0-9]+|transition_events/[0-9a-f]{64})$')
 
 
 def number(x):
@@ -50,10 +50,12 @@ def load_exp0041(data, entry, bundle_id, media):
         if any(data[k] != baseline[k] for k in ('policy', 'timeline', 'cards', 'counts')):
             raise ValueError('invalid baseline grouping')
         grouped = group_notifications(data['events'])
-    elif data.get('experiment') == 'EXP-0041' and data.get('contract') == 'group_all_then_notify_v1':
+    elif data.get('experiment') in ('EXP-0041', 'EXP-0042') and data.get('contract') == 'group_all_then_notify_v1':
         if data.get('live_notifications_enabled') is not False:
             raise ValueError('comparison notifications must be disabled')
         review_ids = [e['event_id'] for e in data['review_only_events']]
+        if data['experiment'] == 'EXP-0042' and (review_ids or data.get('comparison_mode') not in ('baseline', 'transition-only', 'combined')):
+            raise ValueError('invalid all-active comparison')
         grouped = group_notifications(data['events'], review_ids)
         for key in ('policy', 'events', 'active_events', 'review_only_events', 'cards',
                     'alert_cards', 'review_only_cards', 'timeline', 'counts'):
@@ -74,10 +76,21 @@ def load_exp0041(data, entry, bundle_id, media):
         ids.add(eid)
         if not start <= number(event['decision_time_pts']) <= end:
             raise ValueError('event outside window')
-        ref(event['source_ref'])
+        source = ref(event['source_ref'])
+        if source['collection'] == 'transition_events':
+            if data.get('experiment') != 'EXP-0042' or source['source_pointer'] != '/transition_events/' + eid:
+                raise ValueError('invalid transition candidate reference')
+            if event['source_event'].get('evidence_until_pts') != event['decision_time_pts']:
+                raise ValueError('invalid transition evidence time')
+        if data.get('experiment') == 'EXP-0042':
+            if data['comparison_mode'] == 'baseline' and source['collection'] == 'transition_events':
+                raise ValueError('new candidate in baseline')
+            if data['comparison_mode'] == 'transition-only' and source['collection'] != 'transition_events':
+                raise ValueError('original candidate in diagnostic')
         if any(type(i) is not int or i < 0 for i in event['track_ids']):
             raise ValueError('invalid track ids')
     return dict(grouped, notification_enabled=False, source_window=[start, end],
+                experiment=data.get('experiment'), comparison_mode=data.get('comparison_mode'),
                 media_start_pts=media_start, media_artifact_id=media,
                 bundle_sha256=entry['sha256'], session_id=session,
                 source_label=entry.get('source_label', bundle_id),
@@ -115,7 +128,9 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
-    if entry['experiment_id'] == 'EXP-0041':
+    if entry['experiment_id'] in ('EXP-0041', 'EXP-0042'):
+        if entry['experiment_id'] == 'EXP-0042' and data.get('experiment') != 'EXP-0042':
+            raise ValueError('wrong comparison experiment')
         return load_exp0041(data, entry, bundle_id, media)
     comparison = entry['experiment_id'] == 'EXP-0040'
     if (data['experiment'] not in (('EXP-0036', 'EXP-0040') if comparison else ('EXP-0036',))
@@ -224,7 +239,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():

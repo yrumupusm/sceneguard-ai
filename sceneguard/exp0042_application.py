@@ -125,7 +125,8 @@ def execute(baseline_path, output, policy=TransitionPolicy()):
                 cache=data['cached'][index]
                 catalog=catalog_frame(cache,data['tracked'][index])
                 r=engine.step(cv2.cvtColor(bgr,cv2.COLOR_BGR2GRAY),cache['pts'],catalog,index)
-                r.update(native_pts=cache['native_pts'],time_base=cache['time_base'])
+                r.update(native_pts=cache['native_pts'],time_base=cache['time_base'],
+                         actual_boxes=catalog)
                 count+=1; frames_with_cues+=bool(r['signals'])
                 if r['event']:
                     r['event'].update(native_pts=cache['native_pts'],time_base=cache['time_base'])
@@ -142,6 +143,12 @@ def execute(baseline_path, output, policy=TransitionPolicy()):
             frames_with_cues=frames_with_cues,new_candidates=len(events),
             new_candidate_pts=[e['decision_time_pts'] for e in events],
             counts={k:v['counts'] for k,v in bundles.items()},
+            first_notification_pts={k:[c['first_notification_pts'] for c in v['alert_cards']]
+                                    for k,v in bundles.items()},
+            source_window=baseline['source_window'],
+            first_native_pts=data['cached'][0]['native_pts'],
+            last_native_pts=data['cached'][-1]['native_pts'],
+            time_base=data['cached'][0]['time_base'],
             first_new_candidate_pts=min((e['decision_time_pts'] for e in events),default=None),
             baseline_alerts_suppressed=0,policy=asdict(policy),
             detector_calls=0,tracker_calls=0,vlm_calls=0,model_calls=0,

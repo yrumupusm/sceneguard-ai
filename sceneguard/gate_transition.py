@@ -307,4 +307,8 @@ class GateTransition:
         self.pts, self.frame_index = pts, frame_index
         return dict(pts=pts, frame_index=frame_index, signals=signals, score=score, event=event,
                     windows=len(self.windows), seeded=seeded, source_gap=gap,
-                    camera_step_pixels=camera_step.tolist(), camera_support=camera_support)
+                    camera_step_pixels=camera_step.tolist(), camera_support=camera_support,
+                    point_paths=[dict(window_id=w['id'], seed_pts=w['seed_pts'],
+                        seed_track_ids=w['track_ids'], seed_cache_index=w['cache_index'],
+                        point_ids=w['ids'].tolist(),
+                        points_original_pixels=w['points'].tolist()) for w in self.windows])

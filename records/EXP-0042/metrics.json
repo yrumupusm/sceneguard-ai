@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0042",
+  "metrics": [
+    {
+      "label": "007 처리 프레임",
+      "value": 1710,
+      "unit": "frames",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 특징 신호 프레임",
+      "value": 1044,
+      "unit": "frames",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 새 후보",
+      "value": 4,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 CPU 실행 시간",
+      "value": 68.70289264002349,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 표시 영상 제작 시간",
+      "value": 49.610093594004866,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/evidence/manifest.json",
+      "source_sha256": "011a78fe21c63e39e65542f69a7dedcff57d1a376ffeeab2bf7e08722f1b8075",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 기존 후보",
+      "value": 10,
+      "unit": "rows",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 기존 통지 사건",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 새 후보만 후보",
+      "value": 4,
+      "unit": "rows",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 새 후보만 통지 사건",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 결합 후보",
+      "value": 14,
+      "unit": "rows",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 결합 통지 사건",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 첫 새 후보 PTS",
+      "value": 54.7,
+      "unit": "source_seconds",
+      "sample_n": 4,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 새 후보1 PTS",
+      "value": 54.7,
+      "unit": "source_seconds",
+      "sample_n": 4,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 새 후보2 PTS",
+      "value": 55.7,
+      "unit": "source_seconds",
+      "sample_n": 4,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 새 후보3 PTS",
+      "value": 56.86666666666667,
+      "unit": "source_seconds",
+      "sample_n": 4,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 새 후보4 PTS",
+      "value": 63.06666666666667,
+      "unit": "source_seconds",
+      "sample_n": 4,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/007-v1/summary.json",
+      "source_sha256": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 처리 프레임",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 특징 신호 프레임",
+      "value": 443,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 새 후보",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 CPU 실행 시간",
+      "value": 27.71731014602119,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 표시 영상 제작 시간",
+      "value": 15.380921016039792,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/evidence/manifest.json",
+      "source_sha256": "e48c58d7d048ae89fb6d106bf78e225b9b44bd6a4c15cbd1e6302381bcea6532",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 기존 후보",
+      "value": 8,
+      "unit": "rows",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 기존 통지 사건",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 새 후보만 후보",
+      "value": 2,
+      "unit": "rows",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 새 후보만 통지 사건",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 결합 후보",
+      "value": 10,
+      "unit": "rows",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 결합 통지 사건",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 첫 새 후보 PTS",
+      "value": 87.7,
+      "unit": "source_seconds",
+      "sample_n": 2,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 새 후보1 PTS",
+      "value": 87.7,
+      "unit": "source_seconds",
+      "sample_n": 2,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 새 후보2 PTS",
+      "value": 92.2,
+      "unit": "source_seconds",
+      "sample_n": 2,
+      "scope": "선택 개발 구간; 후보/사건은 정답 건수 아님",
+      "source": "outputs/exp0042/030-v1/summary.json",
+      "source_sha256": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "독립 침입 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "정밀 정답·독립 자료 없음",
+      "source": "docs/CODEX_EXP0042.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}

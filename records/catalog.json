@@ -3353,6 +3353,94 @@
       "task_id": "task_f726b1037136",
       "title": "EXP-0041 사건 묶음 유지·통지 기준 비교",
       "worker_opinion": "동일0.70 카드 분리 결함 해소. 0.55 접근 첫 경보 감소로 우선 개발 후보; 추가 장면 의미와 독립 일반화는 구분."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T16:46:38.805207+00:00",
+      "attempt_id": "continuous-cpu-v1-007030",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_cbaa29296f50",
+      "evaluated_model": "Fixed CPU gate-transition features with existing detections; no model inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0042-007-continuous",
+          "kind": "video",
+          "label": "007 continuous · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-007-core-64-74",
+          "kind": "video",
+          "label": "007 core-64-74 · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-007-normal-56-63",
+          "kind": "video",
+          "label": "007 normal-56-63 · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-007-new-candidates-01",
+          "kind": "video",
+          "label": "007 new-candidates-01 · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-007-new-candidates-02",
+          "kind": "video",
+          "label": "007 new-candidates-02 · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-030-continuous",
+          "kind": "video",
+          "label": "030 continuous · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-030-core-90-94",
+          "kind": "video",
+          "label": "030 core-90-94 · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-030-new-candidates-01",
+          "kind": "video",
+          "label": "030 new-candidates-01 · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        },
+        {
+          "artifact_id": "exp0042-030-new-candidates-02",
+          "kind": "video",
+          "label": "030 new-candidates-02 · 원본/저장 검출/특징 경로 · 기존/새 후보/결합 시각별 비교"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0042",
+      "limitations": [
+        "새 후보 네 문맥의 특징 대상 의미는 사용자 검수 대기",
+        "007 결합65.233333초 카드 첫 행은 기존 후보이며 신규 포착이 아님",
+        "030 새87.7초가 기존90.4초를 앞 카드 무음 갱신으로 바꿈",
+        "새92.2초는 기존90.4초보다 늦음",
+        "정밀 동일인/침입 시작 정답과 독립 일반화 평가 없음"
+      ],
+      "metric_definitions": "records/EXP-0042/metrics.json",
+      "metrics_path": "records/EXP-0042/metrics.json",
+      "metrics_sha256": "ab081054aa1846dfc64a69ff5c285026a7383632f9fd268be554170990f64e15",
+      "next_step": "새 후보 네 문맥의 사용자 관찰만 별도 반영. 기본 MVP 유지; 추가 튜닝이나 실험 자동 실행 없이 종료.",
+      "reasoning_effective": "high",
+      "registration_sha256": "aa09637d0773be3eba4fdb8f2fa81b3d2f9ca619ceaac3a095377c497b21649f",
+      "report_path": "docs/experiments/EXP-0042-results.md",
+      "report_sha256": "433f243a5e60580212393eb21a7246a72ce60cf379dab0e84cae4445b1f585e9",
+      "review_binding_path": "docs/reviews/EXP-0042.binding.json",
+      "review_path": "docs/reviews/EXP-0042-independent-review.md",
+      "review_sha256": "c4bc3be221b37b3d50a377e618206eea0f173bda856aa9342a125297eabf99fe",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "ab081054aa1846dfc64a69ff5c285026a7383632f9fd268be554170990f64e15",
+      "reviewed_report_sha256": "433f243a5e60580212393eb21a7246a72ce60cf379dab0e84cae4445b1f585e9",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "007·030 전체2190프레임 처리. 새 후보4/2건, 기존18건 보존. 00764–74초 새 후보0으로 목표 미충족. 결합 카드 변화0072→3·0303→2, 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_4ff13682abd3",
+      "title": "EXP-0042 보이는 중 침입 의심 후보 생성",
+      "worker_opinion": "실제 연속 처리와 인과적 비교는 완료. 접근 중 후보 발생 및 007 초기 침입 포착 실패, 030 이른 포착 이득 미확인으로 미채택."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
