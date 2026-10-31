@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0043",
+  "metrics": [
+    {
+      "label": "007 처리 프레임",
+      "value": 1710,
+      "unit": "frames",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 기존 추가 후보",
+      "value": 4,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 수정 후보",
+      "value": 8,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 CPU 비교 시간",
+      "value": 4.669416015036404,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 보존 원래 알림",
+      "value": 10,
+      "unit": "rows",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 보존 원래 첫 통지",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 approach 기존 후보",
+      "value": 3,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 approach 수정 후보",
+      "value": 4,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 waiting 기존 후보",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 waiting 수정 후보",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 missed 기존 후보",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 missed 수정 후보",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 early 기존 후보",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 early 수정 후보",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/007/summary.json",
+      "source_sha256": "64e5a2b9220d4fd9488af37dd44e1af9d6f122ae2667a70c411763c25f2e5ad0",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 처리 프레임",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 기존 추가 후보",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 수정 후보",
+      "value": 6,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 CPU 비교 시간",
+      "value": 1.5063232999527827,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 보존 원래 알림",
+      "value": 8,
+      "unit": "rows",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 보존 원래 첫 통지",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 approach 기존 후보",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 approach 수정 후보",
+      "value": 4,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 intrusion_context 기존 후보",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 intrusion_context 수정 후보",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "개발 구간 저장 자료 비교; 후보 수는 성공 건수/정확도가 아님",
+      "source": "outputs/exp0043/seed-reference-comparison-v1/030/summary.json",
+      "source_sha256": "4976340947f0f0b3bddfda294d8469cb8b70560d74e790fbf53baa821216ea13",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "독립 침입 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "독립 자료·정밀 정답 부족",
+      "source": "docs/experiments/EXP-0043-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}

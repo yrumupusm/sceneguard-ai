@@ -3441,6 +3441,74 @@
       "task_id": "task_4ff13682abd3",
       "title": "EXP-0042 보이는 중 침입 의심 후보 생성",
       "worker_opinion": "실제 연속 처리와 인과적 비교는 완료. 접근 중 후보 발생 및 007 초기 침입 포착 실패, 030 이른 포착 이득 미확인으로 미채택."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-10-31T18:03:17.325059+00:00",
+      "attempt_id": "seed-geometry-recent-dynamics-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_a07e5477dd06",
+      "evaluated_model": "CPU saved feature geometry reference comparison; no new model/flow inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0043-007-full-comparison",
+          "kind": "video",
+          "label": "007 전체48–105초 · 원본/EXP42/EXP43 · 후보와 첫 통지 분리"
+        },
+        {
+          "artifact_id": "exp0043-007-core-comparison",
+          "kind": "video",
+          "label": "007 핵심64–74초 · 원본/EXP42/EXP43 · 후보와 첫 통지 분리"
+        },
+        {
+          "artifact_id": "exp0043-030-full-comparison",
+          "kind": "video",
+          "label": "030 전체84–100초 · 원본/EXP42/EXP43 · 후보와 첫 통지 분리"
+        },
+        {
+          "artifact_id": "exp0043-030-core-comparison",
+          "kind": "video",
+          "label": "030 핵심90–94초 · 원본/EXP42/EXP43 · 후보와 첫 통지 분리"
+        },
+        {
+          "artifact_id": "exp0043-007-all-live-64-74",
+          "kind": "video",
+          "label": "00764–74초 · 원본/모든 활성 경로/최고창 · 사용자 점 추종 관찰 근거"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0043",
+      "limitations": [
+        "00764.5는 seed62.5 누적 경로이며 필요한 침입 시작 포착 미확정",
+        "수정65.0 고득점은 기존1초 쿨다운으로 새 후보가 되지 않음",
+        "후보만 카드에서00764.5와03092.233333은 무음 갱신; 원래 알림과 합치지 않음",
+        "독립 자료/정밀 정답 부족; 정확도/F1 미산출",
+        "최초 불변 배정은 진단 작업 이력이며 실제 A/B task/dispatch는 보고서에 별도 명시"
+      ],
+      "metric_definitions": "records/EXP-0043/metrics.json",
+      "metrics_path": "records/EXP-0043/metrics.json",
+      "metrics_sha256": "b1832548210f5c63d3c862d43e5787cc05f5fc57362671cc0978618b92382237",
+      "next_step": "이번 단일 비교 종료. 기본 설정 유지; 추가 튜닝/실험 자동 실행하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "2f76595709e79d1444d49d2a709986022a1627c7f6893cd9e23b445e95e63b56",
+      "report_path": "docs/experiments/EXP-0043-results.md",
+      "report_sha256": "75a041ee18bc037de173bd19833e2b8d481f48a6aeb89b79cf31abe599f3707b",
+      "review_binding_path": "docs/reviews/EXP-0043.binding.json",
+      "review_path": "docs/reviews/EXP-0043-independent-review.md",
+      "review_sha256": "16eea0283cf80281002f2c9933d9cac0ec555b4caa2c218cb04df7793a316349",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "b1832548210f5c63d3c862d43e5787cc05f5fc57362671cc0978618b92382237",
+      "reviewed_report_sha256": "75a041ee18bc037de173bd19833e2b8d481f48a6aeb89b79cf31abe599f3707b",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "단일 공간 참조 수정 실제 비교 완료.007 후보4→8·0302→6으로 접근/대기 증가.00764.5 새 후보 의미 미확정·65–66 새 후보0,030 조기 포착 이득 없음. 기존18알림/5첫통지 별도 보존; 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_d2af4d36d22e",
+      "title": "EXP-0043 누락 경로 진단과 단일 수정 비교",
+      "worker_opinion": "비교 구현·실행·영상 제작 완료. 접근/대기 구별 및 초기 침입 의심 개선이 확인되지 않아 기존 MVP 유지."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
