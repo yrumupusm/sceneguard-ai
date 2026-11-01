@@ -480,6 +480,19 @@
       "synthetic": false,
       "task_id": "task_4b4f70a984d8",
       "title": "EXP-0045 문 근처 이력·문 바로 안쪽 새 관측"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T06:04:44.349892+00:00",
+      "dispatch_id": "ctx_878bf7aabcf4",
+      "experiment_id": "EXP-0046",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_e5ddb73f0f54",
+      "title": "EXP-0046 문 주변 구역 새 출현 비교"
     }
   ],
   "schema_version": 1

@@ -50,14 +50,14 @@ def load_exp0041(data, entry, bundle_id, media):
         if any(data[k] != baseline[k] for k in ('policy', 'timeline', 'cards', 'counts')):
             raise ValueError('invalid baseline grouping')
         grouped = group_notifications(data['events'])
-    elif data.get('experiment') in ('EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045') and data.get('contract') == 'group_all_then_notify_v1':
+    elif data.get('experiment') in ('EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046') and data.get('contract') == 'group_all_then_notify_v1':
         if data.get('live_notifications_enabled') is not False:
             raise ValueError('comparison notifications must be disabled')
         review_ids = [e['event_id'] for e in data['review_only_events']]
         if data['experiment'] == 'EXP-0042' and (review_ids or data.get('comparison_mode') not in ('baseline', 'transition-only', 'combined')):
             raise ValueError('invalid all-active comparison')
         grouped = group_notifications(data['events'], review_ids)
-        if data['experiment'] in ('EXP-0044', 'EXP-0045'):
+        if data['experiment'] in ('EXP-0044', 'EXP-0045', 'EXP-0046'):
             # Reconstruct only the automatic overlay from decisions belonging to
             # each prefix; never take a final card's state back into the past.
             by_event = {e['event_id']: e for e in data['events']}
@@ -121,7 +121,7 @@ def load_exp0041(data, entry, bundle_id, media):
                 raise ValueError('original candidate in diagnostic')
         if source['collection'] == 'inside_birth_events':
             birth = event['source_event']
-            if (data.get('experiment') != 'EXP-0045' or data.get('comparison_mode') not in ('birth-only', 'combined') or
+            if (data.get('experiment') not in ('EXP-0045', 'EXP-0046') or data.get('comparison_mode') not in (('birth-only', 'combined') if data.get('experiment') == 'EXP-0045' else ('portal-only', 'combined')) or
                     source['source_pointer'] != '/inside_birth_events/' + eid or
                     birth.get('evidence_until_pts') != event['decision_time_pts'] or
                     not start <= number(birth['birth_pts']) <= event['decision_time_pts'] or
@@ -132,7 +132,18 @@ def load_exp0041(data, entry, bundle_id, media):
                     birth.get('automatic_confirmation') is not False or birth.get('human_verified') is not False or
                     not birth['birth_site']['inside_birth_site']):
                 raise ValueError('invalid birth candidate reference')
-        elif data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') == 'birth-only':
+            if data.get('experiment') == 'EXP-0046':
+                site = birth['birth_site']
+                overlap = site.get('portal_box_overlap')
+                center = site.get('portal_center_inside')
+                if (data.get('geometry_kind') != 'projected_gate_emergence_v1' or
+                        site.get('geometry_kind') != data['geometry_kind'] or
+                        type(center) is not bool or type(overlap) not in (int, float) or
+                        not math.isfinite(overlap) or not 0 <= overlap <= 1 or
+                        not (center or overlap >= 0.5 - 1e-12)):
+                    raise ValueError('invalid portal geometry')
+        elif ((data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') == 'birth-only') or
+              (data.get('experiment') == 'EXP-0046' and data.get('comparison_mode') == 'portal-only')):
             raise ValueError('original candidate in birth-only view')
         if any(type(i) is not int or i < 0 for i in event['track_ids']):
             raise ValueError('invalid track ids')
@@ -175,7 +186,7 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
-    if entry['experiment_id'] in ('EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045'):
+    if entry['experiment_id'] in ('EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046'):
         if entry['experiment_id'] == 'EXP-0042' and data.get('experiment') != 'EXP-0042':
             raise ValueError('wrong comparison experiment')
         if entry['experiment_id'] == 'EXP-0044' and (data.get('experiment') not in ('EXP-0036', 'EXP-0042', 'EXP-0044') or
@@ -185,8 +196,13 @@ def load_bundle(c, bundle_id):
                 (data.get('experiment') == 'EXP-0042' and data.get('comparison_mode') == 'baseline') or
                 (data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') in ('history', 'birth-only', 'combined'))):
             raise ValueError('wrong episode comparison')
+        if entry['experiment_id'] == 'EXP-0046' and not (
+                (data.get('experiment') == 'EXP-0042' and data.get('comparison_mode') == 'baseline') or
+                (data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') == 'history') or
+                (data.get('experiment') == 'EXP-0046' and data.get('comparison_mode') in ('portal-only', 'combined'))):
+            raise ValueError('wrong portal comparison')
         result = load_exp0041(data, entry, bundle_id, media)
-        if entry['experiment_id'] in ('EXP-0044', 'EXP-0045'):
+        if entry['experiment_id'] in ('EXP-0044', 'EXP-0045', 'EXP-0046'):
             result['experiment'] = entry['experiment_id']
         return result
     comparison = entry['experiment_id'] == 'EXP-0040'
@@ -296,7 +312,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():

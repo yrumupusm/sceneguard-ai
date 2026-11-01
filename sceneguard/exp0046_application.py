@@ -80,7 +80,8 @@ def execute(baseline_path, paths_directory, history_directory, portal_path,
     baseline,original,frames,old_scene,group,protected=prepared_inputs(baseline_path,paths_directory)
     scene=select_scene(baseline['video_id'],old_scene,scene_path)
     source_files=[hdir/n for n in ('history-cards.json','history-decisions.json',
-                                  'scene-used.json','summary.json','request.json')]
+                                  'scene-used.json','summary.json','request.json',
+                                  'birth-audits.json','inside-birth-events.json')]
     protected.update({str(p):sha(p) for p in source_files})
     protected[str(portal_path)]=sha(portal_path)
     if scene_path is not None:protected[str(scene_path)]=sha(scene_path)
@@ -109,6 +110,12 @@ def execute(baseline_path, paths_directory, history_directory, portal_path,
     code={str(Path(__file__).with_name(n)):sha(Path(__file__).with_name(n)) for n in files}
     # Constructor validates the new region; it never silently falls back to the whole inside zone.
     comparison=compare_births(frames,scene,region,camera,policy)
+    # The old B is replayed solely to compare location geometry. It must reproduce
+    # the preserved EXP45 B exactly, on the very same actual observation stream.
+    if (digest(comparison['legacy_audits']) != digest(load_json(hdir/'birth-audits.json')) or
+            digest(comparison['legacy_events']) != digest([e['source_event'] for e in
+                                           load_json(hdir/'inside-birth-events.json')])):
+        raise ValueError('Legacy B does not exactly reproduce frozen EXP45 observations')
     events=[normalize_portal(e,history,region) for e in comparison['portal_events']]
     views=build_views(history,events,region,group)
     if protected!={p:sha(p) for p in protected} or code!={p:sha(p) for p in code}:
@@ -126,6 +133,13 @@ def execute(baseline_path, paths_directory, history_directory, portal_path,
     save(out/'inside-birth-events.json',events)
     save(out/'legacy-birth-events.json',comparison['legacy_events'])
     save(out/'birth-audits.json',dict(legacy=comparison['legacy_audits'],portal=comparison['portal_audits']))
+    save(out/'observation-runs.json',comparison['observation_runs'])
+    save(out/'case-audit.json',[dict(run_id=a['run_id'],birth_pts=a['birth_pts'],
+        bbox=a['bbox'],warmed=a['warmed'],legacy_site=b['site'],portal_site=a['site'],
+        legacy_eligible=b['eligible'],portal_eligible=a['eligible'],
+        observation_refs=comparison['observation_runs'][a['run_id']],
+        candidate=next((e for e in events if e['source_event']['run_id']==a['run_id']),None))
+        for a,b in zip(comparison['portal_audits'],comparison['legacy_audits'])])
     report=dict(experiment='EXP-0046',video_id=history['video_id'],frames=len(frames),
         legacy_birth_candidates=len(comparison['legacy_events']),portal_birth_candidates=len(events),
         legacy_eligible_first_sites=sum(r['site']['inside_birth_site'] for r in comparison['legacy_audits']),
@@ -135,6 +149,15 @@ def execute(baseline_path, paths_directory, history_directory, portal_path,
         counts={k:v['counts'] for k,v in views.items()},
         grouping_effects=views['combined']['grouping_effects'],
         history_confirmations_unchanged=True,
+        history_bytes_unchanged={n:sha(out/n)==sha(hdir/n) for n in
+                                 ('history-cards.json','history-decisions.json','scene-used.json')},
+        observation_bookkeeping_unchanged=comparison['observation_bookkeeping_unchanged'],
+        legacy_B_exactly_reproduced=True,
+        original_event_payloads_preserved=len(original['events']),
+        first_notifications={k:[c['first_notification_pts'] for c in v['alert_cards']]
+                             for k,v in dict(baseline=original,history=history,**views).items()},
+        automatic_decision_pts=[d['decision_time_pts'] for d in history['decisions']
+                                if d['automatic_confirmation']],
         elapsed_seconds=time.perf_counter()-begin,input_sha256=protected,code_sha256=code,
         detector_calls=0,tracker_calls=0,flow_calls=0,vlm_calls=0,
         accuracy=None,realtime=False,manual_reviews_modified=False,

@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0046",
+  "metrics": [
+    {
+      "label": "007 선택 프레임",
+      "value": 1710,
+      "unit": "frames",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 기존 바닥 방식 B",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 새 문 구역 B",
+      "value": 8,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 최초 위치 충족",
+      "value": 8,
+      "unit": "observation runs",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 warmup 이후 위치 충족",
+      "value": 8,
+      "unit": "observation runs",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 A 자동 확인 근거 보존",
+      "value": 1,
+      "unit": "cases",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 원래 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 B 단독 사건 카드",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 결합 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 흡수된 원래 첫 통지",
+      "value": 2,
+      "unit": "notices",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 CPU 저장 비교 시간",
+      "value": 2.661174774984829,
+      "unit": "seconds",
+      "sample_n": 1710,
+      "scope": "007 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/007-v1/summary.json",
+      "source_sha256": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 선택 프레임",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 기존 바닥 방식 B",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 새 문 구역 B",
+      "value": 12,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 최초 위치 충족",
+      "value": 19,
+      "unit": "observation runs",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 warmup 이후 위치 충족",
+      "value": 13,
+      "unit": "observation runs",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 A 자동 확인 근거 보존",
+      "value": 2,
+      "unit": "cases",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 원래 사건 카드",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 B 단독 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 결합 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 흡수된 원래 첫 통지",
+      "value": 2,
+      "unit": "notices",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 CPU 저장 비교 시간",
+      "value": 0.797848020971287,
+      "unit": "seconds",
+      "sample_n": 480,
+      "scope": "030 saved full selected sequence; diagnostics, not people or accuracy; CPU time excludes rendering and is not inference FPS",
+      "source": "outputs/exp0046/030-v1/summary.json",
+      "source_sha256": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "최종 침입 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "Development scenes; no independent exhaustive event or identity ground truth",
+      "source": "docs/experiments/EXP-0046-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}

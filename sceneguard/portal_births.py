@@ -161,11 +161,28 @@ def compare_births(frames, scene, region, camera_id, policy=EpisodePolicy()):
     """Replay one fixed polygon vs the existing ground test, on identical boxes."""
     old = InsideBirths(scene,policy); new = PortalBirths(scene,region,camera_id,policy)
     before,after = [],[]
+    observations = {}
     for frame in frames:
         before.extend(old.step(frame));after.extend(new.step(frame))
+        # Check the entire association state, including support/short-gap history,
+        # rather than merely checking that the first boxes happen to agree.
+        excluded = {'site', 'eligible', 'emitted'}
+        state = lambda engine: [{k:v for k,v in r.items() if k not in excluded}
+                                for r in engine.runs]
+        if state(old) != state(new):
+            raise ValueError('Geometry-only comparison changed observation association')
+        actual = {b['cache_index']:b for b in frame['actual_boxes']}
+        for run in new.runs:
+            if run['last_pts'] != frame['pts']:
+                continue
+            ref = run['observations'][-1]
+            rows = observations.setdefault(run['run_id'], [])
+            if not rows or rows[-1]['pts'] != ref['pts']:
+                rows.append(dict(ref, bbox=deepcopy(actual[ref['cache_index']]['bbox'])))
     if len(old.audit) != len(new.audit) or any(
             any(a[k] != b[k] for k in ('run_id','birth_pts','bbox','warmed'))
             for a,b in zip(old.audit,new.audit)):
         raise ValueError('Geometry-only comparison changed observation bookkeeping')
     return dict(legacy_events=before,portal_events=after,
-                legacy_audits=old.audit,portal_audits=new.audit)
+                legacy_audits=old.audit,portal_audits=new.audit,
+                observation_runs=observations,observation_bookkeeping_unchanged=True)

@@ -3711,6 +3711,204 @@
       "task_id": "task_4b4f70a984d8",
       "title": "EXP-0045 문 근처 이력·문 바로 안쪽 새 관측",
       "worker_opinion": "A의007특정실패보완은확인됐으나 B실제효용은미확인. 개별완료정답/범용성능아님. 기본교체보류."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T06:04:44.349892+00:00",
+      "attempt_id": "portal-user-scope-v1-007030",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_878bf7aabcf4",
+      "evaluated_model": "CPU fixed portal geometry over saved FCOS observations; no inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0046-007-portal-preview",
+          "kind": "image",
+          "label": "007 실행 전 문 구역 미리보기"
+        },
+        {
+          "artifact_id": "exp0046-007-continuous",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · continuous"
+        },
+        {
+          "artifact_id": "exp0046-007-history-s0006",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · history-s0006"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-583fdbf5285c",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-583fdbf5285c"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-003b8dbab56a",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-003b8dbab56a"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-2e00c73e6151",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-2e00c73e6151"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-ace6f4ad1e34",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-ace6f4ad1e34"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-a3d6994216c1",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-a3d6994216c1"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-ed673c99e79c",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-ed673c99e79c"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-4b288b7c9f79",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-4b288b7c9f79"
+        },
+        {
+          "artifact_id": "exp0046-007-birth-6d05b8a95677",
+          "kind": "video",
+          "label": "007 원본·관측 근거 · birth-6d05b8a95677"
+        },
+        {
+          "artifact_id": "exp0046-030-portal-preview",
+          "kind": "image",
+          "label": "030 실행 전 문 구역 미리보기"
+        },
+        {
+          "artifact_id": "exp0046-030-continuous",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · continuous"
+        },
+        {
+          "artifact_id": "exp0046-030-history-s0004",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · history-s0004"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-f0b96659001a",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-f0b96659001a"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-43d77030a7bc",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-43d77030a7bc"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-1fddb7910ad3",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-1fddb7910ad3"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-9a12f95206f4",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-9a12f95206f4"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-ae6f09d66aa6",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-ae6f09d66aa6"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-7dec1b52c3a9",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-7dec1b52c3a9"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-a0188063d5c3",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-a0188063d5c3"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-c3529789a932",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-c3529789a932"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-f61636fe87fb",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-f61636fe87fb"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-97c5d5cf4cc5",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-97c5d5cf4cc5"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-499db7cd43e3",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-499db7cd43e3"
+        },
+        {
+          "artifact_id": "exp0046-030-birth-4a950fd74339",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · birth-4a950fd74339"
+        },
+        {
+          "artifact_id": "exp0046-030-history-s0001",
+          "kind": "video",
+          "label": "030 원본·관측 근거 · history-s0001"
+        },
+        {
+          "artifact_id": "exp0046-007-ambiguous-cluster",
+          "kind": "video",
+          "label": "007 새 첫 박스 의미 검수"
+        },
+        {
+          "artifact_id": "exp0046-030-ambiguous-cluster",
+          "kind": "video",
+          "label": "030 새 첫 박스 의미 검수"
+        },
+        {
+          "artifact_id": "exp0046-007-rejected-first-observation",
+          "kind": "video",
+          "label": "007 여전히 제외된 첫 박스"
+        },
+        {
+          "artifact_id": "exp0046-030-rejected-first-observation",
+          "kind": "video",
+          "label": "030 여전히 제외된 첫 박스"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0046",
+      "limitations": [
+        "새 B 20개의 개별 동일인·실제 출현 의미가 모두 사람 검수된 것은 아님",
+        "알려진 접근·대기 문맥에서도 B 의심 발생",
+        "007 후반 및030 일부 작은 첫 박스는 계속 위치 제외",
+        "결합 보기에서 원래 첫 통지 4/5 흡수; 기본 적용 보류",
+        "개발 자료이며 정확도/F1/일반화 성능 미산출"
+      ],
+      "metric_definitions": "records/EXP-0046/metrics.json",
+      "metrics_path": "records/EXP-0046/metrics.json",
+      "metrics_sha256": "7110e8b08c9075fd21f45b3e4ab7f6f2232a3cde39834c8033c40db291eabf96",
+      "next_step": "이번 고정 비교 종료. 기존 MVP 유지. 두 짧은 검수 응답은 별도 관찰 기록으로 반영하며 자동 재실행·영역 탐색 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "21bb1abdfcfd5c6fda52c7be0b93908f85c43c1ca5cc9bd036fac1a900877da7",
+      "report_path": "docs/experiments/EXP-0046-results.md",
+      "report_sha256": "4985baeacc6dcf2f14263beea5329e5e62e6156f34fbbdc77fec6405d24c93e6",
+      "review_binding_path": "docs/reviews/EXP-0046.binding.json",
+      "review_path": "docs/reviews/EXP-0046-independent-review.md",
+      "review_sha256": "55999f6ed1d94c5109a747a94f680a87f060ee448fa121ec3c4c52f4e96a76a1",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "7110e8b08c9075fd21f45b3e4ab7f6f2232a3cde39834c8033c40db291eabf96",
+      "reviewed_report_sha256": "4985baeacc6dcf2f14263beea5329e5e62e6156f34fbbdc77fec6405d24c93e6",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "문 구역 B 의심 007 0→8, 030 0→12. 기존 A 확인과 18후보 보존. 접근·대기에서도 새 의심이 생기고 후반 작은 첫 박스는 여전히 제외됨. 결합의 원래 첫 통지 4/5 흡수로 기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_e5ddb73f0f54",
+      "title": "EXP-0046 문 주변 구역 새 출현 비교",
+      "worker_opinion": "위치상 일부 후보 복원과 접근·대기 오탐이 함께 관찰됨. B는 물리적 안쪽 출현이나 침입 확정이 아니며 기본 결합 적용을 보류한다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
