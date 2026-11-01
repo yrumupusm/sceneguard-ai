@@ -79,6 +79,31 @@ class CompletionTests(unittest.TestCase):
             self.registry.complete(package or self.package, manifest or self.manifest)
         self.assertEqual(before, self.snapshot())
 
+    def test_mvp_assignment_uses_real_namespace_without_accepting_arbitrary_ids(self):
+        value = copy.deepcopy(self.assignment)
+        value.update(experiment_id='MVP-0002', synthetic=False)
+        self.assertEqual(module.assignment(value)['experiment_id'], 'MVP-0002')
+        for invalid in ('MVP-two', 'OTHER-0002', 'TEST-real'):
+            value['experiment_id'] = invalid
+            with self.assertRaises(ValueError):
+                module.assignment(value)
+
+    def test_offline_adoption_requires_mvp_namespace(self):
+        value = copy.deepcopy(self.assignment)
+        value.update(experiment_id='MVP-0002', synthetic=False, dispatch_id='dispatch-mvp')
+        self.registry.assign(value)
+        package = copy.deepcopy(self.package)
+        package.update(experiment_id='MVP-0002', synthetic=False, decision_status='adopted_for_offline_mvp',
+                       metrics_path='records/MVP-0002/metrics.json')
+        metrics = copy.deepcopy(self.metrics)
+        metrics.update(experiment_id='MVP-0002', synthetic=False)
+        self.put(self.repo / package['metrics_path'], metrics)
+        package['reviewed_metrics_sha256'] = module.digest((self.repo / package['metrics_path']).read_bytes())
+        self.put(self.repo / package['review_path'], package['reviewed_report_sha256'] + '\n' + package['reviewed_metrics_sha256'])
+        self.assertEqual(self.registry.complete(package, self.manifest)['registration'], 'registered')
+        self.package['decision_status'] = 'adopted_for_offline_mvp'
+        self.reject_preserved()
+
     def test_identical_assign_and_complete_are_byte_idempotent(self):
         self.assertEqual(self.registry.assign(self.assignment)['assignment'], 'already_registered')
         self.assertEqual(self.registry.complete(self.package, self.manifest)['registration'], 'registered')

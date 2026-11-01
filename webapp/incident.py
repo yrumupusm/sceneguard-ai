@@ -218,9 +218,10 @@ def load_lifecycle(data, entry, bundle_id, media):
 def load_activity(data, entry, bundle_id, media):
     """Expose only validated causal snapshots of the frozen activity comparison."""
     from sceneguard.gate_activity_episodes import activity_cards_at, SUSPECTED, CONFIRMED, RELEASED
-    if (data.get('contract') != 'gate_activity_episodes_v1' or data.get('experiment') != 'EXP-0049'
+    if (data.get('contract') != 'gate_activity_episodes_v1' or data.get('experiment') not in ('EXP-0049', 'MVP-0002')
             or data.get('live_notifications_enabled') is not False or entry.get('notification_enabled') is not False
-            or data.get('source_resolution_ids_refer_to_prior_cards') is not True):
+            or (data.get('experiment') == 'EXP-0049' and data.get('source_resolution_ids_refer_to_prior_cards') is not True)
+            or (data.get('experiment') == 'MVP-0002' and (data.get('analysis_run_id') != entry.get('session_id') or data.get('source_evidence_mode') != 'computed_in_current_run'))):
         raise ValueError('invalid activity comparison')
     start, end = data['source_window']; number(start); number(end)
     media_start = number(entry.get('media_start_pts', start)); session = entry.get('session_id')
@@ -260,7 +261,7 @@ def load_activity(data, entry, bundle_id, media):
         keys.add(key)
     for resolution in resolutions:
         if not start <= number(resolution['decision_time_pts']) <= end: raise ValueError('invalid source resolution')
-    return dict(contract='gate_activity_episodes_v1', experiment='EXP-0049', notification_enabled=False,
+    return dict(contract='gate_activity_episodes_v1', experiment=data['experiment'], notification_enabled=False,
         source_window=[start, end], media_start_pts=media_start, media_artifact_id=media,
         bundle_sha256=entry['sha256'], session_id=session, timeline=clean, notification_intents=intents,
         source_resolution_log=resolutions, source_label=entry.get('source_label', bundle_id),
@@ -278,12 +279,12 @@ def load_bundle(c, bundle_id):
         assignments = read_json(c['repo_root'], 'records/assignments.json')['assignments']
     except FileNotFoundError:
         assignments = []
-    if not (any(e.get('experiment_id') == entry['experiment_id'] for e in cat['experiments']) or
+    if not (entry['experiment_id'] == 'MVP-0002' or any(e.get('experiment_id') == entry['experiment_id'] for e in cat['experiments']) or
             any(a.get('experiment_id') == entry['experiment_id'] for a in assignments)):
         raise ValueError('experiment not registered')
     catalog_media = any(e.get('artifact_id') == media and e.get('kind') == 'video'
                         for exp in cat['experiments'] for e in exp.get('evidence', []))
-    assigned_media = (entry['experiment_id'] == 'EXP-0037' and
+    assigned_media = (entry['experiment_id'] == 'MVP-0002' and c['artifacts'].get(media, {}).get('kind') == 'video') or (entry['experiment_id'] == 'EXP-0037' and
                       any(a.get('experiment_id') == 'EXP-0037' for a in assignments) and
                       c['artifacts'].get(media, {}).get('kind') == 'video')
     if not (catalog_media or assigned_media):
@@ -297,6 +298,14 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
+    if entry['experiment_id'] == 'MVP-0002':
+        with safe_open(c['artifact_allow_root'], entry['manifest_path']) as f: raw_manifest = f.read()
+        if hashlib.sha256(raw_manifest).hexdigest() != entry['manifest_sha256']: raise ValueError('manifest hash mismatch')
+        manifest = json.loads(raw_manifest)
+        if (manifest.get('kind') != 'sceneguard_mvp_viewer_v1' or manifest.get('experiment') != 'MVP-0002'
+                or manifest.get('run_id') != entry['session_id'] or manifest.get('cards_sha256') != entry['sha256']):
+            raise ValueError('manifest provenance mismatch')
+        return load_activity(data, entry, bundle_id, media)
     if entry['experiment_id'] == 'EXP-0049':
         if data.get('experiment') == 'EXP-0049':
             return load_activity(data, entry, bundle_id, media)
@@ -467,7 +476,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046', 'EXP-0047', 'EXP-0048', 'EXP-0049'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046', 'EXP-0047', 'EXP-0048', 'EXP-0049', 'MVP-0002'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():
@@ -475,9 +484,12 @@ def incident_registrations(experiment_id: str = 'EXP-0037'):
             continue
         try:
             bundle = load_bundle(config(), bundle_id)
-            result.append(dict(id=bundle_id, source_label=bundle['source_label'],
-                               view_label=bundle['view_label'], source_window=bundle['source_window'],
-                               provenance_label=bundle.get('provenance_label', '저장 결과 재생')))
+            row = dict(id=bundle_id, source_label=bundle['source_label'],
+                       view_label=bundle['view_label'], source_window=bundle['source_window'],
+                       provenance_label=bundle.get('provenance_label', '저장 결과 재생'))
+            if experiment_id == 'MVP-0002':
+                row['default'] = config().get('mvp_default_registration') == bundle_id
+            result.append(row)
         except (OSError, ValueError, TypeError, KeyError, StopIteration, AttributeError, json.JSONDecodeError):
             continue
     return result

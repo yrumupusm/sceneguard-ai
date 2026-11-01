@@ -4100,6 +4100,69 @@
       "task_id": "task_4f4ddc310694",
       "title": "EXP-0049 문 주변 실제 관측 사건 유지·종료",
       "worker_opinion": "두 구간 모두 사건2개를1개로 정리하고 별도 첫 확인 알림 시각을 보존했다.개별 미결 근거를 확인으로 승격하지 않았고 관찰 종료와 해제를 분리했다.검출 정확도나 해제 성공률 개선은 아니다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T12:27:29.567594+00:00",
+      "attempt_id": "mvp-v1-integration-v2",
+      "decision_status": "adopted_for_offline_mvp",
+      "dispatch_id": "ctx_c2d405bd0196",
+      "evaluated_model": "Existing FCOS cache and ByteTrack with current CPU paths; fixed camera offline integration",
+      "evidence": [
+        {
+          "artifact_id": "mvp-v1-007-acceptance-video",
+          "kind": "video",
+          "label": "007 새분석 개발회귀 원본"
+        },
+        {
+          "artifact_id": "mvp-v1-030-acceptance-video",
+          "kind": "video",
+          "label": "030 새분석 개발회귀 원본"
+        },
+        {
+          "artifact_id": "mvp-v1-007-normal-video",
+          "kind": "video",
+          "label": "007 정상통행 빈결과 원본"
+        },
+        {
+          "artifact_id": "mvp-v1-007-extra-video",
+          "kind": "video",
+          "label": "007 추가기술구간 원본"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "MVP-0002",
+      "limitations": [
+        "정기폴링중연속재생은Chromium백그라운드절전오류로미검증",
+        "실제바깥이탈의심해제0건으로해제성능미검증",
+        "007/030개발회귀와이미사용한추가구간이며독립일반화평가없음",
+        "C3/C6 native30fps비실시간로컬지원;운영실시간/외부경보/법적판정아님",
+        "정상접근의심·부분박스·가림·관측공백의기존한계유지"
+      ],
+      "metric_definitions": "records/MVP-0002/metrics.json",
+      "metrics_path": "records/MVP-0002/metrics.json",
+      "metrics_sha256": "cd6cb72f8d839804b7fd7dfe222d07dd44cdc8248ce7d689f14269fd57fd4fb6",
+      "next_step": "승인된1차통합범위종료.새모델/추가실험자동실행없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "52ae7cf1649afed4ecdb09f0a8e5ea2c9eaafde501ec5b26a59697a007797758",
+      "report_path": "docs/experiments/MVP-0002-results.md",
+      "report_sha256": "96e41a16e1fa6268671014de681251383bf674c149d8c198b47c054d557886f4",
+      "review_binding_path": "docs/reviews/MVP-0002.binding.json",
+      "review_path": "docs/reviews/MVP-V1-independent-review.md",
+      "review_sha256": "756e1fff11843366b24ef0420807ff3804945058b5272775e29510fcc476f164",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "cd6cb72f8d839804b7fd7dfe222d07dd44cdc8248ce7d689f14269fd57fd4fb6",
+      "reviewed_report_sha256": "96e41a16e1fa6268671014de681251383bf674c149d8c198b47c054d557886f4",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "원본+검증된검출에서현재추적·CPU경로·방향/소실·사건관리를생성.007/030회귀일치,정상/추가기술구간0후보성공.기본영상분석보기연결.정기폴링연속재생은브라우저절전으로미검증.",
+      "synthetic": false,
+      "task_id": "task_39ef603389f8",
+      "title": "SceneGuard MVP 1차 통합·실제 영상 검증",
+      "worker_opinion": "고정카메라비실시간기능통합완료.실제해제와독립일반화는미검증이며전체UI체크리스트통과를주장하지않는다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

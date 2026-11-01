@@ -145,13 +145,14 @@ function storageGet(key) { try { return localStorage.getItem(key); } catch { ret
 function storageSet(key, value) { try { localStorage.setItem(key, value); } catch { /* storage optional */ } }
 
 async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
-  const section = heading(detail, '사건 카드 재생과 검토');
+  const section = heading(detail, experimentId === 'MVP-0002' ? '근거 보기' : '사건 카드 재생과 검토');
   section.dataset.section = 'incident-flows';
   try {
     const response = await fetch(`/api/incident-registrations?experiment_id=${encodeURIComponent(experimentId)}`, {cache:'no-store'});
     if (!response.ok) throw Error('unavailable');
     const entries = await response.json();
-    if (request !== selectionRequest || !section.isConnected) return;
+    if ((experimentId !== 'MVP-0002' && request !== selectionRequest) || !section.isConnected) return;
+    if (experimentId === 'MVP-0002') entries.reverse();
     if (!entries.length) { section.append(node('p', '등록된 카드 자료가 없습니다.')); return; }
     if (experimentId === 'EXP-0040' || experimentId === 'EXP-0041') section.append(node('p', '제안에서 통지 제외된 알림은 검토 전용으로 남으며 침입 아님 확정이 아닙니다.', 'muted'));
     if (experimentId === 'EXP-0042') section.append(node('p', '새 후보만 보기는 기존 소실 의심이 빠진 진단용입니다. 결합 보기에는 기존 오탐도 포함됩니다.', 'muted'));
@@ -160,7 +161,10 @@ async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
     const holder = node('div', undefined, 'incident-flow');
     const sources = [...new Set(entries.map(e => e.source_label))];
     for (const label of sources) { const opt = node('option', label); opt.value = label; source.append(opt); }
-    source.value = sources.includes(storageGet('exp37-source')) ? storageGet('exp37-source') : sources[0];
+    const sourceKey = experimentId === 'MVP-0002' ? 'mvp-source' : 'exp37-source';
+    const viewKey = experimentId === 'MVP-0002' ? 'mvp-view' : 'exp37-view';
+    const defaultEntry = experimentId === 'MVP-0002' ? entries.find(e => e.default) : null;
+    source.value = sources.includes(storageGet(sourceKey)) ? storageGet(sourceKey) : (defaultEntry?.source_label || sources[0]);
     const sourceLabel = node('label', '영상 선택 '); sourceLabel.append(source);
     const viewLabel = node('label', '결과 선택 '); viewLabel.append(view);
     section.append(sourceLabel, viewLabel, holder);
@@ -169,7 +173,7 @@ async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
       const current = ++epoch;
       const entry = entries.find(e => e.source_label === source.value && e.id === view.value);
       if (!entry) return;
-      storageSet('exp37-source', source.value); storageSet('exp37-view', view.value);
+      storageSet(sourceKey, source.value); storageSet(viewKey, view.value);
       for (const oldVideo of (holder.querySelectorAll?.('video') || [])) { oldVideo.pause(); oldVideo.removeAttribute('src'); oldVideo.load(); }
       holder.dataset.bundle = entry.id; holder.replaceChildren(node('p', '카드 자료를 불러오는 중입니다.'));
       try {
@@ -187,12 +191,12 @@ async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
         const range = entry.source_window ? ` · ${entry.source_window[0]}–${entry.source_window[1]}초` : '';
         const opt = node('option', `${entry.view_label}${range} · ${entry.provenance_label}`); opt.value = entry.id; view.append(opt);
       }
-      const saved = storageGet('exp37-view');
-      view.value = (choices.find(e => e.id === saved) || choices.find(e => e.view_label === saved) || choices[0]).id;
+      const saved = storageGet(viewKey);
+      view.value = (choices.find(e => e.id === saved) || choices.find(e => e.view_label === saved) || choices.find(e => e.default) || choices[0]).id;
       display();
     }
     source.addEventListener('change', chooseViews); view.addEventListener('change', display); chooseViews();
-  } catch { if (request === selectionRequest) section.append(node('p', '등록된 카드 자료를 불러올 수 없습니다.')); }
+  } catch { if (experimentId === 'MVP-0002' || request === selectionRequest) section.append(node('p', '등록된 카드 자료를 불러올 수 없습니다.')); }
 }
 
 function addReview(block, bundleId, incidentId, bundleSha, sessionId) {
@@ -249,22 +253,26 @@ function addReview(block, bundleId, incidentId, bundleSha, sessionId) {
 // Lifecycle playback is a comparison: intents are shown, never delivered or claimed.
 function renderLifecycleFlow(holder, id, data) {
   holder.append(node('h3', `${data.source_label || id} · ${data.view_label || '상태 비교'}`));
-  holder.append(node('p', '자동 의심 해제는 수동 침입 아님 판정이 아닙니다. 알림 의도는 비교 기록이며 발송하지 않습니다. 같은 시각의 여러 카드는 인원 수를 뜻하지 않으며, 관측 연결은 동일인 확인이 아닙니다.', 'muted'));
+  holder.append(node('p', data.experiment === 'MVP-0002' ? '자동 판정과 수동 검토는 별개입니다. 알림 의도는 외부로 발송하지 않습니다. 관측 연결은 동일인 확인이 아닙니다.' : '자동 의심 해제는 수동 침입 아님 판정이 아닙니다. 알림 의도는 비교 기록이며 발송하지 않습니다. 같은 시각의 여러 카드는 인원 수를 뜻하지 않으며, 관측 연결은 동일인 확인이 아닙니다.', 'muted'));
   const video = node('video'); video.controls = true; video.preload = 'metadata';
   video.dataset.incidentVideo = id; video.src = `/artifacts/${encodeURIComponent(data.media_artifact_id)}`;
   const clock = node('p'); clock.dataset.incidentClock = id;
   const cards = node('div'); cards.dataset.incidentCards = id;
   const activity = data.contract === 'gate_activity_episodes_v1';
+  if (data.experiment === 'MVP-0002') holder.append(node('p', '원본 근거 영상 · 박스나 예측 표시 없음', 'muted'));
   holder.append(video, clock);
-  if (activity) holder.append(node('h4', '진행 중 관찰'));
+  if (data.experiment === 'MVP-0002' && !data.timeline.length) holder.append(node('p', '분석 완료 · 사건 없음'));
+  const mvp = data.experiment === 'MVP-0002';
+  if (mvp) holder.append(node('p', `분석 완료 · ${data.provenance_label} · ${data.source_window[0]}–${data.source_window[1]}초`, 'muted'));
+  if (activity) holder.append(node('h4', mvp ? '진행 중 사건' : '진행 중 관찰'));
   holder.append(cards);
   let history, resolutions;
   if (activity) {
     cards.dataset.activityActive = id;
     history = node('div'); history.dataset.activityHistory = id;
-    holder.append(node('h4', '종료된 관찰 이력'), history);
-    resolutions = node('div'); resolutions.dataset.sourceResolutions = id; holder.append(resolutions);
-    holder.append(node('p', '관찰 종료는 의심 해제가 아닙니다. 원본 EXP48 해소 기록의 사건 ID는 이전 카드의 출처입니다.', 'muted'));
+    holder.append(node('h4', mvp ? '종료 이력' : '종료된 관찰 이력'), history);
+    if (data.experiment !== 'MVP-0002') { resolutions = node('div'); resolutions.dataset.sourceResolutions = id; holder.append(resolutions); }
+    holder.append(node('p', mvp ? '문 주변 관찰 종료는 의심 해제나 현장 안전을 뜻하지 않습니다.' : '관찰 종료는 의심 해제가 아닙니다. 원본 EXP48 해소 기록의 사건 ID는 이전 카드의 출처입니다.', 'muted'));
   }
   let routing;
   if (data.experiment === 'EXP-0048' && data.observation_audit) {
@@ -296,12 +304,30 @@ function renderLifecycleFlow(holder, id, data) {
         const block = node('div', undefined, 'incident-card'); block.dataset.incidentId = card.incident_id;
         const title = node('strong'), summary = node('p'), notices = node('p');
         notices.dataset.lifecycleIntents = card.incident_id;
-        block.append(title, summary, notices);
+        let debug;
+        if (mvp) {
+          const evidence = node('button', '근거 보기');
+          evidence.addEventListener('click', () => {
+            const snapshot = data.timeline.find(row => row.incident_id === card.incident_id);
+            if (snapshot) { video.currentTime = Math.max(0, snapshot.decision_time_pts - mediaStart); video.focus(); }
+          });
+          const details = node('details'); details.append(node('summary', '알림 및 근거 상세'));
+          debug = node('p'); details.append(notices, debug);
+          block.append(title, summary, evidence, details);
+        } else block.append(title, summary, notices);
         if (data.bundle_sha256) addReview(block, id, card.incident_id, data.bundle_sha256, data.session_id);
-        entry = {block, title, summary, notices, attached:false}; cardNodes.set(card.incident_id, entry);
+        entry = {block, title, summary, notices, debug, attached:false}; cardNodes.set(card.incident_id, entry);
       }
       const target = activity && card.observation_status === 'closed' ? history : cards;
       if (!entry.attached || entry.target !== target) { target.append(entry.block); entry.attached = true; entry.target = target; }
+      const own = data.notification_intents.filter(n => n.incident_id === card.incident_id && n.decision_time_pts <= pts + 1e-9);
+      const fmt = value => value == null ? '없음' : `${value.toFixed(3)}초`;
+      if (mvp) {
+        entry.title.textContent = card.automatic_status === '침입 확인' ? '침입 확인 · 자동' : card.automatic_status;
+        entry.summary.textContent = `첫 의심 ${fmt(card.first_alert_pts)} · 첫 자동 확인 ${fmt(card.first_confirmation_pts)} · 문 주변 관찰 ${card.observation_status === 'open' ? '중' : '종료'}${card.observation_status === 'closed' ? ' ' + fmt(card.observation_closed_pts) : ''}`;
+        entry.notices.textContent = own.map(n => `${n.kind === 'confirmation' ? '확인' : '의심'} 의도 ${fmt(n.decision_time_pts)} · ${n.notification_key}`).join(' / ') || '알림 의도 없음';
+        entry.debug.textContent = `개별 근거: 미결 ${card.unresolved_event_ids.length} · 해제 ${card.released_event_ids.length} · 확인 ${card.confirmed_event_ids.length} · 최근 문 관측 ${fmt(card.last_gate_observation_pts)}`;
+      } else {
       entry.title.textContent = `${card.automatic_status} · 자동 · ${card.gate_id} (원래 상태: ${card.status})`;
       const own = data.notification_intents.filter(n => n.incident_id === card.incident_id && n.decision_time_pts <= pts + 1e-9);
       const fmt = value => value == null ? '없음' : `${value.toFixed(3)}초`;
@@ -310,6 +336,7 @@ function renderLifecycleFlow(holder, id, data) {
       entry.summary.textContent = `첫 의심 ${fmt(card.first_alert_pts)} · 의심 알림 의도 ${fmt(suspicion?.decision_time_pts)} · 첫 자동 확인 ${fmt(card.first_confirmation_pts)} · 확인 알림 의도 ${fmt(confirmation?.decision_time_pts)} · 미결 ${card.unresolved_event_ids.length} · 해제 ${card.released_event_ids.length} · 확인 ${card.confirmed_event_ids.length}`;
       if (activity) entry.summary.textContent += ` · 관찰 ${card.observation_status === 'open' ? '진행 중' : '종료'} · 최근 문 관측 ${fmt(card.last_gate_observation_pts)} · 관찰 종료 ${fmt(card.observation_closed_pts)}${card.observation_close_reason ? ' (' + card.observation_close_reason + ')' : ''} · 원본 사건 ${card.source_incident_ids.join(', ') || '없음'} · 문 관측 참조 ${JSON.stringify(card.last_gate_observation_refs)}`;
       entry.notices.textContent = own.map(n => `${n.kind === 'confirmation' ? '확인' : '의심'} 의도 ${fmt(n.decision_time_pts)} · ${n.notification_key}`).join(' / ') || '알림 의도 없음';
+      }
     }
   }
   for (const name of ['seeking', 'seeked', 'timeupdate']) video.addEventListener(name, () => { storageSet(`incident-time:${stateId}`, String(video.currentTime)); render(); });
@@ -577,5 +604,6 @@ if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFo
 if (typeof document !== 'undefined') {
   document.addEventListener('pause', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh) refreshSelectedIfChanged(); }, true);
   document.addEventListener('ended', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh) refreshSelectedIfChanged(); }, true);
+  addFinishFlows($('#mvp-view'), selectionRequest, 'MVP-0002');
   refresh(); setInterval(refresh, 15000);
 }

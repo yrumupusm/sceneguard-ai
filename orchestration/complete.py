@@ -167,7 +167,7 @@ def assignment(value):
     require(value['slot'] in ('slot1', 'slot2', 'slot3'), "invalid slot")
     require(type(value['synthetic']) is bool, "explicit synthetic boolean required")
     require(bool(re.fullmatch(r'TEST-[A-Za-z0-9_-]+', value['experiment_id'])) if value['synthetic']
-            else bool(re.fullmatch(r'EXP-\d{4,}', value['experiment_id'])), "experiment ID/synthetic mismatch")
+            else bool(re.fullmatch(r'(?:EXP|MVP)-\d{4,}', value['experiment_id'])), "experiment ID/synthetic mismatch")
     require(value['experiment_id'] not in {f'EXP-{i:04}' for i in range(1, 8)}, "historical ID reserved")
     for key in ('title', 'agent_model_requested', 'assigned_at'):
         text(value[key])
@@ -266,7 +266,9 @@ class Registry:
                 text(package[key])
             require(package['execution_status'] in ('succeeded', 'failed', 'inconclusive'), "invalid execution status")
             require(package['review_status'] in ('accepted_for_comparison', 'needs_revision', 'blocked', 'inconclusive'), "invalid review status")
-            require(package['decision_status'] in ('adoption_on_hold', 'rejected'), "invalid decision status")
+            require(package['decision_status'] in ('adoption_on_hold', 'rejected') or
+                    (eid.startswith('MVP-') and package['decision_status'] == 'adopted_for_offline_mvp'),
+                    "invalid decision status")
             require(isinstance(package['limitations'], list) and all(isinstance(x, str) and x.strip() for x in package['limitations']), "invalid limitations")
             sources = {}
             for key, prefix, suffix in [('report_path', 'docs/experiments/', '.md'), ('metrics_path', f'records/{eid}/', '.json'), ('review_path', 'docs/reviews/', '.md')]:

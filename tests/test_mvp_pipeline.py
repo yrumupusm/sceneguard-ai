@@ -208,12 +208,60 @@ class BackendEmptyContracts(unittest.TestCase):
         self.assertEqual(r['frames'], [0, 1, 2, 3])
 
 
+class ProductionBackendContracts(unittest.TestCase):
+    """Full production rule composition on synthetic native-clock measurements."""
+    def analyze(self, *, visible=False, total=150):
+        from sceneguard.portal_births import make_region
+        scene = dict(source_size=[1000, 1000], line=[[.4, .7], [.6, .7]],
+            zones=dict(inside=[[.35, .55], [.65, .55], [.65, .65], [.35, .65]],
+                       outside=[[.3, .75], [.7, .75], [.7, .9], [.3, .9]]))
+        region = make_region(scene, 'C3', [[.4, .2], [.6, .2], [.6, .7], [.4, .7]],
+                             reference_pts=0, note='Synthetic static portal')
+        fs = [dict(frame_index=i, pts=i/30, native_pts=i, time_base='1/30',
+            actual_boxes=[dict(bbox=[.47, .3, .51, .34], cache_index=0, score=.9,
+                               track_ids=[])] if visible and 31 <= i <= 40 else [],
+            point_paths=[], camera_step_pixels=[0., 0.]) for i in range(total)]
+        baseline = dict(video_id='new-input', policy={'loss_wait': 1.}, segments=[])
+        bundle = dict(video_id='new-input', events=[], source_window=[0., fs[-1]['pts']],
+                      policy={'gap_seconds': 3., 'max_span_seconds': 10.})
+        return analyze_observations(baseline, bundle, fs, scene, region, SCOPE, 'current')
+
+    def test_real_empty_backend_keeps_all_frames_and_zero_candidates(self):
+        result = self.analyze()['cards']
+        self.assertEqual(result['counts']['raw_candidates'], 0)
+        self.assertEqual(result['counts']['incident_cards'], 0)
+        self.assertEqual(len(result['activity_audit']), 150)
+
+    def test_real_baseline_zero_portal_positive_and_observation_closure(self):
+        result = self.analyze(visible=True)
+        self.assertEqual(result['seed_decisions'], [])
+        self.assertEqual(len(result['portal_events']), 1)
+        card = result['cards']['cards'][0]
+        self.assertEqual(card['automatic_status'], '침입 의심')
+        self.assertEqual(card['observation_status'], 'closed')
+        self.assertAlmostEqual(card['observation_closed_pts'], 40/30 + 3.)
+        self.assertEqual(result['cards']['counts']['confirmation_notifications'], 0)
+
+    def test_source_end_is_not_synthetic_empty_grace(self):
+        card = self.analyze(visible=True, total=60)['cards']['cards'][0]
+        self.assertEqual(card['observation_status'], 'open')
+        self.assertIsNone(card['observation_closed_pts'])
+
+    def test_rule_stage_zero_calls_do_not_claim_whole_run_zero_work(self):
+        result = self.analyze(visible=True)
+        for key in ('cards', 'scoped_lifecycle'):
+            self.assertNotIn('flow_calls', result[key])
+            self.assertEqual(result[key]['rule_stage_calls']['flow_calls'], 0)
+            self.assertEqual(result[key]['source_evidence_mode'], 'computed_in_current_run')
+
+
 class FeatureCollectorContracts(unittest.TestCase):
     def test_rejected_event_and_scores_not_reused(self):
         import numpy as np
+        from sceneguard.gate_transition import TransitionPolicy
         mod_engine = types.ModuleType('sceneguard.gate_transition')
         class Engine:
-            def __init__(self, scene): pass
+            def __init__(self, scene): self.policy = TransitionPolicy()
             def step(self, gray, pts, boxes, index):
                 return dict(frame_index=index, pts=pts, point_paths=[], camera_step_pixels=[0, 0],
                             event={'bad': 'rejected action proposal'}, signals=[.99])
@@ -229,9 +277,11 @@ class FeatureCollectorContracts(unittest.TestCase):
                 'sceneguard.run_tracklet_linking': mod_decode}):
             collect_paths('not-a-real-video', frames(), frames(), {}, Path(d))
             rows = [json.loads(s) for s in (Path(d) / 'frame-evidence.jsonl').read_text().splitlines()]
+            metrics = json.loads((Path(d) / 'metrics.json').read_text())
         self.assertEqual(len(rows), 4)
         self.assertTrue(all('event' not in r and 'signals' not in r for r in rows))
         self.assertEqual(rows[-1]['native_pts'], 3)
+        self.assertEqual(metrics['cpu_image_path_frames'], 4)
 
 
 
@@ -248,6 +298,9 @@ class EntryPointContracts(unittest.TestCase):
         self.camera = self.root/'cameras.json'
         self.camera.write_text(json.dumps({'cameras': {'C3': {'legacy_boundary_config': {'boundary_id': 'entry'}}}}))
         self.out = self.root/'outputs/run'
+        (self.root/'cache').mkdir()
+        for name in ('person_cache.jsonl', 'run.json'):
+            (self.root/'cache'/name).write_text('{}')
         self.front_calls = 0; self.path_calls = 0; self.decide_calls = 0
         self.vc = types.ModuleType('sceneguard.video_cards')
         self.vc.ROOT = self.root; self.vc.SCENES = {'C3': self.scene}; self.vc.CAMERAS = self.camera
@@ -258,13 +311,15 @@ class EntryPointContracts(unittest.TestCase):
         self.vc.save = save
         self.vc.status = lambda path, **kw: Path(path).write_text(json.dumps(kw))
         self.vc.probe = lambda video: {'duration': .2, 'size': [100, 100]}
-        self.vc.validate_cached = lambda *args: ({}, frames(), 1/30, {'cache': 'stable'})
+        self.vc.validate_cached = lambda *args: ({}, frames(), 1/30,
+            {key: self.vc.sha256(self.root/'cache'/name) for key, name in
+             (('cache', 'person_cache.jsonl'), ('metadata', 'run.json'))})
         def front(video, camera, output, **kw):
             self.front_calls += 1
             if not (output/'analysis').exists():
                 (output/'analysis').mkdir(parents=True); (output/'tracking').mkdir()
                 b, c = inputs()
-                b['source_paths'] = {'cache': 'fixture-cache'}
+                b['source_paths'] = {'cache': str(self.root/'cache')}
                 save(output/'analysis/analysis.json', b); save(output/'analysis/cards.json', c)
                 (output/'tracking/frames.jsonl').write_text('\n'.join(json.dumps(r) for r in frames()))
             return {'state': 'complete', 'mode': 'saved_cache', 'detector_frames_this_execution': 0}
@@ -301,10 +356,13 @@ class EntryPointContracts(unittest.TestCase):
             'sceneguard.portal_births': portal, 'sceneguard.exp0036_application': normalization})
         self.patch_collect = patch('sceneguard.mvp_pipeline.collect_paths', collect)
         self.patch_analyze = patch('sceneguard.mvp_pipeline.analyze_observations', analyze)
-        self.patch_modules.start(); self.patch_collect.start(); self.patch_analyze.start()
+        self.patch_package = patch('sceneguard.video_cards', self.vc, create=True)
+        self.patch_modules.start(); self.patch_package.start()
+        self.patch_collect.start(); self.patch_analyze.start()
 
     def tearDown(self):
-        self.patch_analyze.stop(); self.patch_collect.stop(); self.patch_modules.stop(); self.temp.cleanup()
+        self.patch_analyze.stop(); self.patch_collect.stop(); self.patch_package.stop()
+        self.patch_modules.stop(); self.temp.cleanup()
 
     def invoke(self):
         from sceneguard.mvp_pipeline import execute
@@ -341,6 +399,17 @@ class EntryPointContracts(unittest.TestCase):
     def test_exception_creates_failure_status(self):
         self.vc.execute = lambda *a, **k: (_ for _ in ()).throw(ValueError('frontend error'))
         with self.assertRaises(ValueError): self.invoke()
+        self.assertEqual(json.loads((self.out/'status.json').read_text())['state'], 'failed')
+        self.assertFalse((self.out/'viewer-manifest.json').exists())
+
+    def test_cache_changed_during_render_refuses_manifest(self):
+        render = self.vc.evidence
+        def changed_cache(*args):
+            render(*args)
+            (self.root/'cache/person_cache.jsonl').write_text('changed-after-validation')
+        self.vc.evidence = changed_cache
+        with self.assertRaisesRegex(ValueError, 'cache changed during analysis'):
+            self.invoke()
         self.assertEqual(json.loads((self.out/'status.json').read_text())['state'], 'failed')
         self.assertFalse((self.out/'viewer-manifest.json').exists())
 

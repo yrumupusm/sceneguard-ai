@@ -16,6 +16,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import time
 from typing import Any
 
 VERSION = 'MVP-1.0-rc1'
@@ -198,6 +199,14 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
                    scene=scene, region=region)) != original:
         raise ValueError('Rule integration mutated source measurements')
     # No final-time flush: recording end is not empty-gate evidence or a release.
+    # Reused replay helpers report zero inference *inside their own rule stage*.
+    # They cannot describe this invocation's upstream tracker and image work.
+    for result in (scoped, final):
+        result['rule_stage_calls'] = {name: result.pop(name, 0) for name in
+            ('detector_calls', 'tracker_calls', 'flow_calls', 'vlm_calls')}
+        result.update(analysis_run_id=run_id, execution_mode='current_input_analysis',
+            source_evidence_mode='computed_in_current_run',
+            historical_experiment_results_required=False)
     final.update(experiment='MVP-0002', pipeline_version=VERSION, analysis_run_id=run_id,
         execution_mode='current_input_analysis', source_evidence_mode='computed_in_current_run',
         source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049'],
@@ -206,6 +215,7 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
         live_notifications_enabled=False, notification_delivery_measured=False,
         manual_reviews_modified=False, realtime=False, accuracy=None,
         release_video_validation='not_established', human_verified=False)
+    final['source_experiment'] = 'MVP-0002-current-lifecycle'
     for card in final['cards']:
         card['decision_source'] = 'automatic_rule_current_run'
     for row in final['timeline']:
@@ -220,12 +230,14 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
 def collect_paths(video, cache_frames, tracked, seed_scene, output):
     """Use the existing CPU image tracker; discard its rejected action proposals."""
     import cv2
+    from dataclasses import asdict
     from .gate_transition import GateTransition
     from .gap_observation_support import catalog_frame
     from .run_tracklet_linking import decode_native
     if len(cache_frames) != len(tracked):
         raise ValueError('Tracking and detector frame partitions differ')
     engine, count = GateTransition(seed_scene), 0
+    wall, cpu = time.perf_counter(), time.process_time()
     with (output / 'frame-evidence.jsonl').open('x', encoding='utf-8') as sink:
         for index, bgr in decode_native(video, cache_frames):
             if index != count:
@@ -242,6 +254,15 @@ def collect_paths(video, cache_frames, tracked, seed_scene, output):
             count += 1
     if count != len(cache_frames):
         raise ValueError('Incomplete native image path extraction')
+    metrics = dict(frames=count,
+        elapsed_seconds=time.perf_counter()-wall, cpu_seconds=time.process_time()-cpu,
+        cpu_image_path_frames=count, detector_calls=0, tracker_calls=0,
+        image_path_implementation='GateTransition', seed_scene_digest=digest(seed_scene),
+        policy=asdict(engine.policy), rejected_transition_candidates_used=False,
+        opencv_version=cv2.__version__, opencv_threads=cv2.getNumThreads())
+    with (output / 'metrics.json').open('x', encoding='utf-8') as sink:
+        json.dump(metrics, sink, ensure_ascii=False, indent=2, allow_nan=False)
+        sink.write('\n')
 
 
 def load_lines(path):
@@ -255,6 +276,7 @@ def execute(video, camera, output, *, scene_path, portal_path, cache=None,
     from . import video_cards as vc
     from .gate_episode_evidence import revised_scene
     from .portal_births import PortalGate
+    wall, cpu = time.perf_counter(), time.process_time()
     video, output = Path(video).absolute(), Path(output).absolute()
     scene_path, portal_path = Path(scene_path).absolute(), Path(portal_path).absolute()
     if (output.is_symlink() or any(p.is_symlink() for p in output.parents)
@@ -338,6 +360,9 @@ def execute(video, camera, output, *, scene_path, portal_path, cache=None,
                     str(p.relative_to(vc.ROOT)): vc.sha256(p)
                     for p in sorted((vc.ROOT / 'sceneguard').rglob('*.py'))}:
                 raise ValueError('Source or code changed during analysis')
+            if cache_hashes != dict(cache=vc.sha256(Path(baseline['source_paths']['cache']) / 'person_cache.jsonl'),
+                                    metadata=vc.sha256(Path(baseline['source_paths']['cache']) / 'run.json')):
+                raise ValueError('Detector cache changed during analysis')
             media = read(media_path / 'media.json')
             manifest = dict(schema_version=1, kind='sceneguard_mvp_viewer_v1', version=VERSION,
                 experiment='MVP-0002', contract=CONTRACT, run_id=run_id, **scope,
@@ -367,7 +392,11 @@ def execute(video, camera, output, *, scene_path, portal_path, cache=None,
                 reused=dict(paths=reused_paths, decisions=reused_decisions, media=reused_media),
                 source_mode=front['mode'], service_registered=False, browser_verified=False,
                 overall_release_complete=False, detector_frames_this_execution=front.get('detector_frames_this_execution', 0),
-                current_cpu_flow_computed=not reused_paths, realtime=False)
+                current_cpu_flow_computed=not reused_paths,
+                cpu_image_path_frames_this_execution=0 if reused_paths else len(frames),
+                tracker_frames_this_execution=0 if front.get('reused_stages', {}).get('tracking') else len(frames),
+                frames=len(frames), elapsed_seconds=time.perf_counter()-wall,
+                cpu_seconds=time.process_time()-cpu, realtime=False)
             return read(output / 'status.json')
         except Exception as exc:
             vc.status(output / 'status.json', state='failed', error_type=type(exc).__name__, error=str(exc))
@@ -381,9 +410,17 @@ def main():
     p.add_argument('--camera', choices=('C3', 'C6'), required=True)
     p.add_argument('--cache', type=Path); p.add_argument('--start', type=float); p.add_argument('--end', type=float)
     p.add_argument('--whole', action='store_true')
+    p.add_argument('--register-config', type=Path)
+    p.add_argument('--registration-id')
+    p.add_argument('--registration-python', type=Path,
+                   help='Existing service Python environment for the registration adapter')
     for flag in ('run-id', 'task-id', 'dispatch-id', 'owner'):
         p.add_argument('--' + flag)
     a = p.parse_args()
+    if bool(a.register_config) != bool(a.registration_id):
+        p.error('Use --register-config and --registration-id together')
+    if a.registration_python and not a.register_config:
+        p.error('--registration-python requires --register-config and --registration-id')
     ids = (a.run_id, a.task_id, a.dispatch_id, a.owner)
     if any(ids) and not all(ids):
         p.error('Use all four existing canonical queue identity fields or none')
@@ -393,6 +430,14 @@ def main():
     context = dict(zip(('run_id', 'task_id', 'dispatch_id', 'owner'), ids)) if all(ids) else None
     result = execute(a.video, a.camera, a.output, scene_path=a.scene, portal_path=a.portal,
         cache=a.cache, start=a.start, end=a.end, whole=a.whole, queue_context=context)
+    if a.register_config and result['state'] == 'analysis_complete':
+        import subprocess
+        import sys
+        registered = subprocess.run([str(a.registration_python or sys.executable),
+            '-m', 'webapp.mvp_registration', '--config', str(a.register_config),
+            '--manifest', result['manifest_path'], '--registration-id', a.registration_id],
+            check=True, capture_output=True, text=True)
+        result['registration'] = json.loads(registered.stdout)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     if result['state'] != 'analysis_complete':
         raise SystemExit(2)
