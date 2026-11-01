@@ -42,7 +42,8 @@ def validate_assignment(context):
 
 
 def validate(config, inputs, runtime):
-    from sceneguard.video_cards import read, code_binding, probe, SCENES, CAMERAS
+    from sceneguard.video_cards import (read, code_binding, probe, camera_profile,
+                                       source_scene, scene_regions)
     if set(config) != {'stage','request_path','request_sha256','settings','context'}:
         raise ValueError('Exact video-card queue contract required')
     path = Path(config['request_path'])
@@ -52,27 +53,33 @@ def validate(config, inputs, runtime):
             or sha256(path) != config['request_sha256'] or sha256(WEIGHT) != FCOS_SHA):
         raise ValueError('Canonical runtime/local weight/immutable request/settings required')
     request = read(path)
-    if request['queue_context'] != config['context'] or request['camera_id'] not in SCENES:
+    if request['queue_context'] != config['context']:
         raise ValueError('Request queue identity/camera differs')
     if request['code_sha256'] != code_binding() or request['cache'] is not None:
         raise ValueError('Current code and genuinely new detector request required')
-    camera = read(CAMERAS)['cameras'][request['camera_id']]
     video = Path(request['video'])
+    camera, selected_scene, portal_path, cameras_path = camera_profile(
+        request['camera_id'], video, request.get('camera_registry'))
+    scene_path = source_scene(request['camera_id'], selected_scene, request.get('camera_registry'))
     info = probe(video)
     a,b = request['requested_window']
-    if not 0 <= a < b <= info['duration']+1e-6:
+    if not 0 <= a < b <= info.get('source_end_exclusive', info['duration'])+1e-6:
         raise ValueError('Source window differs')
-    scene = read(SCENES[request['camera_id']])
-    region = Path(scene['annotation_provenance']['current_regions_path'])
-    if not region.is_absolute(): region = ROOT/region
-    actual = dict(video=sha256(video),cameras=sha256(CAMERAS),
-                  scene=sha256(SCENES[request['camera_id']]),regions=sha256(region))
+    scene = read(scene_path)
+    regions, region = scene_regions(scene, scene_path, embedded='camera_registry' in request)
+    actual = dict(video=sha256(video),cameras=sha256(cameras_path),
+                  scene=sha256(scene_path),regions=sha256(region))
+    if portal_path is not None:
+        from sceneguard.portal_births import PortalGate
+        PortalGate(read(selected_scene), read(portal_path), request['camera_id'])
+        actual['portal'] = sha256(portal_path)
+        actual['decision_scene'] = sha256(selected_scene)
     expected = dict(request_sha256=config['request_sha256'],source_sha256=actual['video'],
                     model_sha256=FCOS_SHA,settings_sha256=digest(SETTINGS))
     if request['input_sha256'] != actual or inputs != expected:
         raise ValueError('Source/settings input bytes differ')
     from sceneguard.exp0034_application import validate_scene_binding
-    validate_scene_binding(scene,[dict(source_size=info['size'])],read(region),camera)
+    validate_scene_binding(scene,[dict(source_size=info['size'])],regions,camera)
     validate_assignment(config['context'])
     return request
 

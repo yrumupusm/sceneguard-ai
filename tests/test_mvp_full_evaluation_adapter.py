@@ -226,6 +226,18 @@ class ExecutionTests(unittest.TestCase):
         self.assertTrue(actual['execution_binding']['full_native_pts_verified'])
         self.assertEqual(actual['execution_binding']['native_frames'],30)
 
+    def test_explicit_native_eof_keeps_original_exposure_denominator(self):
+        self.row['media'].update(duration_seconds=29/30, average_rate='30',
+                                 full_native_end_seconds=1.)
+        actual=self.adapt()
+        self.assertEqual(actual['execution_binding']['native_frames'],30)
+        self.assertEqual(actual['processed_seconds'],29/30)
+
+    def test_forged_native_eof_rejected(self):
+        self.row['media'].update(average_rate='30',full_native_end_seconds=1.5)
+        with self.assertRaisesRegex(ValueError,'Native EOF endpoint'):
+            self.adapt()
+
     def test_missing_frame_zero_rejected_even_with_consistent_stage_hash(self):
         path=self.folder/'image-paths/frame-evidence.jsonl'
         path.write_text(''.join(json.dumps(dict(f,frame_index=i))+'\n' for i,f in enumerate(self.frames[1:])))

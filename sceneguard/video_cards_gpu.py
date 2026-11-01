@@ -73,8 +73,9 @@ def run(attempt, fd):
         socket.socket.connect=deny_network; socket.socket.connect_ex=deny_network
         socket.socket.sendto=deny_network; socket.create_connection=deny_network
         socket.getaddrinfo=deny_network
-        from sceneguard.video_cards import read,CAMERAS
-        camera=read(CAMERAS)['cameras'][request['camera_id']]
+        from sceneguard.video_cards import camera_profile
+        camera, _, _, _ = camera_profile(request['camera_id'], request['video'],
+                                        request.get('camera_registry'))
         config_path=folder/'boundary-config.json'
         atomic_json(config_path,camera['legacy_boundary_config'])
         args=SimpleNamespace(video=Path(request['video']),config=config_path,output=folder/'cache',

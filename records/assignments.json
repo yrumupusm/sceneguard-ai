@@ -571,6 +571,19 @@
       "synthetic": false,
       "task_id": "task_895ee117dc67",
       "title": "전체 원본 MVP 전구간 실행·사건 평가"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T15:42:57.064248+00:00",
+      "dispatch_id": "ctx_d58105b68113",
+      "experiment_id": "MVP-0005",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_aa2d8f8b832c",
+      "title": "사용자 영역으로 전체 원본 지원 확장·재평가"
     }
   ],
   "schema_version": 1

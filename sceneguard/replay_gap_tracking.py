@@ -4,6 +4,7 @@ CPU replay only. No checkpoint loading, learning, detector inference or ReID.
 Old cache, tracker code, boundary code and experiment results stay unchanged.
 """
 import argparse
+from fractions import Fraction
 import hashlib
 import json
 import math
@@ -27,7 +28,7 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def load_cache(directory):
+def load_cache(directory, *, native_interval=None):
     directory = Path(directory)
     meta_path, cache_path = directory / 'run.json', directory / 'person_cache.jsonl'
     meta = json.loads(meta_path.read_text(encoding='utf-8'))
@@ -61,15 +62,29 @@ def load_cache(directory):
             raise ValueError('Native timing metadata required')
     intervals = [b - a for a, b in zip(times, times[1:])]
     interval = statistics.median(intervals)
-    if not 1/31 <= interval <= 1/29 or any(abs(x - interval) > 1e-6 for x in intervals):
-        raise ValueError('Existing near-30Hz, unsampled cache required')
+    if native_interval is None:
+        if not 1/31 <= interval <= 1/29 or any(abs(x - interval) > 1e-6 for x in intervals):
+            raise ValueError('Existing near-30Hz, unsampled cache required')
+    else:
+        dt = Fraction(native_interval)
+        if dt != Fraction(1001, 30000):
+            raise ValueError('Explicit native 30000/1001 clock required')
+        for a,b in zip(frames, frames[1:]):
+            if (type(a['native_pts']) is not int or type(b['native_pts']) is not int
+                    or a['time_base'] != b['time_base']):
+                raise ValueError('Stable integer native source clock required')
+            ticks = Fraction(b['native_pts']-a['native_pts'])*Fraction(a['time_base'])/dt
+            if ticks.denominator != 1 or ticks < 1:
+                raise ValueError('Native rational cadence with integral PTS gaps required')
+        interval = float(dt)
     return meta, frames, interval, {'cache': cache_hash, 'metadata': sha256(meta_path)}
 
 
-def make_adapter(retain_seconds, interval):
+def make_adapter(retain_seconds, interval, *, native_timing=False):
     # Lazy import keeps --help and pure state tests free of tracker dependencies.
     from .byte_adapter import ByteAdapter
-    adapter = ByteAdapter(use_low=True)
+    args = dict(native_interval=Fraction(1001,30000), retain_seconds=retain_seconds) if native_timing else {}
+    adapter = ByteAdapter(use_low=True, **args)
     if retain_seconds is not None:
         count = max(1, math.ceil(retain_seconds / interval - 1e-9))
         adapter.tracker.args.track_buffer = count

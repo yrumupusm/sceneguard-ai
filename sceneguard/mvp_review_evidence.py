@@ -215,21 +215,34 @@ def _evidence_plan(cached, segments, associations, feed):
 
 class _VideoWriter:
     """Software H264 writer with an explicit, relative playback clock."""
-    def __init__(self, path, size, dt):
+    def __init__(self, path, size, dt, *, time_base=None):
         import av
         if path.exists():
             raise FileExistsError(path)
         self.path, self.dt, self.count = path, dt, 0
+        self.time_base, self.previous_pts = time_base, None
         self.container = av.open(str(path), 'w', options={'movflags': '+faststart'})
         self.stream = self.container.add_stream('libx264', rate=1/dt)
         self.stream.width, self.stream.height = size
         self.stream.pix_fmt = 'yuv420p'
         self.stream.options = dict(crf='22', preset='ultrafast', threads='2')
+        if time_base is not None:
+            self.stream.time_base = time_base
+            self.stream.codec_context.time_base = time_base
 
-    def write(self, rgb):
+    def write(self, rgb, *, pts=None):
         import av
         frame = av.VideoFrame.from_ndarray(np.asarray(rgb), format='rgb24')
-        frame.pts, frame.time_base = self.count, self.dt
+        if self.time_base is None:
+            if pts is not None:
+                raise ValueError('Explicit source PTS requires a native output time base')
+            frame.pts, frame.time_base = self.count, self.dt
+        else:
+            if (type(pts) is not int or pts < 0 or (self.count == 0 and pts != 0)
+                    or (self.previous_pts is not None and pts <= self.previous_pts)):
+                raise ValueError('Increasing source-relative integer native PTS required')
+            frame.pts, frame.time_base = pts, self.time_base
+            self.previous_pts = pts
         for packet in self.stream.encode(frame):
             self.container.mux(packet)
         self.count += 1
@@ -242,7 +255,7 @@ class _VideoWriter:
             self.container.close()
 
 
-def _validate_video(path, expected_frames, dt):
+def _validate_video(path, expected_frames, dt, *, expected_pts=None):
     import av
     with av.open(str(path)) as container:
         stream = container.streams.video[0]
@@ -252,11 +265,15 @@ def _validate_video(path, expected_frames, dt):
                   for frame in container.decode(stream)]
     if codec != 'h264' or pixel_format != 'yuv420p' or len(stamps) != expected_frames:
         raise ValueError('Evidence H264 format or decoded frame count mismatch')
-    if any(stamp is None or abs(float(stamp-i*dt)) > 1e-5 for i, stamp in enumerate(stamps)):
+    expected = [i*dt for i in range(expected_frames)] if expected_pts is None else expected_pts
+    if len(expected) != expected_frames or any(
+            stamp is None or (stamp != at if expected_pts is not None else abs(float(stamp-at)) > 1e-5)
+            for stamp,at in zip(stamps,expected)):
         raise ValueError('Rendered playback PTS mismatch')
     return dict(frames=expected_frames, decoded_frames=len(stamps), codec=codec,
         pixel_format=pixel_format, size=size, sha256=sha256(path), bytes=path.stat().st_size,
-        faststart=True, playback_start_seconds=0., playback_duration_seconds=float(expected_frames*dt))
+        faststart=True, playback_start_seconds=0.,
+        playback_duration_seconds=float(expected[-1]+dt))
 
 
 def _color(key):

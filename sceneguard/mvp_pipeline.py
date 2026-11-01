@@ -270,7 +270,7 @@ def load_lines(path):
 
 
 def execute(video, camera, output, *, scene_path, portal_path, cache=None,
-            start=None, end=None, whole=False, queue_context=None):
+            start=None, end=None, whole=False, queue_context=None, camera_registry=None):
     """A single local invocation; registration is a separate explicit adapter step."""
     import fcntl
     from . import video_cards as vc
@@ -282,20 +282,30 @@ def execute(video, camera, output, *, scene_path, portal_path, cache=None,
     if (output.is_symlink() or any(p.is_symlink() for p in output.parents)
             or not output.resolve().is_relative_to((vc.ROOT / 'outputs').resolve())):
         raise ValueError('Use a local non-symlink outputs directory')
-    if camera not in vc.SCENES:
-        raise ValueError('Select an existing calibrated C3 or C6 camera')
-    scene, region, base_scene = read(scene_path), read(portal_path), read(vc.SCENES[camera])
+    cameras_path = vc.CAMERAS
+    if camera_registry is None:
+        if camera not in vc.SCENES:
+            raise ValueError('Select an existing calibrated C3 or C6 camera')
+        base_path = vc.SCENES[camera]
+    else:
+        _, frozen_scene, frozen_portal, cameras_path = vc.camera_profile(camera, video, camera_registry)
+        if scene_path != frozen_scene or portal_path != frozen_portal:
+            raise ValueError('Explicit scene/portal paths differ from frozen camera registry')
+        base_path = vc.SCENES.get(camera, frozen_scene)
+    scene, region, base_scene = read(scene_path), read(portal_path), read(base_path)
     revised_scene(base_scene, scene)  # inside-only approved geometry; no moving the line.
     if camera == 'C6' and scene != base_scene:
         raise ValueError('C6 must retain its current approved scene')
     PortalGate(scene, region, camera)  # explicit binding, no whole-inside fallback.
     code = {str(p.relative_to(vc.ROOT)): vc.sha256(p)
             for p in sorted((vc.ROOT / 'sceneguard').rglob('*.py'))}
-    inputs = {str(p): vc.sha256(p) for p in (video, scene_path, portal_path, vc.SCENES[camera], vc.CAMERAS)}
+    inputs = {str(p): vc.sha256(p) for p in (video, scene_path, portal_path, base_path, cameras_path)}
     request = dict(version=VERSION, video=str(video), camera=camera,
         scene=str(scene_path), portal=str(portal_path), window=[start, end], whole=whole,
         cache=None if cache is None else str(Path(cache).absolute()), queue_context=queue_context,
         input_sha256=inputs, code_sha256=code, realtime=False)
+    if camera_registry is not None:
+        request['camera_registry'] = str(cameras_path)
     output.mkdir(parents=True, exist_ok=True)
     for name in ('.mvp.lock', 'request.json', 'status.json', 'viewer-manifest.json'):
         if (output / name).is_symlink():
@@ -313,16 +323,17 @@ def execute(video, camera, output, *, scene_path, portal_path, cache=None,
         run_id = 'mvp-' + digest(request)[:24]
         try:
             vc.status(output / 'status.json', state='analyzing', version=VERSION)
+            profile_args = {} if camera_registry is None else dict(camera_registry=cameras_path)
             front = vc.execute(video, camera, output / 'source', cache=cache, start=start,
-                               end=end, whole=whole, queue_context=queue_context)
+                               end=end, whole=whole, queue_context=queue_context, **profile_args)
             if front['state'] != 'complete':
                 vc.status(output / 'status.json', state='blocked', upstream=front)
                 return read(output / 'status.json')
             baseline = read(output / 'source/analysis/analysis.json')
             bundle = read(output / 'source/analysis/cards.json')
-            camera_config = vc.read(vc.CAMERAS)['cameras'][camera]
+            camera_config = vc.read(cameras_path)['cameras'][camera]
             info = vc.probe(video)
-            begin, finish = (0.0, info['duration']) if whole else (start, end)
+            begin, finish = (0.0, info.get('source_end_exclusive', info['duration'])) if whole else (start, end)
             _, frames, interval, cache_hashes = vc.validate_cached(video, camera_config,
                 baseline['source_paths']['cache'], begin, finish, info)
             tracked = load_lines(output / 'source/tracking/frames.jsonl')
@@ -407,7 +418,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for flag in ('video', 'scene', 'portal', 'output'):
         p.add_argument('--' + flag, type=Path, required=True)
-    p.add_argument('--camera', choices=('C3', 'C6'), required=True)
+    p.add_argument('--camera', required=True)
+    p.add_argument('--camera-registry', type=Path)
     p.add_argument('--cache', type=Path); p.add_argument('--start', type=float); p.add_argument('--end', type=float)
     p.add_argument('--whole', action='store_true')
     p.add_argument('--register-config', type=Path)
@@ -429,7 +441,8 @@ def main():
         p.error('Choose --whole or both --start and --end')
     context = dict(zip(('run_id', 'task_id', 'dispatch_id', 'owner'), ids)) if all(ids) else None
     result = execute(a.video, a.camera, a.output, scene_path=a.scene, portal_path=a.portal,
-        cache=a.cache, start=a.start, end=a.end, whole=a.whole, queue_context=context)
+        cache=a.cache, start=a.start, end=a.end, whole=a.whole, queue_context=context,
+        camera_registry=a.camera_registry)
     if a.register_config and result['state'] == 'analysis_complete':
         import subprocess
         import sys

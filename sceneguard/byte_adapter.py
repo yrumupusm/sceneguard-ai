@@ -1,5 +1,7 @@
 """CPU ByteTrack adapter: measured cache boxes and prediction states stay separate."""
 from types import SimpleNamespace
+from fractions import Fraction
+import math
 import numpy as np
 from .vendor.bytetrack.byte_tracker import BYTETracker
 from .vendor.bytetrack.basetrack import BaseTrack, TrackState
@@ -10,18 +12,48 @@ SETTINGS = dict(track_thresh=.5, low_thresh=.25, match_thresh=.8,
 
 
 class ByteAdapter:
-    def __init__(self, use_low):
+    def __init__(self, use_low, *, native_interval=None, retain_seconds=None):
         # Experiments are sequential; official BaseTrack uses a process-global counter.
         BaseTrack._count = 0
         self.tracker = BYTETracker(SimpleNamespace(**SETTINGS), frame_rate=30)
         self.use_low = use_low
         self.last_seen = {}
         self.previous_pts = None
+        self.native_interval = None if native_interval is None else Fraction(native_interval)
+        if self.native_interval is not None and self.native_interval != Fraction(1001, 30000):
+            raise ValueError('Native rational 30000/1001 interval required')
+        self.retain_seconds = retain_seconds
+        self.previous_native = None
+        self.gap_prediction_steps = 0
 
     def step(self, frame):
         pts = frame['pts']
-        if self.previous_pts is not None and pts <= self.previous_pts:
+        if not math.isfinite(pts) or (self.previous_pts is not None and pts <= self.previous_pts):
             raise ValueError('PTS must increase')
+        if self.native_interval is not None:
+            at = frame['native_pts']*Fraction(frame['time_base'])
+            if type(frame['native_pts']) is not int or abs(float(at)-pts) > 1e-9:
+                raise ValueError('Native clock and actual source timestamp differ')
+            if self.previous_native is not None:
+                steps = (at-self.previous_native)/self.native_interval
+                if steps.denominator != 1 or steps < 1:
+                    raise ValueError('Native rational cadence with integral PTS gaps required')
+                width,height = frame['source_size']
+                # These are internal prediction/aging steps, never source frames,
+                # observations, detector calls, boundary evidence or decisions.
+                for _ in range(int(steps)-1):
+                    self.tracker.update(np.empty((0,5)), (height,width), (height,width))
+                    self.gap_prediction_steps += 1
+                if self.retain_seconds is not None:
+                    for name in ('tracked_stracks', 'lost_stracks'):
+                        live = []
+                        for track in getattr(self.tracker, name):
+                            if pts-self.last_seen[track.track_id] > self.retain_seconds+1e-9:
+                                track.mark_removed()
+                            else:
+                                live.append(track)
+                        setattr(self.tracker, name, live)
+            self.previous_native = at
         self.previous_pts = pts
         width, height = frame['source_size']
         eligible = []

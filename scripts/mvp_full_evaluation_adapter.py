@@ -644,11 +644,23 @@ def adapt_execution(row, execution, expected_code, root=ROOT):
     validate_native_partition(cache_folder/'person_cache.jsonl',clocks,begin,end,allow_outside=True)
     if state['frames'] != count:
         raise ValueError('Incomplete pipeline source frame partition')
+    expected_end = row['media']['duration_seconds']
+    if 'full_native_end_seconds' in row['media']:
+        rate = Fraction(row['media']['average_rate'])
+        if rate not in (Fraction(30), Fraction(30000,1001)):
+            raise ValueError('Unsupported native evaluation clock')
+        decoded_end = float(Fraction(clocks['native_pts'][-1])*Fraction(clocks['time_base'])+1/rate)
+        if abs(row['media']['full_native_end_seconds']-decoded_end)>1e-9:
+            raise ValueError('Native EOF endpoint differs from frozen decoded clock')
+        expected_end = decoded_end
     if status=='complete' and (request.get('whole') is not True or begin != 0
-            or abs(end-row['media']['duration_seconds'])>1e-9
+            or abs(end-expected_end)>1e-9
             or count != row['media']['decoded_frame_count']):
         raise ValueError('Complete requires every original frame from beginning to end')
-    result.update(processed_seconds=end-begin, predictions=extract_predictions(read(cards_path)),
+    # EOF inclusion may require an endpoint beyond a container duration. Keep
+    # the frozen media exposure denominator rather than inflating evaluated time.
+    exposure = row['media']['duration_seconds'] if status=='complete' else end-begin
+    result.update(processed_seconds=exposure, predictions=extract_predictions(read(cards_path)),
         execution_binding=dict(run_directory=relative(folder,root), request_sha256=request_hash,
             viewer_sha256=sha256(folder/'viewer-manifest.json'), cards_sha256=sha256(cards_path),
             pipeline_status_sha256=sha256(folder/'status.json'), native_frames=count,
