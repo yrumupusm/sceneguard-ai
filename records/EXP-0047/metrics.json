@@ -1,0 +1,555 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0047",
+  "status": "frozen_bounded_actual_comparison",
+  "metrics": [
+    {
+      "label": "007 선택 프레임",
+      "value": 1710,
+      "unit": "frames",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 보존 후보",
+      "value": 18,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 의심 카드",
+      "value": 0,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 확인 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 해제 카드",
+      "value": 0,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 해제 근거",
+      "value": 0,
+      "unit": "evidence",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 미결 근거",
+      "value": 6,
+      "unit": "evidence",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/lifecycle-cards.json",
+      "source_sha256": "7eaada0993ca8c357e7b430368f4cf944dc454662a0e96188e9f303157f86d31",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 확인 근거",
+      "value": 12,
+      "unit": "evidence",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/lifecycle-cards.json",
+      "source_sha256": "7eaada0993ca8c357e7b430368f4cf944dc454662a0e96188e9f303157f86d31",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 연결 미확정",
+      "value": 1,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 관측 인계",
+      "value": 10,
+      "unit": "handoffs",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 경쟁 인계 거부",
+      "value": 2,
+      "unit": "source proposals",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 첫 의심 알림 의도",
+      "value": 2,
+      "unit": "intents",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 첫 확인 알림 의도",
+      "value": 2,
+      "unit": "intents",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 보존 A 확인",
+      "value": 1,
+      "unit": "rule confirmations",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 CPU 저장 비교 시간",
+      "value": 2.009577755990904,
+      "unit": "seconds",
+      "sample_n": 1710,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/007-v2/summary.json",
+      "source_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 선택 프레임",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 보존 후보",
+      "value": 20,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 의심 카드",
+      "value": 1,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 확인 카드",
+      "value": 1,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 해제 카드",
+      "value": 0,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 해제 근거",
+      "value": 0,
+      "unit": "evidence",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 미결 근거",
+      "value": 16,
+      "unit": "evidence",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/lifecycle-cards.json",
+      "source_sha256": "512540bd7e47c982b40aa67d12ded935272695c6fdb972f15eaaaa550aca3328",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 확인 근거",
+      "value": 4,
+      "unit": "evidence",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/lifecycle-cards.json",
+      "source_sha256": "512540bd7e47c982b40aa67d12ded935272695c6fdb972f15eaaaa550aca3328",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 연결 미확정",
+      "value": 2,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 관측 인계",
+      "value": 19,
+      "unit": "handoffs",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 경쟁 인계 거부",
+      "value": 2,
+      "unit": "source proposals",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 첫 의심 알림 의도",
+      "value": 2,
+      "unit": "intents",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 첫 확인 알림 의도",
+      "value": 1,
+      "unit": "intents",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 보존 A 확인",
+      "value": 2,
+      "unit": "rule confirmations",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 CPU 저장 비교 시간",
+      "value": 0.9495152159943245,
+      "unit": "seconds",
+      "sample_n": 480,
+      "scope": "Full saved selected sequence; rule outputs, not people or accuracy; CPU comparison excludes rendering and is not inference FPS",
+      "source": "outputs/exp0047/030-v1/summary.json",
+      "source_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "실제 해제 성능",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": 0,
+      "scope": "No actual outward-loss release in either source; synthetic tests do not establish real performance",
+      "source": "docs/experiments/EXP-0047-results.md",
+      "source_sha256": null,
+      "verification": "unevaluated"
+    },
+    {
+      "label": "침입 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "No exhaustive independent event/identity ground truth; lineage and new confirmations remain unknown",
+      "source": "docs/experiments/EXP-0047-results.md",
+      "source_sha256": null,
+      "verification": "unknown"
+    }
+  ],
+  "actual": {
+    "007": {
+      "output": "outputs/exp0047/007-v2",
+      "evidence_states": {
+        "침입 의심": 6,
+        "침입 확인": 12
+      },
+      "binding_methods": {
+        "saved_portal_run": 8,
+        "exact_actual_reference": 6,
+        "unique_same_frame_containment": 3,
+        "unbound_preserve": 1
+      },
+      "followup_counts": {
+        "observation_handoffs": 10,
+        "competing_source_handoffs": 2,
+        "observation_continues_not_loss": 3,
+        "inward_motion_then_portal_loss": 3
+      },
+      "first_suspicion_pts": [
+        55.63333333333333,
+        66.23333333333333
+      ],
+      "first_confirmation_notice_pts": [
+        72.13333333333334,
+        72.13333333333334
+      ],
+      "preserved_A_confirmation_pts": [
+        72.6
+      ],
+      "actual_release_human_review": {
+        "required": 0,
+        "completed": 0,
+        "performance": "unevaluated_no_actual_release"
+      },
+      "new_confirmation_identity_validity": "unknown",
+      "summary_sha256": "292737e3da4a3cb16d3936e98d356c6eb4533ae5db6a865acc85cf5e39399c97",
+      "lifecycle_sha256": "7eaada0993ca8c357e7b430368f4cf944dc454662a0e96188e9f303157f86d31",
+      "input_sha256": {
+        "outputs/exp0035/007-v1.json": "341cb82bce3cc505c661e8aa21e68d67cb6f7be1a7d9d34620b8fdbde5edf432",
+        "outputs/exp0042/007-v1/request.json": "5ce421f0f1fab38aaed17443d5c21416ec577b117cdd622743930bb62ee54c4a",
+        "outputs/exp0042/007-v1/summary.json": "f34770ae87edb4760854caae7b685f5e7db9fb05f700c0b5d7a711f3d0fc7718",
+        "outputs/exp0042/007-v1/frame-evidence.jsonl": "8e7864305a003bab1fd33889f58f561eedcf3f67869faa826c2c48420115d36d",
+        "outputs/exp0042/007-v1/baseline-cards.json": "6c13cd193ff1809c166c0be222d580f4981782d32b7386f7976b24c446d15283",
+        "data/TS_침입/E01_007.mp4": "df88fcfe8293b5c624a617bb9d36e68fb366acbd0a35835805ee35e31c5b7c04",
+        "outputs/exp0029/replay007/gap/frames.jsonl": "d682db196d09fca07e609a6bf4f50c0357941f353a216c521fc258189ec6e5de",
+        "outputs/exp0029/cache007/run.json": "f1d6bfb139a4788a58fe9219039d76d04f9a0c7f5d45e6c4fe2a7720ddefe163",
+        "outputs/exp0029/cache007/person_cache.jsonl": "d8d99b28ff6771196a9164f9247339d21ededb4d8bff8e5e0d7fae207f7a7bb7",
+        "runtime/EXP-0034/scene007.json": "e5d62de0e0eee016969a6cf15fb34943b379244fb09e13608b84238585543ec8",
+        "runtime/EXP-0029/regions007.json": "80b0adc3ec594670f3587d05ba9518b72513c9ad50c8f300435182143aee4a42",
+        "outputs/exp0029/replay007/gap/events.jsonl": "9c6358c8a62db266a71271715b1899ce62e3d9f621f8633d7d36a3548458b9c6",
+        "configs/mvp0001_cameras.json": "d37fbc699a84fae72ae236f4ae40e01bfb8d58b2fbe3b746eba0e6fb55624f18",
+        "runtime/EXP-0030/current-regions.json": "70d6acc5e8c9ab6da40dd1ad5d8ca623e006ba0b4bb164822b4aae1735f3a9ed",
+        "outputs/exp0045/007-v1/history-cards.json": "ac0ed5428940558076ab8f48303db96ec5f411508d174916cbbb91de1595bbdb",
+        "outputs/exp0045/007-v1/history-decisions.json": "8f15b4eefbeb6a66ed3ebf1f59a3aa9fff310067559e9508356537b4d9df4287",
+        "outputs/exp0045/007-v1/scene-used.json": "0d4a4236c557f8ed6645451e1978166c9800e9abd0a19f80960a38cf0716a4a8",
+        "outputs/exp0045/007-v1/summary.json": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+        "outputs/exp0045/007-v1/request.json": "0db3e19630cdd3456a1a8f22c66f4d1a6e40e6156d754979ddc2468facf7a3d3",
+        "outputs/exp0045/007-v1/birth-audits.json": "5090ce02e248d864b2d6f847250c880ec39e992589f7d3c850161fb85219343d",
+        "outputs/exp0045/007-v1/inside-birth-events.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "runtime/portal-regions/exp0046/C3.json": "a0f5e5d14b18d9d7844612f96ac3d598a70462c9035c5fe42566f2509b91abd6",
+        "runtime/region-revisions/007-inside-20261101-v1/scene007.json": "0d4a4236c557f8ed6645451e1978166c9800e9abd0a19f80960a38cf0716a4a8",
+        "outputs/exp0046/007-v1/request.json": "c1926a357d43c2285de6a77e499c9e48b3739b56f6c7d83b3078306de5a8eb04",
+        "outputs/exp0046/007-v1/summary.json": "b43c7b70d0a5486719703480727b6c18301503fcdb4d6bbade789eddc3e92753",
+        "outputs/exp0046/007-v1/history-cards.json": "ac0ed5428940558076ab8f48303db96ec5f411508d174916cbbb91de1595bbdb",
+        "outputs/exp0046/007-v1/history-decisions.json": "8f15b4eefbeb6a66ed3ebf1f59a3aa9fff310067559e9508356537b4d9df4287",
+        "outputs/exp0046/007-v1/scene-used.json": "0d4a4236c557f8ed6645451e1978166c9800e9abd0a19f80960a38cf0716a4a8",
+        "outputs/exp0046/007-v1/portal-region.json": "a0f5e5d14b18d9d7844612f96ac3d598a70462c9035c5fe42566f2509b91abd6",
+        "outputs/exp0046/007-v1/inside-birth-events.json": "250f6417048932ab1d1e9657a62d7f424c2273eba50d8e8a71e61b284c79fffa",
+        "outputs/exp0046/007-v1/observation-runs.json": "c049b82d526e5b8ffb20aa3ff72d6bf0d3c3071615efface774b94d8d5dd7613",
+        "outputs/exp0046/007-v1/case-audit.json": "1c02f63a3370222990dace4cf7ef68aa3ace3ea02615988aba39e03185124e9d",
+        "outputs/exp0046/007-v1/portal-only-cards.json": "7e6897752fefa9d1a5cdc9c9d1449aee5be3e609c6cf54febaf3d244aafd2f60"
+      },
+      "code_sha256": {
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/incident_lifecycle.py": "e01d74c5fbf56e09673d9ab9bee474dde9f5be7b089096901d3e8600aab5598c",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/lifecycle_followup.py": "30064d564e3663e0dd96bb3d20aeee4e24b95dd1b7e4084fbf51ca34b08648d3",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/exp0047_application.py": "f2f0897f6de9ec0c9832aaa6f0314e659762daef4891c92dc7b6b498be72cd97",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/directional_loss.py": "9ce6515a21512feebdc1100c6e5595596bead7bac28eda87b0632940980de53f",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/portal_births.py": "ffd35d9f21f93d821257714f6a27bce0174f024b5f0256834766023f3c33782e",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/gate_episode_evidence.py": "60ef5ca5c8062c6e5fb5c6a246df66661bb8a870e34b7534a5f1dea8377c8c3f",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/incident_cards.py": "feccaeea08966e24cbcb79877349d9059dd308378debabd093c827afc7242ab7"
+      }
+    },
+    "030": {
+      "output": "outputs/exp0047/030-v1",
+      "evidence_states": {
+        "침입 의심": 16,
+        "침입 확인": 4
+      },
+      "binding_methods": {
+        "unique_same_frame_containment": 2,
+        "saved_portal_run": 12,
+        "unbound_preserve": 2,
+        "exact_actual_reference": 4
+      },
+      "followup_counts": {
+        "observation_handoffs": 19,
+        "competing_source_handoffs": 2,
+        "direction_unclear_or_no_recent_gate_contact": 2,
+        "inward_motion_then_portal_loss": 1,
+        "no_recent_target_direction": 2
+      },
+      "first_suspicion_pts": [
+        86.03333333333333,
+        97.43333333333334
+      ],
+      "first_confirmation_notice_pts": [
+        92.73333333333333
+      ],
+      "preserved_A_confirmation_pts": [
+        92.73333333333333,
+        93.03333333333333
+      ],
+      "actual_release_human_review": {
+        "required": 0,
+        "completed": 0,
+        "performance": "unevaluated_no_actual_release"
+      },
+      "new_confirmation_identity_validity": "unknown",
+      "summary_sha256": "ff80468d10d4dbe44f517ea1a9f84967a3acc93cc25472ae3163f1f260d1f7da",
+      "lifecycle_sha256": "512540bd7e47c982b40aa67d12ded935272695c6fdb972f15eaaaa550aca3328",
+      "input_sha256": {
+        "outputs/exp0035/030-v1.json": "9cc7b7f4b849a21cf1fa8fe4977bfb234736df6ba4a331d4c1e8488daedec463",
+        "outputs/exp0042/030-v1/request.json": "4bc1f574d88bb726e9be1e79ccc0102f5cd6b8293fa4f0a88ddf88ee3ca0271b",
+        "outputs/exp0042/030-v1/summary.json": "4a2e35df9d6e8fa2ef3170b68f0b79fe1e6a70b69ed7a99842b9991c1e344e34",
+        "outputs/exp0042/030-v1/frame-evidence.jsonl": "fa2059cb73699721ffa6bec6c4eb50285855d4df60ed0609d81cee96b8d72b1a",
+        "outputs/exp0042/030-v1/baseline-cards.json": "154c913d4b3cef2858102a081f313efa789b9bb0c69d797854e61069f869d914",
+        "data/TS_침입/E01_030.mp4": "2a8006450e18c1d6fe8b5022302cc7d75066ebbe356c6aab453147c5c4f48f88",
+        "outputs/exp0028/practical-v1/track030/gap/frames.jsonl": "f382b2e1c46208133d73f313662ae74596388c0ef3a54ddc38c28d1fa731fa53",
+        "outputs/cv_phase2d/cache030/run.json": "a0acd57e806bf7fff408af947354864194dd788852c9109f4dce26e097729bb7",
+        "outputs/cv_phase2d/cache030/person_cache.jsonl": "20ccd053814f8777d46765892881e4872687bb62c0222904ad6f5bcb72f76687",
+        "runtime/EXP-0034/scene030.json": "e0647c43bdb60a1fba951d72398d81b47356169f47db76022f20b62769a04908",
+        "outputs/exp0029_region_review/030-inside-user-v1/regions030-inside-expanded.json": "8e3e66c14f0c771ca39fae595bad1c9938c5e2a78850ff50d617a05c25ab7236",
+        "outputs/exp0028/practical-v1/track030/gap/events.jsonl": "adf5cb9f3447c71b333558d8cb48c74f5bc400f1108f190fba17158b49f0dac3",
+        "configs/mvp0001_cameras.json": "d37fbc699a84fae72ae236f4ae40e01bfb8d58b2fbe3b746eba0e6fb55624f18",
+        "runtime/EXP-0030/current-regions.json": "70d6acc5e8c9ab6da40dd1ad5d8ca623e006ba0b4bb164822b4aae1735f3a9ed",
+        "outputs/exp0045/030-v1/history-cards.json": "06b577411bf5a4cd4e0f15be68b0bd15ad0044cd44bd044d71678cffec51ce85",
+        "outputs/exp0045/030-v1/history-decisions.json": "6a7b237dc65bb0a513a7b29998206155912de4f69039f2169780553472d21267",
+        "outputs/exp0045/030-v1/scene-used.json": "e0647c43bdb60a1fba951d72398d81b47356169f47db76022f20b62769a04908",
+        "outputs/exp0045/030-v1/summary.json": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+        "outputs/exp0045/030-v1/request.json": "60513e48ac82680cbd1d5b7b80e8426c2b0dc735a8120b3714b0fdd35f7f2a9f",
+        "outputs/exp0045/030-v1/birth-audits.json": "228ebe3739f5a5c102df0158ae9985715bc4013445688d163bb4a809f79ef65a",
+        "outputs/exp0045/030-v1/inside-birth-events.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "runtime/portal-regions/exp0046/C6.json": "b8bfe8aff6bc7eaa210367d5a69779e204f69cc5d489ae5b040ff15d7c8e3a87",
+        "outputs/exp0046/030-v1/request.json": "07d2afb08ab03ffde1bac76ff5b0bca7ca7f8bf9a2c4cbe3e6e942fc47e96a8c",
+        "outputs/exp0046/030-v1/summary.json": "da82b81722c7ed184cdd705961e152a89c2c273f6e1de536949e217a3ed995d4",
+        "outputs/exp0046/030-v1/history-cards.json": "06b577411bf5a4cd4e0f15be68b0bd15ad0044cd44bd044d71678cffec51ce85",
+        "outputs/exp0046/030-v1/history-decisions.json": "6a7b237dc65bb0a513a7b29998206155912de4f69039f2169780553472d21267",
+        "outputs/exp0046/030-v1/scene-used.json": "e0647c43bdb60a1fba951d72398d81b47356169f47db76022f20b62769a04908",
+        "outputs/exp0046/030-v1/portal-region.json": "b8bfe8aff6bc7eaa210367d5a69779e204f69cc5d489ae5b040ff15d7c8e3a87",
+        "outputs/exp0046/030-v1/inside-birth-events.json": "2beb0d0416b7413a15ea01dc0728b0b6a0ecd0e2bf44b30b7266d64abfedd0b1",
+        "outputs/exp0046/030-v1/observation-runs.json": "f1f11ac19acf83cd68ba3bce89196e2cd0243bb62d43a7977a274ed788c09825",
+        "outputs/exp0046/030-v1/case-audit.json": "a320f529c21d740c5a44c19e89457b332b2f43bdeb3efb7b7ffb59e9416d0000",
+        "outputs/exp0046/030-v1/portal-only-cards.json": "107ee2a676c406e6a288ea00ffe6d85eefeccb4ee67851a569d0fcb05cbaae28"
+      },
+      "code_sha256": {
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/incident_lifecycle.py": "e01d74c5fbf56e09673d9ab9bee474dde9f5be7b089096901d3e8600aab5598c",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/lifecycle_followup.py": "30064d564e3663e0dd96bb3d20aeee4e24b95dd1b7e4084fbf51ca34b08648d3",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/exp0047_application.py": "f2f0897f6de9ec0c9832aaa6f0314e659762daef4891c92dc7b6b498be72cd97",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/directional_loss.py": "9ce6515a21512feebdc1100c6e5595596bead7bac28eda87b0632940980de53f",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/portal_births.py": "ffd35d9f21f93d821257714f6a27bce0174f024b5f0256834766023f3c33782e",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/gate_episode_evidence.py": "60ef5ca5c8062c6e5fb5c6a246df66661bb8a870e34b7534a5f1dea8377c8c3f",
+        "/home/jhc7484/dev/sceneguard-ai/sceneguard/incident_cards.py": "feccaeea08966e24cbcb79877349d9059dd308378debabd093c827afc7242ab7"
+      }
+    }
+  },
+  "attempt_receipt": "outputs/exp0047/attempts-v1.json",
+  "attempt_receipt_sha256": "c742cddc245c95df542a4f3f87ce501aedf45c2cf41eb6a33bd5dedc94407133",
+  "external_notifications_sent": 0,
+  "live_notifications_enabled": false,
+  "accuracy": null,
+  "default_adoption": "hold",
+  "visual_review": "human_new_link_response_pending_at_freeze; actual releases zero",
+  "media_manifests": {
+    "outputs/exp0047/007-v2/media/manifest.json": "7fd14d3f85e5c3be5b75b416986c74b115f68272c80feeade8dca07016dc5846",
+    "outputs/exp0047/030-v1/media/manifest.json": "9d2e302ccd2f840528330294242ec7417491dc07b892c0c32bc23bee82165d50",
+    "outputs/exp0047/007-v2/supplemental-media/manifest.json": "6757791a50e5267ef0d1aa2eb68031d858965039418bb86a94b48d0d279df012"
+  },
+  "known_limitations": [
+    "No actual outward releases; release performance unevaluated.",
+    "Sequential fan-in may attach independent targets; new confirmation association remains unknown.",
+    "Two simultaneous007confirmation intents reflect cards, not two verified people.",
+    "Unknown direction and unbound evidence remain pending.",
+    "No default adoption or external notification."
+  ],
+  "validation": {
+    "lifecycle_tests": 55,
+    "media_tests": 3,
+    "actual_readonly_integration_tests": 1,
+    "classification_rerun_in_integration_tests": false,
+    "web_validation": "separate delivery record; CV environment lacks fastapi"
+  },
+  "independent_review": {
+    "numeric_metrics_checked": 32,
+    "appropriately_null_metrics": 2,
+    "videos_checked": 4,
+    "media_mapping_rows_checked": 2861,
+    "handoffs_checked": 29,
+    "inward_loss_rows_checked": 4,
+    "association_validity": "unknown_sequential_fan_in_unresolved"
+  },
+  "freeze": {
+    "authorized_by": "coordinator",
+    "date": "2026-11-01",
+    "scope": "bounded_actual_comparison_not_adoption",
+    "human_response_at_freeze": "pending; later response separate document",
+    "classification_outputs_changed": false
+  }
+}

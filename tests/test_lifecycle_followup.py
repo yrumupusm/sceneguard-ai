@@ -165,6 +165,22 @@ class FollowupTests(unittest.TestCase):
         for frame in frames[:6]:o.advance(frame)
         with self.assertRaises(ValueError):o.link('r1','r2')
 
+    def test_reappearing_aliased_run_cannot_route_to_stale_successor(self):
+        # Actual point correspondence names r2 now, but its prior alias r3 is
+        # absent. Following that alias caused the first real integration failure.
+        _,_,_,runs,frames=fixture(split=6)
+        runs['r3']=[dict(runs['r2'][0])]
+        runs['r3'][0]['cache_index']=1
+        frames[6]['actual_boxes'].append(dict(frames[6]['actual_boxes'][0],cache_index=1))
+        o=ObservationHistory(runs,frames)
+        for frame in frames[:7]:o.advance(frame)
+        o.link('r2','r3')
+        o.advance(frames[7])
+        handoff=followup_run(o,SavedGateDirection(frames,SCENE),'r1',7)
+        self.assertIsNone(handoff['successor'])
+        self.assertEqual(handoff['reason'],'aliased_successor_not_current_correspondence')
+        self.assertEqual(handoff['blocked_matches'][0]['observed_run'],'r2')
+
     def test_mutating_export_does_not_change_input(self):
         b,h,e,runs,frames=fixture();before=copy.deepcopy((b,h,e,runs,frames))
         replay(b,h,e,runs,frames,SCENE,{},direction_engine=SavedGateDirection(frames,SCENE),portal_gate=TestPortal())

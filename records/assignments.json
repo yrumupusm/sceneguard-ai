@@ -493,6 +493,19 @@
       "synthetic": false,
       "task_id": "task_e5ddb73f0f54",
       "title": "EXP-0046 문 주변 구역 새 출현 비교"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T07:48:34.097455+00:00",
+      "dispatch_id": "ctx_de1d8ee276a1",
+      "experiment_id": "EXP-0047",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_da3e098f3b7f",
+      "title": "EXP-0047 의심 후속 해제·확인 알림"
     }
   ],
   "schema_version": 1

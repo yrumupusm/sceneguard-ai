@@ -3909,6 +3909,69 @@
       "task_id": "task_e5ddb73f0f54",
       "title": "EXP-0046 문 주변 구역 새 출현 비교",
       "worker_opinion": "위치상 일부 후보 복원과 접근·대기 오탐이 함께 관찰됨. B는 물리적 안쪽 출현이나 침입 확정이 아니며 기본 결합 적용을 보류한다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T07:48:34.097455+00:00",
+      "attempt_id": "lifecycle-v1-007v2-030v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_de1d8ee276a1",
+      "evaluated_model": "CPU saved observations and feature paths, scoped lifecycle and confirmation intents; no inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0047-007-continuous",
+          "kind": "video",
+          "label": "007 전체 상태 비교"
+        },
+        {
+          "artifact_id": "exp0047-030-continuous",
+          "kind": "video",
+          "label": "030 전체 상태 비교"
+        },
+        {
+          "artifact_id": "exp0047-007-new-confirmation-lineage",
+          "kind": "video",
+          "label": "007 확인 계보 묶음"
+        },
+        {
+          "artifact_id": "exp0047-007-new-handoff-links",
+          "kind": "video",
+          "label": "007 새 관측 연결 구간 묶음"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0047",
+      "limitations": [
+        "실제 해제0; 해제 성공/잘못된 해제 성능 미평가",
+        "007 시간차 관측 합류의 다른 대상 오연결 위험 미해결",
+        "확인 알림은 사건 카드별 의도이며 인원수/실제 외부 전달 아님",
+        "기존 접근 의심의 최초 오경보를 없앤 실험 아님",
+        "개발 자료로 정확도/F1 미산출"
+      ],
+      "metric_definitions": "records/EXP-0047/metrics.json",
+      "metrics_path": "records/EXP-0047/metrics.json",
+      "metrics_sha256": "88f3c1e85cc5d566c4e63856e41819c4a89f18322f99f6483a0301a3ed22cdfe",
+      "next_step": "이번 저장 비교 종료, 기존 MVP 유지. 새 연결 의미 검수와 알려진 한계를 구분하며 자동 튜닝이나 재추론 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "5fd15dd173ad690de0723260e3a2267981483afd21b1cb2974b1e532f02043bc",
+      "report_path": "docs/experiments/EXP-0047-results.md",
+      "report_sha256": "97e8e7689787eeb3f39ed843cef2673944ae63ec2a53c457c1bddd12648632e7",
+      "review_binding_path": "docs/reviews/EXP-0047.binding.json",
+      "review_path": "docs/reviews/EXP-0047-independent-review.md",
+      "review_sha256": "19472431fc5847ee86a42b3bdf443bac0fb5bd1c2fd7fb6205c9ad49784b932d",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "88f3c1e85cc5d566c4e63856e41819c4a89f18322f99f6483a0301a3ed22cdfe",
+      "reviewed_report_sha256": "97e8e7689787eeb3f39ed843cef2673944ae63ec2a53c457c1bddd12648632e7",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "저장38후보 후속 비교: 실제 해제0으로 해제 성능 미평가. 첫 확인 알림0072/0301개, 기존 A 근거 보존.007 시간차 관측 합류로 두 카드 확인이 발생해 연결 타당성 미확정·기본 적용 보류.",
+      "synthetic": false,
+      "task_id": "task_da3e098f3b7f",
+      "title": "EXP-0047 의심 후속 해제·확인 알림",
+      "worker_opinion": "확인 알림을 앞선 의심과 분리했으나 실제 해제 성능은 미평가. 시간차 관측 합류가 다른 대상의 근거에 영향을 주지 않는다고 보장하지 못하므로 기본 적용 보류."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

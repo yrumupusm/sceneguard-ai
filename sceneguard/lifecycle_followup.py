@@ -133,7 +133,7 @@ def followup_run(history, engine, run_id, index):
     if index <= start: return dict(successor=None,reason='still_observed',matches=[])
     actual = {r['frame_index']:r for r in rows}
     size = engine.geometry['size']; target = pixel_box(last['bbox'],size)
-    matches = {}
+    matches = {}; blocked = []
     for wid,path in engine.paths.get(start,{}).items():
         born,seed = engine.births[wid]; observed = actual.get(born)
         if observed is None: continue
@@ -154,6 +154,15 @@ def followup_run(history, engine, run_id, index):
             if len(choices)!=1: continue
             successor = next(iter(choices))
             if successor==run_id: continue
+            # A geometric run can be observed again after an earlier handoff.
+            # Its old alias is not a current box correspondence. Never route
+            # these points to a stale alias (or back into a lineage cycle).
+            canonical_successor = history.current_key(successor)
+            if canonical_successor != successor:
+                blocked.append(dict(observed_run=successor,
+                    canonical_run=canonical_successor,target_frame=index,
+                    reason='aliased_successor_not_current_correspondence'))
+                continue
             evidence = dict(successor=successor,window_id=wid,point_ids=ids,
                 source_frame=start,target_frame=index,target_cache_index=box['cache_index'],
                 coverage=len(ids)/len(anchor_ids),actual_correspondence=True)
@@ -161,8 +170,9 @@ def followup_run(history, engine, run_id, index):
                 matches[successor] = evidence
     return dict(successor=next(iter(matches)) if len(matches)==1 else None,
         reason='same_points_successor' if len(matches)==1 else
-               'competing_successors' if matches else 'no_mapped_successor',
-        matches=list(matches.values()))
+               'competing_successors' if matches else
+               'aliased_successor_not_current_correspondence' if blocked else 'no_mapped_successor',
+        matches=list(matches.values()),blocked_matches=blocked)
 
 
 def assess_loss(history, engine, portal, run_id, index, *, loss_wait=1., gate_history=3.):
