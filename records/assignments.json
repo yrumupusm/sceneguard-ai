@@ -519,6 +519,19 @@
       "synthetic": false,
       "task_id": "task_cadb4cdbf3bf",
       "title": "EXP-0048 사건별 상태 연결과 전체 보행 관측"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T10:25:09.757182+00:00",
+      "dispatch_id": "ctx_7649ecfabd48",
+      "experiment_id": "EXP-0049",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_4f4ddc310694",
+      "title": "EXP-0049 문 주변 실제 관측 사건 유지·종료"
     }
   ],
   "schema_version": 1

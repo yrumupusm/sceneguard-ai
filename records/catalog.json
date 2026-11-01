@@ -4036,6 +4036,70 @@
       "task_id": "task_cadb4cdbf3bf",
       "title": "EXP-0048 사건별 상태 연결과 전체 보행 관측",
       "worker_opinion": "사건 간 확인 전파와 같은 소실의 반복 근거 확인을 보완했다. 기존 확인과 별도 확인 알림 유지, 해제 성능과 전체 침입 정확도는 미평가. 동결 후 사용자 검수는 docs/experiments/EXP-0048-user-review.md에 기록."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T10:25:09.757182+00:00",
+      "attempt_id": "activity-007v1-030v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_7649ecfabd48",
+      "evaluated_model": "CPU frozen EXP48 evidence and saved actual portal observations; grouping only; no inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0049-007-continuous",
+          "kind": "video",
+          "label": "007 전체 문 관측 비교"
+        },
+        {
+          "artifact_id": "exp0049-007-detail",
+          "kind": "video",
+          "label": "007 문 관측 변화 구간"
+        },
+        {
+          "artifact_id": "exp0049-030-continuous",
+          "kind": "video",
+          "label": "030 전체 문 관측 비교"
+        },
+        {
+          "artifact_id": "exp0049-030-detail",
+          "kind": "video",
+          "label": "030 문 관측 변화 구간"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0049",
+      "limitations": [
+        "관측 지속은 동일인 또는 올바른 사건 경계의 증명이 아님",
+        "문 주변 오검출이나 다른 보행자가 사건을 오래 유지할 수 있음",
+        "검출 공백3초는 실제 연속 상황을 나눌 수 있으나 이번 두 구간에서 실제 분할 없음",
+        "기존 침입/해제 판단의 한계와 미결 근거는 그대로",
+        "030은 선택 구간 끝에서3초 빈 관측 대기가 끝나지 않아 열린 상태를 보존",
+        "실제 해제0으로 해제 성능 미평가"
+      ],
+      "metric_definitions": "records/EXP-0049/metrics.json",
+      "metrics_path": "records/EXP-0049/metrics.json",
+      "metrics_sha256": "0e8d8cbd49729c4076990cce85db7466d6ca1953aa50507a49a122f10c60be97",
+      "next_step": "이번 고정 설정 비교 종료.기본MVP 보존, 후속 자동 튜닝이나 새 추론 없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "63d7066e8cfa7f95ca7df95e9a39196b03a6b27d9568c63e83b1fd10a195b950",
+      "report_path": "docs/experiments/EXP-0049-results.md",
+      "report_sha256": "5a7dd42983f42f8b2267b7e480bcdc2421e276fd70b1d95d0f21d277f0fbe855",
+      "review_binding_path": "docs/reviews/EXP-0049.binding.json",
+      "review_path": "docs/reviews/EXP-0049-independent-review.md",
+      "review_sha256": "47ce3d6a08d5dee9a00b5c15a883be2c5ce9bc1995971a34e858ef26a33ca357",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "0e8d8cbd49729c4076990cce85db7466d6ca1953aa50507a49a122f10c60be97",
+      "reviewed_report_sha256": "5a7dd42983f42f8b2267b7e480bcdc2421e276fd70b1d95d0f21d277f0fbe855",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "개별 근거 상태를 보존한 사건 묶음 비교.03097초대 후속 후보는 같은 확인 사건에 포함, 확인 알림1회 유지.007은74.566667초 관찰 종료 후 후반 일반 통행으로 재개되지 않음.관찰 종료는 해제가 아니며 기본 적용은 보류.",
+      "synthetic": false,
+      "task_id": "task_4f4ddc310694",
+      "title": "EXP-0049 문 주변 실제 관측 사건 유지·종료",
+      "worker_opinion": "두 구간 모두 사건2개를1개로 정리하고 별도 첫 확인 알림 시각을 보존했다.개별 미결 근거를 확인으로 승격하지 않았고 관찰 종료와 해제를 분리했다.검출 정확도나 해제 성공률 개선은 아니다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

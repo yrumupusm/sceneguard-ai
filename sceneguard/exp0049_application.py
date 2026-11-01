@@ -142,14 +142,11 @@ def replay_activity(prior, frames, portal, *, policy=ActivityPolicy(), detection
     return result
 
 
-def execute(previous_directory, paths_directory, portal_directory, output):
+def prepare_inputs(previous_directory, paths_directory, portal_directory):
+    """Read-only full-input preflight; never runs the activity replay."""
     from .portal_births import PortalGate
     from .gate_episode_evidence import EpisodePolicy
-    begin = time.perf_counter()
-    previous, paths, portal_dir, out = map(Path, (previous_directory, paths_directory, portal_directory, output))
-    if (out.exists() or out.is_symlink() or any(p.is_symlink() for p in out.parents)
-            or not out.resolve().is_relative_to(Path('outputs').resolve())):
-        raise ValueError('Use a new non-symlink output directory under outputs/')
+    previous, paths, portal_dir = map(Path, (previous_directory, paths_directory, portal_directory))
     request, summary = load(previous/'request.json'), load(previous/'summary.json')
     prior = load(previous/'lifecycle-cards.json')
     if request.get('experiment') != 'EXP-0048' or summary.get('experiment') != 'EXP-0048':
@@ -176,12 +173,30 @@ def execute(previous_directory, paths_directory, portal_directory, output):
     for r in frames:
         if abs(float(Fraction(r['native_pts'])*Fraction(r['time_base']))-r['pts']) > 1e-7:
             raise ValueError('Original PTS/time base mismatch')
+        indices = [b['cache_index'] for b in r['actual_boxes']]
+        if len(indices) != len(set(indices)):
+            raise ValueError('Duplicate saved actual box reference')
     scene, region = load(portal_dir/'scene-used.json'), load(portal_dir/'portal-region.json')
     camera = prior['events'][0]['camera_id']
     gate = PortalGate(scene, region, camera)
     policy, floor = ActivityPolicy().validate(), EpisodePolicy().validate().detection_floor
     files = ('exp0049_application.py','gate_activity_episodes.py','portal_births.py','gate_episode_evidence.py')
     code = {str(Path(__file__).with_name(n)): sha(Path(__file__).with_name(n)) for n in files}
+    frozen_schedule(prior, frames)
+    # Validate every actual portal lookup before creating a comparison output.
+    for frame in frames:
+        activity_references(frame, gate, floor)
+    return prior, frames, gate, policy, floor, protected, code
+
+
+def execute(previous_directory, paths_directory, portal_directory, output):
+    begin = time.perf_counter()
+    previous, paths, portal_dir, out = map(Path, (previous_directory, paths_directory, portal_directory, output))
+    if (out.exists() or out.is_symlink() or any(p.is_symlink() for p in out.parents)
+            or not out.resolve().is_relative_to(Path('outputs').resolve())):
+        raise ValueError('Use a new non-symlink output directory under outputs/')
+    prior, frames, gate, policy, floor, protected, code = prepare_inputs(previous, paths, portal_dir)
+    region = load(portal_dir/'portal-region.json')
     out.mkdir(parents=True, exist_ok=False)
     save(out/'request.json', dict(experiment='EXP-0049', activity_policy=asdict_policy(policy),
         detection_floor=floor, prior_directory=str(previous), paths_directory=str(paths),

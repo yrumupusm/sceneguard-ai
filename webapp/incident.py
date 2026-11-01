@@ -215,6 +215,58 @@ def load_lifecycle(data, entry, bundle_id, media):
         outcome_routing=data.get('outcome_routing', []) if experiment == 'EXP-0048' else [])
 
 
+def load_activity(data, entry, bundle_id, media):
+    """Expose only validated causal snapshots of the frozen activity comparison."""
+    from sceneguard.gate_activity_episodes import activity_cards_at, SUSPECTED, CONFIRMED, RELEASED
+    if (data.get('contract') != 'gate_activity_episodes_v1' or data.get('experiment') != 'EXP-0049'
+            or data.get('live_notifications_enabled') is not False or entry.get('notification_enabled') is not False
+            or data.get('source_resolution_ids_refer_to_prior_cards') is not True):
+        raise ValueError('invalid activity comparison')
+    start, end = data['source_window']; number(start); number(end)
+    media_start = number(entry.get('media_start_pts', start)); session = entry.get('session_id')
+    if end <= start or media_start > start or not isinstance(session, str) or not session:
+        raise ValueError('invalid activity registration')
+    events, timeline, intents, resolutions = (data[k] for k in ('events', 'timeline', 'notification_intents', 'source_resolution_log'))
+    if not all(isinstance(v, list) for v in (events, timeline, intents, resolutions)):
+        raise ValueError('invalid activity rows')
+    by_id = {e['event_id']: e for e in events}
+    if len(by_id) != len(events) or any(e['session_id'] != session or not HEX.fullmatch(e['event_id']) or not start <= number(e['decision_time_pts']) <= end for e in events):
+        raise ValueError('invalid activity events')
+    clean = []; previous = start; notices = {}; seen = set()
+    for row in timeline:
+        at = number(row['decision_time_pts']); cid = row['incident_id']; card = row['card']
+        if (at < previous or at > end or not re.fullmatch(r'activity-[0-9a-f]{24}', cid) or card['incident_id'] != cid
+                or card['session_id'] != session or card['automatic_status'] not in (SUSPECTED, CONFIRMED, RELEASED)
+                or row['automatic_status'] != card['automatic_status'] or card['lifecycle_updated_pts'] != at
+                or card['observation_status'] not in ('open', 'closed') or not card['event_ids']
+                or any(eid not in by_id or by_id[eid]['decision_time_pts'] > at + 1e-9 for eid in card['event_ids'])):
+            raise ValueError('invalid activity snapshot')
+        for field in ('first_alert_pts', 'first_notification_pts', 'first_confirmation_pts', 'last_gate_observation_pts', 'observation_closed_pts'):
+            if card.get(field) is not None and number(card[field]) > at + 1e-9: raise ValueError('future activity state')
+        if (card['observation_status'] == 'closed') != (card['observation_closed_pts'] is not None): raise ValueError('invalid closure')
+        previous = at; kind = row['notification_kind']; key = row['notification_key']
+        if kind is None:
+            if row['notify'] is not False or key is not None: raise ValueError('invalid activity notice')
+        else:
+            if kind not in ('suspicion', 'confirmation') or row['notify'] is not True or not isinstance(key, str) or not key or key in notices or (cid, kind) in seen: raise ValueError('invalid activity notice')
+            notices[key] = (cid, kind, at); seen.add((cid, kind))
+        snapshot = next(c for c in activity_cards_at([row], at) if c['incident_id'] == cid)
+        clean.append(dict(incident_id=cid, decision_time_pts=at, card=snapshot))
+    if len(intents) != len(notices): raise ValueError('invalid activity intents')
+    keys = set()
+    for intent in intents:
+        key = intent['notification_key']; at = number(intent['decision_time_pts'])
+        if key in keys or notices.get(key) != (intent['incident_id'], intent['kind'], at) or intent.get('delivery_measured') is not False: raise ValueError('invalid activity intent')
+        keys.add(key)
+    for resolution in resolutions:
+        if not start <= number(resolution['decision_time_pts']) <= end: raise ValueError('invalid source resolution')
+    return dict(contract='gate_activity_episodes_v1', experiment='EXP-0049', notification_enabled=False,
+        source_window=[start, end], media_start_pts=media_start, media_artifact_id=media,
+        bundle_sha256=entry['sha256'], session_id=session, timeline=clean, notification_intents=intents,
+        source_resolution_log=resolutions, source_label=entry.get('source_label', bundle_id),
+        view_label=entry.get('view_label', ''), provenance_label=entry.get('provenance_label', '저장 결과 재생'))
+
+
 def load_bundle(c, bundle_id):
     entry = c['incident_bundles'][bundle_id]
     if not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', bundle_id) or not HEX.fullmatch(entry['sha256']):
@@ -245,6 +297,14 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
+    if entry['experiment_id'] == 'EXP-0049':
+        if data.get('experiment') == 'EXP-0049':
+            return load_activity(data, entry, bundle_id, media)
+        if data.get('experiment') == 'EXP-0048':
+            result = load_lifecycle(data, entry, bundle_id, media)
+            result['comparison_registration'] = 'EXP-0049'
+            return result
+        raise ValueError('wrong activity comparison')
     if entry['experiment_id'] == 'EXP-0048':
         if data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') == 'history':
             result = load_exp0041(data, entry, bundle_id, media)
