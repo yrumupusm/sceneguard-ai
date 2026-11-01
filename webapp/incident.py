@@ -13,7 +13,7 @@ from .app import app, artifact, catalog, config, safe_open
 
 HEX = re.compile(r'^[0-9a-f]{64}$')
 INCIDENT = re.compile(r'^incident-[0-9a-f]{24}$')
-POINTER = re.compile(r'^/(?:(?:events|existing_alerts)/[0-9]+|transition_events/[0-9a-f]{64})$')
+POINTER = re.compile(r'^/(?:(?:events|existing_alerts)/[0-9]+|(?:transition_events|inside_birth_events)/[0-9a-f]{64})$')
 
 
 def number(x):
@@ -50,14 +50,14 @@ def load_exp0041(data, entry, bundle_id, media):
         if any(data[k] != baseline[k] for k in ('policy', 'timeline', 'cards', 'counts')):
             raise ValueError('invalid baseline grouping')
         grouped = group_notifications(data['events'])
-    elif data.get('experiment') in ('EXP-0041', 'EXP-0042', 'EXP-0044') and data.get('contract') == 'group_all_then_notify_v1':
+    elif data.get('experiment') in ('EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045') and data.get('contract') == 'group_all_then_notify_v1':
         if data.get('live_notifications_enabled') is not False:
             raise ValueError('comparison notifications must be disabled')
         review_ids = [e['event_id'] for e in data['review_only_events']]
         if data['experiment'] == 'EXP-0042' and (review_ids or data.get('comparison_mode') not in ('baseline', 'transition-only', 'combined')):
             raise ValueError('invalid all-active comparison')
         grouped = group_notifications(data['events'], review_ids)
-        if data['experiment'] == 'EXP-0044':
+        if data['experiment'] in ('EXP-0044', 'EXP-0045'):
             # Reconstruct only the automatic overlay from decisions belonging to
             # each prefix; never take a final card's state back into the past.
             by_event = {e['event_id']: e for e in data['events']}
@@ -119,6 +119,21 @@ def load_exp0041(data, entry, bundle_id, media):
                 raise ValueError('new candidate in baseline')
             if data['comparison_mode'] == 'transition-only' and source['collection'] != 'transition_events':
                 raise ValueError('original candidate in diagnostic')
+        if source['collection'] == 'inside_birth_events':
+            birth = event['source_event']
+            if (data.get('experiment') != 'EXP-0045' or data.get('comparison_mode') not in ('birth-only', 'combined') or
+                    source['source_pointer'] != '/inside_birth_events/' + eid or
+                    birth.get('evidence_until_pts') != event['decision_time_pts'] or
+                    not start <= number(birth['birth_pts']) <= event['decision_time_pts'] or
+                    birth.get('decision_time_pts') != event['decision_time_pts'] or
+                    any(not isinstance(birth.get(k), list) or len(birth[k]) != 4 or
+                        any(type(x) not in (int, float) or not math.isfinite(x) for x in birth[k])
+                        for k in ('first_actual_bbox', 'current_actual_bbox')) or
+                    birth.get('automatic_confirmation') is not False or birth.get('human_verified') is not False or
+                    not birth['birth_site']['inside_birth_site']):
+                raise ValueError('invalid birth candidate reference')
+        elif data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') == 'birth-only':
+            raise ValueError('original candidate in birth-only view')
         if any(type(i) is not int or i < 0 for i in event['track_ids']):
             raise ValueError('invalid track ids')
     return dict(grouped, notification_enabled=False, source_window=[start, end],
@@ -160,15 +175,19 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
-    if entry['experiment_id'] in ('EXP-0041', 'EXP-0042', 'EXP-0044'):
+    if entry['experiment_id'] in ('EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045'):
         if entry['experiment_id'] == 'EXP-0042' and data.get('experiment') != 'EXP-0042':
             raise ValueError('wrong comparison experiment')
         if entry['experiment_id'] == 'EXP-0044' and (data.get('experiment') not in ('EXP-0036', 'EXP-0042', 'EXP-0044') or
                 (data.get('experiment') == 'EXP-0042' and data.get('comparison_mode') != 'baseline')):
             raise ValueError('wrong directional comparison')
+        if entry['experiment_id'] == 'EXP-0045' and not (
+                (data.get('experiment') == 'EXP-0042' and data.get('comparison_mode') == 'baseline') or
+                (data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') in ('history', 'birth-only', 'combined'))):
+            raise ValueError('wrong episode comparison')
         result = load_exp0041(data, entry, bundle_id, media)
-        if entry['experiment_id'] == 'EXP-0044':
-            result['experiment'] = 'EXP-0044'
+        if entry['experiment_id'] in ('EXP-0044', 'EXP-0045'):
+            result['experiment'] = entry['experiment_id']
         return result
     comparison = entry['experiment_id'] == 'EXP-0040'
     if (data['experiment'] not in (('EXP-0036', 'EXP-0040') if comparison else ('EXP-0036',))
@@ -277,7 +296,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():

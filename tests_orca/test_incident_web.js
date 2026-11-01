@@ -73,6 +73,17 @@ async function tick() { await new Promise(resolve => setImmediate(resolve)); }
   autoVideo.currentTime=1.5; autoVideo.fire('seeked');
   assert.match(autoCards.children[0].children[0].textContent,/침입 의심 · 자동/);
   assert.doesNotMatch(autoCards.children[0].children[1].textContent,/첫 자동 확인/);
+  const birthEvent = {event_id:'b', decision_time_pts:12, source_ref:{collection:'inside_birth_events',source_pointer:'/inside_birth_events/b',raw_id:null,segment:0}, source_event:{birth_pts:11.9,first_actual_bbox:[1,2,3,4],current_actual_bbox:[2,3,4,5]}};
+  ctx.birthFixture = {...ctx.autoFixture, experiment:'EXP-0045', contract:'group_all_then_notify_v1', events:[ctx.fixture.events[0],birthEvent], timeline:[{...ctx.autoFixture.timeline[0],card:{...automaticFirst,notification_eligible:true,first_notification_pts:11,review_only_event_ids:[]}}, {...ctx.autoFixture.timeline[1],card:{...automaticSecond,notification_eligible:true,first_notification_pts:11,review_only_event_ids:[]}}]};
+  ctx.birthHolder = new Element('div');
+  vm.runInContext("renderIncidentFlow(birthHolder, 'exp45', birthFixture)",ctx);
+  const birthVideo=ctx.birthHolder.children[1], birthCards=ctx.birthHolder.children[4];
+  birthVideo.currentTime=1.5; birthVideo.fire('seeked');
+  assert.equal(birthCards.children[0].children[2].children[1].children.length,1);
+  birthVideo.currentTime=2.1; birthVideo.fire('seeked');
+  assert.match(birthCards.children[0].children[2].children[1].children[1].textContent,/첫 실제 관측 11\.900초 · 첫 박스/);
+  birthVideo.currentTime=1.5; birthVideo.fire('seeked');
+  assert.equal(birthCards.children[0].children[2].children[1].children.length,1);
   fullVideo.currentTime = 11; fullVideo.fire('seeked');
   ctx.fullHolder.children[4].children[0].children[3].fire('click');
   assert.equal(fullVideo.currentTime, 10);

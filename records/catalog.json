@@ -3632,6 +3632,85 @@
       "task_id": "task_5c9b491fd519",
       "title": "EXP-0044 입구 방향·소실 자동 판정 비교",
       "worker_opinion": "자동상태 구현/실행 완료. 기존 필요한 의심과 수동 검토 보존. 자동 확인1건의 개별 소실/완료 정답은 미확정이며 기본MVP 적용은 보류."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T04:49:25.467945+00:00",
+      "attempt_id": "gate-episode-v1-007030",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_ccfb340f8a4c",
+      "evaluated_model": "CPU gate-episode history and first-observation geometry over saved FCOS observations and feature paths; no inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0045-007-continuous",
+          "kind": "video",
+          "label": "007 전체 원본·이력·최초 박스·판정 · continuous"
+        },
+        {
+          "artifact_id": "exp0045-007-history-s0006",
+          "kind": "video",
+          "label": "007 이력 보완 자동 확인 · history-s0006"
+        },
+        {
+          "artifact_id": "exp0045-007-first-observation-observation-00060",
+          "kind": "video",
+          "label": "007 최초 박스 근접 조건 제외 진단 · first-observation-observation-00060"
+        },
+        {
+          "artifact_id": "exp0045-007-first-observation-observation-00070",
+          "kind": "video",
+          "label": "007 최초 박스 근접 조건 제외 진단 · first-observation-observation-00070"
+        },
+        {
+          "artifact_id": "exp0045-030-continuous",
+          "kind": "video",
+          "label": "030 전체 원본·이력·최초 박스·판정 · continuous"
+        },
+        {
+          "artifact_id": "exp0045-030-history-s0004",
+          "kind": "video",
+          "label": "030 이력 보완 자동 확인 · history-s0004"
+        },
+        {
+          "artifact_id": "exp0045-030-first-observation-observation-00048",
+          "kind": "video",
+          "label": "030 최초 박스 근접 조건 제외 진단 · first-observation-observation-00048"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0045",
+      "limitations": [
+        "B최초위치조건충족실제박스0; B효용미확인",
+        "기존접근·대기의심오탐유지",
+        "A자동확인은카메라규칙이며수동정답/개별완료확정아님",
+        "007영역과정책동시적용;030자기박스높이근접변경영향",
+        "정밀독립정답부족;정확도F1미산출",
+        "B0이므로실제B양성카드전환은미검증,합성시험과구분"
+      ],
+      "metric_definitions": "records/EXP-0045/metrics.json",
+      "metrics_path": "records/EXP-0045/metrics.json",
+      "metrics_sha256": "b688298a4f7d2f59bd229c58fb13c86c98d59a04179852c0cf7586fba7b42068",
+      "next_step": "승인된비교종료. 기존MVP유지; 새튜닝/추론자동시작없음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "50c35903c16233a83e3005554bc3c34d39fc7f3b9b02b5fa6f5e1be72ecda37b",
+      "report_path": "docs/experiments/EXP-0045-results.md",
+      "report_sha256": "185f5049b469d24fe45355052ea4974b825a6f027812989bf02f4230d215395c",
+      "review_binding_path": "docs/reviews/EXP-0045.binding.json",
+      "review_path": "docs/reviews/EXP-0045-independent-review.md",
+      "review_sha256": "2adc956ff389af86f117b52cd2f414a6e192821811b01b666213b50feae4b20c",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "b688298a4f7d2f59bd229c58fb13c86c98d59a04179852c0cf7586fba7b42068",
+      "reviewed_report_sha256": "185f5049b469d24fe45355052ea4974b825a6f027812989bf02f4230d215395c",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "00772.6초 이력 보완 자동확인1건;03092.733초 추가확인으로 같은카드 첫확인0.3초앞당김. 접근·대기새자동확인0/기존의심오탐유지. B두영상0:최초박스근접조건미충족. 원래18알림/5카드/최초통지보존.",
+      "synthetic": false,
+      "task_id": "task_4b4f70a984d8",
+      "title": "EXP-0045 문 근처 이력·문 바로 안쪽 새 관측",
+      "worker_opinion": "A의007특정실패보완은확인됐으나 B실제효용은미확인. 개별완료정답/범용성능아님. 기본교체보류."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

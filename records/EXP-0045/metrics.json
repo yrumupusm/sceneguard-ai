@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0045",
+  "metrics": [
+    {
+      "label": "007 선택 프레임",
+      "value": 1710,
+      "unit": "frames",
+      "sample_n": 1710,
+      "scope": "007 whole selected sequence",
+      "source": "outputs/exp0045/007-v1/summary.json",
+      "source_sha256": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 EXP44 자동 확인",
+      "value": 0,
+      "unit": "cases",
+      "sample_n": 9,
+      "scope": "007 loss candidates, not people",
+      "source": "outputs/exp0044/007-v1/decisions.json",
+      "source_sha256": "2c96c7c9c6527dc433a24bbd6e301f2cc6700fd20617723bff2f4d37b5d2da40",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 A 자동 확인",
+      "value": 1,
+      "unit": "cases",
+      "sample_n": 9,
+      "scope": "007 loss candidates, not verified successes",
+      "source": "outputs/exp0045/007-v1/summary.json",
+      "source_sha256": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 B 새 출현 후보",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 1710,
+      "scope": "007 whole selected sequence",
+      "source": "outputs/exp0045/007-v1/summary.json",
+      "source_sha256": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 기존 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "007 unchanged original grouping",
+      "source": "outputs/exp0045/007-v1/summary.json",
+      "source_sha256": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 결합 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 1710,
+      "scope": "007 combined grouping",
+      "source": "outputs/exp0045/007-v1/summary.json",
+      "source_sha256": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 흡수된 원래 첫 통지",
+      "value": 0,
+      "unit": "notices",
+      "sample_n": 2,
+      "scope": "007 original first notice preservation",
+      "source": "outputs/exp0045/007-v1/summary.json",
+      "source_sha256": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 CPU 처리 시간",
+      "value": 2.001089191006031,
+      "unit": "seconds",
+      "sample_n": 1710,
+      "scope": "007 saved replay, not model inference or real-time latency",
+      "source": "outputs/exp0045/007-v1/summary.json",
+      "source_sha256": "26d1096328698c92cd1be2aae525d8694da965d2c675d35120cbf7c51055248d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 첫 관측열 검사",
+      "value": 152,
+      "unit": "runs",
+      "sample_n": 152,
+      "scope": "007 geometric runs, not people",
+      "source": "outputs/exp0045/007-v1/birth-audits.json",
+      "source_sha256": "5090ce02e248d864b2d6f847250c880ec39e992589f7d3c850161fb85219343d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "007 최초 위치 조건 충족",
+      "value": 0,
+      "unit": "runs",
+      "sample_n": 152,
+      "scope": "007 first-site gate test before support",
+      "source": "outputs/exp0045/007-v1/birth-audits.json",
+      "source_sha256": "5090ce02e248d864b2d6f847250c880ec39e992589f7d3c850161fb85219343d",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 선택 프레임",
+      "value": 480,
+      "unit": "frames",
+      "sample_n": 480,
+      "scope": "030 whole selected sequence",
+      "source": "outputs/exp0045/030-v1/summary.json",
+      "source_sha256": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 EXP44 자동 확인",
+      "value": 1,
+      "unit": "cases",
+      "sample_n": 5,
+      "scope": "030 loss candidates, not people",
+      "source": "outputs/exp0044/030-v1/decisions.json",
+      "source_sha256": "a869b10aa15a1ad44ca686bce4ab62bf10fdb3ea32951c2006ec09da18959f15",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 A 자동 확인",
+      "value": 2,
+      "unit": "cases",
+      "sample_n": 5,
+      "scope": "030 loss candidates, not verified successes",
+      "source": "outputs/exp0045/030-v1/summary.json",
+      "source_sha256": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 B 새 출현 후보",
+      "value": 0,
+      "unit": "candidates",
+      "sample_n": 480,
+      "scope": "030 whole selected sequence",
+      "source": "outputs/exp0045/030-v1/summary.json",
+      "source_sha256": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 기존 사건 카드",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "030 unchanged original grouping",
+      "source": "outputs/exp0045/030-v1/summary.json",
+      "source_sha256": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 결합 사건 카드",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 480,
+      "scope": "030 combined grouping",
+      "source": "outputs/exp0045/030-v1/summary.json",
+      "source_sha256": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 흡수된 원래 첫 통지",
+      "value": 0,
+      "unit": "notices",
+      "sample_n": 3,
+      "scope": "030 original first notice preservation",
+      "source": "outputs/exp0045/030-v1/summary.json",
+      "source_sha256": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 CPU 처리 시간",
+      "value": 0.6283221279736608,
+      "unit": "seconds",
+      "sample_n": 480,
+      "scope": "030 saved replay, not model inference or real-time latency",
+      "source": "outputs/exp0045/030-v1/summary.json",
+      "source_sha256": "e1bef2d34edb8db00fd0d4e88fdf122b4c471e86b6d67a66b2c27cbf3eff11ea",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 첫 관측열 검사",
+      "value": 70,
+      "unit": "runs",
+      "sample_n": 70,
+      "scope": "030 geometric runs, not people",
+      "source": "outputs/exp0045/030-v1/birth-audits.json",
+      "source_sha256": "228ebe3739f5a5c102df0158ae9985715bc4013445688d163bb4a809f79ef65a",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "030 최초 위치 조건 충족",
+      "value": 0,
+      "unit": "runs",
+      "sample_n": 70,
+      "scope": "030 first-site gate test before support",
+      "source": "outputs/exp0045/030-v1/birth-audits.json",
+      "source_sha256": "228ebe3739f5a5c102df0158ae9985715bc4013445688d163bb4a809f79ef65a",
+      "verification": "saved_output_and_independent_audit"
+    },
+    {
+      "label": "최종 침입 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "Not measured: development scenes and insufficient independent ground truth",
+      "source": "docs/experiments/EXP-0045-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}

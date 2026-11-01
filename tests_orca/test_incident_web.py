@@ -299,4 +299,41 @@ class IncidentWebTests(unittest.TestCase):
         self.assertEqual(self.client.get(url).status_code, 404)
 
 
+    def test_exp0045_views_birth_and_prefix_validation(self):
+        from sceneguard.exp0045_application import annotate
+        old = deepcopy(self.bundle['events'])
+        old[1]['source_event']['reason'] = 'recent_gate_presence_then_loss'
+        loss = old[1]
+        decision = dict(event_id=loss['event_id'], source_ref=loss['source_ref'],
+                        decision_time_pts=12, decision_source='automatic_rule', human_verified=False,
+                        automatic_confirmation=True, notify=True)
+        eid = 'a' * 64
+        birth = deepcopy(old[0]); birth.update(event_id=eid, decision_time_pts=13, track_ids=[],
+            source_ref=dict(collection='inside_birth_events', source_pointer='/inside_birth_events/'+eid, raw_id=None, segment=0),
+            source_event=dict(birth_pts=12.9, decision_time_pts=13, evidence_until_pts=13, automatic_confirmation=False,
+                human_verified=False, birth_site=dict(inside_birth_site=True),
+                first_actual_bbox=[1,2,3,4], current_actual_bbox=[2,3,4,5]))
+        self.assignments.write_text(json.dumps({'assignments':[{'experiment_id':'EXP-0045'}]}))
+        entry = dict(self.config['incident_bundles']['007'], experiment_id='EXP-0045',
+                     session_id='fixture', notification_enabled=False)
+        self.config['incident_bundles']['exp45'] = entry
+        url = '/api/incidents/exp45'
+        for mode, events in [('history', old), ('birth-only', [birth]), ('combined', old+[birth])]:
+            self.bundle = annotate(group_notifications(events), [] if mode == 'birth-only' else [decision])
+            self.bundle.update(source_window=[10,20], comparison_mode=mode)
+            self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+            response = self.client.get(url); self.assertEqual(response.status_code, 200, mode)
+            timeline = response.json()['timeline']
+            if mode == 'combined':
+                self.assertNotIn(eid, timeline[0]['card']['event_ids'])
+                self.assertFalse(timeline[0]['card']['automatic_confirmation'])
+                self.assertTrue(timeline[1]['card']['automatic_confirmation'])
+                self.assertIn(eid, timeline[-1]['card']['event_ids'])
+            if mode == 'birth-only':
+                self.assertFalse(timeline[0]['card']['automatic_confirmation'])
+        self.bundle['timeline'][0]['card']['automatic_confirmation'] = True
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
+
+
 if __name__ == '__main__': unittest.main()

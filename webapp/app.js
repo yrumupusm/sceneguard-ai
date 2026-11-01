@@ -117,7 +117,7 @@ async function selectReport(id) {
       evidence.append(block);
     });
     if (id === 'EXP-0036') addIncidentFlows(detail, request);
-    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044') addFinishFlows(detail, request, id);
+    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045') addFinishFlows(detail, request, id);
     heading(detail, '담당 의견').append(node('p', show(d.worker_opinion)));
     const review = heading(detail, '총괄 검토');
     review.dataset.section = 'review';
@@ -319,9 +319,9 @@ function renderIncidentFlow(holder, id, data) {
         const evidence = node('button', '근거 시점 보기'); evidence.dataset.incidentSeek = card.incident_id;
         evidence.addEventListener('click', () => { video.pause(); video.currentTime = Math.max(start, card.first_alert_pts - 3) - mediaStart; });
         const savedDetails = storageGet(`incident-details:${stateId}:${card.incident_id}`);
-        details.open = savedDetails === null ? data.experiment === 'EXP-0042' : savedDetails === 'true';
+        details.open = savedDetails === null ? ['EXP-0042', 'EXP-0045'].includes(data.experiment) : savedDetails === 'true';
         details.addEventListener('toggle', () => storageSet(`incident-details:${stateId}:${card.incident_id}`, String(details.open)));
-        details.append(node('summary', data.experiment === 'EXP-0042' ? '후보 발생 시각과 참조' : '원래 알림 참조'), list);
+        details.append(node('summary', ['EXP-0042', 'EXP-0045'].includes(data.experiment) ? '후보 발생 시각과 참조' : '원래 알림 참조'), list);
         block.append(title, summary, details, evidence);
         entry = {block, title, summary, details, list, fingerprint: null};
         entry.attached = false;
@@ -342,8 +342,10 @@ function renderIncidentFlow(holder, id, data) {
       entry.list.replaceChildren();
       for (const eventId of card.event_ids) {
         const event = events.get(eventId); const ref = event.source_ref;
-        const candidateKind = data.experiment === 'EXP-0042' ? (ref.collection === 'transition_events' ? '새 후보 발생' : '기존 후보 발생') + ' · ' : '';
-        entry.list.append(node('li', `${candidateKind}${event.decision_time_pts.toFixed(3)}초 · ${ref.source_pointer} · raw ID ${show(ref.raw_id)} · segment ${show(ref.segment)} · event ${eventId}${isComparison41 && card.review_only_event_ids.includes(eventId) ? ' · 검토 전용' : ''}`));
+        const candidateKind = data.experiment === 'EXP-0045' ? (ref.collection === 'inside_birth_events' ? '안쪽 새 관측' : '기존 후보') + ' · ' : data.experiment === 'EXP-0042' ? (ref.collection === 'transition_events' ? '새 후보 발생' : '기존 후보 발생') + ' · ' : '';
+        const birth = ref.collection === 'inside_birth_events' ? event.source_event : null;
+        const birthInfo = birth ? ` · 첫 실제 관측 ${birth.birth_pts.toFixed(3)}초 · 첫 박스 ${JSON.stringify(birth.first_actual_bbox)} · 판단 시 실제 박스 ${JSON.stringify(birth.current_actual_bbox)}` : '';
+        entry.list.append(node('li', `${candidateKind}${event.decision_time_pts.toFixed(3)}초 · ${ref.source_pointer}${birthInfo} · raw ID ${show(ref.raw_id)} · segment ${show(ref.segment)} · event ${eventId}${isComparison41 && card.review_only_event_ids.includes(eventId) ? ' · 검토 전용' : ''}`));
       }
     }
   }
@@ -450,7 +452,7 @@ function selectPending(id) {
     node('p', `Orca 작업: ${observationText(nativeObservation(assignment, statusData))}`, 'muted'),
     node('p', `요청 모델: ${show(assignment?.agent_model_requested)} · 실효 모델: ${show(assignment?.agent_model_effective)} · 실효 effort: ${show(assignment?.reasoning_effective)}`, 'muted'));
   if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
-  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044') addFinishFlows(detail, selectionRequest, id);
+  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045') addFinishFlows(detail, selectionRequest, id);
   renderChoices();
 }
 function selectSlot(id) {
