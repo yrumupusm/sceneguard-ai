@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0044",
+  "metrics": [
+    {
+      "label": "007 평가 소실",
+      "value": 9,
+      "unit": "cases",
+      "sample_n": 9,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 자동 확인",
+      "value": 0,
+      "unit": "rule_decisions",
+      "sample_n": 9,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 의심 유지",
+      "value": 9,
+      "unit": "rule_decisions",
+      "sample_n": 9,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 통지 보류",
+      "value": 0,
+      "unit": "rows",
+      "sample_n": 9,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 원래 알림 보존",
+      "value": 10,
+      "unit": "rows",
+      "sample_n": 9,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 사건 카드",
+      "value": 2,
+      "unit": "cards",
+      "sample_n": 9,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 최초 통지",
+      "value": 2,
+      "unit": "notices",
+      "sample_n": 9,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 CPU 판정 시간",
+      "value": 1.5375719540170394,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/007-v1/summary.json",
+      "source_sha256": "a2f033f2fb951da37de6620d691bfe20d898372f449155167153e3f2e8c179c4",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "007 최종 표시 영상 제작 시간",
+      "value": 67.13866402802523,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "CPU 디코드/표시 인코드/시계 검증; 모델 추론FPS 아님",
+      "source": "outputs/exp0044/007-v1/media-v2/manifest.json",
+      "source_sha256": "5857d72f67af68bba0c5df32199f5d494c17aa16a5c2d2a8af2f6b93da03058b",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 평가 소실",
+      "value": 5,
+      "unit": "cases",
+      "sample_n": 5,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 자동 확인",
+      "value": 1,
+      "unit": "rule_decisions",
+      "sample_n": 5,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 의심 유지",
+      "value": 4,
+      "unit": "rule_decisions",
+      "sample_n": 5,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 통지 보류",
+      "value": 0,
+      "unit": "rows",
+      "sample_n": 5,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 원래 알림 보존",
+      "value": 8,
+      "unit": "rows",
+      "sample_n": 5,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 사건 카드",
+      "value": 3,
+      "unit": "cards",
+      "sample_n": 5,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 최초 통지",
+      "value": 3,
+      "unit": "notices",
+      "sample_n": 5,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 CPU 판정 시간",
+      "value": 0.49875983997480944,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "기존 개발 표본의 규칙 판정; 사람 정답/정확도 분모 아님",
+      "source": "outputs/exp0044/030-v1/summary.json",
+      "source_sha256": "e1ef4fb4dd8939038e18f27e19619f924073a7ab6e0965ecad4ba6ad5b9cd023",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "030 최종 표시 영상 제작 시간",
+      "value": 27.12677559396252,
+      "unit": "seconds",
+      "sample_n": 1,
+      "scope": "CPU 디코드/표시 인코드/시계 검증; 모델 추론FPS 아님",
+      "source": "outputs/exp0044/030-v1/media-v2/manifest.json",
+      "source_sha256": "16661ddb545e57ad31b09aeed45c168230336b4f6baf83ee0d796183392eb38a",
+      "verification": "actual_saved_output"
+    },
+    {
+      "label": "독립 침입 정확도",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "정밀 대상별 소실/완료 정답과 독립 표본 없음",
+      "source": "docs/experiments/EXP-0044-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}

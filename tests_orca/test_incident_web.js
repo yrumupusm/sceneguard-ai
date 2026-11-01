@@ -57,6 +57,22 @@ async function tick() { await new Promise(resolve => setImmediate(resolve)); }
   vm.runInContext("renderIncidentFlow(fullHolder, 'full', fullFixture)", ctx);
   const fullVideo = ctx.fullHolder.children[1];
   assert.equal(fullVideo.currentTime, 10);
+  const automaticFirst = {...card, automatic_status:'침입 의심', automatic_confirmation:false, first_confirmation_pts:null, decision_source:'automatic_rule', human_verified:false};
+  const automaticSecond = {...updated, automatic_status:'침입 확인', automatic_confirmation:true, first_confirmation_pts:12, decision_source:'automatic_rule', human_verified:false};
+  ctx.autoHolder = new Element('div');
+  ctx.autoFixture = {...ctx.fixture, notification_enabled:false, experiment:'EXP-0044', timeline:[
+    {...ctx.fixture.timeline[0],card:automaticFirst}, {...ctx.fixture.timeline[1],card:automaticSecond}]};
+  vm.runInContext("renderIncidentFlow(autoHolder, 'exp44', autoFixture)",ctx);
+  const autoVideo=ctx.autoHolder.children[1], autoCards=ctx.autoHolder.children[4];
+  autoVideo.currentTime=1.5; autoVideo.fire('seeked');
+  assert.match(autoCards.children[0].children[0].textContent,/침입 의심 · 자동/);
+  assert.doesNotMatch(autoCards.children[0].children[1].textContent,/첫 자동 확인/);
+  autoVideo.currentTime=2.1; autoVideo.fire('seeked');
+  assert.match(autoCards.children[0].children[0].textContent,/침입 확인 · 자동/);
+  assert.match(autoCards.children[0].children[1].textContent,/첫 자동 확인 12\.000초/);
+  autoVideo.currentTime=1.5; autoVideo.fire('seeked');
+  assert.match(autoCards.children[0].children[0].textContent,/침입 의심 · 자동/);
+  assert.doesNotMatch(autoCards.children[0].children[1].textContent,/첫 자동 확인/);
   fullVideo.currentTime = 11; fullVideo.fire('seeked');
   ctx.fullHolder.children[4].children[0].children[3].fire('click');
   assert.equal(fullVideo.currentTime, 10);

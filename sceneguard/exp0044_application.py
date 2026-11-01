@@ -55,19 +55,17 @@ def evaluate(baseline, bundle, frames, scene, group, policy=DirectionPolicy()):
     return proposal
 
 
-def execute(baseline_path, paths_directory, output, policy=DirectionPolicy()):
+def prepared_inputs(baseline_path, paths_directory):
+    """Validate real repository contracts without classifying any candidate."""
     from .exp0034_application import validated_inputs
     from .exp0035_application import validate_measured_partition
     from .exp0036_application import make_bundle
     from .gap_observation_support import catalog_frame
     from .incident_notifications import group_notifications
     from .incident_cards import GroupPolicy
+    from .run_mvp_review import REGION_BINDING
 
-    started = time.perf_counter(); policy.validate()
-    src,paths,out = Path(baseline_path),Path(paths_directory),Path(output)
-    if (out.exists() or out.is_symlink() or any(p.is_symlink() for p in out.parents)
-            or not out.resolve().is_relative_to(Path('outputs').resolve())):
-        raise ValueError('Use a new non-symlink output directory under outputs/')
+    src,paths = Path(baseline_path),Path(paths_directory)
     baseline = json.loads(src.read_text(encoding='utf-8'))
     if baseline.get('experiment')!='EXP-0035' or baseline.get('video_id') not in ('E01_007','E01_030'):
         raise ValueError('Preserved EXP35 source required')
@@ -87,10 +85,10 @@ def execute(baseline_path, paths_directory, output, policy=DirectionPolicy()):
         if sha(path)!=expected:
             raise ValueError('EXP42 protected input changed: '+path)
     evidence = paths/'frame-evidence.jsonl'
-    protected = [src,request_path,summary_path,evidence,Path(spec['tracks']),
-                 Path(baseline['source_paths']['scene']),Path(spec['regions'])]
+    protected = list(dict.fromkeys([src,request_path,summary_path,evidence,paths/'baseline-cards.json',
+        *(Path(p) for p in request['input_sha256']),Path(spec['gap_events']),
+        Path('configs/mvp0001_cameras.json'),Path(REGION_BINDING)]))
     before = {str(p):sha(p) for p in protected}
-    code = {str(p):sha(p) for p in (Path(__file__),Path(__file__).with_name('directional_loss.py'))}
     frames = [json.loads(line) for line in evidence.read_text().splitlines() if line.strip()]
     if len(frames)!=len(data['cached']) or len(frames)!=summary['frames']:
         raise ValueError('Full saved source window required')
@@ -102,14 +100,39 @@ def execute(baseline_path, paths_directory, output, policy=DirectionPolicy()):
     camera = 'C3' if key=='007' else 'C6'
     base = make_bundle(baseline,camera,camera+'_fence',baseline['video_id']+'-original')
     group = lambda events,review: group_notifications(events,review,GroupPolicy(**base['policy']))
+    base.update(group(base['events'], []))
+    preserved = json.loads((paths/'baseline-cards.json').read_text())
+    for field in ('events','cards','timeline','counts'):
+        if base[field] != preserved[field]:
+            raise ValueError('Original notification contract differs: '+field)
+    return baseline,preserved,frames,scene,group,before
+
+
+def execute(baseline_path, paths_directory, output, policy=DirectionPolicy()):
+    started = time.perf_counter(); policy.validate()
+    out = Path(output)
+    if (out.exists() or out.is_symlink() or any(p.is_symlink() for p in out.parents)
+            or not out.resolve().is_relative_to(Path('outputs').resolve())):
+        raise ValueError('Use a new non-symlink output directory under outputs/')
+    baseline,base,frames,scene,group,before = prepared_inputs(baseline_path,paths_directory)
+    code = {str(p):sha(p) for p in (Path(__file__),Path(__file__).with_name('directional_loss.py'))}
     proposal = evaluate(baseline,base,frames,scene,group,policy)
-    if before!={str(p):sha(p) for p in protected} or code!={p:sha(p) for p in code}:
+    if before!={p:sha(p) for p in before} or code!={p:sha(p) for p in code}:
         raise ValueError('Input or source changed during analysis')
     out.mkdir(parents=True,exist_ok=False)
-    save(out/'baseline-cards.json',base)
+    with (out/'baseline-cards.json').open('xb') as stream:
+        stream.write((Path(paths_directory)/'baseline-cards.json').read_bytes())
     save(out/'directional-cards.json',proposal)
     save(out/'decisions.json',proposal['decisions'])
     save(out/'geometry.json',proposal['geometry'])
+    save(out/'case-summary.json',[dict(video_id=baseline['video_id'],
+        **{k:d.get(k) for k in ('segment','raw_id','event_id','decision_time_pts',
+            'last_observed_pts','near_gate_at_loss','paired_point_count','continuation',
+            'automatic_confirmation','status','notify','reason')},
+        direction=d.get('direction',{}).get('direction'),
+        moving_points=d.get('direction',{}).get('moving_points',0),
+        last_valid_direction_pts=d.get('direction',{}).get('end_pts'))
+        for d in proposal['decisions']])
     summary = dict(experiment='EXP-0044',video_id=baseline['video_id'],policy=asdict(policy),
         cases=len(proposal['decisions']),
         automatic_confirmations=sum(d['automatic_confirmation'] for d in proposal['decisions']),

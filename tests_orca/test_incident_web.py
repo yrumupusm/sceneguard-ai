@@ -253,5 +253,50 @@ class IncidentWebTests(unittest.TestCase):
         self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
         self.assertEqual(self.client.get('/api/incidents/exp42').status_code, 404)
 
+    def test_exp0044_automatic_overlay_is_causal_and_independent_of_review(self):
+        from sceneguard.directional_loss import annotated_bundle
+        baseline = deepcopy(self.bundle)
+        baseline['events'][1]['source_event']['reason'] = 'recent_gate_presence_then_loss'
+        event = baseline['events'][1]
+        decision = dict(event_id=event['event_id'], source_ref=event['source_ref'],
+                        decision_time_pts=12, decision_source='automatic_rule', human_verified=False,
+                        automatic_confirmation=True, notify=True)
+        proposal = annotated_bundle(baseline, [decision], group_notifications)
+        proposal.update(source_window=[10, 20])
+        for card in proposal['cards'] + proposal['alert_cards'] + proposal['review_only_cards']:
+            card['decision_source'] = 'automatic_rule'
+        for row in proposal['timeline']:
+            row['card']['decision_source'] = 'automatic_rule'
+        self.bundle = proposal; self.write_bundle()
+        entry = dict(self.config['incident_bundles']['007'], experiment_id='EXP-0044',
+                     session_id='fixture', notification_enabled=False, sha256=self.sha())
+        self.config['incident_bundles']['exp44'] = entry
+        self.assignments.write_text(json.dumps({'assignments':[{'experiment_id':'EXP-0044'}]})); self.write_config()
+        url = '/api/incidents/exp44'
+        directional = deepcopy(self.bundle)
+        self.bundle = group_notifications(baseline['events'])
+        self.bundle.update(experiment='EXP-0042', comparison_mode='baseline', source_window=[10, 20])
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 200)
+        self.bundle['comparison_mode'] = 'combined'
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
+        self.bundle = directional; self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        response = self.client.get(url); self.assertEqual(response.status_code, 200)
+        data = response.json(); first, second = [row['card'] for row in data['timeline']]
+        self.assertEqual((first['status'], first['automatic_status'], first['first_confirmation_pts']), ('침입 의심', '침입 의심', None))
+        self.assertEqual((second['status'], second['automatic_status'], second['first_confirmation_pts']), ('침입 의심', '침입 확인', 12))
+        self.assertEqual(data['events'], baseline['events'])
+        self.assertEqual(self.client.post(url+'/claim', json={'notification_key':'anything'}, headers={'Origin':'http://localhost'}).status_code, 404)
+        cid = first['incident_id']; review_url = f'{url}/reviews/{cid}'
+        review = dict(status='판단 불가', reviewer='reviewer', note='', expected_version=0,
+                      session_id='fixture', bundle_sha256=self.sha())
+        self.assertEqual(self.client.post(review_url, json=review, headers={'Origin':'http://localhost'}).status_code, 200)
+        self.assertEqual(self.client.get(url).json()['timeline'][1]['card']['automatic_status'], '침입 확인')
+        self.assertEqual(self.client.get(review_url, params={'session_id':'fixture','bundle_sha256':self.sha()}).json()['review']['status'], '판단 불가')
+        self.bundle['timeline'][0]['card']['automatic_status'] = '침입 확인'
+        self.write_bundle(); entry['sha256'] = self.sha(); self.write_config()
+        self.assertEqual(self.client.get(url).status_code, 404)
+
 
 if __name__ == '__main__': unittest.main()

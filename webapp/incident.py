@@ -50,13 +50,45 @@ def load_exp0041(data, entry, bundle_id, media):
         if any(data[k] != baseline[k] for k in ('policy', 'timeline', 'cards', 'counts')):
             raise ValueError('invalid baseline grouping')
         grouped = group_notifications(data['events'])
-    elif data.get('experiment') in ('EXP-0041', 'EXP-0042') and data.get('contract') == 'group_all_then_notify_v1':
+    elif data.get('experiment') in ('EXP-0041', 'EXP-0042', 'EXP-0044') and data.get('contract') == 'group_all_then_notify_v1':
         if data.get('live_notifications_enabled') is not False:
             raise ValueError('comparison notifications must be disabled')
         review_ids = [e['event_id'] for e in data['review_only_events']]
         if data['experiment'] == 'EXP-0042' and (review_ids or data.get('comparison_mode') not in ('baseline', 'transition-only', 'combined')):
             raise ValueError('invalid all-active comparison')
         grouped = group_notifications(data['events'], review_ids)
+        if data['experiment'] == 'EXP-0044':
+            # Reconstruct only the automatic overlay from decisions belonging to
+            # each prefix; never take a final card's state back into the past.
+            by_event = {e['event_id']: e for e in data['events']}
+            decisions = data['decisions']
+            by_id = {d['event_id']: d for d in decisions}
+            loss_ids = {e['event_id'] for e in data['events'] if e['source_event'].get('reason') == 'recent_gate_presence_then_loss'}
+            if len(by_id) != len(decisions) or set(by_id) != loss_ids:
+                raise ValueError('invalid directional decisions')
+            for eid, d in by_id.items():
+                event = by_event[eid]
+                if (d['decision_time_pts'] != event['decision_time_pts'] or
+                        d['source_ref'] != event['source_ref'] or
+                        d['decision_source'] != 'automatic_rule' or d['human_verified'] is not False or
+                        type(d['automatic_confirmation']) is not bool or type(d['notify']) is not bool or
+                        (d['automatic_confirmation'] and not d['notify'])):
+                    raise ValueError('invalid directional decision')
+            def decorate(card):
+                confirmations = [by_id[eid]['decision_time_pts'] for eid in card['event_ids']
+                                 if eid in by_id and by_id[eid]['automatic_confirmation']]
+                card.update(automatic_status='침입 확인' if confirmations else '침입 의심',
+                            automatic_confirmation=bool(confirmations),
+                            first_confirmation_pts=min(confirmations, default=None),
+                            decision_source='automatic_rule', human_verified=False)
+            for card in grouped['cards']:
+                decorate(card)
+            for row in grouped['timeline']:
+                if 'card' in row:
+                    decorate(row['card'])
+            from copy import deepcopy
+            grouped['alert_cards'] = [deepcopy(c) for c in grouped['cards'] if c['notification_eligible']]
+            grouped['review_only_cards'] = [deepcopy(c) for c in grouped['cards'] if not c['notification_eligible']]
         for key in ('policy', 'events', 'active_events', 'review_only_events', 'cards',
                     'alert_cards', 'review_only_cards', 'timeline', 'counts'):
             if data[key] != grouped[key]:
@@ -128,10 +160,16 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
-    if entry['experiment_id'] in ('EXP-0041', 'EXP-0042'):
+    if entry['experiment_id'] in ('EXP-0041', 'EXP-0042', 'EXP-0044'):
         if entry['experiment_id'] == 'EXP-0042' and data.get('experiment') != 'EXP-0042':
             raise ValueError('wrong comparison experiment')
-        return load_exp0041(data, entry, bundle_id, media)
+        if entry['experiment_id'] == 'EXP-0044' and (data.get('experiment') not in ('EXP-0036', 'EXP-0042', 'EXP-0044') or
+                (data.get('experiment') == 'EXP-0042' and data.get('comparison_mode') != 'baseline')):
+            raise ValueError('wrong directional comparison')
+        result = load_exp0041(data, entry, bundle_id, media)
+        if entry['experiment_id'] == 'EXP-0044':
+            result['experiment'] = 'EXP-0044'
+        return result
     comparison = entry['experiment_id'] == 'EXP-0040'
     if (data['experiment'] not in (('EXP-0036', 'EXP-0040') if comparison else ('EXP-0036',))
             or data['policy'] != {'gap_seconds': 3.0, 'max_span_seconds': 10.0}):
@@ -239,7 +277,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():

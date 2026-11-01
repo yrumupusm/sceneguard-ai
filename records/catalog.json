@@ -3509,6 +3509,129 @@
       "task_id": "task_d2af4d36d22e",
       "title": "EXP-0043 누락 경로 진단과 단일 수정 비교",
       "worker_opinion": "비교 구현·실행·영상 제작 완료. 접근/대기 구별 및 초기 침입 의심 개선이 확인되지 않아 기존 MVP 유지."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T03:23:45.363749+00:00",
+      "attempt_id": "gate-direction-loss-v1-007030",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_85ba3dafdfbe",
+      "evaluated_model": "Fixed gate-direction and disappearance rule using existing EXP35 losses and EXP42 saved feature paths; CPU only",
+      "evidence": [
+        {
+          "artifact_id": "exp0044-007-continuous",
+          "kind": "video",
+          "label": "007 continuous · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0001",
+          "kind": "video",
+          "label": "007 case-s0001 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0003",
+          "kind": "video",
+          "label": "007 case-s0003 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0002",
+          "kind": "video",
+          "label": "007 case-s0002 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0007",
+          "kind": "video",
+          "label": "007 case-s0007 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0008",
+          "kind": "video",
+          "label": "007 case-s0008 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0009",
+          "kind": "video",
+          "label": "007 case-s0009 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0005",
+          "kind": "video",
+          "label": "007 case-s0005 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0011",
+          "kind": "video",
+          "label": "007 case-s0011 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-007-case-s0006",
+          "kind": "video",
+          "label": "007 case-s0006 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-030-continuous",
+          "kind": "video",
+          "label": "030 continuous · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-030-case-s0002",
+          "kind": "video",
+          "label": "030 case-s0002 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-030-case-s0004",
+          "kind": "video",
+          "label": "030 case-s0004 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-030-case-s0001",
+          "kind": "video",
+          "label": "030 case-s0001 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-030-case-s0003",
+          "kind": "video",
+          "label": "030 case-s0003 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        },
+        {
+          "artifact_id": "exp0044-030-case-s0008",
+          "kind": "video",
+          "label": "030 case-s0008 · 원본/입구방향/평균이동/마지막관측/자동판정"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0044",
+      "limitations": [
+        "자동확인은방향＋소실가정이며사용자확정정답이아님",
+        "알려진접근·대기자동확인0이지만기존의심오탐은줄지않음",
+        "007필요한가림장면도자동확인0;마지막부분박스근접/방향근거한계",
+        "03093.033개별인물성급한확인가능성미확정",
+        "정밀소실/완료정답과독립표본없음;정확도/F1미산출"
+      ],
+      "metric_definitions": "records/EXP-0044/metrics.json",
+      "metrics_path": "records/EXP-0044/metrics.json",
+      "metrics_sha256": "de50f497f2a432efdc2e4ede2315ea739061a9e82a19a5825d12238ca1e78dd9",
+      "next_step": "이번 고정규칙 비교 종료. 기존 MVP 유지, 후속 튜닝/모델/영역 변경 자동 시작하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "4581b37b8cd19c0df4591a5d7468038a437c82b3c92dee6334427897c09c0e5f",
+      "report_path": "docs/experiments/EXP-0044-results.md",
+      "report_sha256": "1c9d640a7759a56be32a3c8d832e2fd9a697f87666b3d61f04b6b93c0fd1c401",
+      "review_binding_path": "docs/reviews/EXP-0044.binding.json",
+      "review_path": "docs/reviews/EXP-0044-independent-review.md",
+      "review_sha256": "0912d273adfac917226af24bc649353962e0a36b3d316faaae799ea813bc795c",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "de50f497f2a432efdc2e4ede2315ea739061a9e82a19a5825d12238ca1e78dd9",
+      "reviewed_report_sha256": "1c9d640a7759a56be32a3c8d832e2fd9a697f87666b3d61f04b6b93c0fd1c401",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "기존소실14건 실제 적용:0070자동확인/9의심,0301자동확인/4의심.03093.033초는기존90.4초카드의자동갱신.원래18알림/5카드/최초통지보존;접근·대기자동오확인0이나기존의심오탐유지,개별완료정답미확정.",
+      "synthetic": false,
+      "task_id": "task_5c9b491fd519",
+      "title": "EXP-0044 입구 방향·소실 자동 판정 비교",
+      "worker_opinion": "자동상태 구현/실행 완료. 기존 필요한 의심과 수동 검토 보존. 자동 확인1건의 개별 소실/완료 정답은 미확정이며 기본MVP 적용은 보류."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

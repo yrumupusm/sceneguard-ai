@@ -117,7 +117,7 @@ async function selectReport(id) {
       evidence.append(block);
     });
     if (id === 'EXP-0036') addIncidentFlows(detail, request);
-    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042') addFinishFlows(detail, request, id);
+    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044') addFinishFlows(detail, request, id);
     heading(detail, '담당 의견').append(node('p', show(d.worker_opinion)));
     const review = heading(detail, '총괄 검토');
     review.dataset.section = 'review';
@@ -334,8 +334,11 @@ function renderIncidentFlow(holder, id, data) {
       const fingerprint = JSON.stringify(card);
       if (entry.fingerprint === fingerprint) continue;
       entry.fingerprint = fingerprint;
-      entry.title.textContent = `${card.status} · ${card.gate_id}`;
+      entry.title.textContent = card.decision_source === 'automatic_rule'
+        ? `${card.automatic_status} · 자동 · ${card.gate_id} (원래 상태: ${card.status})`
+        : `${card.status} · ${card.gate_id}`;
       entry.summary.textContent = `${data.experiment === 'EXP-0042' ? '후보 ' : ''}${card.first_alert_pts.toFixed(3)}~${card.last_alert_pts.toFixed(3)}초 · 관련 알림 ${card.alert_count}개 · 추적 ID ${card.track_ids.join(', ') || '없음'}` + (isComparison41 ? ` · 첫 통지 ${card.first_notification_pts === null ? '없음' : card.first_notification_pts.toFixed(3) + '초'}` : '');
+      if (card.decision_source === 'automatic_rule' && card.first_confirmation_pts !== null) entry.summary.textContent += ` · 첫 자동 확인 ${card.first_confirmation_pts.toFixed(3)}초`;
       entry.list.replaceChildren();
       for (const eventId of card.event_ids) {
         const event = events.get(eventId); const ref = event.source_ref;
@@ -447,7 +450,7 @@ function selectPending(id) {
     node('p', `Orca 작업: ${observationText(nativeObservation(assignment, statusData))}`, 'muted'),
     node('p', `요청 모델: ${show(assignment?.agent_model_requested)} · 실효 모델: ${show(assignment?.agent_model_effective)} · 실효 effort: ${show(assignment?.reasoning_effective)}`, 'muted'));
   if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
-  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042') addFinishFlows(detail, selectionRequest, id);
+  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044') addFinishFlows(detail, selectionRequest, id);
   renderChoices();
 }
 function selectSlot(id) {

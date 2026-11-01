@@ -203,34 +203,35 @@ class SavedGateDirection:
         last = segment['rows'][-1]; start = last['frame_index']; g = self.geometry
         by_frame = {r['frame_index']:r for r in segment['rows']}; votes = []
         target_box = pixel_box(last['bbox'],g['size'])
-        end_row = self.frames[decision_index]
         for wid, path in self.paths.get(start,{}).items():
             born, seed = self.births[wid]; measured = by_frame.get(born)
             if measured is None or (measured.get('cache_index') != seed['cache_index'] and
                 overlap(pixel_box(measured['bbox'],g['size']),pixel_box(seed['bbox'],g['size'])) < .6):
                 continue
-            end_path = self.paths[decision_index].get(wid)
-            if end_path is None:
-                continue
-            p, q = path_map(path), path_map(end_path)
+            p = path_map(path)
             anchor_ids = [pid for pid in p if inside(p[pid],target_box,.15)]
-            common = [pid for pid in anchor_ids if pid in q]
-            for detected in end_row['actual_boxes']:
-                if detected.get('observed') is False or detected.get('score',0.) < .25:
+            for index, row in self.frames.items():
+                if not start < index <= decision_index or wid not in self.paths[index]:
                     continue
-                b = pixel_box(detected['bbox'],g['size'])
-                ids = [pid for pid in common if inside(q[pid],b)]
-                if len(ids) < self.policy.minimum_points or len(ids)/max(1,len(anchor_ids)) < .6:
-                    continue
-                # Use correspondences, not changes in the centroid of a shrinking set.
-                pc,qc = self.corrected(start,wid),self.corrected(decision_index,wid)
-                sides = [(signed(pc[pid],g),signed(qc[pid],g)) for pid in ids]
-                crossing = any(a is not None and a < -2 and z > 2 for a,z in sides)
-                same = [a is not None and a*z > 0 for a,z in sides]
-                if crossing:
-                    votes.append('crossing')
-                elif sum(same)/len(same) >= .6:
-                    votes.append('same_side')
+                q = path_map(self.paths[index][wid])
+                common = [pid for pid in anchor_ids if pid in q]
+                for detected in row['actual_boxes']:
+                    if detected.get('observed') is False or detected.get('score',0.) < .25:
+                        continue
+                    b = pixel_box(detected['bbox'],g['size'])
+                    ids = [pid for pid in common if inside(q[pid],b)]
+                    if len(ids) < self.policy.minimum_points or len(ids)/max(1,len(anchor_ids)) < .6:
+                        continue
+                    # Gate and observed boxes use original pixels. Camera-corrected
+                    # coordinates are only for motion, not this fixed gate test.
+                    sides = [(signed(p[pid],g),signed(q[pid],g)) for pid in ids]
+                    crossing = any(a is not None and ((a < -2 and z > 2) or
+                        (a > 2 and z < -2)) for a,z in sides)
+                    same = [a is not None and a*z > 0 for a,z in sides]
+                    if crossing:
+                        votes.append('crossing')
+                    elif index == decision_index and sum(same)/len(same) >= .6:
+                        votes.append('same_side')
         if 'crossing' in votes:
             return 'cross_side_observation'
         return 'same_side_continuation' if 'same_side' in votes else 'unresolved'
@@ -254,6 +255,9 @@ class SavedGateDirection:
         center = ((bbox[0]+bbox[2])/2,(bbox[1]+bbox[3])/2)
         near = gate_distance(center,self.geometry) <= radius
         result.update(direction=direction,continuation=continued,near_gate_at_loss=near,
+                      last_actual_bbox=last['bbox'], last_actual_center_pixels=center,
+                      paired_point_count=len(direction.get('point_ids', [])),
+                      gate_distance_pixels=gate_distance(center,self.geometry),
                       near_radius_pixels=radius,evidence_until_pts=at)
         # Continuing to be visible is NOT a negative intrusion verdict.
         if continued == 'cross_side_observation':
@@ -293,6 +297,7 @@ def annotated_bundle(baseline, decisions, group):
                          and by_id[eid]['automatic_confirmation']]
         card.update(automatic_status='침입 확인' if confirmations else '침입 의심',
                     automatic_confirmation=bool(confirmations),human_verified=False,
+                    decision_source='automatic_rule',
                     first_confirmation_pts=min((d['decision_time_pts'] for d in confirmations),default=None))
     for card in result['cards']:
         decorate(card)
