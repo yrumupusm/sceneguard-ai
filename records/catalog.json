@@ -4278,6 +4278,89 @@
       "task_id": "task_895ee117dc67",
       "title": "전체 원본 MVP 전구간 실행·사건 평가",
       "worker_opinion": "지원 원본의 전구간 분석은 완료했으나 정상 접근 조기경보가 남고 전체45개 성능은 미검증이다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T15:42:57.064248+00:00",
+      "attempt_id": "whole-v3",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_d58105b68113",
+      "evaluated_model": "FCOS ResNet50 FPN FP32 / existing ByteTrack / direction-loss and EXP49 incident management",
+      "evidence": [
+        {
+          "artifact_id": "mvp0005-016-official-1",
+          "kind": "video",
+          "label": "016-official-1 공식 참조 구간 원본"
+        },
+        {
+          "artifact_id": "mvp0005-018-official-1",
+          "kind": "video",
+          "label": "018-official-1 공식 참조 구간 원본"
+        },
+        {
+          "artifact_id": "mvp0005-020-official-1",
+          "kind": "video",
+          "label": "020-official-1 공식 참조 구간 원본"
+        },
+        {
+          "artifact_id": "mvp0005-020-official-2",
+          "kind": "video",
+          "label": "020-official-2 공식 참조 구간 원본"
+        },
+        {
+          "artifact_id": "mvp0005-021-official-1",
+          "kind": "video",
+          "label": "021-official-1 공식 참조 구간 원본"
+        },
+        {
+          "artifact_id": "mvp0005-042-official-1",
+          "kind": "video",
+          "label": "042-official-1 공식 참조 구간 원본"
+        },
+        {
+          "artifact_id": "mvp0005-004-normal",
+          "kind": "video",
+          "label": "004-normal 정상 첫 의심"
+        },
+        {
+          "artifact_id": "mvp0005-008-official-1",
+          "kind": "video",
+          "label": "008-official-1 공식 참조 구간 원본"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "MVP-0005",
+      "limitations": [
+        "006 공식 프레임 불일치",
+        "미검수 예측으로 전체 precision/F1 null",
+        "개발·공유 카메라 자료, 독립 테스트 아님",
+        "62.133333초의 제한된 정상 검수",
+        "실제 해제의 정확성 미검증"
+      ],
+      "metric_definitions": "records/MVP-0005/metrics.json",
+      "metrics_path": "records/MVP-0005/metrics.json",
+      "metrics_sha256": "17c689a0c1d01551e7d9c7b326cc6a4638cf70de45c74fe5789d48aeff875db1",
+      "next_step": "미검수 경보·누락 원인을 별도 승인 범위에서 검토. 이번 자료로 임계값 튜닝하지 않음.",
+      "reasoning_effective": "high",
+      "registration_sha256": "7de5cab6ac902074b05e577251ab4668db3582e0f27ad3be8013de4273fdb8b7",
+      "report_path": "docs/experiments/MVP-0005-results.md",
+      "report_sha256": "704929eea4e99442f08a000de323146a8b1519378a1e67c1df5d1145e8d6922b",
+      "review_binding_path": "docs/reviews/MVP-0005.binding.json",
+      "review_path": "docs/reviews/MVP-0005-results-review.md",
+      "review_sha256": "6a317cf2995a59359a2b309509707cecb193cde394071f2f019b8378c97aae4d",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "17c689a0c1d01551e7d9c7b326cc6a4638cf70de45c74fe5789d48aeff875db1",
+      "reviewed_report_sha256": "704929eea4e99442f08a000de323146a8b1519378a1e67c1df5d1145e8d6922b",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "45개 전구간 실행. 공식 의심46/52·확인24/52 포착, 정상시간 첫 의심 오류3회. 전체 정확도 미측정.",
+      "synthetic": false,
+      "task_id": "task_aa2d8f8b832c",
+      "title": "사용자 영역으로 전체 원본 지원 확장·재평가",
+      "worker_opinion": "전구간 실행과 고정 평가의 무결성 검증 완료. 행동성능 충족과 구분."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

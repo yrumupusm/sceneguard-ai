@@ -1,0 +1,14 @@
+{
+  "registration_sha256": "7de5cab6ac902074b05e577251ab4668db3582e0f27ad3be8013de4273fdb8b7",
+  "review_path": "docs/reviews/MVP-0005-results-review.md",
+  "review_sha256": "6a317cf2995a59359a2b309509707cecb193cde394071f2f019b8378c97aae4d",
+  "review_status": "accepted_for_comparison",
+  "reviewed_sources": {
+    "MVP-0005": {
+      "metrics_sha256": "17c689a0c1d01551e7d9c7b326cc6a4638cf70de45c74fe5789d48aeff875db1",
+      "report_sha256": "704929eea4e99442f08a000de323146a8b1519378a1e67c1df5d1145e8d6922b"
+    }
+  },
+  "schema_version": 1,
+  "synthetic": false
+}

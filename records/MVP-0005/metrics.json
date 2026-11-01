@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "experiment_id": "MVP-0005",
+  "metrics": [
+    {
+      "label": "전체 원본",
+      "value": 45,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole original execution; not behavior accuracy.",
+      "source": "runtime/MVP-0005/execution/whole-batch-completion.local.json",
+      "source_sha256": "e839c2b4a7328d8b41d71e168f9ea0f082dd1825265223b3d4f5650d5cce6c77",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "전구간 실행",
+      "value": 45,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole original execution; not behavior accuracy.",
+      "source": "runtime/MVP-0005/execution/whole-batch-completion.local.json",
+      "source_sha256": "e839c2b4a7328d8b41d71e168f9ea0f082dd1825265223b3d4f5650d5cce6c77",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "실행 실패",
+      "value": 0,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole original execution; not behavior accuracy.",
+      "source": "runtime/MVP-0005/execution/whole-batch-completion.local.json",
+      "source_sha256": "e839c2b4a7328d8b41d71e168f9ea0f082dd1825265223b3d4f5650d5cce6c77",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "원본 프레임",
+      "value": 184300,
+      "unit": "frames",
+      "sample_n": 45,
+      "scope": "Whole original execution; not behavior accuracy.",
+      "source": "runtime/MVP-0005/execution/whole-batch-completion.local.json",
+      "source_sha256": "e839c2b4a7328d8b41d71e168f9ea0f082dd1825265223b3d4f5650d5cce6c77",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "분석 원본 시간",
+      "value": 6143.466866666664,
+      "unit": "s",
+      "sample_n": 45,
+      "scope": "Whole original execution; not behavior accuracy.",
+      "source": "runtime/MVP-0005/execution/whole-batch-completion.local.json",
+      "source_sha256": "e839c2b4a7328d8b41d71e168f9ea0f082dd1825265223b3d4f5650d5cce6c77",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "새 GPU 작업",
+      "value": 43,
+      "unit": "jobs",
+      "sample_n": 43,
+      "scope": "Whole original execution; not behavior accuracy.",
+      "source": "runtime/MVP-0005/execution/whole-batch-completion.local.json",
+      "source_sha256": "e839c2b4a7328d8b41d71e168f9ea0f082dd1825265223b3d4f5650d5cce6c77",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "새 실행 처리비",
+      "value": 3.8695545004005503,
+      "unit": "wall/source",
+      "sample_n": 43,
+      "scope": "43 fresh sources; 5844.366867 source seconds. Whole pipeline wall/source, not detector FPS.",
+      "source": "runtime/MVP-0005/execution/whole-batch-completion.local.json",
+      "source_sha256": "e839c2b4a7328d8b41d71e168f9ea0f082dd1825265223b3d4f5650d5cce6c77",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 포착",
+      "value": 46,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 평가 가능 오경보",
+      "value": 11,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 누락",
+      "value": 6,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 중복 오경보",
+      "value": 10,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 미검수 예측",
+      "value": 52,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 정상 시간 첫 오경보",
+      "value": 3,
+      "unit": "notices",
+      "sample_n": 45,
+      "scope": "First notification intents in 62.133333 verified-normal gate seconds; separate from event-level matching. Short development exposure, not operational rate.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "확인 포착",
+      "value": 24,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "확인 평가 가능 오경보",
+      "value": 1,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "확인 누락",
+      "value": 28,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "확인 중복 오경보",
+      "value": 1,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "확인 미검수 예측",
+      "value": 10,
+      "unit": "events",
+      "sample_n": 45,
+      "scope": "Official reference. Headline precision/F1 remain null when unknown predictions exist; only scored-subset precision excludes unknowns.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "확인 정상 시간 첫 오경보",
+      "value": 0,
+      "unit": "notices",
+      "sample_n": 45,
+      "scope": "First notification intents in 62.133333 verified-normal gate seconds; separate from event-level matching. Short development exposure, not operational rate.",
+      "source": "outputs/validation/mvp-all-v3/evaluation-official-zero-based-report.json",
+      "source_sha256": "9b4d18265fe5512532b5f637dee91aa238ae07ca561e95bf3fa0743a5b777dcd",
+      "verification": "actual_full_original_and_fixed_scorer"
+    }
+  ]
+}
