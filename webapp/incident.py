@@ -467,7 +467,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046', 'EXP-0047', 'EXP-0048'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046', 'EXP-0047', 'EXP-0048', 'EXP-0049'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():
