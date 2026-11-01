@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "experiment_id": "MVP-0003",
+  "status": "blocked_no_whole_analysis",
+  "metrics": [
+    {
+      "label": "원본 전체",
+      "value": 45,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "outputs/validation/mvp-all-v1/inventory/inventory.json",
+      "source_sha256": "8de20d4df198d46e5a55f7cb4b67ad68c1ff2c876df36fa074ba0e3cec629144",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "전체 디코딩",
+      "value": 45,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "outputs/validation/mvp-all-v1/inventory/inventory.json",
+      "source_sha256": "8de20d4df198d46e5a55f7cb4b67ad68c1ff2c876df36fa074ba0e3cec629144",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "MVP 전구간 실행",
+      "value": 0,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "runtime/MVP-ALL/execution-support-report.local.json",
+      "source_sha256": "c15b0c6c773003085ca042b87984f9212eb451f08848f34bcf45c14ed78b95b0",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "미지원",
+      "value": 43,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "runtime/MVP-ALL/execution-support-report.local.json",
+      "source_sha256": "c15b0c6c773003085ca042b87984f9212eb451f08848f34bcf45c14ed78b95b0",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "미실행 GPU 차단",
+      "value": 2,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "runtime/MVP-ALL/execution-support-report.local.json",
+      "source_sha256": "c15b0c6c773003085ca042b87984f9212eb451f08848f34bcf45c14ed78b95b0",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "모델 실행 실패",
+      "value": 0,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "runtime/MVP-ALL/execution-support-report.local.json",
+      "source_sha256": "c15b0c6c773003085ca042b87984f9212eb451f08848f34bcf45c14ed78b95b0",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "원본 전체 시간",
+      "value": 6143.466866666664,
+      "unit": "seconds",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "outputs/validation/mvp-all-v1/inventory/inventory.json",
+      "source_sha256": "8de20d4df198d46e5a55f7cb4b67ad68c1ff2c876df36fa074ba0e3cec629144",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "MVP 처리 범위",
+      "value": 0,
+      "unit": "seconds",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "runtime/MVP-ALL/execution-support-report.local.json",
+      "source_sha256": "c15b0c6c773003085ca042b87984f9212eb451f08848f34bcf45c14ed78b95b0",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "원본 디코딩 프레임",
+      "value": 184300,
+      "unit": "frames",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "outputs/validation/mvp-all-v1/inventory/inventory.json",
+      "source_sha256": "8de20d4df198d46e5a55f7cb4b67ad68c1ff2c876df36fa074ba0e3cec629144",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "새 GPU 작업",
+      "value": 0,
+      "unit": "jobs",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "runtime/MVP-ALL/execution-support-report.local.json",
+      "source_sha256": "c15b0c6c773003085ca042b87984f9212eb451f08848f34bcf45c14ed78b95b0",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "검수 정상시간 보유",
+      "value": 62.13333333333333,
+      "unit": "gate_seconds",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "outputs/validation/mvp-all-v1/truth/coverage.json",
+      "source_sha256": "bc6c64b101bad9104fb8a6a4c953b8a1e88ab29baff350e0ce14ea8a5e9cfbb7",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "실제 평가 정상시간",
+      "value": 0,
+      "unit": "gate_seconds",
+      "sample_n": 45,
+      "scope": "Whole-source inventory and blocked execution; not detector accuracy.",
+      "source": "outputs/validation/mvp-all-v1/reviewed-evaluation-report.json",
+      "source_sha256": "b14ba83d314d8afdcf86206524c49b12096818ea12302dddf063bd2d623dbf1c",
+      "verification": "local_inventory_and_resource_receipt"
+    },
+    {
+      "label": "의심 정밀도",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": null,
+      "scope": "No whole-video analysis completed; no evaluated exposure or performance denominator.",
+      "source": "outputs/validation/mvp-all-v1/official-zero-based-evaluation-report.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "의심 재현율",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": null,
+      "scope": "No whole-video analysis completed; no evaluated exposure or performance denominator.",
+      "source": "outputs/validation/mvp-all-v1/official-zero-based-evaluation-report.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "자동확인 정밀도",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": null,
+      "scope": "No whole-video analysis completed; no evaluated exposure or performance denominator.",
+      "source": "outputs/validation/mvp-all-v1/official-zero-based-evaluation-report.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "자동확인 재현율",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": null,
+      "scope": "No whole-video analysis completed; no evaluated exposure or performance denominator.",
+      "source": "outputs/validation/mvp-all-v1/official-zero-based-evaluation-report.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "사건 F1",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": null,
+      "scope": "No whole-video analysis completed; no evaluated exposure or performance denominator.",
+      "source": "outputs/validation/mvp-all-v1/official-zero-based-evaluation-report.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "시간당 오경보",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": null,
+      "scope": "No whole-video analysis completed; no evaluated exposure or performance denominator.",
+      "source": "outputs/validation/mvp-all-v1/official-zero-based-evaluation-report.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "모델 처리 FPS",
+      "value": null,
+      "unit": "unmeasured",
+      "sample_n": null,
+      "scope": "No whole-video analysis completed; no evaluated exposure or performance denominator.",
+      "source": "outputs/validation/mvp-all-v1/official-zero-based-evaluation-report.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ],
+  "inventory_summary": {
+    "original_video_files": 45,
+    "unique_original_sha256": 45,
+    "official_json_files": 45,
+    "original_event_rows": 53,
+    "duration_seconds": 6143.466866666664,
+    "decoded_frames": 184300,
+    "supported_video_count": 2,
+    "supported_seconds": 299.1,
+    "rate_counts": {
+      "30": 44,
+      "30000/1001": 1
+    },
+    "frame_count_mismatches": [
+      "E01_006"
+    ],
+    "unpaired_labels": []
+  },
+  "coverage": {
+    "originals": 45,
+    "statuses": {
+      "unsupported": 43,
+      "not_run": 2
+    },
+    "all_original_seconds": 6143.466866666664,
+    "supported_original_seconds": 299.1,
+    "processed_seconds": 0.0,
+    "processed_fraction": 0.0,
+    "whole_original_successes": 0
+  },
+  "baseline_revision": "548ff7098045f9efc5bd2edfd5ce61431a5e210e",
+  "analysis_revision": "f05d430458150c9b63e04aa9caf93cb85ee18cae",
+  "performance_measured": false,
+  "full_report_sha256": "ff361935e490f750dbe983e16c1c2c30a53be62801567996c6e1ec6f400e3864"
+}

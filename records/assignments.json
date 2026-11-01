@@ -545,6 +545,32 @@
       "synthetic": false,
       "task_id": "task_39ef603389f8",
       "title": "SceneGuard MVP 1차 통합·실제 영상 검증"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T13:35:04.901359+00:00",
+      "dispatch_id": "ctx_0aff939ab2ce",
+      "experiment_id": "MVP-0003",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_29c98b7dccbb",
+      "title": "전체 원본 고정 MVP 평가"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T14:00:01.091672+00:00",
+      "dispatch_id": "ctx_37c85c3bf5ec",
+      "experiment_id": "MVP-0004",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_895ee117dc67",
+      "title": "전체 원본 MVP 전구간 실행·사건 평가"
     }
   ],
   "schema_version": 1

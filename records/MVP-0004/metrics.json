@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "experiment_id": "MVP-0004",
+  "status": "limited_development_full_source_evaluation",
+  "metrics": [
+    {
+      "label": "원본 전체",
+      "value": 45,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Frozen MVP whole-source execution coverage, not accuracy.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "전구간 실행",
+      "value": 2,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Frozen MVP whole-source execution coverage, not accuracy.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "미지원",
+      "value": 43,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "Frozen MVP whole-source execution coverage, not accuracy.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "실행 실패",
+      "value": 0,
+      "unit": "videos",
+      "sample_n": 2,
+      "scope": "Frozen MVP whole-source execution coverage, not accuracy.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "실제 분석 원본 시간",
+      "value": 299.1,
+      "unit": "s",
+      "sample_n": 2,
+      "scope": "Frozen MVP whole-source execution coverage, not accuracy.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "전체 시간 처리 비율",
+      "value": 4.868586524375387,
+      "unit": "%",
+      "sample_n": 45,
+      "scope": "Frozen MVP whole-source execution coverage, not accuracy.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "원본 전체 프레임 처리",
+      "value": 8973,
+      "unit": "frames",
+      "sample_n": 2,
+      "scope": "Frozen MVP whole-source execution coverage, not accuracy.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 공식 사건 TP",
+      "value": 2,
+      "unit": "incidents",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 공식 사건 FP",
+      "value": 0,
+      "unit": "incidents",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 공식 사건 FN",
+      "value": 0,
+      "unit": "incidents",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 공식 사건 정밀도",
+      "value": 1.0,
+      "unit": "ratio",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 공식 사건 재현율",
+      "value": 1.0,
+      "unit": "ratio",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "의심 공식 사건 F1",
+      "value": 1.0,
+      "unit": "ratio",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "자동 확인 공식 사건 TP",
+      "value": 2,
+      "unit": "incidents",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "자동 확인 공식 사건 FP",
+      "value": 0,
+      "unit": "incidents",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "자동 확인 공식 사건 FN",
+      "value": 0,
+      "unit": "incidents",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "자동 확인 공식 사건 정밀도",
+      "value": 1.0,
+      "unit": "ratio",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "자동 확인 공식 사건 재현율",
+      "value": 1.0,
+      "unit": "ratio",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "자동 확인 공식 사건 F1",
+      "value": 1.0,
+      "unit": "ratio",
+      "sample_n": 2,
+      "scope": "Official reference event matching on two development videos only; does not measure early false notices.",
+      "source": "outputs/validation/mvp-all-v2/official-zero-based-evaluation-report.json",
+      "source_sha256": "f77d0a1a2ab9dd30d54e61207435251b48087130e657620089b2fcb07d51b8f3",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "정상시간 첫 의심 오류",
+      "value": 2,
+      "unit": "notices",
+      "sample_n": 2,
+      "scope": "2 false first notices in 52.133333 reviewed normal gate-seconds.",
+      "source": "outputs/validation/mvp-all-v2/reviewed-evaluation-report.json",
+      "source_sha256": "36f9a819ec52d1660a9ee00beb8e7ae02ed19f0f120f8673c80694228cabdb6a",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "정상시간 첫 확인 오류",
+      "value": 0,
+      "unit": "notices",
+      "sample_n": 2,
+      "scope": "0 in 52.133333 seconds; not proof of operational safety.",
+      "source": "outputs/validation/mvp-all-v2/reviewed-evaluation-report.json",
+      "source_sha256": "36f9a819ec52d1660a9ee00beb8e7ae02ed19f0f120f8673c80694228cabdb6a",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "검수 정상 노출",
+      "value": 52.13333333333333,
+      "unit": "s",
+      "sample_n": 2,
+      "scope": "Only complete originals; all available normal truth is62.133333seconds.",
+      "source": "outputs/validation/mvp-all-v2/reviewed-evaluation-report.json",
+      "source_sha256": "36f9a819ec52d1660a9ee00beb8e7ae02ed19f0f120f8673c80694228cabdb6a",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "정상시간 의심 시간당 환산",
+      "value": 138.1074168797954,
+      "unit": "notices/hour",
+      "sample_n": 2,
+      "scope": "Only52.133333s observed,2notices; not deployment estimate.",
+      "source": "outputs/validation/mvp-all-v2/reviewed-evaluation-report.json",
+      "source_sha256": "36f9a819ec52d1660a9ee00beb8e7ae02ed19f0f120f8673c80694228cabdb6a",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "사용자 정밀 사건 F1",
+      "value": null,
+      "unit": "ratio",
+      "sample_n": null,
+      "scope": "No precisely bounded reviewed positive events; two unscored incident predictions.",
+      "source": "outputs/validation/mvp-all-v2/reviewed-evaluation-report.json",
+      "source_sha256": "36f9a819ec52d1660a9ee00beb8e7ae02ed19f0f120f8673c80694228cabdb6a",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "E01_007 전체 처리",
+      "value": 504.02055215701694,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "Wholepipeline incl detector,CPU paths,decisions,rendering; not live latency.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "E01_030 전체 처리",
+      "value": 665.1920945509919,
+      "unit": "s",
+      "sample_n": 1,
+      "scope": "Wholepipeline incl detector,CPU paths,decisions,rendering; not live latency.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    },
+    {
+      "label": "실제 의심 해제",
+      "value": 0,
+      "unit": "cases",
+      "sample_n": 2,
+      "scope": "No real release case; release quality unvalidated.",
+      "source": "runtime/MVP-ALL-execution-v2/execution-support-report.local.json",
+      "source_sha256": "4c70ea257c882a1b1d35bc11be8331f57c32f9cd89210a8764aa3ad1b7ec99d1",
+      "verification": "actual_full_original_and_fixed_scorer"
+    }
+  ]
+}
