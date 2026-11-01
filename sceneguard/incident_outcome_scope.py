@@ -25,6 +25,7 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         self._owners = {}
         self._origin_sets = {}
         self._outcome_claims = {}
+        self._outcome_anchors = {}
         self._routed_payloads = {}
 
     def _key(self, eid, observation):
@@ -95,9 +96,11 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         elif kind == 'inward_loss':
             existing = [eid for eid in selected
                         if self.evidence[eid]['automatic_status'] == CONFIRMED]
-            selected = [max(existing or selected,
-                            key=lambda eid:(self.evidence[eid]['opened_pts'], eid))]
-            reason = 'one_confirmation_anchor_in_owner_incident'
+            anchor = self._outcome_anchors.setdefault(outcome, max(existing or selected,
+                key=lambda eid:(self.evidence[eid]['opened_pts'], eid)))
+            selected = [anchor] if anchor in selected else []
+            reason = ('one_confirmation_anchor_in_owner_incident' if selected
+                      else 'outcome_anchor_already_applied')
         audit = dict(resolution_id=rid, decision_time_pts=at, kind=kind,
             outcome_key=outcome, owner_incident_id=owner, origin_count=len(roots),
             selected_event_ids=selected,
@@ -117,6 +120,7 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         result.update(experiment='EXP-0048', outcome_scope_policy='latest_linked_incident_v1',
             outcome_routing=deepcopy(self.outcome_routing),
             outcome_owners=deepcopy(self._outcome_claims),
+            outcome_anchors=deepcopy(self._outcome_anchors),
             ownership_is_identity_proof=False,
             old_pending_cards_auto_cleared=False)
         return result

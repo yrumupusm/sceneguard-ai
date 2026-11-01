@@ -31,13 +31,13 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
     from .portal_births import PortalGate
     from .lifecycle_followup import ObservationHistory, followup_run, assess_loss, loss_resolution
     engine=direction_engine or SavedGateDirection(frames,scene)
-    portal=portal_gate or PortalGate(scene,region,history['events'][0]['camera_id'])
     obs=ObservationHistory(runs,frames)
     events=deepcopy(history['events']+list(portal_events))
     if not events or len({e['event_id'] for e in events})!=len(events):
         raise ValueError('Nonempty distinct frozen candidate stream required')
     scopes={tuple(e[k] for k in ('session_id','camera_id','gate_id')) for e in events}
     if len(scopes)!=1:raise ValueError('One session/camera/gate per replay')
+    portal=portal_gate or PortalGate(scene,region,events[0]['camera_id'])
     namespace='EXP-0048:'+digest(dict(scope=next(iter(scopes)),region=region,scene=scene))[:16]
     life=ScopedIncidentLifecycle(GroupPolicy(**history['policy']),namespace=namespace)
     scheduled=defaultdict(list); confirmations=defaultdict(list)
@@ -105,18 +105,17 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
     return result,audit
 
 
-def execute(baseline_path,paths_directory,portal_directory,previous_directory,output):
+def prepare_inputs(baseline_path,paths_directory,portal_directory,previous_directory):
     from .exp0044_application import prepared_inputs,sha,save
     from .exp0045_application import select_scene
     from .portal_births import PortalGate
-    start=time.perf_counter();directory=Path(portal_directory);previous=Path(previous_directory);out=Path(output)
-    if out.exists() or out.is_symlink() or any(p.is_symlink() for p in out.parents) or not out.resolve().is_relative_to(Path('outputs').resolve()):
-        raise ValueError('Use a fresh local outputs directory without symlinks')
+    directory=Path(portal_directory);previous=Path(previous_directory)
     baseline,original,frames,old_scene,group,protected=prepared_inputs(baseline_path,paths_directory)
     read=lambda p:json.loads(Path(p).read_text(encoding='utf-8'))
     request=read(directory/'request.json');summary=read(directory/'summary.json')
     old_request=read(previous/'request.json');old_summary=read(previous/'summary.json')
-    if request.get('experiment')!='EXP-0046' or old_request.get('experiment')!='EXP-0047':
+    if (request.get('experiment')!='EXP-0046' or summary.get('experiment')!='EXP-0046'
+            or old_request.get('experiment')!='EXP-0047' or old_summary.get('experiment')!='EXP-0047'):
         raise ValueError('Preserved EXP46 and successful EXP47 sources required')
     for req,summ in ((request,summary),(old_request,old_summary)):
         if req['input_sha256']!=summ['input_sha256']:raise ValueError('Input binding mismatch')
@@ -146,6 +145,20 @@ def execute(baseline_path,paths_directory,portal_directory,previous_directory,ou
            'incident_lifecycle.py','lifecycle_followup.py','directional_loss.py',
            'portal_births.py','gate_episode_evidence.py','incident_cards.py')
     code={str(Path(__file__).with_name(n)):sha(Path(__file__).with_name(n)) for n in files}
+    from .lifecycle_followup import ObservationHistory
+    from .directional_loss import SavedGateDirection
+    ObservationHistory(runs,frames)
+    SavedGateDirection(frames,scene)
+    return baseline,history,events,runs,frames,scene,region,prior,protected,code
+
+
+def execute(baseline_path,paths_directory,portal_directory,previous_directory,output):
+    from .exp0044_application import sha,save
+    start=time.perf_counter();directory=Path(portal_directory);previous=Path(previous_directory);out=Path(output)
+    if out.exists() or out.is_symlink() or any(p.is_symlink() for p in out.parents) or not out.resolve().is_relative_to(Path('outputs').resolve()):
+        raise ValueError('Use a fresh local outputs directory without symlinks')
+    baseline,history,events,runs,frames,scene,region,prior,protected,code=prepare_inputs(
+        baseline_path,paths_directory,portal_directory,previous_directory)
     out.mkdir(parents=True,exist_ok=False)
     save(out/'request.json',dict(experiment='EXP-0048',input_sha256=protected,code_sha256=code,
         prior_directory=str(previous),portal_directory=str(directory),new_inference=False))

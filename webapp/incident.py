@@ -160,7 +160,10 @@ def load_exp0041(data, entry, bundle_id, media):
 def load_lifecycle(data, entry, bundle_id, media):
     """Present immutable lifecycle prefixes and comparison intents without claims."""
     from sceneguard.incident_lifecycle import lifecycle_cards_at, SUSPECTED, CONFIRMED, RELEASED
-    if (data.get('contract') != 'incident_lifecycle_v1' or data.get('experiment') != 'EXP-0047'
+    experiment = data.get('experiment')
+    if (data.get('contract') != 'incident_lifecycle_v1' or experiment not in ('EXP-0047', 'EXP-0048')
+            or (experiment == 'EXP-0048' and (data.get('outcome_scope_policy') != 'latest_linked_incident_v1'
+                or data.get('ownership_is_identity_proof') is not False or not isinstance(data.get('outcome_routing'), list)))
             or data.get('live_notifications_enabled') is not False or entry.get('notification_enabled') is not False):
         raise ValueError('invalid lifecycle comparison')
     start, end = data['source_window']; number(start); number(end)
@@ -174,6 +177,12 @@ def load_lifecycle(data, entry, bundle_id, media):
     if len(by_id) != len(events) or any(e['session_id'] != session or not HEX.fullmatch(e['event_id'])
             or not start <= number(e['decision_time_pts']) <= end for e in events):
         raise ValueError('invalid lifecycle events')
+    if experiment == 'EXP-0048':
+        for route in data['outcome_routing']:
+            if (not start <= number(route['decision_time_pts']) <= end or not isinstance(route['reason'], str)
+                    or any(not isinstance(route[k], list) or any(eid not in by_id for eid in route[k])
+                           for k in ('selected_event_ids', 'excluded_event_ids'))):
+                raise ValueError('invalid outcome routing')
     clean_timeline = []; prev = start; seen = set(); notices = {}
     for row in timeline:
         at = number(row['decision_time_pts']); cid = row['incident_id']; card = row['card']
@@ -198,11 +207,12 @@ def load_lifecycle(data, entry, bundle_id, media):
         if key in keys or notices.get(key) != (intent['incident_id'], kind, at) or intent.get('delivery_measured') is not False:
             raise ValueError('invalid lifecycle intent')
         keys.add(key)
-    return dict(contract='incident_lifecycle_v1', experiment='EXP-0047', notification_enabled=False,
+    return dict(contract='incident_outcome_scope_v1' if experiment == 'EXP-0048' else 'incident_lifecycle_v1', experiment=experiment, notification_enabled=False,
         source_window=[start, end], media_start_pts=media_start, media_artifact_id=media,
         bundle_sha256=entry['sha256'], session_id=session, timeline=clean_timeline,
         notification_intents=intents, source_label=entry.get('source_label', bundle_id),
-        view_label=entry.get('view_label', ''), provenance_label=entry.get('provenance_label', '저장 결과 재생'))
+        view_label=entry.get('view_label', ''), provenance_label=entry.get('provenance_label', '저장 결과 재생'),
+        outcome_routing=data.get('outcome_routing', []) if experiment == 'EXP-0048' else [])
 
 
 def load_bundle(c, bundle_id):
@@ -235,8 +245,35 @@ def load_bundle(c, bundle_id):
     if hashlib.sha256(raw).hexdigest() != entry['sha256']:
         raise ValueError('bundle hash mismatch')
     data = json.loads(raw)
+    if entry['experiment_id'] == 'EXP-0048':
+        if data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') == 'history':
+            result = load_exp0041(data, entry, bundle_id, media)
+            result['comparison_registration'] = 'EXP-0048'
+            return result
+        if data.get('experiment') == 'EXP-0047':
+            result = load_lifecycle(data, entry, bundle_id, media)
+            result['comparison_registration'] = 'EXP-0048'
+            return result
+        if data.get('experiment') != 'EXP-0048':
+            raise ValueError('wrong scoped comparison')
+        result = load_lifecycle(data, entry, bundle_id, media)
+        if not HEX.fullmatch(entry['audit_sha256']): raise ValueError('invalid audit hash')
+        with safe_open(c['artifact_allow_root'], entry['audit_path']) as f: raw_audit = f.read()
+        if hashlib.sha256(raw_audit).hexdigest() != entry['audit_sha256']: raise ValueError('audit hash mismatch')
+        audit = json.loads(raw_audit)
+        if (audit.get('unit') != 'geometric_observation_runs_not_people_or_independent_samples'
+                or audit.get('statuses_changed') is not False or not isinstance(audit.get('records'), list)):
+            raise ValueError('invalid observation audit')
+        for row in audit['records']:
+            if (not isinstance(row['run_id'], str) or number(row['first_pts']) > number(row['last_pts'])
+                    or not isinstance(row['state_category'], str) or not isinstance(row['endpoint_assessment'], dict)
+                    or not isinstance(row['box_motion_diagnostic'], dict) or not isinstance(row['event_ids'], list)):
+                raise ValueError('invalid observation record')
+        result['observation_audit'] = audit
+        return result
     if entry['experiment_id'] == 'EXP-0047':
         if data.get('contract') == 'incident_lifecycle_v1':
+            if data.get('experiment') != 'EXP-0047': raise ValueError('wrong lifecycle experiment')
             return load_lifecycle(data, entry, bundle_id, media)
         if not ((data.get('experiment') == 'EXP-0042' and data.get('comparison_mode') == 'baseline') or
                 (data.get('experiment') == 'EXP-0045' and data.get('comparison_mode') == 'history')):
@@ -370,7 +407,7 @@ def registered(bundle_id):
 
 @app.get('/api/incident-registrations')
 def incident_registrations(experiment_id: str = 'EXP-0037'):
-    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046', 'EXP-0047'):
+    if experiment_id not in ('EXP-0037', 'EXP-0040', 'EXP-0041', 'EXP-0042', 'EXP-0044', 'EXP-0045', 'EXP-0046', 'EXP-0047', 'EXP-0048'):
         return []
     result = []
     for bundle_id, entry in config().get('incident_bundles', {}).items():

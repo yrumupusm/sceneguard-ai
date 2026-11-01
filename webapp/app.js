@@ -117,7 +117,7 @@ async function selectReport(id) {
       evidence.append(block);
     });
     if (id === 'EXP-0036') addIncidentFlows(detail, request);
-    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047') addFinishFlows(detail, request, id);
+    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047' || id === 'EXP-0048') addFinishFlows(detail, request, id);
     heading(detail, '담당 의견').append(node('p', show(d.worker_opinion)));
     const review = heading(detail, '총괄 검토');
     review.dataset.section = 'review';
@@ -255,6 +255,17 @@ function renderLifecycleFlow(holder, id, data) {
   const clock = node('p'); clock.dataset.incidentClock = id;
   const cards = node('div'); cards.dataset.incidentCards = id;
   holder.append(video, clock, cards);
+  let routing;
+  if (data.experiment === 'EXP-0048') {
+    routing = node('div'); routing.dataset.outcomeRouting = id; holder.append(routing);
+    const audit = node('details'); audit.dataset.observationAudit = id;
+    audit.append(node('summary', `전체 저장 관측 감사 (${data.observation_audit.records.length}개 관측열)`));
+    audit.append(node('p', '종료 후 진단이며 사람 수나 독립 표본이 아닙니다. 의심 없음은 해제 성공이 아니며 일반 보행 여부는 원본 확인이 필요합니다. 박스 이동은 상태 판정 근거가 아닙니다.', 'muted'));
+    for (const row of data.observation_audit.records) {
+      audit.append(node('p', `${row.run_id} · ${row.first_pts.toFixed(3)}–${row.last_pts.toFixed(3)}초 · ${row.state_category} · 종료 사유 ${row.endpoint_assessment.reason || 'not_evaluated'} · 박스 이동 진단 ${row.box_motion_diagnostic.direction} · 크기 변화 비율 ${row.box_motion_diagnostic.box_scale_ratio?.toFixed(2) ?? '없음'} (부분 신체 가능) · 사건 근거 ${row.event_ids.join(', ') || '없음'}`));
+    }
+    holder.append(audit);
+  }
   const [start, end] = data.source_window, mediaStart = data.media_start_pts ?? start;
   const stateId = `${id}:${data.bundle_sha256}`;
   const saved = storageGet(`incident-time:${stateId}`);
@@ -263,6 +274,7 @@ function renderLifecycleFlow(holder, id, data) {
   function render() {
     const pts = Math.max(start, Math.min(end, mediaStart + video.currentTime));
     clock.textContent = `원본 시각 ${pts.toFixed(3)}초`;
+    if (routing) routing.textContent = '후속 결과 귀속 (현재 시각까지): ' + (data.outcome_routing.filter(r => r.decision_time_pts <= pts + 1e-9).map(r => `${r.decision_time_pts.toFixed(3)}초 · ${r.reason} · 사건 ${r.owner_incident_id || '없음'} · 선택 ${r.selected_event_ids.join(', ') || '없음'} · 제외 ${r.excluded_event_ids.join(', ') || '없음'}`).join(' / ') || '없음');
     const snapshots = new Map();
     for (const row of data.timeline) { if (row.decision_time_pts > pts + 1e-9) break; snapshots.set(row.incident_id, row.card); }
     for (const [cid, entry] of cardNodes) if (!snapshots.has(cid)) { entry.block.remove(); entry.attached = false; }
@@ -310,7 +322,7 @@ async function addIncidentFlows(detail, request) {
   }
 }
 function renderIncidentFlow(holder, id, data) {
-  if (data.contract === 'incident_lifecycle_v1') return renderLifecycleFlow(holder, id, data);
+  if (data.contract === 'incident_lifecycle_v1' || data.contract === 'incident_outcome_scope_v1') return renderLifecycleFlow(holder, id, data);
   holder.append(node('h3', `${data.source_label || id} · ${data.view_label || '기존 비교 영상'}`));
   const video = node('video'); video.controls = true; video.preload = 'metadata';
   video.dataset.incidentVideo = id; video.src = `/artifacts/${encodeURIComponent(data.media_artifact_id)}`;
@@ -498,7 +510,7 @@ function selectPending(id) {
     node('p', `Orca 작업: ${observationText(nativeObservation(assignment, statusData))}`, 'muted'),
     node('p', `요청 모델: ${show(assignment?.agent_model_requested)} · 실효 모델: ${show(assignment?.agent_model_effective)} · 실효 effort: ${show(assignment?.reasoning_effective)}`, 'muted'));
   if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
-  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047') addFinishFlows(detail, selectionRequest, id);
+  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047' || id === 'EXP-0048') addFinishFlows(detail, selectionRequest, id);
   renderChoices();
 }
 function selectSlot(id) {

@@ -140,6 +140,24 @@ class ScopeTests(unittest.TestCase):
         self.add('a1',1);self.add('a2',12)
         self.apply(['a1','a2'],14,kind='outward_loss')
         self.assertEqual((self.state('a1'),self.state('a2')),(SUSPECTED,RELEASED))
+    def test_same_loss_cannot_sweep_pending_anchors_next_frame(self):
+        self.add('approach',1);self.add('latest',2)
+        self.apply(['approach','latest'],4,last=3)
+        self.apply(['approach'],4.1,last=3)
+        self.assertEqual(self.state('approach'),SUSPECTED)
+        self.assertEqual(self.state('latest'),CONFIRMED)
+        self.assertEqual(len(self.s.export()['outcome_anchors']),1)
+        self.assertEqual(self.s.export()['outcome_routing'][-1]['reason'],'outcome_anchor_already_applied')
+    def test_late_candidate_cannot_reuse_already_applied_loss_anchor(self):
+        self.add('first',1);self.apply(['first'],4,last=3)
+        self.add('late',4.1);self.apply(['late'],4.2,last=3)
+        self.assertEqual(self.state('late'),SUSPECTED)
+    def test_distinct_actual_loss_can_supply_new_anchor(self):
+        self.add('first',1);self.add('second',2)
+        self.apply(['first','second'],4,last=3)
+        self.apply(['first'],6,last=5)
+        self.assertEqual(self.state('first'),CONFIRMED)
+        self.assertEqual(len(self.s.export()['outcome_anchors']),2)
     def test_export_is_detached(self):
         self.add('a1',1);self.apply(['a1'],3)
         out=self.s.export();out['outcome_routing'].clear()

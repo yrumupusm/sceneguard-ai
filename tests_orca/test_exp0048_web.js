@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+class Element { constructor(tag){this.tagName=tag;this.dataset={};this.children=[];this.listeners={};this.currentTime=0;this.textContent='';} append(...items){for(const item of items)item.parent=this;this.children.push(...items)} remove(){this.parent.children=this.parent.children.filter(x=>x!==this)} addEventListener(n,f){this.listeners[n]=f} fire(n){this.listeners[n]?.()} }
+let requests=0;const storage=new Map();const ctx=vm.createContext({console,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},fetch:()=>{requests++;throw Error('unexpected network')}});
+vm.runInContext(fs.readFileSync('webapp/app.js','utf8'),ctx);ctx.document={createElement:t=>new Element(t)};
+ctx.data={contract:'incident_outcome_scope_v1',experiment:'EXP-0048',source_window:[0,5],media_artifact_id:'v',timeline:[],notification_intents:[],outcome_routing:[{decision_time_pts:3,reason:'latest_linked_incident',owner_incident_id:'incident-1',selected_event_ids:['a'],excluded_event_ids:['b']}],observation_audit:{records:[{run_id:'run-1',first_pts:1,last_pts:2,state_category:'no_suspicion',endpoint_assessment:{reason:'direction_missing'},box_motion_diagnostic:{direction:'outward'},event_ids:[]}]}};
+ctx.holder=new Element('div');vm.runInContext("renderIncidentFlow(holder,'new',data)",ctx);const video=ctx.holder.children[2],routing=ctx.holder.children[5],audit=ctx.holder.children[6];
+assert.match(audit.children[1].textContent,/의심 없음은 해제 성공이 아니며/);assert.match(audit.children[2].textContent,/no_suspicion/);assert.doesNotMatch(routing.textContent,/latest_linked_incident/);
+video.currentTime=3;video.fire('seeked');assert.match(routing.textContent,/latest_linked_incident.*선택 a · 제외 b/);video.currentTime=1;video.fire('seeking');assert.doesNotMatch(routing.textContent,/latest_linked_incident/);assert.equal(requests,0);
+console.log('EXP48 causal routing and retrospective observation audit passed');

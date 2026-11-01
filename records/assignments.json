@@ -506,6 +506,19 @@
       "synthetic": false,
       "task_id": "task_da3e098f3b7f",
       "title": "EXP-0047 의심 후속 해제·확인 알림"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T08:32:11.662371+00:00",
+      "dispatch_id": "ctx_f65833d2ba75",
+      "experiment_id": "EXP-0048",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_cadb4cdbf3bf",
+      "title": "EXP-0048 사건별 상태 연결과 전체 보행 관측"
     }
   ],
   "schema_version": 1

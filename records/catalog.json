@@ -3972,6 +3972,70 @@
       "task_id": "task_da3e098f3b7f",
       "title": "EXP-0047 의심 후속 해제·확인 알림",
       "worker_opinion": "확인 알림을 앞선 의심과 분리했으나 실제 해제 성능은 미평가. 시간차 관측 합류가 다른 대상의 근거에 영향을 주지 않는다고 보장하지 못하므로 기본 적용 보류."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-01T08:32:11.662371+00:00",
+      "attempt_id": "scoped-outcome-007v2-030v2",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_f65833d2ba75",
+      "evaluated_model": "CPU saved observations and feature paths; incident-scoped outcome routing and full observation audit; no inference",
+      "evidence": [
+        {
+          "artifact_id": "exp0048-007-continuous",
+          "kind": "video",
+          "label": "007 전체 상태 비교"
+        },
+        {
+          "artifact_id": "exp0048-030-continuous",
+          "kind": "video",
+          "label": "030 전체 상태 비교"
+        },
+        {
+          "artifact_id": "exp0048-007-late-pedestrians",
+          "kind": "video",
+          "label": "007 후반 보행 관측"
+        },
+        {
+          "artifact_id": "exp0048-007-pending-outward-box-motion",
+          "kind": "video",
+          "label": "007 미결 바깥 이동 진단"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0048",
+      "limitations": [
+        "관측열 수는 사람 수나 독립 표본 수가 아님",
+        "실제 해제0으로 해제 성능 미평가",
+        "일반 보행의 의심 없음은 해제 성공이 아님",
+        "사건 소유권은 실용적 처리 정책이며 정확한 사건 경계나 신원의 증명이 아님",
+        "박스 이동 진단은 상태 판단 근거가 아님",
+        "기존 접근 의심과 관측 연결의 불확실성은 남음"
+      ],
+      "metric_definitions": "records/EXP-0048/metrics.json",
+      "metrics_path": "records/EXP-0048/metrics.json",
+      "metrics_sha256": "08f34fbf11078702d81032cf65229bba4210c19a6d51795c5e8f8e60017cb3ee",
+      "next_step": "이번 비교 종료. 기본 MVP는 유지하며 자동 추가 실험이나 튜닝을 시작하지 않는다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "b57e0726d9922b41ea08f0de1521f031278a783c28733ad65a27ad78e04c9e34",
+      "report_path": "docs/experiments/EXP-0048-results.md",
+      "report_sha256": "8841063116e799b0b57ea27b0d2cf3aa933d3fd191242bfa665dc3ea6b82fa38",
+      "review_binding_path": "docs/reviews/EXP-0048.binding.json",
+      "review_path": "docs/reviews/EXP-0048-independent-review.md",
+      "review_sha256": "2aabe436cab1fba41956f594581094aee9651447ec5952de37eccd1568431a70",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "08f34fbf11078702d81032cf65229bba4210c19a6d51795c5e8f8e60017cb3ee",
+      "reviewed_report_sha256": "8841063116e799b0b57ea27b0d2cf3aa933d3fd191242bfa665dc3ea6b82fa38",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "007의 같은 후속 소실에 따른 과거 카드 동시 확인을 막고 첫 확인 알림은 유지했다. 후반 구간은 사용자 검수상 일반 통행이고61관측열은 의심 없음이며 해제 성공이 아니다. 실제 해제0으로 해제 성능 미평가, 기존 의심 미결과 관측 연결 한계는 남는다.",
+      "synthetic": false,
+      "task_id": "task_cadb4cdbf3bf",
+      "title": "EXP-0048 사건별 상태 연결과 전체 보행 관측",
+      "worker_opinion": "사건 간 확인 전파와 같은 소실의 반복 근거 확인을 보완했다. 기존 확인과 별도 확인 알림 유지, 해제 성능과 전체 침입 정확도는 미평가. 동결 후 사용자 검수는 docs/experiments/EXP-0048-user-review.md에 기록."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
