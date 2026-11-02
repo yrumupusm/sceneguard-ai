@@ -165,7 +165,7 @@ article {
 @media(max-width:600px) { .section-title { display:block; } .filters label, .filters input, .filters select { width:100%; } }
 
 .primary-nav { display:flex; flex-wrap:nowrap; gap:8px; margin-top:22px; border-top:1px solid #ffffff26; padding-top:16px; }
-.primary-nav a { display:flex; align-items:center; justify-content:center; min-width:144px; padding:12px 24px; color:#c7e2dc; background:#214a52; border:1px solid #ffffff24; border-bottom:3px solid transparent; border-radius:10px 10px 0 0; text-decoration:none; font-weight:700; transition:background .15s,color .15s; }
+.primary-nav a { display:flex; align-items:center; justify-content:center; min-width:144px; padding:12px 24px; color:#c7e2dc; background:#214a52; border:1px solid #ffffff24; border-bottom:3px solid transparent; border-radius:10px 10px 0 0; text-decoration:none; font-weight:700; }
 .primary-nav a:hover { background:#305e64; color:#fff; }
 .primary-nav a[aria-current="page"] { background:#f3f6f5; color:#123c45; border-color:#f3f6f5; border-bottom-color:#42a48a; }
 .primary-nav a:focus-visible { outline:3px solid #8bdac4; outline-offset:3px; }
