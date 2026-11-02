@@ -8,7 +8,9 @@ const node = (tag, text, className) => {
 };
 const show = value => value === null || value === undefined || value === '' ? '미확인' : String(value);
 const measured = value => value === null || value === undefined ? '미측정' : String(value);
-const displayNumber = value => Number.isInteger(value) ? String(value) : value.toFixed(3);
+const displayNumber = value => value !== 0 && Math.abs(value) < 0.001
+  ? value.toExponential(2)
+  : new Intl.NumberFormat('ko-KR', {maximumFractionDigits:3}).format(value);
 let catalogData;
 let statusData = {};
 let selectedSlot = 'unassigned';
@@ -54,12 +56,59 @@ function graph(metrics, unit, scope) {
   return wrap;
 }
 
-function graphs(metrics) {
-  const out = node('div', undefined, 'graphs');
-  // A single scoped value per graph avoids implying unrelated metrics are comparable.
-  metrics.filter(m => typeof m.value === 'number' && Number.isFinite(m.value) && m.value >= 0 && m.unit && m.scope && m.scope !== '미확인')
-    .forEach(m => out.append(graph([m], m.unit, `${m.scope} · 표본 수: ${measured(m.sample_n)}`)));
-  return out;
+function metricValue(value) {
+  return value == null ? '미측정' : typeof value === 'number' && Number.isFinite(value) ? displayNumber(value) : String(value);
+}
+function metricText(metric) {
+  return `${metricValue(metric.value)}${metric.value == null || !metric.display_unit ? '' : ` ${metric.display_unit}`}`;
+}
+function renderMetrics(section, metrics, groups, comparisons) {
+  section.append(node('p', '기록된 측정 조건 안에서 해석해 주세요. 미측정은 0이 아니며, 표본 수가 독립적인 사람·사건 수를 뜻하지는 않습니다.', 'muted'));
+  if (!metrics.length) { section.append(node('p', '등록된 측정값이 없습니다.')); return; }
+  // Group only identical source scopes. Do not pool metrics by unit or turn them into rankings.
+  if (!Array.isArray(groups)) {
+    const byScope = new Map();
+    for (const m of metrics) {
+      const scope = m.scope || '측정 범위 미확인';
+      if (!byScope.has(scope)) byScope.set(scope, {title:'측정 조건',scope_text:scope,metrics:[]});
+      byScope.get(scope).metrics.push({...m,display_label:m.label,display_unit:m.unit});
+    }
+    groups = [...byScope.values()];
+  }
+  const summary = node('div', undefined, 'metric-summary');
+  let remaining = 4;
+  for (const group of groups) {
+    if (!remaining) break;
+    const picked = group.metrics.slice(0, remaining); remaining -= picked.length;
+    const block = node('div', undefined, 'metric-summary-group');
+    const values = node('dl', undefined, 'metric-numbers');
+    for (const m of picked) {
+      const item = node('div'); item.append(node('dt', m.display_label),node('dd', metricText(m))); values.append(item);
+    }
+    block.append(node('p', group.scope_text, 'metric-condition'), values); summary.append(block);
+  }
+  section.append(summary);
+  // Only explicitly curated, scope-bound comparisons retain a chart.
+  for (const comparison of comparisons || []) {
+    if (comparison.values?.length > 1 && comparison.scope && comparison.values.every(m => Number.isFinite(m.value) && m.value >= 0))
+      section.append(node('h4', comparison.title), graph(comparison.values, comparison.unit, comparison.scope));
+  }
+  const details = node('details', undefined, 'metric-details');
+  details.append(node('summary', `상세 측정값 (${metrics.length})`));
+  details.append(node('p', '화면 숫자는 소수점 세 자리까지 반올림합니다. 0이 아닌 아주 작은 값은 지수로 표시하며 원래 측정값은 보존합니다.', 'muted'));
+  for (const group of groups) {
+    const block = node('div', undefined, 'metric-group');
+    block.append(node('h4', group.title),node('p', group.scope_text, 'metric-condition'));
+    const wrap = node('div', undefined, 'table-wrap'), table = node('table'), head = node('thead'), row = node('tr');
+    for (const text of ['항목','측정값','표본 수']) { const th = node('th', text); th.setAttribute('scope','col'); row.append(th); }
+    head.append(row); table.append(head);
+    const body = node('tbody');
+    for (const m of group.metrics) {
+      const row = node('tr'); row.append(node('td',m.display_label),node('td',metricText(m)),node('td',metricValue(m.sample_n))); body.append(row);
+    }
+    table.append(body); wrap.append(table); block.append(wrap); details.append(block);
+  }
+  section.append(details);
 }
 
 function reviewWarning(state) {
@@ -117,19 +166,9 @@ async function selectReport(id) {
     heading(detail, '이전 문제와 변경').append(node('p', presentation.change || '이전 문제와 변경 사항을 확인할 수 없습니다.'));
     heading(detail, '결론').append(node('p', presentation.conclusion || d.summary || '결론을 확인할 수 없습니다.'));
     const section = heading(detail, '실측값과 범위');
-    section.append(node('p', '각 값은 이 실험에서 기록한 범위에만 적용됩니다. 미측정은 0이 아닙니다.', 'muted'));
     const metrics = d.metrics || [];
-    if (!metrics.length) section.append(node('p', '등록된 측정값이 없습니다.'));
-    const list = node('ul', undefined, 'metric-list');
-    metrics.forEach(m => list.append(node('li', `${show(m.label)}: ${measured(m.value)} ${show(m.unit)} · 표본 수 ${measured(m.sample_n)} · ${show(m.scope)}`)));
-    const measuredDetails = node('details'); measuredDetails.append(node('summary', `전체 측정값과 범위 (${metrics.length})`), list);
     const comparisons = Array.isArray(presentation.comparisons) ? presentation.comparisons : [];
-    if (comparisons.length) {
-      for (const comparison of comparisons) {
-        section.append(node('h4', comparison.title), graph(comparison.values, comparison.unit, comparison.scope));
-      }
-    } else section.append(graphs(metrics.slice(0, 4)));
-    section.append(measuredDetails);
+    renderMetrics(section, metrics, d.metric_groups, comparisons);
     const evidence = heading(detail, '대표 근거');
     evidence.append(node('p', presentation.evidence_note || '등록된 자료의 원래 설명을 표시합니다. 성공이나 실패 여부는 각 설명과 보고서에서 확인해 주세요.', 'muted'));
     const items = d.evidence || [];

@@ -14,6 +14,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .editorial import enrich
 from .presentation import presentation
+from .metric_display import metric_groups
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=['localhost', '127.0.0.1'])
@@ -153,6 +154,7 @@ def experiment(experiment_id: str):
         with safe_open(c['repo_root'], path) as metric_file:
             metric_bytes = metric_file.read()
         result['metrics'] = json.loads(metric_bytes)['metrics']
+        result['metric_groups'] = metric_groups(result['metrics'])
         metric_hash = hashlib.sha256(metric_bytes).hexdigest()
         report_hash = hashlib.sha256(source.encode('utf-8')).hexdigest()
         result['source_integrity']['metrics_match'] = metric_hash == item['metrics_sha256'] if item.get('metrics_sha256') else None

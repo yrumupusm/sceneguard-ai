@@ -186,3 +186,15 @@ article {
 .incident-index > div { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:8px 0; }
 .incident-index button { padding:5px 10px; }
 .experiment-card strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.metric-summary { display:grid; gap:12px; margin:16px 0; }
+.metric-summary-group { padding:16px 18px; border:1px solid #d7e2df; border-radius:8px; background:#f8faf9; }
+.metric-condition { color:#52666b; font-size:.92rem; line-height:1.65; }
+.metric-numbers { display:flex; flex-wrap:wrap; gap:16px 32px; margin:10px 0 0; }
+.metric-numbers > div { min-width:120px; flex:1; }
+.metric-numbers dt { font-size:.88rem; color:#52666b; }
+.metric-numbers dd { margin:4px 0 0; font-size:1.25rem; font-weight:700; color:#183b41; font-variant-numeric:tabular-nums; }
+.metric-group { margin:22px 0; }
+.metric-group h4 { margin:0 0 8px; }
+.metric-group td:nth-child(n+2) { font-variant-numeric:tabular-nums; white-space:nowrap; }
+.metric-group th:first-child { width:58%; }
