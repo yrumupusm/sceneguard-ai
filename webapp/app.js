@@ -33,6 +33,7 @@ function graph(metrics, unit, scope) {
   svg.setAttribute('role', 'img');
   svg.setAttribute('aria-label', `측정값 그래프: ${unit}`);
   const max = Math.max(...metrics.map(m => m.value), 1);
+  wrap.append(node('p', `표시 범위: 0–${displayNumber(max)} ${unit}`, 'muted'));
   metrics.forEach((metric, index) => {
     const y = index * 34 + 20;
     const label = document.createElementNS(ns, 'text');
@@ -51,16 +52,38 @@ function graph(metrics, unit, scope) {
 }
 
 function graphs(metrics) {
-  const groups = new Map();
-  metrics.forEach(metric => {
-    if (typeof metric.value !== 'number' || !Number.isFinite(metric.value) || metric.value < 0) return;
-    const key = JSON.stringify([metric.unit || '단위 없음', metric.scope || '범위 미확인']);
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(metric);
-  });
   const out = node('div', undefined, 'graphs');
-  [...groups.entries()].slice(0, 2).forEach(([key, values]) => out.append(graph(values, ...JSON.parse(key))));
+  // A single scoped value per graph avoids implying unrelated metrics are comparable.
+  metrics.filter(m => typeof m.value === 'number' && Number.isFinite(m.value) && m.value >= 0 && m.unit && m.scope && m.scope !== '미확인')
+    .forEach(m => out.append(graph([m], m.unit, `${m.scope} · 표본 수: ${measured(m.sample_n)}`)));
   return out;
+}
+
+function reviewWarning(state) {
+  if (state === 'current') return '';
+  return state === 'stale' ? '이전 검토가 현재 원문·측정치와 다릅니다. 재검토가 필요합니다.' : '이전 검토와 현재 원문·측정치의 연결을 확인할 수 없습니다. 재검토가 필요합니다.';
+}
+function isInputSheet(item) {
+  return item.kind === 'image' && /(?:입력.*(?:시트|표본|프레임)|(?:시트|표본).*입력|contact\s*sheet|processor 입력)/i.test(item.label || '');
+}
+function evidencePriority(item) {
+  return /실패|누락|오류|오탐|잘못|failure|miss|error/i.test(item.label || '') ? 0 :
+    /비교|대조|성공|복원|success|comparison|compare|\s\/\s/i.test(item.label || '') ? 1 : 2;
+}
+function appendEvidence(parent, items) {
+  items.forEach(item => {
+    const block = node('div', undefined, 'evidence');
+    block.append(node('strong', item.label || '이름 없는 근거'));
+    if (!item.available) block.append(node('p', '파일을 사용할 수 없습니다.'));
+    else if (item.kind === 'video') {
+      const video = node('video'); video.controls = true; video.preload = 'none';
+      video.src = `/artifacts/${encodeURIComponent(item.artifact_id)}`; block.append(video);
+    } else if (item.kind === 'image') {
+      const image = node('img'); image.loading = 'lazy'; image.alt = item.label || '근거 이미지';
+      image.src = `/artifacts/${encodeURIComponent(item.artifact_id)}`; block.append(image);
+    }
+    parent.append(block);
+  });
 }
 
 async function selectReport(id) {
@@ -79,62 +102,62 @@ async function selectReport(id) {
     const d = await response.json();
     if (request !== selectionRequest) return;
     detail.dataset.id = id; detail.dataset.result = 'registered'; detail.dataset.executionStatus = show(d.execution_status);
-    detail.dataset.sourceHashes = JSON.stringify(d.current_source_sha256);
     const assignment = (catalogData.assignments || []).find(x => x.slot === selectedSlot && x.experiment_id === id);
-    detail.replaceChildren(node('p', `${d.synthetic || assignment?.synthetic ? 'TEST · ' : ''}${d.experiment_id}`, 'eyebrow'), node('h2', d.title), node('p', d.summary));
-    detail.append(node('p', `실험 모델: ${show(d.evaluated_model)} · 작업자 모델: ${show(d.agent_model_effective)}`, 'muted'));
-    const states = {completed_with_recorded_limitations: '실행 완료 · 한계 기록', AI_draft: 'AI 검수 초안', adoption_on_hold: '기본 채택 보류'};
-    detail.append(node('p', `기록된 실험 실행: ${states[d.execution_status] || show(d.execution_status)} · 검토: ${states[d.review_status] || show(d.review_status)} · 결정: ${states[d.decision_status] || show(d.decision_status)}`, 'muted'));
-    if (Object.values(d.source_integrity || {}).includes(false)) {
-      detail.append(node('p', '원문 또는 측정치가 검토 당시와 다릅니다. 재검토가 필요합니다.', 'integrity-warning'));
-    }
+    const presentation = d.presentation || {};
+    detail.replaceChildren(node('p', `${d.synthetic || assignment?.synthetic ? 'TEST · ' : ''}${d.experiment_id}`, 'eyebrow'), node('h2', d.title));
+    const states = {completed_with_recorded_limitations: '실행 완료 · 한계 기록', succeeded: '완료', failed: '실패', inconclusive: '판단 보류', accepted_for_comparison: '비교 검토 완료', needs_revision: '보완 필요', blocked: '차단', AI_draft: 'AI 검수 초안', adoption_on_hold: '기본 채택 보류', rejected: '미채택'};
+    detail.append(node('p', `실행: ${states[d.execution_status] || show(d.execution_status)} · 검토: ${states[d.review_status] || show(d.review_status)} · 결정: ${states[d.decision_status] || show(d.decision_status)}`, 'muted'));
+    if (Object.values(d.source_integrity || {}).includes(false)) detail.append(node('p', '원문 또는 측정치가 등록 당시와 다릅니다. 재검토가 필요합니다.', 'integrity-warning'));
+    const warning = reviewWarning(d.review_integrity);
+    if (warning) detail.append(node('p', warning, 'integrity-warning'));
+    heading(detail, '실험 목적').append(node('p', presentation.purpose || '실험 목적을 확인할 수 없습니다.'));
+    heading(detail, '이전 문제와 변경').append(node('p', presentation.change || '이전 문제와 변경 사항을 확인할 수 없습니다.'));
+    heading(detail, '결론').append(node('p', presentation.conclusion || d.summary || '결론을 확인할 수 없습니다.'));
     const section = heading(detail, '실측값과 범위');
-    section.append(node('p', '미측정은 0이 아닙니다. 실험마다 표본과 처리 범위가 달라 성능 순위로 비교하지 않습니다.', 'muted'));
-    const box = node('div', undefined, 'table-wrap');
-    const table = node('table'); const head = node('tr');
-    ['지표', '값', '단위', '표본 수', '측정 범위'].forEach(text => head.append(node('th', text)));
-    table.append(head);
-    (d.metrics || []).forEach(metric => {
-      const row = node('tr');
-      [metric.label, measured(metric.value), show(metric.unit), measured(metric.sample_n), show(metric.scope)]
-        .forEach(text => row.append(node('td', text)));
-      table.append(row);
-    });
-    box.append(table); section.append(box, graphs(d.metrics || []));
-    const evidence = heading(detail, '로컬 근거 영상과 이미지');
-    if (!d.evidence?.length) evidence.append(node('p', '등록된 근거 파일이 없습니다. 원문 보고서를 확인해 주세요.'));
-    (d.evidence || []).forEach(item => {
-      const block = node('div', undefined, 'evidence');
-      block.append(node('strong', item.label));
-      if (!item.available) block.append(node('p', '파일을 사용할 수 없습니다.'));
-      else if (item.kind === 'video') {
-        const video = node('video'); video.controls = true; video.preload = 'none';
-        video.src = `/artifacts/${encodeURIComponent(item.artifact_id)}`; block.append(video);
-      } else if (item.kind === 'image') {
-        const image = node('img'); image.loading = 'lazy'; image.alt = item.label;
-        image.src = `/artifacts/${encodeURIComponent(item.artifact_id)}`; block.append(image);
+    section.append(node('p', '각 값은 이 실험에서 기록한 범위에만 적용됩니다. 미측정은 0이 아닙니다.', 'muted'));
+    const metrics = d.metrics || [];
+    if (!metrics.length) section.append(node('p', '등록된 측정값이 없습니다.'));
+    const list = node('ul', undefined, 'metric-list');
+    metrics.forEach(m => list.append(node('li', `${show(m.label)}: ${measured(m.value)} ${show(m.unit)} · 표본 수 ${measured(m.sample_n)} · ${show(m.scope)}`)));
+    const measuredDetails = node('details'); measuredDetails.append(node('summary', `전체 측정값과 범위 (${metrics.length})`), list);
+    const comparisons = Array.isArray(presentation.comparisons) ? presentation.comparisons : [];
+    if (comparisons.length) {
+      for (const comparison of comparisons) {
+        section.append(node('h4', comparison.title), graph(comparison.values, comparison.unit, comparison.scope));
       }
-      evidence.append(block);
-    });
+    } else section.append(graphs(metrics.slice(0, 4)));
+    section.append(measuredDetails);
+    const evidence = heading(detail, '대표 근거');
+    evidence.append(node('p', presentation.evidence_note || '등록된 자료의 원래 설명을 표시합니다. 성공이나 실패 여부는 각 설명과 보고서에서 확인해 주세요.', 'muted'));
+    const items = d.evidence || [];
+    const visible = items.filter(item => !isInputSheet(item)).sort((a, b) => evidencePriority(a) - evidencePriority(b));
+    const inputs = items.filter(isInputSheet);
+    if (!items.length) evidence.append(node('p', '등록된 근거 파일이 없습니다.'));
+    if (items.length && !visible.length) evidence.append(node('p', '등록된 자료는 아래 입력 자료에서 확인할 수 있습니다.'));
+    appendEvidence(evidence, visible.slice(0, 4));
+    if (visible.length > 4) {
+      const more = node('details'); more.append(node('summary', `나머지 근거 보기 (${visible.length - 4})`));
+      appendEvidence(more, visible.slice(4)); evidence.append(more);
+    }
+    if (inputs.length) {
+      const sheets = node('details'); sheets.append(node('summary', `원본 입력 시트 보기 (${inputs.length})`));
+      appendEvidence(sheets, inputs); evidence.append(sheets);
+    }
     if (id === 'EXP-0036') addIncidentFlows(detail, request);
     if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047' || id === 'EXP-0048' || id === 'EXP-0049') addFinishFlows(detail, request, id);
-    heading(detail, '담당 의견').append(node('p', show(d.worker_opinion)));
-    const review = heading(detail, '총괄 검토');
-    review.dataset.section = 'review';
-    if (d.review_html) {
-      const content = node('div'); content.innerHTML = d.review_html; review.append(content);
-    } else review.append(node('p', '별도 검토가 없습니다.'));
-    heading(detail, '다음 작업').append(node('p', show(d.next_step)));
-    const limits = heading(detail, '한계'); (d.limitations || []).forEach(text => limits.append(node('p', text)));
-    const technical = node('details'); technical.append(node('summary', '원문과 출처 · 기술 상세'));
-    technical.append(node('pre', JSON.stringify({
-      report_path: d.report_path, report_sha256: d.report_sha256, metrics_path: d.metrics_path,
-      review_path: d.review_path, source_integrity: d.source_integrity,
-      execution_status: d.execution_status, review_status: d.review_status, decision_status: d.decision_status,
-      metrics: d.metrics,
-    }, null, 2)));
-    const original = node('div', undefined, 'original-report'); original.innerHTML = d.report_html;
-    technical.append(original); detail.append(technical);
+    heading(detail, '한계').append(node('p', presentation.limitations || (d.limitations || []).join(' · ') || '기록된 한계를 확인할 수 없습니다.'));
+    heading(detail, '다음 단계').append(node('p', presentation.next_steps || d.next_step || '다음 단계를 확인할 수 없습니다.'));
+    const refs = heading(detail, '참고 자료');
+    const references = Array.isArray(presentation.references) ? presentation.references : [];
+    if (!references.length) refs.append(node('p', '등록된 참고 자료가 없습니다.'));
+    references.forEach(ref => {
+      const p = node('p');
+      if (ref.url && /^(https?:\/\/|\/(?!\/))/i.test(ref.url)) {
+        const link = node('a', ref.label || ref.url); link.href = ref.url; link.rel = 'noopener noreferrer'; p.append(link);
+      } else p.append(node('span', ref.label || '참고 자료'));
+      if (ref.application) p.append(node('span', ` · ${ref.application}`));
+      refs.append(p);
+    });
   } catch {
     if (request === selectionRequest) detail.replaceChildren(node('p', '등록된 보고서를 불러올 수 없습니다.'));
   }
@@ -506,38 +529,44 @@ function observationText(observation) {
   if (observation.outcome === 'in_progress') return observation.stage?.activity === 'working' ? '진행 중' : '응답 대기';
   return '미확인';
 }
-function renderSlots() {
-  const slots = ['slot1', 'slot2', 'slot3'].map(id => (catalogData.roles.slots || []).find(x => x.id === id) || {id, label: id});
-  slots.push({id: 'unassigned', label: '미배정'});
-  const container = $('#slots'); container.replaceChildren();
-  slots.forEach(slot => {
-    const items = slotItems(catalogData, slot.id);
-    const button = node('button', undefined, 'card slot'); button.dataset.slot = slot.id;
-    button.dataset.result = String(items.filter(x => x.result).length);
-    button.setAttribute('aria-pressed', String(selectedSlot === slot.id));
-    button.append(node('h3', slot.label), node('p', `배정 ${items.filter(x => x.assignment).length} · 등록 결과 ${items.filter(x => x.result).length}`, 'muted'));
-    const states = [...new Set(items.filter(x => x.assignment).map(x => observationText(nativeObservation(x.assignment, statusData))))];
-    button.dataset.status = states.length ? states.join(' / ') : '미배정';
-    button.append(node('p', `작업: ${button.dataset.status}`, 'task-status'));
-    if (items.some(x => x.assignment?.synthetic || x.result?.synthetic)) button.append(node('strong', 'TEST · 합성 확인'));
-    button.addEventListener('click', () => selectSlot(slot.id)); container.append(button);
+function catalogItems(data) {
+  const items = new Map();
+  (data.experiments || []).forEach(result => items.set(result.experiment_id, {id: result.experiment_id, result}));
+  (data.assignments || []).forEach(assignment => {
+    const existing = items.get(assignment.experiment_id);
+    if (!existing) items.set(assignment.experiment_id, {id: assignment.experiment_id, assignment});
+    else if (!existing.assignment || assignment.slot === existing.result?.slot) existing.assignment = assignment;
+  });
+  const timestamp = item => Date.parse(item.result?.created_at || item.assignment?.assigned_at || '') || 0;
+  return [...items.values()].sort((a, b) => timestamp(b) - timestamp(a) || b.id.localeCompare(a.id, undefined, {numeric:true}));
+}
+function filteredItems(data, query, status) {
+  const search = query.trim().toLocaleLowerCase();
+  return catalogItems(data).filter(item => {
+    const text = `${item.id} ${item.result?.title || item.assignment?.title || ''}`.toLocaleLowerCase();
+    return (!search || text.includes(search)) && (status === 'all' || (item.result ? 'registered' : 'pending') === status);
   });
 }
 function renderChoices() {
   const nav = $('#experiments'); nav.replaceChildren();
-  const slot = (catalogData.roles.slots || []).find(x => x.id === selectedSlot);
-  $('#slot-title').textContent = `${slot?.label || '미배정'} · 배정 및 등록 결과`;
-  slotItems(catalogData, selectedSlot).forEach(item => {
-    const observed = nativeObservation(item.assignment, statusData);
-    const button = node('button'); button.dataset.id = item.id; button.dataset.slot = selectedSlot;
-    button.dataset.status = observed ? 'observed' : 'unverified';
+  const items = filteredItems(catalogData, $('#experiment-search').value, $('#experiment-status').value);
+  $('#experiment-count').textContent = `${items.length}개 실험 · 최신 등록순 (날짜는 기록 시각)`;
+  if (!items.length) nav.append(node('p', '조건에 맞는 실험이 없습니다.', 'muted'));
+  items.forEach(item => {
+    const button = node('button', undefined, 'experiment-card'); button.dataset.id = item.id;
+    button.dataset.slot = item.result?.slot || item.assignment?.slot || 'unassigned';
     button.dataset.result = item.result ? 'registered' : 'pending';
     button.setAttribute('aria-pressed', String(item.id === selectedReport));
-    const synthetic = item.assignment?.synthetic || item.result?.synthetic;
-    button.append(node('strong', `${synthetic ? 'TEST · ' : ''}${item.id} · ${show(item.assignment?.title || item.result?.title)}`),
-      node('span', item.result ? ' · 결과 등록' : ' · 결과 미등록'));
-    if (item.assignment) button.append(node('p', `Orca 작업: ${observationText(observed)}`, 'muted'));
-    button.addEventListener('click', () => item.result ? selectReport(item.id) : selectPending(item.id));
+    button.append(node('span', `${item.assignment?.synthetic || item.result?.synthetic ? 'TEST · ' : ''}${item.id}`, 'experiment-id'),
+      node('strong', show(item.result?.title || item.assignment?.title)),
+      node('span', item.result ? '결과 등록' : '결과 미등록', 'result-badge'));
+    const date = item.result?.created_at || item.assignment?.assigned_at;
+    if (date) button.append(node('span', `기록 ${date.slice(0, 10)}`, 'muted'));
+    button.addEventListener('click', () => {
+      selectedSlot = button.dataset.slot;
+      item.result ? selectReport(item.id) : selectPending(item.id);
+      renderChoices();
+    });
     nav.append(button);
   });
 }
@@ -546,26 +575,26 @@ function selectPending(id) {
   const assignment = (catalogData.assignments || []).find(x => x.slot === selectedSlot && x.experiment_id === id);
   const detail = $('#detail'); detail.dataset.id = id; detail.dataset.result = 'pending';
   delete detail.dataset.executionStatus;
+  const taskState = node('p', `배정 상태: ${observationText(nativeObservation(assignment, statusData))}`, 'muted');
+  taskState.dataset.pendingObservation = 'true';
   detail.replaceChildren(node('p', `${assignment?.synthetic ? 'TEST · ' : ''}${id}`, 'eyebrow'),
-    node('h2', show(assignment?.title)), node('p', '결과가 아직 등록되지 않았습니다. 보고서와 실험 실행·검토·결정 상태는 미확인입니다.'),
-    node('p', `Orca 작업: ${observationText(nativeObservation(assignment, statusData))}`, 'muted'),
-    node('p', `요청 모델: ${show(assignment?.agent_model_requested)} · 실효 모델: ${show(assignment?.agent_model_effective)} · 실효 effort: ${show(assignment?.reasoning_effective)}`, 'muted'));
+    node('h2', show(assignment?.title)), node('p', '결과가 아직 등록되지 않았습니다. 실험 실행·검토·결정 상태는 미확인입니다.'),
+    taskState);
   if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
   if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047' || id === 'EXP-0048' || id === 'EXP-0049') addFinishFlows(detail, selectionRequest, id);
   renderChoices();
 }
-function selectSlot(id) {
-  selectedSlot = id; selectedReport = null; loadedFingerprint = null; pendingRefresh = false;
-  renderSlots(); renderChoices();
-  const items = slotItems(catalogData, id);
-  const first = items.find(x => x.id === 'EXP-0007') || items[0];
-  if (first) first.result ? selectReport(first.id) : selectPending(first.id);
-  else { selectionRequest++; const detail = $('#detail'); detail.dataset.id = ''; detail.dataset.result = 'empty'; delete detail.dataset.executionStatus;
-    detail.replaceChildren(node('h2', '배정이나 등록된 결과가 없습니다.')); }
+function updatePendingObservation() {
+  const detail = $('#detail');
+  if (detail.dataset.result !== 'pending') return;
+  const target = detail.querySelector('[data-pending-observation]');
+  const assignment = (catalogData.assignments || []).find(x => x.slot === selectedSlot && x.experiment_id === selectedReport);
+  if (target) target.textContent = `배정 상태: ${observationText(nativeObservation(assignment, statusData))}`;
 }
 function refreshSelectedIfChanged() {
   if (!selectedReport) return;
-  const result = resultFor(catalogData, selectedSlot, selectedReport);
+  const result = (catalogData.experiments || []).find(x => x.experiment_id === selectedReport);
+  if (result) selectedSlot = result.slot;
   if (!result) { if (loadedFingerprint !== null) selectPending(selectedReport); return; }
   if (JSON.stringify(result) === loadedFingerprint) return;
   const hasMedia = $('#detail').querySelector('video');
@@ -582,28 +611,30 @@ async function refresh() {
   if (catalog.status === 'fulfilled') {
     const first = !catalogData; catalogData = catalog.value;
     if (first) {
-      const coordinator = catalogData.roles.coordinator;
-      const card = node('div', undefined, 'card');
-      card.append(node('h3', coordinator.label), node('p', `${coordinator.model} · ${coordinator.effort}`), node('p', coordinator.note, 'muted'));
-      $('#coordinator').replaceChildren(card);
-      (catalogData.roles.setup_workers || []).forEach(item => $('#workers').append(node('p', `${show(item.role)} · ${show(item.model)} · ${show(item.effort)} · ${show(item.status)}`)));
-      const savedSlot = storageGet('selected-slot') || 'unassigned';
-      const savedReport = storageGet('selected-report');
-      selectSlot(savedSlot);
-      if (savedReport && slotItems(catalogData, savedSlot).some(x => x.id === savedReport)) selectReport(savedReport);
-    } else { renderSlots(); renderChoices(); refreshSelectedIfChanged(); }
+      const items = catalogItems(catalogData);
+      const chosen = items.find(x => x.id === storageGet('selected-report')) || items[0];
+      renderChoices();
+      if (chosen) {
+        selectedSlot = chosen.result?.slot || chosen.assignment?.slot || 'unassigned';
+        chosen.result ? selectReport(chosen.id) : selectPending(chosen.id);
+        renderChoices();
+      }
+    } else { renderChoices(); refreshSelectedIfChanged(); }
   } else if (!catalogData) $('#detail').textContent = '카탈로그를 불러올 수 없습니다.';
   else {
     statusData = {};
     $('#status').textContent += ' · 목록 조회 실패: 이전 목록, 작업 상태 미확인';
-    renderSlots(); renderChoices();
+    renderChoices();
   }
   if (catalogData && selectedReport && !resultFor(catalogData, selectedSlot, selectedReport) && $('#detail').dataset.result !== 'pending') selectPending(selectedReport);
+  if (catalogData && selectedReport) updatePendingObservation();
 }
-if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFor, slotItems, observationText};
+if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFor, slotItems, observationText, catalogItems, filteredItems, isInputSheet, evidencePriority, reviewWarning};
 if (typeof document !== 'undefined') {
   document.addEventListener('pause', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh) refreshSelectedIfChanged(); }, true);
   document.addEventListener('ended', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh) refreshSelectedIfChanged(); }, true);
+  $('#experiment-search').addEventListener('input', () => { if (catalogData) renderChoices(); });
+  $('#experiment-status').addEventListener('change', () => { if (catalogData) renderChoices(); });
   addFinishFlows($('#mvp-view'), selectionRequest, 'MVP-0002');
   refresh(); setInterval(refresh, 15000);
 }

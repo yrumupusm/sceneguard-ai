@@ -12,6 +12,9 @@ from fastapi.responses import FileResponse, JSONResponse, Response, StreamingRes
 from markdown_it import MarkdownIt
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+from .editorial import enrich
+from .presentation import presentation
+
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=['localhost', '127.0.0.1'])
 HERE = Path(__file__).parent
@@ -181,6 +184,7 @@ def experiment(experiment_id: str):
                                      '재검토가 필요하며 아래 의견은 현재 버전 승인으로 사용할 수 없습니다.</strong></p>'
                                      + result['review_html'])
         result['evidence'] = [{**e, 'available': available(c, e)} for e in item.get('evidence', [])]
+        result['presentation'] = enrich(source, item, presentation(source, item))
         return result
     except StopIteration:
         raise HTTPException(404, 'unknown experiment')

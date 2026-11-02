@@ -35,11 +35,34 @@ vm.runInContext(`
  globalThis.document = {querySelector:()=>display};
  globalThis.fetch = async()=>{throw Error('fixture unavailable');};
  globalThis.rendered = [];
- renderSlots = ()=>rendered.push(observationText(nativeObservation(fixtureAssignment,statusData)));
- renderChoices = ()=>rendered.push('choices refreshed');
+ renderChoices = ()=>rendered.push(observationText(nativeObservation(fixtureAssignment,statusData)));
 `, context);
 vm.runInContext('refresh()', context).then(() => {
-  assert.deepEqual(Array.from(context.rendered), ['미확인','choices refreshed']);
+  assert.deepEqual(Array.from(context.rendered), ['미확인']);
   assert.match(context.display.textContent, /목록 조회 실패/);
   console.log('failed polling refresh assertions passed');
 }).catch(error => { console.error(error); process.exitCode = 1; });
+
+// Poll updates just the pending status text and keeps any playing media intact.
+const pendingContext = vm.createContext({console, fixtureAssignment:assignment, fixtureStatus:status});
+vm.runInContext(fs.readFileSync(require.resolve('../webapp/app.js'), 'utf8'), pendingContext);
+vm.runInContext(`
+  catalogData = {assignments:[fixtureAssignment], experiments:[]};
+  selectedSlot = 'slot1'; selectedReport = 'TEST-1'; statusData = fixtureStatus;
+  globalThis.label = {textContent:''};
+  globalThis.media = {};
+  globalThis.detail = {dataset:{result:'pending'}, querySelector:s=>s==='[data-pending-observation]' ? label : media};
+  globalThis.display = {textContent:''};
+  globalThis.document = {querySelector:s=>s==='#detail' ? detail : display};
+  globalThis.renderChoices = ()=>{};
+  updatePendingObservation();
+`, pendingContext);
+assert.match(pendingContext.label.textContent, /작업자 완료/);
+vm.runInContext("statusData={...fixtureStatus,stale:true}; updatePendingObservation()", pendingContext);
+assert.match(pendingContext.label.textContent, /미확인/);
+vm.runInContext("statusData=fixtureStatus; fetch=async()=>{throw Error('unavailable')}", pendingContext);
+vm.runInContext('refresh()', pendingContext).then(()=>{
+  assert.match(pendingContext.label.textContent, /미확인/);
+  assert.equal(pendingContext.detail.querySelector('video'), pendingContext.media);
+  console.log('pending observation refresh preserves media on stale and failed polls');
+}).catch(error=>{console.error(error);process.exitCode=1;});
