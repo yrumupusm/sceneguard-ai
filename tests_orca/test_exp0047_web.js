@@ -18,7 +18,7 @@ ctx.fixture={contract:'incident_lifecycle_v1',source_window:[0,5],media_artifact
 ctx.holder=new Element('div'); vm.runInContext("renderIncidentFlow(holder,'x',fixture)",ctx);
 const video=ctx.holder.children[2], cards=ctx.holder.children[4];
 video.currentTime=2; video.fire('seeked'); assert.match(cards.children[0].children[1].textContent,/첫 자동 확인 없음/); assert.doesNotMatch(cards.children[0].children[2].textContent,/확인 의도/);
-video.currentTime=3; video.fire('timeupdate'); assert.match(cards.children[0].children[1].textContent,/첫 자동 확인 3\.000초 · 확인 알림 의도 3\.000초/); assert.match(cards.children[0].children[2].textContent,/확인 의도 3\.000초 · c/);
+video.currentTime=3; video.fire('timeupdate'); assert.match(cards.children[0].children[1].textContent,/첫 자동 확인 3\.000초 · 확인 알림 의도 3\.000초/); assert.match(cards.children[0].children[2].textContent,/확인 의도 3\.000초/);
 ctx.document.querySelector=()=>({querySelector:()=>video});
 vm.runInContext("selectedReport='EXP-0047'; selectedSlot='slot3'; loadedFingerprint='old'; catalogData={experiments:[{experiment_id:'EXP-0047',slot:'slot3'}]}; refreshSelectedIfChanged()",ctx);
 assert.equal(vm.runInContext('pendingRefresh',ctx),true); assert.equal(video.currentTime,3);
@@ -32,7 +32,7 @@ ctx.two={...ctx.fixture,timeline:[...ctx.fixture.timeline,{incident_id:cid2,deci
 ctx.pair=new Element('div'); vm.runInContext("renderIncidentFlow(pair,'pair',two)",ctx);
 ctx.pair.children[2].currentTime=3;ctx.pair.children[2].fire('seeked');
 assert.equal(ctx.pair.children[4].children.length,2);
-assert.match(ctx.pair.children[4].children[0].children[2].textContent,/ · c/);
-assert.match(ctx.pair.children[4].children[1].children[2].textContent,/ · second/);
+assert.doesNotMatch(ctx.pair.children[4].children[0].children[2].textContent,/ · c/);
+assert.doesNotMatch(ctx.pair.children[4].children[1].children[2].textContent,/second/);
 assert.equal(requests,0);
 console.log('EXP47 causal playback, rewind, polling, reload and isolated intents passed');

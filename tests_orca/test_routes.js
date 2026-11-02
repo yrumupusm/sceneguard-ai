@@ -1,0 +1,16 @@
+'use strict';
+const assert = require('node:assert/strict'), vm = require('node:vm'), fs = require('node:fs');
+const calls = [];
+const video = {pause() { calls.push('pause'); }};
+const history = {hidden:false, querySelectorAll:() => [video]};
+const review = {hidden:true, querySelectorAll:() => [video]};
+const links = ['history','video-review'].map(route => ({dataset:{route}, setAttribute(k,v){this[k]=v;}, removeAttribute(k){delete this[k];}}));
+const ctx = vm.createContext({location:{hash:''}});
+vm.runInContext(fs.readFileSync('webapp/app.js','utf8'),ctx);
+ctx.document = {querySelector:s => s === '#history-page' ? history : review, querySelectorAll:() => links};
+vm.runInContext('setRoute()',ctx);
+assert.equal(history.hidden,false); assert.equal(review.hidden,true); assert.equal(links[0]['aria-current'],'page');
+ctx.location.hash='#video-review'; vm.runInContext('setRoute()',ctx);
+assert.equal(history.hidden,true); assert.equal(review.hidden,false); assert.equal(links[1]['aria-current'],'page');
+assert.equal(calls.length,2);
+console.log('default route, view switch, active navigation and hidden media pause passed');

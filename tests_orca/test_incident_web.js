@@ -81,7 +81,7 @@ async function tick() { await new Promise(resolve => setImmediate(resolve)); }
   birthVideo.currentTime=1.5; birthVideo.fire('seeked');
   assert.equal(birthCards.children[0].children[2].children[1].children.length,1);
   birthVideo.currentTime=2.1; birthVideo.fire('seeked');
-  assert.match(birthCards.children[0].children[2].children[1].children[1].textContent,/첫 실제 관측 11\.900초 · 첫 박스/);
+  assert.match(birthCards.children[0].children[2].children[1].children[1].textContent,/첫 실제 관측 11\.900초/);
   birthVideo.currentTime=1.5; birthVideo.fire('seeked');
   assert.equal(birthCards.children[0].children[2].children[1].children.length,1);
   const portalEvent = {...birthEvent, source_event:{...birthEvent.source_event, birth_site:{geometry_kind:'projected_gate_emergence_v1', portal_center_inside:true, portal_box_overlap:0.75}}};
@@ -93,9 +93,9 @@ async function tick() { await new Promise(resolve => setImmediate(resolve)); }
   assert.equal(portalCards.children[0].children[2].children[1].children.length,1);
   portalVideo.currentTime=2.1; portalVideo.fire('seeked');
   const portalText=portalCards.children[0].children[2].children[1].children[1].textContent;
-  assert.match(portalText,/첫 실제 관측 11\.900초 · 첫 박스/);
+  assert.match(portalText,/첫 실제 관측 11\.900초/);
   assert.match(portalText,/문 구역 새 관측/);
-  assert.match(portalText,/구역 내 중심 \(portal_center_inside\) true · 박스 겹침 \(portal_box_overlap\) 0\.75/);
+  assert.doesNotMatch(portalText,/portal_center_inside|portal_box_overlap/);
   portalVideo.currentTime=1.5; portalVideo.fire('seeked');
   assert.equal(portalCards.children[0].children[2].children[1].children.length,1);
   fullVideo.currentTime = 11; fullVideo.fire('seeked');
@@ -113,7 +113,7 @@ async function tick() { await new Promise(resolve => setImmediate(resolve)); }
   vm.runInContext("selectionRequest=99; renderIncidentFlow=(holder,id,data)=>{holder.dataset.rendered=id}; addFinishFlows(finishDetail,99)",ctx);
   await tick(); await tick();
   const section=ctx.finishDetail.children[0];
-  const source=section.children[1].children[0], view=section.children[2].children[0], selectedHolder=section.children[3];
+  const source=section.children[1].children[0], view=section.children[2].children[0], selectedHolder=section.children[4];
   assert.equal(view.value,'first'); assert.equal(selectedHolder.dataset.rendered,'first');
   assert.match(view.children[1].textContent,/68–105초 · 캐시 분석/);
   view.value='second'; view.fire('change'); await tick();

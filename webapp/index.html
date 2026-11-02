@@ -17,10 +17,10 @@
 <p id="status" class="status">연결 상태 확인 중</p>
 </div>
 </header>
+<nav class="primary-nav" aria-label="주 메뉴"><div class="wrap"><a href="#history" data-route="history">실험 이력</a><a href="#video-review" data-route="video-review">영상 검수</a></div></nav>
 <main class="wrap">
-<section id="mvp-view"><h2>영상 분석</h2></section>
-<details class="history-disclosure" open><summary>이전 실험 및 비교 이력</summary>
-<section id="history">
+<div id="history-page">
+<section id="experiment-history">
 <div class="section-title"><div><p class="eyebrow">EXPERIMENT LIBRARY</p><h2>실험 이력</h2></div><p>등록된 결과와 아직 결과가 없는 배정을 함께 보여줍니다.</p></div>
 <div class="filters">
 <label>검색 <input id="experiment-search" type="search" placeholder="실험 번호 또는 제목"></label>
@@ -30,7 +30,8 @@
 <nav id="experiments" class="experiment-grid" aria-label="실험 선택"></nav>
 </section>
 <article id="detail" aria-live="polite"><p>실험을 선택해 주세요.</p></article>
-</details>
+</div>
+<div id="video-review-page" hidden><section id="linked-video" hidden></section><section id="mvp-view"><h2>영상 검수</h2></section></div>
 </main>
 <footer class="wrap">수동 검토는 로컬에 저장됩니다 · 모델 실행이나 승인 기능 없음</footer>
 </body>
