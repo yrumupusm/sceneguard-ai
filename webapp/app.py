@@ -107,13 +107,13 @@ def available(c, item):
 
 @app.get('/')
 def index():
-    return FileResponse(HERE / 'index.html')
+    return FileResponse(HERE / 'index.html', headers={'Cache-Control': 'no-cache'})
 
 @app.get('/assets/{name}')
 def assets(name: str):
     if name not in ('app.js', 'style.css'):
         raise HTTPException(404)
-    return FileResponse(HERE / name)
+    return FileResponse(HERE / name, headers={'Cache-Control': 'no-cache'})
 
 @app.get('/api/catalog')
 def get_catalog():
