@@ -1,3 +1,9 @@
+## WEB-0005 갱신 (2026-11-03)
+
+현재 화면은 실험별 우측 검수 버튼으로 진입한다. 공통 영상 검수 탭은 제거됐다. 새 답변 DB/API/CLI와 작업 시작 확인 절차를 연결했고, 기존 service start/stop/status 명령을 그대로 사용한다. Python51개·Node12스위트·독립 검토 및 운영 읽기 전용/격리 쓰기 브라우저 검증 완료. 기존 DB와 결과는 보존했다. 상세와 한계: [WEB-0005](../experiments/WEB-0005-results.md), [웹 검수 흐름](../WEB_REVIEW_WORKFLOW.md).
+
+---
+
 # SceneGuard Orca 로컬 세팅 검증 보고서
 
 후속 상태: 첫 실제 모델 배치 EXP-0008~0010을 같은 실험실에서 실행했다. 최신 역할/큐/실험 전달 확인은 [BATCH-0001_DELIVERY](BATCH-0001_DELIVERY.md), 행동 비교는 [배치 보고서](../experiments/BATCH-0001-vlm-comparison.md)를 따른다. 아래의 “새 실험 미실행”은 최초 세팅 당시의 보존된 기록이다.

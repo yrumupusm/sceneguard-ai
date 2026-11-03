@@ -35,7 +35,7 @@ ctx.parent=new Element('div'); ctx.data={session_id:'session',bundle_sha256:'sha
     return new Promise(resolve=>{resolveLoad=resolve;});
   };
   ctx.parent=new Element('div'); vm.runInContext("addAssessment(parent,'bundle',data,'incident')",ctx);
-  const pending=ctx.parent.children[0], draft=pending.children.find(x=>x.tagName==='TEXTAREA');
+  const pending=ctx.parent.children[0], draft=pending.children.flatMap(x=>x.tagName==='LABEL'?x.children:[x]).find(x=>x.tagName==='TEXTAREA');
   draft.value='new note'; pending.listeners.input({target:draft});
   resolveLoad({ok:true,json:async()=>({review:{version:4,event_assessment:'correct_event',bbox_quality:'good',reviewer:'existing',note:'old note'},history:[]})});
   await new Promise(resolve=>setImmediate(resolve));

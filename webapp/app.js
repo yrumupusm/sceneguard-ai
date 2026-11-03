@@ -13,6 +13,10 @@ const displayNumber = value => value !== 0 && Math.abs(value) < 0.001
   : new Intl.NumberFormat('ko-KR', {maximumFractionDigits:3}).format(value);
 let catalogData;
 let statusData = {};
+let reviewSummaries = null;
+let reviewExperiment = null;
+let reviewPageRequest = 0;
+let assessmentInstance = 0;
 let selectedSlot = 'unassigned';
 let selectedReport = null;
 let loadedFingerprint = null;
@@ -156,9 +160,12 @@ async function selectReport(id) {
     detail.dataset.id = id; detail.dataset.result = 'registered'; detail.dataset.executionStatus = show(d.execution_status);
     const assignment = (catalogData.assignments || []).find(x => x.slot === selectedSlot && x.experiment_id === id);
     const presentation = d.presentation || {};
-    detail.replaceChildren(node('p', `${d.synthetic || assignment?.synthetic ? 'TEST · ' : ''}${d.experiment_id}`, 'eyebrow'), node('h2', d.title));
+    const header = node('div', undefined, 'experiment-heading');
+    const introduction = node('div');
+    introduction.append(node('p', `${d.synthetic || assignment?.synthetic ? 'TEST · ' : ''}${d.experiment_id}`, 'eyebrow'), node('h2', d.title));
+    header.append(introduction, reviewAction(id)); detail.replaceChildren(header);
     const states = {completed_with_recorded_limitations: '실행 완료 · 한계 기록', succeeded: '완료', failed: '실패', inconclusive: '판단 보류', accepted_for_comparison: '비교 검토 완료', needs_revision: '보완 필요', blocked: '차단', AI_draft: 'AI 검수 초안', adoption_on_hold: '기본 채택 보류', rejected: '미채택'};
-    detail.append(node('p', `실행: ${states[d.execution_status] || '미확인'} · 검토: ${states[d.review_status] || '미확인'} · 결정: ${states[d.decision_status] || '미확인'}`, 'muted'));
+    introduction.append(node('p', `실행: ${states[d.execution_status] || '미확인'} · 검토: ${states[d.review_status] || '미확인'} · 결정: ${states[d.decision_status] || '미확인'}`, 'muted'));
     if (Object.values(d.source_integrity || {}).includes(false)) detail.append(node('p', '원문 또는 측정치가 등록 당시와 다릅니다. 재검토가 필요합니다.', 'integrity-warning'));
     const warning = reviewWarning(d.review_integrity);
     if (warning) detail.append(node('p', warning, 'integrity-warning'));
@@ -185,8 +192,6 @@ async function selectReport(id) {
       const sheets = node('details'); sheets.append(node('summary', `원본 입력 시트 보기 (${inputs.length})`));
       appendEvidence(sheets, inputs); evidence.append(sheets);
     }
-    if (id === 'EXP-0036') addIncidentFlows(detail, request);
-    if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047' || id === 'EXP-0048' || id === 'EXP-0049') addFinishFlows(detail, request, id);
     heading(detail, '한계').append(node('p', presentation.limitations || (d.limitations || []).join(' · ') || '기록된 한계를 확인할 수 없습니다.'));
     heading(detail, '다음 단계').append(node('p', presentation.next_steps || d.next_step || '다음 단계를 확인할 수 없습니다.'));
     const refs = heading(detail, '참고 자료');
@@ -206,8 +211,175 @@ async function selectReport(id) {
 }
 
 
+function reviewRoute(hash) {
+  const [name, query = ''] = String(hash || '').split('?');
+  const value = new URLSearchParams(query).get('experiment');
+  return {isReview:name === '#video-review', experimentId:value && /^(EXP|MVP|WEB)-\d{4}$/.test(value) ? value : null};
+}
+function reviewStatus(summary, available = true) {
+  if (!available) return {text:'검수 상태 확인 불가', kind:'unknown'};
+  if (!summary?.total) return {text:'검수 요청 없음', kind:'none'};
+  if (summary.pending) return {text:`! 검수 필요 ${summary.pending}건`, kind:'pending'};
+  if (summary.answered) return {text:`검수 완료 · AI 확인 대기 ${summary.answered}건`, kind:'answered'};
+  if (summary.acknowledged) return {text:'검수 완료 · 반영 검토 중', kind:'acknowledged'};
+  if (summary.deferred) return {text:`검수 완료 · 반영 보류 ${summary.deferred}건`, kind:'deferred'};
+  return {text:'검수 완료 · 반영 완료', kind:'applied'};
+}
+function updateReviewLabel(element, id, compact = false) {
+  const status = reviewStatus(reviewSummaries?.[id], reviewSummaries !== null);
+  element.textContent = status.text; element.dataset.state = status.kind;
+  element.hidden = compact && status.kind === 'none';
+}
+function reviewAction(id) {
+  const action = node('div', undefined, 'review-action');
+  const status = node('span', undefined, 'review-badge'); status.dataset.reviewBadge = id;
+  updateReviewLabel(status, id);
+  const link = node('a', '영상 검수로 이동', 'review-link');
+  link.href = `#video-review?experiment=${encodeURIComponent(id)}`;
+  action.append(status, link); return action;
+}
+async function refreshReviewSummary() {
+  const previous = JSON.stringify(reviewSummaries?.[reviewExperiment]);
+  try {
+    const r = await fetch('/api/review-requests/summary', {cache:'no-store'});
+    if (!r.ok) throw Error();
+    reviewSummaries = (await r.json()).experiments;
+  } catch { reviewSummaries = null; }
+  document.querySelectorAll('[data-review-badge]').forEach(el => updateReviewLabel(el, el.dataset.reviewBadge, Boolean(el.closest('.experiment-card'))));
+  const notice = $('#review-updates');
+  if (notice && previous !== JSON.stringify(reviewSummaries?.[reviewExperiment])) {
+    notice.textContent = '검수 상태가 갱신됐습니다. 질문과 처리 내역은 아래 새로고침 버튼으로 확인하세요. 작성 중인 답변과 영상은 유지됩니다.';
+  }
+}
+async function loadReviewPage(id, force = false) {
+  if (!force && reviewExperiment === id && $('#mvp-view').dataset.loaded === String(id)) return;
+  reviewExperiment = id; const request = ++reviewPageRequest;
+  const page = $('#mvp-view'); page.dataset.loaded = String(id);
+  page.querySelectorAll('video').forEach(v => v.pause());
+  const linked = $('#linked-video'); linked.hidden = true; linked.replaceChildren();
+  const back = node('a', '← 실험 이력으로 돌아가기', 'review-back'); back.href = '#history';
+  back.addEventListener('click', () => {
+    const chosen = catalogData && catalogItems(catalogData).find(x => x.id === id);
+    if (chosen) { selectedSlot = chosen.result?.slot || chosen.assignment?.slot || 'unassigned'; chosen.result ? selectReport(id) : selectPending(id); renderChoices(); }
+  });
+  page.replaceChildren(back, node('h2', id ? `${id} · 영상 검수` : '실험을 먼저 선택해 주세요.'));
+  if (!id) { page.append(node('p', '실험 상세 오른쪽의 영상 검수 버튼을 눌러 주세요.')); return; }
+  const status = node('p', undefined, 'review-badge'); status.dataset.reviewBadge = id; updateReviewLabel(status, id); page.append(status);
+  const requests = heading(page, '요청된 검수');
+  requests.append(node('p', '질문에 답하고 검수 완료를 누르면 저장됩니다. AI가 읽고 반영했는지는 별도로 표시합니다.', 'muted'));
+  const notice = node('p'); notice.id = 'review-updates'; notice.setAttribute('role','status'); requests.append(notice);
+  const reload = node('button', '질문·처리 내역 새로고침');
+  reload.addEventListener('click', () => {
+    if (page.querySelector('[data-dirty="true"]')) { notice.textContent = '작성 중인 답변을 먼저 저장해 주세요. 입력 내용은 그대로 유지했습니다.'; return; }
+    loadReviewPage(id, true);
+  }); requests.append(reload);
+  const questions = node('div'); requests.append(questions);
+  try {
+    const r = await fetch(`/api/review-requests?experiment_id=${encodeURIComponent(id)}`, {cache:'no-store'});
+    if (!r.ok) throw Error(); const data = await r.json();
+    if (request !== reviewPageRequest) return;
+    if (!data.requests.length) questions.append(node('p', '아직 등록된 검수 요청이 없습니다. 이전 검수 메모가 있다는 이유만으로 완료 처리하지 않습니다.'));
+    for (const row of data.requests) renderReviewRequest(questions, row);
+  } catch { if (request === reviewPageRequest) questions.append(node('p', '검수 요청을 불러오지 못했습니다. 새로고침으로 다시 확인해 주세요.', 'integrity-warning')); }
+  if (request !== reviewPageRequest) return;
+  const media = heading(page, '이 실험의 영상과 근거');
+  if (id === 'EXP-0036') { addIncidentFlows(media, selectionRequest); return; }
+  const flowIds = ['EXP-0037','EXP-0040','EXP-0041','EXP-0042','EXP-0044','EXP-0045','EXP-0046','EXP-0047','EXP-0048','EXP-0049','MVP-0002'];
+  if (flowIds.includes(id)) { addFinishFlows(media, selectionRequest, id); return; }
+  try {
+    const r = await fetch(`/api/experiments/${encodeURIComponent(id)}`);
+    if (!r.ok) throw Error(); const d = await r.json();
+    if (request !== reviewPageRequest) return;
+    const evidence = (d.evidence || []).filter(e => e.kind === 'video' || e.kind === 'image').filter(e => !isInputSheet(e));
+    if (!evidence.length) media.append(node('p', '이 실험에 연결된 영상·이미지가 없습니다. 검수 자료가 등록되면 여기에서 확인할 수 있습니다.'));
+    appendEvidence(media, evidence);
+  } catch { if (request === reviewPageRequest) media.append(node('p', '등록된 실험 근거를 불러올 수 없습니다.')); }
+}
+function renderReviewRequest(parent, initial) {
+  let row = initial;
+  const card = node('section', undefined, 'review-request'); card.dataset.request = row.id;
+  const state = node('p', undefined, 'review-badge');
+  card.append(node('h4', row.title), state, node('p', row.question));
+  if (row.source_label || row.source_time != null) card.append(node('p', `${row.source_label || '요청 구간'}${row.source_time == null ? '' : ` · 원본 ${displayNumber(row.source_time)}${row.end_time == null ? '' : `–${displayNumber(row.end_time)}`}초`}`, 'muted'));
+  const evidence = node('div');
+  if (row.bundle_id || row.artifact_id) {
+    const open = node('button', '요청 구간 보기');
+    open.addEventListener('click', async () => {
+      open.disabled = true;
+      try {
+        if (row.bundle_id) {
+          const r = await fetch(`/api/incidents/${encodeURIComponent(row.bundle_id)}`); if (!r.ok) throw Error();
+          const data = await r.json();
+          if (!card.isConnected) return;
+          evidence.querySelectorAll('video').forEach(v => v.pause()); evidence.replaceChildren();
+          renderIncidentFlow(evidence, row.bundle_id, {...data, source_label:row.source_label || data.source_label});
+          const v = evidence.querySelector('video');
+          if (v && row.source_time != null) {
+            const seek = () => { v.currentTime = Math.max(0, row.source_time - (data.media_start_pts ?? data.source_window?.[0] ?? 0)); };
+            if (v.readyState >= 1) seek(); else { v.addEventListener('loadedmetadata', seek, {once:true}); v.preload = 'metadata'; v.load(); }
+          }
+        } else {
+          const r = await fetch(`/api/experiments/${encodeURIComponent(row.experiment_id)}`); if (!r.ok) throw Error();
+          const d = await r.json(); if (!card.isConnected) return;
+          const item = (d.evidence || []).find(e => e.artifact_id === row.artifact_id);
+          if (!item) throw Error();
+          evidence.replaceChildren(); appendEvidence(evidence, [item]);
+        }
+      } catch { evidence.replaceChildren(node('p', '연결된 근거를 불러올 수 없습니다. 다른 실험 영상으로 대체하지 않았습니다.')); }
+      finally { open.disabled = false; }
+    }); card.append(open, evidence);
+  }
+  const form = node('form'); form.dataset.dirty = 'false';
+  const field = node('fieldset'); field.append(node('legend','검수 답변'));
+  const options = [];
+  for (const [index, value] of (row.options || []).entries()) {
+    const input = node('input'); input.type = 'radio'; input.name = `answer-${row.id}`; input.value = value;
+    input.checked = row.answer === value;
+    const label = node('label'); label.append(input, node('span', value)); field.append(label); options.push(input);
+  }
+  const answer = node('textarea'); answer.maxLength = 4000; answer.rows = 2;
+  answer.value = options.length && options.some(o => o.checked) ? '' : row.answer || '';
+  const answerLabel = node('label', options.length ? '다른 답변 (직접 작성)' : '답변'); answerLabel.append(answer); field.append(answerLabel);
+  const reviewer = node('input'); reviewer.maxLength = 128; reviewer.value = row.reviewer || ''; reviewer.autocomplete = 'off'; reviewer.required = true;
+  const reviewerLabel = node('label','검토자'); reviewerLabel.append(reviewer);
+  const note = node('textarea'); note.maxLength = 2000; note.rows = 2; note.value = row.note || '';
+  const noteLabel = node('label','검토 메모 (선택)'); noteLabel.append(note);
+  const save = node('button', row.answer_version ? '답변 수정 저장' : '검수 완료'); save.type = 'submit';
+  const message = node('p'); message.setAttribute('role','status');
+  const history = node('details'); history.append(node('summary','답변과 처리 이력')); const log = node('ol'); history.append(log);
+  function update() {
+    const labels = {pending:'검수 필요',answered:'검수 완료 · AI 확인 대기',acknowledged:'검수 완료 · 반영 검토 중',applied:'검수 완료 · 반영 완료',deferred:'검수 완료 · 반영 보류'};
+    state.textContent = labels[row.status] || '상태 확인 불가'; state.dataset.state = row.status;
+    log.replaceChildren();
+    for (const h of row.history || []) {
+      const action = {created:'요청 등록',answered:'답변 저장',acknowledged:'AI 확인',applied:'반영 완료',deferred:'반영 보류'}[h.action || h.status] || '기록';
+      log.append(node('li', `${action}${h.answer ? ` · ${h.answer}` : ''}${h.note ? ` · ${h.note}` : ''}${h.processing_note ? ` · ${h.processing_note}` : ''}${h.updated_utc ? ` · ${h.updated_utc}` : ''}`));
+    }
+    if (row.processing_note) log.append(node('li', `처리 메모: ${row.processing_note}`));
+  }
+  form.addEventListener('input', () => { form.dataset.dirty = 'true'; });
+  answer.addEventListener('input', () => { if (answer.value.trim()) options.forEach(o => { o.checked = false; }); });
+  options.forEach(o => o.addEventListener('change', () => { answer.value = ''; }));
+  form.addEventListener('submit', async event => {
+    event.preventDefault(); if (save.disabled) return; const value = answer.value.trim() || options.find(o => o.checked)?.value;
+    if (!value) { message.textContent = '답변을 선택하거나 작성해 주세요.'; return; }
+    save.disabled = true;
+    const editable = [...options, answer, reviewer, note]; editable.forEach(input => { input.disabled = true; });
+    try {
+      const r = await fetch(`/api/review-requests/${encodeURIComponent(row.id)}/answer`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({expected_version:row.version,reviewer:reviewer.value,answer:value,note:note.value})});
+      const data = await r.json();
+      if (!r.ok) { message.textContent = r.status === 409 ? '다른 곳에서 답변 또는 처리 상태가 바뀌었습니다. 입력을 복사해 둔 뒤 페이지를 새로고침하고 최신 이력을 확인해 주세요.' : '저장하지 못했습니다. 입력을 유지했습니다.'; return; }
+      row = data.request; form.dataset.dirty = 'false'; update(); save.textContent = '답변 수정 저장';
+      message.textContent = '검수 답변을 저장했습니다. AI 확인 대기 상태입니다.'; refreshReviewSummary();
+    } catch { message.textContent = '연결 문제로 저장 여부를 확인하지 못했습니다. 새로고침 후 확인해 주세요. 입력은 유지했습니다.'; }
+    finally { save.disabled = false; editable.forEach(input => { input.disabled = false; }); }
+  });
+  form.append(field, reviewerLabel, noteLabel, save, message); card.append(form, history); parent.append(card); update();
+}
+
 function setRoute() {
-  const route = location.hash === '#video-review' ? 'video-review' : 'history';
+  const parsed = reviewRoute(location.hash);
+  const route = parsed.isReview ? 'video-review' : 'history';
   if (activeRoute && activeRoute !== route && typeof window !== 'undefined') routeScroll[activeRoute] = window.scrollY;
   const hiddenPage = route === 'history' ? $('#video-review-page') : $('#history-page');
   $('#history-page').hidden = route !== 'history';
@@ -217,6 +389,7 @@ function setRoute() {
   switchingRoute = false;
   if (activeRoute !== route && typeof window !== 'undefined') window.scrollTo(0, routeScroll[route]);
   activeRoute = route;
+  if (route === 'video-review') loadReviewPage(parsed.experimentId);
   document.querySelectorAll('[data-route]').forEach(link => {
     if (link.dataset.route === route) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
@@ -232,7 +405,7 @@ async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
     const response = await fetch(`/api/incident-registrations?experiment_id=${encodeURIComponent(experimentId)}`, {cache:'no-store'});
     if (!response.ok) throw Error('unavailable');
     const entries = await response.json();
-    if ((experimentId !== 'MVP-0002' && request !== selectionRequest) || !section.isConnected) return;
+    if (!section.isConnected) return;
     if (experimentId === 'MVP-0002') entries.reverse();
     if (!entries.length) { section.append(node('p', '등록된 카드 자료가 없습니다.')); return; }
     if (experimentId === 'EXP-0040' || experimentId === 'EXP-0041') section.append(node('p', '제안에서 통지 제외된 알림은 검토 전용으로 남으며 침입 아님 확정이 아닙니다.', 'muted'));
@@ -242,21 +415,13 @@ async function addFinishFlows(detail, request, experimentId = 'EXP-0037') {
     const holder = node('div', undefined, 'incident-flow');
     const sources = [...new Set(entries.map(e => e.source_label))];
     for (const label of sources) { const opt = node('option', label); opt.value = label; source.append(opt); }
-    const sourceKey = experimentId === 'MVP-0002' ? 'mvp-source' : 'exp37-source';
-    const viewKey = experimentId === 'MVP-0002' ? 'mvp-view' : 'exp37-view';
+    const sourceKey = `review-source:${experimentId}`;
+    const viewKey = `review-view:${experimentId}`;
     const defaultEntry = experimentId === 'MVP-0002' ? entries.find(e => e.default) : null;
     source.value = sources.includes(storageGet(sourceKey)) ? storageGet(sourceKey) : (defaultEntry?.source_label || sources[0]);
     const sourceLabel = node('label', '영상 선택 '); sourceLabel.append(source);
     const viewLabel = node('label', '결과 선택 '); viewLabel.append(view);
     section.append(sourceLabel, viewLabel);
-    if (experimentId !== 'MVP-0002') {
-      const link = node('a', '선택한 영상 검수에서 열기'); link.href = '#video-review';
-      link.addEventListener('click', () => {
-        const entry = entries.find(e => e.source_label === source.value && e.id === view.value);
-        if (entry) openLinkedVideo(entry, sources.indexOf(entry.source_label) + 1);
-      });
-      section.append(link);
-    }
     section.append(holder);
     let epoch = 0;
     async function display() {
@@ -360,6 +525,7 @@ function reviewBinding(data) {
 }
 function addAssessment(parent, id, data, incidentId = null) {
   const omission = incidentId === null;
+  const instance = ++assessmentInstance;
   const panel = node('details', undefined, 'assessment');
   panel.append(node('summary', omission ? '영상 전체에서 놓친 사건 검수' : '사건과 박스 검수'));
   const fields = omission ? [
@@ -372,7 +538,7 @@ function addAssessment(parent, id, data, incidentId = null) {
   for (const [key, label, options] of fields) {
     const group = node('fieldset'); group.append(node('legend', label)); controls[key] = [];
     for (const [value, text] of options) {
-      const wrapper = node('label'); const input = node('input'); input.type = 'radio'; input.name = `${id}:${incidentId || 'video'}:${key}`; input.value = value; input.checked = value === 'unreviewed';
+      const wrapper = node('label'); const input = node('input'); input.type = 'radio'; input.name = `assessment-${instance}:${key}`; input.value = value; input.checked = value === 'unreviewed';
       wrapper.append(input, document.createTextNode(text)); group.append(wrapper); controls[key].push(input);
     }
     panel.append(group);
@@ -383,7 +549,9 @@ function addAssessment(parent, id, data, incidentId = null) {
   const note = node('textarea'); note.placeholder = '메모'; note.maxLength = 2000;
   const save = node('button', '검수 저장'); save.disabled = true;
   const message = node('p'); message.setAttribute('role', 'status');
-  const history = node('ol'); panel.append(reviewer, note, save, message, node('p', '변경 이력'), history); parent.append(panel);
+  const reviewerLabel = node('label', '검토자'); reviewerLabel.append(reviewer);
+  const noteLabel = node('label', '검토 메모'); noteLabel.append(note);
+  const history = node('ol'); panel.append(reviewerLabel, noteLabel, save, message, node('p', '변경 이력'), history); parent.append(panel);
   const url = `/api/incidents/${encodeURIComponent(id)}/${omission ? 'omission-review' : `assessments/${encodeURIComponent(incidentId)}`}`;
   let version = 0;
   const edited = new Set();
@@ -580,7 +748,7 @@ async function addIncidentFlows(detail, request) {
       const response = await fetch(`/api/incidents/${id}`, {cache: 'no-store'});
       if (!response.ok) throw new Error('unavailable');
       const data = await response.json();
-      if (request !== selectionRequest || !holder.isConnected) return;
+      if (!holder.isConnected) return;
       renderIncidentFlow(holder, id, {...data, source_label: id === '007' ? '영상 1' : '영상 2'});
     } catch {
       if (request === selectionRequest) holder.textContent = '카드 자료를 사용할 수 없습니다.';
@@ -763,6 +931,8 @@ function renderChoices() {
     button.append(node('span', `${item.assignment?.synthetic || item.result?.synthetic ? 'TEST · ' : ''}${item.id}`, 'experiment-id'),
       node('strong', show(item.result?.title || item.assignment?.title)),
       node('span', item.result ? '결과 등록' : '결과 미등록', 'result-badge'));
+    const badge = node('span', undefined, 'review-badge'); badge.dataset.reviewBadge = item.id;
+    button.append(badge); updateReviewLabel(badge, item.id, true);
     const date = item.result?.created_at || item.assignment?.assigned_at;
     if (date) button.append(node('span', `기록 ${date.slice(0, 10)}`, 'muted'));
     button.addEventListener('click', () => {
@@ -784,8 +954,7 @@ function selectPending(id) {
   detail.replaceChildren(node('p', `${assignment?.synthetic ? 'TEST · ' : ''}${id}`, 'eyebrow'),
     node('h2', show(assignment?.title)), node('p', '결과가 아직 등록되지 않았습니다. 실험 실행·검토·결정 상태는 미확인입니다.'),
     taskState);
-  if (id === 'EXP-0036') addIncidentFlows(detail, selectionRequest);
-  if (id === 'EXP-0037' || id === 'EXP-0040' || id === 'EXP-0041' || id === 'EXP-0042' || id === 'EXP-0044' || id === 'EXP-0045' || id === 'EXP-0046' || id === 'EXP-0047' || id === 'EXP-0048' || id === 'EXP-0049') addFinishFlows(detail, selectionRequest, id);
+  detail.append(reviewAction(id));
   renderChoices();
 }
 function updatePendingObservation() {
@@ -832,14 +1001,14 @@ async function refresh() {
   }
   if (catalogData && selectedReport && !resultFor(catalogData, selectedSlot, selectedReport) && $('#detail').dataset.result !== 'pending') selectPending(selectedReport);
   if (catalogData && selectedReport) updatePendingObservation();
+  refreshReviewSummary();
 }
-if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFor, slotItems, observationText, catalogItems, filteredItems, isInputSheet, evidencePriority, reviewWarning};
+if (typeof module !== 'undefined') module.exports = {nativeObservation, resultFor, slotItems, observationText, catalogItems, filteredItems, isInputSheet, evidencePriority, reviewWarning, reviewStatus, reviewRoute};
 if (typeof document !== 'undefined') {
   document.addEventListener('pause', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh && !switchingRoute && !event.target.closest('[hidden]')) refreshSelectedIfChanged(); }, true);
   document.addEventListener('ended', event => { if (event.target.tagName === 'VIDEO' && pendingRefresh && !switchingRoute && !event.target.closest('[hidden]')) refreshSelectedIfChanged(); }, true);
   $('#experiment-search').addEventListener('input', () => { if (catalogData) renderChoices(); });
   $('#experiment-status').addEventListener('change', () => { if (catalogData) renderChoices(); });
   window.addEventListener('hashchange', setRoute); setRoute();
-  addFinishFlows($('#mvp-view'), selectionRequest, 'MVP-0002');
   refresh(); setInterval(refresh, 15000);
 }

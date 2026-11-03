@@ -272,3 +272,4 @@ def media(artifact_id: str, request: Request):
 # Register the narrowly scoped incident-card routes after the viewer is defined.
 from . import incident  # noqa: E402,F401
 from . import saved_review  # noqa: E402,F401
+from . import review_requests  # noqa: E402,F401

@@ -31,6 +31,7 @@ vm.runInContext(fs.readFileSync(require.resolve('../webapp/app.js'), 'utf8'), co
 vm.runInContext(`
  catalogData = {assignments:[fixtureAssignment], experiments:[]};
  statusData = fixtureStatus;
+ refreshReviewSummary = async()=>{};
  globalThis.display = {textContent:''};
  globalThis.document = {querySelector:()=>display};
  globalThis.fetch = async()=>{throw Error('fixture unavailable');};
@@ -52,7 +53,8 @@ vm.runInContext(`
   globalThis.label = {textContent:''};
   globalThis.media = {};
   globalThis.detail = {dataset:{result:'pending'}, querySelector:s=>s==='[data-pending-observation]' ? label : media};
-  globalThis.display = {textContent:''};
+  refreshReviewSummary = async()=>{};
+ globalThis.display = {textContent:''};
   globalThis.document = {querySelector:s=>s==='#detail' ? detail : display};
   globalThis.renderChoices = ()=>{};
   updatePendingObservation();

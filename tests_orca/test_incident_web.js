@@ -106,18 +106,18 @@ async function tick() { await new Promise(resolve => setImmediate(resolve)); }
     {id:'second',source_label:'007',view_label:'분석',source_window:[68,105],provenance_label:'캐시 분석'},
     {id:'third',source_label:'030',view_label:'기준',source_window:[84,100],provenance_label:'저장 결과 재생'},
   ];
-  const storage = new Map([['exp37-view','분석']]);
+  const storage = new Map([['review-view:EXP-0037','분석']]);
   ctx.localStorage = {getItem:key=>storage.get(key) ?? null, setItem:(key,value)=>storage.set(key,value)};
   ctx.fetch = async url => ({ok:true,json:async()=>url === '/api/incident-registrations?experiment_id=EXP-0037' ? registrations : {id:url}});
   ctx.finishDetail = new Element('div');
   vm.runInContext("selectionRequest=99; renderIncidentFlow=(holder,id,data)=>{holder.dataset.rendered=id}; addFinishFlows(finishDetail,99)",ctx);
   await tick(); await tick();
   const section=ctx.finishDetail.children[0];
-  const source=section.children[1].children[0], view=section.children[2].children[0], selectedHolder=section.children[4];
+  const source=section.children[1].children[0], view=section.children[2].children[0], selectedHolder=section.children.find(e=>e.className==='incident-flow');
   assert.equal(view.value,'first'); assert.equal(selectedHolder.dataset.rendered,'first');
   assert.match(view.children[1].textContent,/68–105초 · 캐시 분석/);
   view.value='second'; view.fire('change'); await tick();
-  assert.equal(selectedHolder.dataset.rendered,'second'); assert.equal(storage.get('exp37-view'),'second');
+  assert.equal(selectedHolder.dataset.rendered,'second'); assert.equal(storage.get('review-view:EXP-0037'),'second');
   source.value='030'; source.fire('change'); await tick();
   assert.equal(view.value,'third'); assert.equal(selectedHolder.dataset.rendered,'third');
   console.log('incident playback, seek, silent update, receipt, poll and registration selector fixtures passed');

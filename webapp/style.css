@@ -198,3 +198,27 @@ article {
 .metric-group h4 { margin:0 0 8px; }
 .metric-group td:nth-child(n+2) { font-variant-numeric:tabular-nums; white-space:nowrap; }
 .metric-group th:first-child { width:58%; }
+
+.experiment-heading { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.experiment-heading > div:first-child { min-width:0; }
+.review-action { flex:0 0 auto; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+.review-link { display:inline-flex; padding:12px 20px; border:1px solid #287d69; border-radius:8px; background:#21725f; color:white; font-weight:700; text-decoration:none; }
+.review-link:hover { background:#195b4c; }
+.review-link:focus-visible, .review-back:focus-visible { outline:3px solid #66bca8; outline-offset:3px; }
+.review-badge { font-size:.85rem; color:#45655d; }
+.review-badge[data-state=pending] { color:#854500; background:#fff0d5; border-radius:20px; padding:3px 10px; font-weight:700; }
+.review-badge[data-state=answered], .review-badge[data-state=acknowledged] { color:#245d78; }
+.review-badge[data-state=applied] { color:#19684e; }
+.review-badge[data-state=unknown] { color:#8a3800; }
+.review-back { display:inline-block; margin:0 0 18px; color:#246e5e; }
+.experiment-card { grid-template-columns:100px minmax(0,1fr) auto auto 110px; }
+.review-request { border:1px solid #c5d9d2; border-radius:10px; padding:18px; margin:18px 0; background:#fafcfb; }
+.review-request h4 { margin:0 0 10px; }
+.review-request fieldset { border:1px solid #d7e2df; border-radius:7px; margin:14px 0; }
+.review-request label { display:block; margin:10px 0; }
+.review-request fieldset label:has(input[type=radio]) { display:inline-flex; align-items:center; gap:6px; margin-right:20px; }
+.review-request textarea, .review-request input:not([type=radio]) { display:block; width:100%; max-width:640px; font:inherit; padding:9px; margin-top:5px; border:1px solid #b5c9c4; border-radius:6px; }
+.review-request textarea { resize:vertical; }
+.review-request ol { overflow-wrap:anywhere; }
+@media(max-width:900px) { .experiment-card { grid-template-columns:90px minmax(0,1fr) auto; } .experiment-card > .muted, .experiment-card .result-badge { display:none; } }
+@media(max-width:650px) { .experiment-heading { align-items:flex-start; flex-direction:column; } .review-action { align-items:flex-start; } .experiment-card .review-badge { max-width:115px; font-size:.75rem; } }
