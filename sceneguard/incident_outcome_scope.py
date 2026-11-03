@@ -77,8 +77,10 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
             return
         # Stable physical-evidence key excludes the later decision time and the
         # remaining pending-ID subset: retries must not claim an older card.
-        outcome = digest(dict(scope=list(key[:-1]), observation=key[-1], kind=kind,
-                              last_observed_pts=item['last_observed_pts']))
+        outcome = (digest(dict(scope=list(key[:-1]),kind=kind,passage=item['physical_crossing_ref']))
+                   if kind=='observed_gate_crossing' else
+                   digest(dict(scope=list(key[:-1]), observation=key[-1], kind=kind,
+                               last_observed_pts=item['last_observed_pts'])))
         candidate_owner = self._owners.get(key)
         if candidate_owner is None:
             latest = max(ids, key=lambda eid:(self.evidence[eid]['opened_pts'], eid))
@@ -93,7 +95,7 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
             # Does not block inward incident evidence. Prevents one departure
             # from clearing all suspicions that joined across several sources.
             selected = []; reason = 'mixed_origins_not_blanket_release'
-        elif kind in ('inward_loss', 'outward_crossing_loss'):
+        elif kind in ('inward_loss', 'outward_crossing_loss', 'observed_gate_crossing'):
             existing = [eid for eid in selected
                         if self.evidence[eid]['automatic_status'] == CONFIRMED]
             anchor = self._outcome_anchors.setdefault(outcome, max(existing or selected,

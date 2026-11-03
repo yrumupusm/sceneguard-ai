@@ -188,12 +188,30 @@ def assess_loss(history, engine, portal, run_id, index, *, loss_wait=1., gate_hi
     if last['pts'] < history.continuous_since-1e-9:
         return dict(result,reason='source_gap_not_person_loss')
     segment = dict(id=run_id,raw_id=None,rows=rows)
+    continuation_details=None
+    if getattr(engine,'observation_continuation_enabled',False):
+        continuation_details=engine.continuation_details(segment,index)
+        bound=engine.latest_bound_loss_context(segment,continuation_details)
+        if bound is None:
+            return dict(result,reason='distinct_bound_successors_remain_ambiguous',
+                continuation_assessment=continuation_details,association_ambiguous=True)
+        if bound['rows'][-1]['pts']>last['pts']:
+            latest=bound['rows'][-1]['pts']
+            if at-latest<loss_wait-1e-6:
+                return dict(result,reason='waiting_since_last_bound_observation',
+                    retry_after_pts=latest+loss_wait,last_bound_observed_pts=latest,
+                    continuation_assessment=continuation_details,association_ambiguous=True)
+            segment=bound;rows=bound['rows'];last=rows[-1]
+            result.update(last_observed_pts=last['pts'],measured_loss_context=deepcopy(rows))
     direction = engine.direction(segment)
     continuation = engine.continuation(segment,index)
     contact = [r for r in rows if 0 <= last['pts']-r['pts'] <= gate_history+1e-9
                and portal.locate(r['bbox'])['inside_birth_site']]
     result.update(direction=direction,continuation=continuation,
                   recent_gate_contact=bool(contact),gate_contact=deepcopy(contact[-1]) if contact else None)
+    if continuation_details is not None:
+        result['continuation_assessment']=continuation_details
+        result['association_ambiguous']=continuation_details['status']=='ambiguous' or bool(result.get('measured_loss_context'))
     if continuation!='unresolved': return dict(result,reason='observation_continues_not_loss')
     label = direction.get('direction','unknown'); end = direction.get('end_pts')
     if end is None or not 0 <= last['pts']-end <= engine.policy.history_seconds+1e-9:

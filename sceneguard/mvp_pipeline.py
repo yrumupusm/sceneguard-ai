@@ -19,7 +19,7 @@ from pathlib import Path
 import time
 from typing import Any
 
-VERSION = 'MVP-1.0-rc3'
+VERSION = 'MVP-1.0-rc4'
 CONTRACT = 'gate_activity_episodes_v1'
 STATES = {'침입 의심', '침입 확인', '의심 해제'}
 
@@ -91,14 +91,14 @@ def normalize_portal(raw: dict, scope: dict, video_id: str, run_id: str) -> dict
 class RuleBackend:
     """Compose the existing implementations; do not copy their thresholds here."""
     def __post_init__(self) -> None:
-        from .directional_loss import SavedGateDirection
+        from .gate_observation import GateObservationDirection
         from .gate_episode_evidence import history_decision
         from .portal_births import PortalGate, compare_births
         from .exp0048_application import replay_scoped
         from .exp0049_application import replay_activity, activity_references
         from .incident_outcome_scope import ScopedIncidentLifecycle
         from .gate_activity_episodes import GateActivityEpisodes
-        self.direction_class = SavedGateDirection
+        self.direction_class = GateObservationDirection
         self.history_decision = history_decision
         self.portal_class = PortalGate
         self.compare_births = compare_births
@@ -117,12 +117,21 @@ class RuleBackend:
         from .approach_disappearance import Policy
         from .visible_crossing import visible_crossing_decision
         from .outward_crossing import outward_loss_decision
+        from .existing_alert_crossing import existing_alert_crossing_decision
         segments = {s['id']: s for s in baseline['segments']}
         policy = Policy(**baseline['policy'])
         decisions = []
         for event in bundle['events']:
             source = event['source_event']
             reason = source.get('reason')
+            if event['source_ref'].get('collection') == 'existing_alerts':
+                d = existing_alert_crossing_decision(source, baseline['segments'], scene, policy)
+                if d['decision_time_pts'] != event['decision_time_pts']:
+                    raise ValueError('Existing crossing emission and candidate clock differ')
+                d.update(event_id=event['event_id'], source_ref=deepcopy(event['source_ref']),
+                    analysis_run_id=run_id, computed_in_current_run=True, rule_implementation=d['rule_id'])
+                decisions.append(d)
+                continue
             if reason not in ('recent_gate_presence_then_loss', 'observed_side_transition'):
                 continue
             segment = segments[source['segment']]
@@ -132,8 +141,12 @@ class RuleBackend:
             if reason == 'observed_side_transition':
                 d = visible_crossing_decision(source, segment, scene, policy)
             else:
-                d = self.history_decision(engine.classify(source, segment), segment, scene)
-                d = outward_loss_decision(d, segment, scene, policy)
+                d = engine.classify(source, segment)
+                if d.get('rule_id') != 'observed_gate_continuation_v1':
+                    d = self.history_decision(d, segment, scene)
+                    if d.get('automatic_confirmation') and d.get('continuation_assessment',{}).get('status')=='ambiguous':
+                        d.update(rule_id='ambiguous_gate_loss_v1',association_ambiguous=True)
+                    d = outward_loss_decision(d, segment, scene, policy)
             d.update(event_id=event['event_id'], source_ref=deepcopy(event['source_ref']),
                 analysis_run_id=run_id, computed_in_current_run=True,
                 rule_implementation=d.get('rule_id', 'gate_history_loss_v1'))
@@ -147,7 +160,7 @@ class RuleBackend:
         if history['events'] or events:
             result, _ = self.replay_scoped(baseline, history, events, runs, frames,
                 scene, region, direction_engine=engine, portal_gate=portal,
-                confirm_outward_crossings=True)
+                confirm_outward_crossings=True, observe_gate_crossings=True)
             return result
         # Negative clips are valid inputs. Never insert a dummy suspicion.
         result = self.empty_lifecycle(namespace=scope['session_id']).export()
@@ -219,7 +232,9 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
             historical_experiment_results_required=False)
     final.update(experiment='MVP-0002', pipeline_version=VERSION, analysis_run_id=run_id,
         execution_mode='current_input_analysis', source_evidence_mode='computed_in_current_run',
-        source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049', 'visible_gate_crossing_v1', 'outward_gate_loss_v1'],
+        source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049',
+            'visible_gate_crossing_v1', 'outward_gate_loss_v1', 'existing_alert_gate_crossing_v1',
+            'observed_gate_continuation_v1', 'ambiguous_gate_loss_v1'],
         positive_crossing_directions=['outside_to_inside', 'inside_to_outside'],
         direction_rule_changed=True, release_rule_changed=True,
         activity_grouping_changed_decision_rules=False,

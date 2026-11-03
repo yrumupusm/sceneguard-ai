@@ -26,7 +26,8 @@ def locate_time(stamps, at):
 
 
 def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
-                  *,direction_engine=None,portal_gate=None,confirm_outward_crossings=False):
+                  *,direction_engine=None,portal_gate=None,confirm_outward_crossings=False,
+                  observe_gate_crossings=False):
     from .directional_loss import SavedGateDirection
     from .portal_births import PortalGate
     from .lifecycle_followup import ObservationHistory, followup_run, assess_loss, loss_resolution
@@ -49,10 +50,32 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
         r=dict(kind='preserved_confirmation',event_ids=[d['event_id']],
             decision_time_pts=stamps[i],evidence_until_pts=stamps[i],
             confirmation_source=(d['rule_id'] if d.get('rule_id') in
-                ('visible_gate_crossing_v1', 'outward_gate_loss_v1') else 'EXP-0045'),
+                ('visible_gate_crossing_v1', 'outward_gate_loss_v1', 'existing_alert_gate_crossing_v1',
+                 'observed_gate_continuation_v1', 'ambiguous_gate_loss_v1') else 'EXP-0045'),
             source_decision=deepcopy(d))
         r['resolution_id']=digest(r);confirmations[i].append(r)
-    attempted=set();audits=[];counts=Counter()
+    attempted=set();audits=[];counts=Counter();crossing_sources={};observed_attempted=set();retry_after={}
+    def assess_current_loss(rid,index,ids,handoff,identity):
+        audit=assess_loss(obs,engine,portal,rid,index,loss_wait=engine.policy.loss_wait)
+        if confirm_outward_crossings and audit.get('outcome') == 'outward_loss':
+            from .outward_crossing import outward_loss_decision
+            from .approach_disappearance import Policy
+            decision=outward_loss_decision(audit,
+                dict(id=rid,raw_id=None,rows=audit.get('measured_loss_context',obs.motion_rows(rid))),scene,Policy(**baseline['policy']))
+            if decision.get('automatic_confirmation'):
+                audit.update(outcome='outward_crossing_loss',reason=decision['reason'],
+                    recent_gate_contact=True,outward_crossing_evidence=decision)
+        if observe_gate_crossings and audit.get('outcome')=='outward_loss' and (
+                audit.get('association_ambiguous') or handoff.get('reason') in
+                ('competing_successors','competing_source_handoffs')):
+            audit.update(outcome=None,reason='ambiguous_correspondence_cannot_release')
+        audit.update(event_ids=sorted(ids),handoff=handoff)
+        audits.append(audit);counts[audit['reason']]+=1
+        if audit.get('retry_after_pts') is not None:
+            retry_after[identity]=audit['retry_after_pts']
+        else:
+            attempted.add(identity);retry_after.pop(identity,None)
+        return loss_resolution(audit,ids) if audit.get('outcome') else None
     for index,frame in enumerate(frames):
         at=frame['pts'];obs.advance(frame)
         candidates=[obs.bind(e,segments) for e in scheduled[index]]
@@ -65,27 +88,56 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
         resolutions=deepcopy(confirmations[index]);proposals={}
         for rid,ids in pending.items():
             rows=obs.rows[rid]
-            if not rows or rows[-1]['frame_index']==index:continue
+            if not rows:continue
+            if observe_gate_crossings:
+                for eid in ids:
+                    old=crossing_sources.get(eid)
+                    if old and at-old['rows'][-1]['pts']>engine.gate.policy.history_seconds+1e-9:
+                        del crossing_sources[eid]
+                    # Preserve this event's actual pre-handoff source, never
+                    # attach earlier sources wholesale to new nearby events.
+                    if (eid not in crossing_sources and rows[-1]['frame_index']!=index
+                            and at-rows[-1]['pts']<=engine.gate.policy.history_seconds+1e-9):
+                        crossing_sources[eid]=dict(id=rid,raw_id=None,rows=obs.motion_rows(rid))
+                    if eid in crossing_sources:
+                        crossing_sources[eid]=engine.recover_short_origin(crossing_sources[eid],obs.motion_rows(rid),rid)
+                groups={}
+                for eid in ids:
+                    source=crossing_sources.get(eid)
+                    if source is not None:
+                        last=source['rows'][-1]
+                        key=(source['id'],last['frame_index'],last['cache_index'],len(source['rows']))
+                        groups.setdefault(key,(source,[]))[1].append(eid)
+                emitted=False
+                for source,owners in groups.values():
+                    decision=engine.observed_crossing(source,index)
+                    if not decision:continue
+                    crossing=decision['crossing_evidence']['actual_box_crossings'][0]
+                    physical=dict(direction=decision['direction'],
+                        before={k:crossing['before'][k] for k in ('frame_index','cache_index','pts')},
+                        after={k:crossing['after'][k] for k in ('frame_index','cache_index','pts')})
+                    stamp=(digest(physical),tuple(sorted(owners)))
+                    if stamp in observed_attempted:continue
+                    observed_attempted.add(stamp)
+                    decision.update(source_observation_key=source['id'],segment=rid)
+                    r=dict(kind='observed_gate_crossing',event_ids=sorted(owners),observation_key=rid,
+                        last_observed_pts=decision['source_last_observed_pts'],physical_crossing_ref=physical,
+                        decision_time_pts=at,evidence_until_pts=at,source_decision=decision)
+                    r['resolution_id']=digest(r);resolutions.append(r);emitted=True
+                    audits.append(dict(run_id=rid,event_ids=sorted(owners),decision_time_pts=at,
+                        reason=decision['reason'],outcome='observed_gate_crossing',source_decision=decision))
+                    counts[decision['reason']]+=1
+                if emitted:continue
+            if rows[-1]['frame_index']==index:continue
             identity=(rid,rows[-1]['pts'],tuple(sorted(ids)))
             if identity in attempted:continue
+            if at<retry_after.get(identity,0.)-1e-6:continue
             handoff=followup_run(obs,engine,rid,index)
             if handoff['successor']:
                 proposals[rid]=(handoff,ids,identity);continue
             if at-rows[-1]['pts']<engine.policy.loss_wait-1e-6:continue
-            audit=assess_loss(obs,engine,portal,rid,index,loss_wait=engine.policy.loss_wait)
-            if confirm_outward_crossings and audit.get('outcome') == 'outward_loss':
-                from .outward_crossing import outward_loss_decision
-                from .approach_disappearance import Policy
-                decision = outward_loss_decision(audit,
-                    dict(id=rid, raw_id=None, rows=obs.motion_rows(rid)), scene,
-                    Policy(**baseline['policy']))
-                if decision.get('automatic_confirmation'):
-                    audit.update(outcome='outward_crossing_loss',
-                        reason=decision['reason'], recent_gate_contact=True,
-                        outward_crossing_evidence=decision)
-            audit.update(event_ids=sorted(ids),handoff=handoff)
-            audits.append(audit);counts[audit['reason']]+=1;attempted.add(identity)
-            if audit['outcome']:resolutions.append(loss_resolution(audit,ids))
+            r=assess_current_loss(rid,index,ids,handoff,identity)
+            if r:resolutions.append(r)
         destinations=Counter(h[0]['successor'] for h in proposals.values())
         for rid,(handoff,ids,identity) in proposals.items():
             dest=handoff['successor']
@@ -93,13 +145,22 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
                 counts['competing_source_handoffs']+=1
                 audits.append(dict(run_id=rid,decision_time_pts=at,event_ids=ids,
                     reason='competing_source_handoffs',handoff=handoff,outcome=None))
-                attempted.add(identity);continue
+                if observe_gate_crossings:
+                    if at-obs.rows[rid][-1]['pts']>=engine.policy.loss_wait-1e-6:
+                        r=assess_current_loss(rid,index,ids,dict(handoff,reason='competing_source_handoffs'),identity)
+                        if r:resolutions.append(r)
+                else:attempted.add(identity)
+                continue
             r=dict(kind='observation_handoff',event_ids=sorted(ids),observation_key=rid,
                 next_observation_key=dest,decision_time_pts=at,evidence_until_pts=at,
                 actual_correspondence=True,evidence=handoff,human_verified=False)
             r['resolution_id']=digest(r);resolutions.append(r);obs.link(rid,dest)
             counts['observation_handoffs']+=1
-        if candidates or resolutions:life.process(at,candidates,resolutions)
+        if candidates or resolutions:
+            life.process(at,candidates,resolutions)
+            if observe_gate_crossings:
+                pending_ids=set(life.pending())
+                crossing_sources={eid:source for eid,source in crossing_sources.items() if eid in pending_ids}
     result=life.export()
     if {e['event_id']:e for e in result['events']}!={e['event_id']:e for e in events}:
         raise ValueError('Original candidate payload changed')

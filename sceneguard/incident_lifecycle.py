@@ -42,6 +42,28 @@ def scope(event):
     return values
 
 
+def validate_observed_crossing(decision, at):
+    proof=decision.get('crossing_evidence',{})
+    if (decision.get('rule_id')!='observed_gate_continuation_v1'
+            or decision.get('automatic_confirmation') is not True
+            or decision.get('direction') not in ('outside_to_inside','inside_to_outside')
+            or decision.get('decision_time_pts')!=at
+            or not decision.get('gate_contact') or not proof.get('finite_gate_crossings')
+            or not proof.get('actual_box_crossings')
+            or len(set(proof.get('crossing_point_ids',[])))<3
+            or proof.get('crossing_coverage',0)<.6
+            or decision.get('continuation_assessment',{}).get('source_continuous') is not True):
+        raise ValueError('Measured finite gate crossing with coherent target-bound points required')
+    dwell=proof.get('destination_observation_refs',[])
+    if (len(dwell)<3 or clock(dwell[-1]['pts'])-clock(dwell[0]['pts'])<.2-1e-9
+            or dwell[-1]['pts']!=proof['target_pts']
+            or any(a['pts']>=b['pts'] for a,b in zip(dwell,dwell[1:]))):
+        raise ValueError('Observed crossing requires persistent actual destination boxes')
+    if not (clock(decision['source_last_observed_pts']) == clock(proof['source_pts'])
+            < clock(proof['target_pts']) == clock(decision['last_observed_pts']) <= at):
+        raise ValueError('Observed crossing source and endpoint clocks differ')
+
+
 class IncidentLifecycle:
     """Process a single-time batch atomically; do not hide an upgrade in grouping.
 
@@ -122,7 +144,7 @@ class IncidentLifecycle:
         if (clock(item['decision_time_pts']) != at or
                 clock(item['evidence_until_pts']) != at):
             raise ValueError('No future or backdated outcome evidence')
-        if kind not in ('outward_loss', 'inward_loss', 'outward_crossing_loss', 'preserved_confirmation', 'observation_handoff'):
+        if kind not in ('outward_loss', 'inward_loss', 'outward_crossing_loss', 'observed_gate_crossing', 'preserved_confirmation', 'observation_handoff'):
             raise ValueError('Unknown lifecycle resolution')
         ids = item['event_ids']
         if not ids or len(ids) != len(set(ids)) or any(eid not in self.events for eid in ids):
@@ -135,6 +157,19 @@ class IncidentLifecycle:
                     any(self.evidence[eid]['observation_key'] != key for eid in ids) or
                     item.get('actual_correspondence') is not True):
                 raise ValueError('Handoff requires an actual linked observation, not a nearby person')
+        elif kind == 'observed_gate_crossing':
+            key=item.get('observation_key');decision=item.get('source_decision',{})
+            if (not key or any(self.evidence[eid]['observation_key']!=key for eid in ids)
+                    or decision.get('segment')!=key
+                    or decision.get('source_last_observed_pts')!=item.get('last_observed_pts')):
+                raise ValueError('Observed crossing must bind to its actual source observation')
+            validate_observed_crossing(decision,at)
+            crossing=decision['crossing_evidence']['actual_box_crossings'][0]
+            expected=dict(direction=decision['direction'],
+                before={k:crossing['before'][k] for k in ('frame_index','cache_index','pts')},
+                after={k:crossing['after'][k] for k in ('frame_index','cache_index','pts')})
+            if item.get('physical_crossing_ref')!=expected:
+                raise ValueError('Crossing ownership must retain its measured passage reference')
         elif kind != 'preserved_confirmation':
             key = item.get('observation_key')
             if not key or any(self.evidence[eid]['observation_key'] != key for eid in ids):
@@ -163,15 +198,33 @@ class IncidentLifecycle:
                         or decision.get('last_observed_pts') != last
                         or decision.get('decision_time_pts') != at):
                     raise ValueError('Outward crossing requires linked inside-origin gate evidence')
-        elif item.get('confirmation_source') == 'visible_gate_crossing_v1':
+        elif item.get('confirmation_source') in ('visible_gate_crossing_v1','existing_alert_gate_crossing_v1'):
             decision = item.get('source_decision', {})
-            if (decision.get('rule_id') != 'visible_gate_crossing_v1'
+            if (decision.get('rule_id') != item['confirmation_source']
                     or decision.get('automatic_confirmation') is not True
                     or decision.get('direction') not in ('outside_to_inside', 'inside_to_outside')
                     or decision.get('decision_time_pts') != at
                     or decision.get('last_observed_pts') != at
                     or ids != [decision.get('event_id')]):
                 raise ValueError('Visible crossing requires current, event-bound observation evidence')
+        elif item.get('confirmation_source') == 'observed_gate_continuation_v1':
+            decision=item.get('source_decision',{})
+            if ids != [decision.get('event_id')]:
+                raise ValueError('Observed crossing must retain its source candidate')
+            validate_observed_crossing(decision,at)
+        elif item.get('confirmation_source') == 'ambiguous_gate_loss_v1':
+            decision=item.get('source_decision',{})
+            if (decision.get('rule_id')!='ambiguous_gate_loss_v1'
+                    or decision.get('automatic_confirmation') is not True
+                    or decision.get('continuation')!='unresolved'
+                    or decision.get('direction',{}).get('direction')!='inward'
+                    or decision.get('decision_time_pts')!=at
+                    or decision.get('continuation_assessment',{}).get('source_continuous') is not True
+                    or decision.get('continuation_assessment',{}).get('status')!='ambiguous'
+                    or at-clock(decision.get('last_observed_pts'))<1.-1e-6
+                    or not (decision.get('gate_contact') or decision.get('near_gate_at_loss'))
+                    or ids != [decision.get('event_id')]):
+                raise ValueError('Ambiguous association cannot replace actual gate-loss evidence')
         elif item.get('confirmation_source') == 'outward_gate_loss_v1':
             decision = item.get('source_decision', {})
             if (decision.get('rule_id') != 'outward_gate_loss_v1'
@@ -247,7 +300,7 @@ class IncidentLifecycle:
         touched = set()
         for row in sorted(candidates, key=lambda r:(r['event']['decision_time_pts'],r['event']['event_id'])):
             self._candidate(row, at, touched)
-        rank = {'preserved_confirmation':0, 'observation_handoff':1, 'inward_loss':2, 'outward_crossing_loss':2, 'outward_loss':3}
+        rank = {'preserved_confirmation':0, 'observation_handoff':1, 'inward_loss':2, 'outward_crossing_loss':2, 'observed_gate_crossing':2, 'outward_loss':3}
         for resolution in sorted(resolutions, key=lambda r:(rank.get(r['kind'],9), r['resolution_id'])):
             self._resolve(resolution, at, touched)
         snapshots = []
