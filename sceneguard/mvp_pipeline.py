@@ -19,7 +19,7 @@ from pathlib import Path
 import time
 from typing import Any
 
-VERSION = 'MVP-1.0-rc1'
+VERSION = 'MVP-1.0-rc2'
 CONTRACT = 'gate_activity_episodes_v1'
 STATES = {'침입 의심', '침입 확인', '의심 해제'}
 
@@ -114,20 +114,27 @@ class RuleBackend:
     def confirmations(self, baseline, bundle, scene, engine, run_id):
         if abs(baseline['policy']['loss_wait'] - engine.policy.loss_wait) > 1e-6:
             raise ValueError('Do not change the adopted loss wait during integration')
+        from .approach_disappearance import Policy
+        from .visible_crossing import visible_crossing_decision
         segments = {s['id']: s for s in baseline['segments']}
+        policy = Policy(**baseline['policy'])
         decisions = []
         for event in bundle['events']:
             source = event['source_event']
-            if source.get('reason') != 'recent_gate_presence_then_loss':
+            reason = source.get('reason')
+            if reason not in ('recent_gate_presence_then_loss', 'observed_side_transition'):
                 continue
             segment = segments[source['segment']]
             if (segment['raw_id'] != source['raw_id']
                     or source['decision_time_pts'] != event['decision_time_pts']):
-                raise ValueError('Loss source does not match the current analysis')
-            d = self.history_decision(engine.classify(source, segment), segment, scene)
+                raise ValueError('Candidate source does not match the current analysis')
+            if reason == 'observed_side_transition':
+                d = visible_crossing_decision(source, segment, scene, policy)
+            else:
+                d = self.history_decision(engine.classify(source, segment), segment, scene)
             d.update(event_id=event['event_id'], source_ref=deepcopy(event['source_ref']),
                 analysis_run_id=run_id, computed_in_current_run=True,
-                rule_implementation='gate_history_loss_v1')
+                rule_implementation=d.get('rule_id', 'gate_history_loss_v1'))
             decisions.append(d)
         return decisions
 
@@ -209,7 +216,7 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
             historical_experiment_results_required=False)
     final.update(experiment='MVP-0002', pipeline_version=VERSION, analysis_run_id=run_id,
         execution_mode='current_input_analysis', source_evidence_mode='computed_in_current_run',
-        source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049'],
+        source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049', 'visible_gate_crossing_v1'],
         historical_experiment_results_required=False, rejected_transition_candidates_used=False,
         candidate_generation_changed=True, evidence_decisions_changed=True,
         live_notifications_enabled=False, notification_delivery_measured=False,

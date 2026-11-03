@@ -48,7 +48,9 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
         i=locate_time(stamps,d['decision_time_pts'])
         r=dict(kind='preserved_confirmation',event_ids=[d['event_id']],
             decision_time_pts=stamps[i],evidence_until_pts=stamps[i],
-            confirmation_source='EXP-0045',source_decision=deepcopy(d))
+            confirmation_source=('visible_gate_crossing_v1'
+                if d.get('rule_id') == 'visible_gate_crossing_v1' else 'EXP-0045'),
+            source_decision=deepcopy(d))
         r['resolution_id']=digest(r);confirmations[i].append(r)
     attempted=set();audits=[];counts=Counter()
     for index,frame in enumerate(frames):

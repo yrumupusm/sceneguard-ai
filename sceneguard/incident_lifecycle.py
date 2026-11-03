@@ -154,6 +154,15 @@ class IncidentLifecycle:
                 raise ValueError('Last measured direction is stale or from the future')
             if kind == 'inward_loss' and item.get('recent_gate_contact') is not True:
                 raise ValueError('Inward loss requires observed gate context')
+        elif item.get('confirmation_source') == 'visible_gate_crossing_v1':
+            decision = item.get('source_decision', {})
+            if (decision.get('rule_id') != 'visible_gate_crossing_v1'
+                    or decision.get('automatic_confirmation') is not True
+                    or decision.get('direction') != 'outside_to_inside'
+                    or decision.get('decision_time_pts') != at
+                    or decision.get('last_observed_pts') != at
+                    or ids != [decision.get('event_id')]):
+                raise ValueError('Visible crossing requires current, event-bound observation evidence')
         elif item.get('confirmation_source') != 'EXP-0045':
             raise ValueError('Preserved confirmations must retain their source')
         payload = canonical(item)

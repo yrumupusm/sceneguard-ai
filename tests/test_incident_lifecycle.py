@@ -32,6 +32,31 @@ class LifecycleTests(unittest.TestCase):
             self.engine.process(row['event']['decision_time_pts'],[row])
     def card(self): return self.engine.export()['cards'][0]
 
+    def visible_outcome(self, **changes):
+        decision = dict(rule_id='visible_gate_crossing_v1', automatic_confirmation=True,
+            direction='outside_to_inside', decision_time_pts=3., last_observed_pts=3., event_id='e1')
+        decision.update(changes)
+        return outcome(kind='preserved_confirmation', confirmation_source='visible_gate_crossing_v1',
+                       source_decision=decision)
+
+    def test_visible_crossing_confirms_without_absence(self):
+        self.open()
+        r = self.visible_outcome()
+        r.update(observation_continues=True, loss_wait=0., last_observed_pts=3.)
+        self.engine.process(3., resolutions=[r])
+        self.assertEqual(self.card()['automatic_status'], CONFIRMED)
+        self.assertEqual(self.engine.events['e1']['status'], SUSPECTED)
+        self.assertEqual(self.card()['first_confirmation_pts'], 3.)
+
+    def test_visible_confirmation_rejects_future_stale_or_wrong_event(self):
+        for changes in [dict(decision_time_pts=4.), dict(last_observed_pts=2.),
+                        dict(event_id='other'), dict(direction='inside_to_outside'),
+                        dict(automatic_confirmation=False)]:
+            with self.subTest(changes=changes):
+                self.engine=IncidentLifecycle(); self.open()
+                with self.assertRaises(ValueError):
+                    self.engine.process(3., resolutions=[self.visible_outcome(**changes)])
+
     def test_first_suspicion_once(self):
         self.open(candidate(),candidate('e2',2.))
         self.assertEqual(len(self.engine.notifications),1)
