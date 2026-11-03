@@ -78,6 +78,22 @@ class GateObservationDirection(SavedGateDirection):
             and max(aw/bw,bw/aw,ah/bh,bh/ah)<=policy.scale_jump
             and math.dist(center(a,size),center(b,size))<=.5*max(ah,bh)*size[1])
 
+    def _source_motion_cohort(self,segment,wid,anchors):
+        """Select target points from measured motion before its source ends.
+
+        Static scene residue cannot establish later target visibility. Once
+        selected, a target is allowed to stop; endpoint motion is not required.
+        """
+        rows={r['frame_index']:r for r in segment['rows']};last=segment['rows'][-1]
+        start=last['frame_index'];history=[i for i in self.window_frames[wid]
+            if i<start and i in rows and .1-1e-9<=last['pts']-self.frames[i]['pts']<=self.policy.history_seconds+1e-9]
+        if not history:return []
+        ref=min(history,key=lambda i:abs(last['pts']-self.frames[i]['pts']-self.policy.direction_seconds))
+        raw=path_map(self.paths[ref][wid]);a=self.corrected(ref,wid);b=self.corrected(start,wid)
+        box=pixel_box(rows[ref]['bbox'],self.geometry['size'])
+        return [pid for pid in anchors if pid in a and pid in b and inside(raw[pid],box,.15)
+                and math.dist(a[pid],b[pid])>=self.policy.moving_pixels]
+
     def _origin_support(self,rows):
         policy=Policy();size=self.scene['source_size'];source=rows[-1]
         source_sign=signed_distance(center(source,size,1.),self.scene)
@@ -194,11 +210,11 @@ class GateObservationDirection(SavedGateDirection):
                 matches=result['matches']
                 result['status']=('recent_bound_continuation' if matches and
                     at-max(m['target_pts'] for m in matches)<self.policy.loss_wait-1e-6 else
-                    'ambiguous' if matches else 'unresolved')
+                    'ambiguous' if matches or result.get('untrusted_matches') else 'unresolved')
             self._last_continuation=(cache_key,deepcopy(result))
             return result
         target=pixel_box(last['bbox'],g['size'])
-        matches=[]; passages=[]; same=[];other=[]
+        matches=[];raw_matches=[];passages=[];same=[];other=[];untrusted=[]
         for wid,path in self.paths.get(start,{}).items():
             born,seed=self.births[wid]; measured=by_frame.get(born)
             if measured is None or (measured.get('cache_index')!=seed['cache_index'] and
@@ -207,6 +223,8 @@ class GateObservationDirection(SavedGateDirection):
             p=path_map(path); anchors=[pid for pid in p if inside(p[pid],target,.15)]
             if len(anchors)<self.policy.minimum_points:
                 continue
+            cohort=self._source_motion_cohort(segment,wid,anchors)
+            previous_boxes=[(last,set(cohort))]
             indices=[i for i in self.window_frames[wid] if start<=i<=decision_index]
             maps={i:path_map(self.paths[i][wid]) for i in indices}
             for i in indices:
@@ -216,6 +234,7 @@ class GateObservationDirection(SavedGateDirection):
                     continue
                 q=path_map(self.paths[i][wid]); corrected_start=self.corrected(start,wid)
                 corrected_end=self.corrected(i,wid)
+                current_boxes=[]
                 for box in self.frames[i]['actual_boxes']:
                     if box.get('observed') is False or box.get('score',0)<.25:
                         continue
@@ -226,10 +245,33 @@ class GateObservationDirection(SavedGateDirection):
                         target_frame=i,target_pts=self.frames[i]['pts'],target_cache_index=box['cache_index'],
                         target_bbox=deepcopy(box['bbox']),point_ids=ids,anchor_count=len(anchors),
                         coverage=len(ids)/len(anchors))
-                    matches.append(evidence)
+                    target_ids=[pid for pid in ids if pid in cohort]
+                    evidence.update(source_motion_point_ids=cohort,target_motion_point_ids=target_ids,
+                        source_motion_coverage=len(target_ids)/len(cohort) if cohort else 0.)
+                    row=dict(pts=self.frames[i]['pts'],frame_index=i,
+                             cache_index=box['cache_index'],bbox=box['bbox'])
+                    connected=[common.intersection(target_ids) for prior,common in previous_boxes
+                               if self._connected_boxes(prior,row)]
+                    persistent=max(connected,key=len) if connected else set()
+                    reason=('no_measured_source_motion_cohort' if len(cohort)<self.policy.minimum_points else
+                        'source_motion_cohort_not_preserved' if len(target_ids)<self.policy.minimum_points
+                            or len(target_ids)/len(cohort)<.6 else
+                        'actual_box_chain_disconnected' if not connected else
+                        'moving_cohort_chain_not_preserved' if len(persistent)<self.policy.minimum_points
+                            or len(persistent)/len(cohort)<.6 else None)
+                    if reason:
+                        untrusted.append(dict(evidence,binding_rejection=reason))
+                    else:
+                        evidence['persistent_motion_point_ids']=sorted(persistent)
+                        current_boxes.append((row,persistent))
+                        matches.append(evidence)
+                    # A stationary origin may later genuinely cross. Full
+                    # finite point+box passage proof can establish that event;
+                    # these weaker matches alone never veto loss or route IDs.
+                    raw_matches.append(evidence)
                     sides={pid:(signed(p[pid],g),signed(q[pid],g)) for pid in ids}
                     same_ids=[pid for pid,(a,b) in sides.items() if a is not None and b is not None and a*b>0]
-                    if i==decision_index and len(same_ids)>=self.policy.minimum_points and len(same_ids)/len(ids)>=.6:
+                    if reason is None and i==decision_index and len(same_ids)>=self.policy.minimum_points and len(same_ids)/len(ids)>=.6:
                         same.append(dict(evidence,same_side_point_ids=same_ids))
                     for direction in ('inward','outward'):
                         crossing=[]; paths=[]
@@ -244,7 +286,7 @@ class GateObservationDirection(SavedGateDirection):
                             raw_cross.append(pid)
                             proof=self._finite_passage(wid,pid,start,i,direction,maps)
                             if proof:crossing.append(pid);paths.extend(proof)
-                        if i==decision_index and len(raw_cross)>=self.policy.minimum_points and len(raw_cross)/len(anchors)>=.6:
+                        if reason is None and i==decision_index and len(raw_cross)>=self.policy.minimum_points and len(raw_cross)/len(anchors)>=.6:
                             other.append(dict(evidence,direction=direction))
                         if len(crossing)<self.policy.minimum_points or len(crossing)/len(anchors)<.6:
                             continue
@@ -254,7 +296,8 @@ class GateObservationDirection(SavedGateDirection):
                             continue
                         passages.append(dict(evidence,direction=direction,crossing_point_ids=crossing,
                             finite_gate_crossings=paths,crossing_coverage=len(crossing)/len(anchors),motion=motion))
-        passages=self._stable_passages(segment,matches,passages)
+                if current_boxes:previous_boxes=current_boxes
+        passages=self._stable_passages(segment,raw_matches,passages)
         directions={e['direction'] for e in passages}
         if len(directions)>1:
             status='ambiguous'
@@ -269,12 +312,12 @@ class GateObservationDirection(SavedGateDirection):
         elif matches and at-max(e['target_pts'] for e in matches)<self.policy.loss_wait-1e-6:
             status='recent_bound_continuation'
         else:
-            status='ambiguous' if matches else 'unresolved'
+            status='ambiguous' if matches or untrusted else 'unresolved'
         # Correlated windows/overlapping boxes are alternatives, never summed.
         proof=min(passages,key=lambda e:(e['target_pts'],-e['crossing_coverage'])) if len(directions)==1 else None
         result=dict(status=status,decision_time_pts=at,source_last_observed_pts=last['pts'],
             current_endpoint_observed=any(e['target_frame']==decision_index for e in matches),
-            crossing=proof,same_side_evidence=same,matches=matches,
+            crossing=proof,same_side_evidence=same,matches=matches,untrusted_matches=untrusted,
             conflicting_crossing_directions=sorted(directions) if len(directions)>1 else [],
             source_continuous=start>=self.continuous_start[decision_index],
             human_verified=False,identity_verified=False)
@@ -308,9 +351,76 @@ class GateObservationDirection(SavedGateDirection):
         if any(overlap(selected['target_bbox'],m['target_bbox'])<.9 for m in choices.values()):
             return None
         rows=deepcopy(segment['rows'])
-        rows.append(dict(pts=selected['target_pts'],frame_index=selected['target_frame'],
-                         cache_index=selected['target_cache_index'],bbox=deepcopy(selected['target_bbox'])))
+        # Keep the complete trusted measured chain, not a chord from the old
+        # track endpoint to one later box. This also retains real motion context.
+        for index in sorted({m['target_frame'] for m in matches}):
+            choices=[m for m in matches if m['target_frame']==index]
+            candidates=[]
+            for match in choices:
+                row=dict(pts=match['target_pts'],frame_index=index,
+                    cache_index=match['target_cache_index'],bbox=deepcopy(match['target_bbox']))
+                if self._connected_boxes(rows[-1],row):candidates.append((match,row))
+            if not candidates:return None
+            chosen=max(candidates,key=lambda pair:(pair[0]['coverage'],-pair[0]['target_cache_index']))
+            rows.append(chosen[1])
         return dict(segment,rows=rows)
+
+    def delayed_raw_loss(self,source,segment,decision_index):
+        """Retry this original loss candidate using its own trusted context.
+
+        New candidates, scoped aliases and nearby events are never substituted.
+        A continuing actual box postpones loss; after it disappears, direction
+        must be remeasured at that later endpoint rather than copied from the ID.
+        """
+        from .gate_episode_evidence import history_decision
+        from .outward_crossing import outward_loss_decision
+        at=self.frames[decision_index]['pts'];original_at=source['decision_time_pts']
+        original_last=source['last_observed_pts']
+        if (source.get('reason')!='recent_gate_presence_then_loss'
+                or source['segment']!=segment['id'] or source['raw_id']!=segment['raw_id']
+                or segment['rows'][-1]['pts']!=original_last or at<original_at-1e-6):
+            raise ValueError('Delayed loss must retain its original measured source candidate')
+        details=self.continuation_details(segment,decision_index)
+        result=dict(segment=segment['id'],raw_id=segment['raw_id'],decision_time_pts=at,
+            evidence_until_pts=at,original_decision_time_pts=original_at,
+            original_last_observed_pts=original_last,original_source=deepcopy(source),
+            automatic_confirmation=False,notify=False,status='침입 의심',
+            rule_id='delayed_raw_gate_loss_v1',continuation_assessment=details,
+            human_verified=False,identity_verified=False,decision_source='automatic_rule')
+        if not details['source_continuous']:
+            return dict(result,reason='source_gap_not_person_loss')
+        if details['conflicting_crossing_directions']:
+            return dict(result,reason='conflicting_observed_crossings')
+        context=self.latest_bound_loss_context(segment,details)
+        if context is None:return dict(result,reason='distinct_bound_successors_remain_ambiguous')
+        last=context['rows'][-1]['pts'];result.update(last_observed_pts=last,measured_loss_context=deepcopy(context['rows']))
+        if last<=original_last:
+            return dict(result,reason='no_trusted_continuation_extension_to_retry')
+        if at-last<self.policy.loss_wait-1e-6:
+            return dict(result,reason='waiting_since_last_bound_observation',retry_after_pts=last+self.policy.loss_wait)
+        # A validated visible passage is handled by its independent crossing
+        # rule. This retry supplies loss evidence only after actual visibility.
+        continuation=self.continuation(segment,decision_index)
+        if continuation!='unresolved':
+            return dict(result,reason='observation_continues_not_loss',continuation=continuation)
+        motion=self.direction(context);end=motion.get('end_pts')
+        if end is None or not 0<=last-end<=self.policy.history_seconds+1e-9:
+            return dict(result,reason='no_recent_target_direction',direction=motion)
+        # Reuse adopted gate history and outward-origin checks. No threshold,
+        # official window or original candidate clock is shifted to earn credit.
+        decision=dict(result,reason='gate_loss_with_outward_or_unclear_direction',
+            direction=motion,continuation='unresolved',near_gate_at_loss=False,
+            loss_wait=self.policy.loss_wait,direction_history_seconds=self.policy.history_seconds)
+        decision=history_decision(decision,context,self.scene)
+        if motion['direction']=='inward' and 'outside_to_inside' not in self.scene['directions']:
+            decision.update(automatic_confirmation=False,notify=False)
+        decision=outward_loss_decision(decision,context,self.scene)
+        decision.update(rule_id='delayed_raw_gate_loss_v1',original_source=deepcopy(source),
+            original_decision_time_pts=original_at,original_last_observed_pts=original_last,
+            measured_loss_context=deepcopy(context['rows']),continuation_assessment=details)
+        if decision['automatic_confirmation']:
+            decision['reason']='same_event_fresh_direction_after_observed_continuation_loss'
+        return decision
 
     def observed_crossing(self, segment, decision_index, details=None):
         details=details or self.continuation_details(segment,decision_index)

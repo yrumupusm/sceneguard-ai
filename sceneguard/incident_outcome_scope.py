@@ -27,6 +27,15 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         self._outcome_claims = {}
         self._outcome_anchors = {}
         self._routed_payloads = {}
+        self._physical_batch = []
+
+    def _process(self, at, candidates, resolutions):
+        # All candidates are installed by the base transaction before _resolve.
+        # Inspect the whole equal-time batch so input order cannot award an old
+        # event a physical endpoint shared with a newer linked candidate.
+        self._physical_batch=[r for r in resolutions if r.get('physical_loss_ref')]
+        try:return super()._process(at,candidates,resolutions)
+        finally:self._physical_batch=[]
 
     def _key(self, eid, observation):
         return (*scope(self.events[eid]), observation)
@@ -56,7 +65,8 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         IncidentLifecycle._resolve(probe, item, at, set())
         self._routed_payloads[rid] = payload
         ids = item['event_ids']; kind = item['kind']
-        if kind == 'preserved_confirmation':
+        delayed=item.get('confirmation_source')=='delayed_raw_gate_loss_v1'
+        if kind == 'preserved_confirmation' and not delayed:
             super()._resolve(item, at, touched)
             self.outcome_routing.append(dict(resolution_id=rid, decision_time_pts=at,
                 reason='preserved_source_confirmation', selected_event_ids=ids,
@@ -77,7 +87,9 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
             return
         # Stable physical-evidence key excludes the later decision time and the
         # remaining pending-ID subset: retries must not claim an older card.
-        outcome = (digest(dict(scope=list(key[:-1]),kind=kind,passage=item['physical_crossing_ref']))
+        physical=item.get('physical_loss_ref')
+        outcome = (digest(dict(scope=list(key[:-1]),measured_loss=physical)) if physical else
+                   digest(dict(scope=list(key[:-1]),kind=kind,passage=item['physical_crossing_ref']))
                    if kind=='observed_gate_crossing' else
                    digest(dict(scope=list(key[:-1]), observation=key[-1], kind=kind,
                                last_observed_pts=item['last_observed_pts'])))
@@ -85,6 +97,17 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         if candidate_owner is None:
             latest = max(ids, key=lambda eid:(self.evidence[eid]['opened_pts'], eid))
             candidate_owner = (self.evidence[latest]['opened_pts'], self._event_cards[latest])
+        batch_ids=list(ids)
+        if physical:
+            for other in self._physical_batch:
+                if other.get('physical_loss_ref')!=physical:continue
+                other_ids=other['event_ids']
+                if scope(self.events[other_ids[0]])!=scope(self.events[ids[0]]):continue
+                batch_ids.extend(other_ids)
+                other_key=self._key(other_ids[0],other['observation_key'])
+                latest=max(other_ids,key=lambda eid:(self.evidence[eid]['opened_pts'],eid))
+                candidate_owner=max(candidate_owner,self._owners.get(other_key,
+                    (self.evidence[latest]['opened_pts'],self._event_cards[latest])))
         owner = self._outcome_claims.setdefault(outcome, candidate_owner[1])
         selected = [eid for eid in ids if self._event_cards[eid] == owner]
         roots = self._origin_sets.get(key, {key[-1]})
@@ -95,12 +118,15 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
             # Does not block inward incident evidence. Prevents one departure
             # from clearing all suspicions that joined across several sources.
             selected = []; reason = 'mixed_origins_not_blanket_release'
-        elif kind in ('inward_loss', 'outward_crossing_loss', 'observed_gate_crossing'):
-            existing = [eid for eid in selected
+        elif delayed or kind in ('inward_loss', 'outward_crossing_loss', 'observed_gate_crossing'):
+            eligible=[eid for eid in batch_ids if self._event_cards[eid]==owner]
+            existing = [eid for eid in eligible
                         if self.evidence[eid]['automatic_status'] == CONFIRMED]
-            anchor = self._outcome_anchors.setdefault(outcome, max(existing or selected,
+            anchor = self._outcome_anchors.setdefault(outcome, max(existing or eligible,
                 key=lambda eid:(self.evidence[eid]['opened_pts'], eid)))
             selected = [anchor] if anchor in selected else []
+            if physical and self.evidence[anchor]['automatic_status']==CONFIRMED:
+                selected=[]
             reason = ('one_confirmation_anchor_in_owner_incident' if selected
                       else 'outcome_anchor_already_applied')
         audit = dict(resolution_id=rid, decision_time_pts=at, kind=kind,

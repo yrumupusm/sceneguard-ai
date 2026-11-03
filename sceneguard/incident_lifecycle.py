@@ -198,6 +198,12 @@ class IncidentLifecycle:
                         or decision.get('last_observed_pts') != last
                         or decision.get('decision_time_pts') != at):
                     raise ValueError('Outward crossing requires linked inside-origin gate evidence')
+            if item.get('physical_loss_ref'):
+                rows=item.get('evidence',{}).get('measured_loss_context',[])
+                expected=({k:rows[-1][k] for k in ('frame_index','cache_index','pts')}|
+                    {'direction':item['direction']}) if rows else None
+                if item['physical_loss_ref']!=expected or rows[-1]['pts']!=last:
+                    raise ValueError('Physical loss ownership must retain the actual measured endpoint')
         elif item.get('confirmation_source') in ('visible_gate_crossing_v1','existing_alert_gate_crossing_v1'):
             decision = item.get('source_decision', {})
             if (decision.get('rule_id') != item['confirmation_source']
@@ -225,6 +231,43 @@ class IncidentLifecycle:
                     or not (decision.get('gate_contact') or decision.get('near_gate_at_loss'))
                     or ids != [decision.get('event_id')]):
                 raise ValueError('Ambiguous association cannot replace actual gate-loss evidence')
+        elif item.get('confirmation_source') == 'delayed_raw_gate_loss_v1':
+            decision=item.get('source_decision',{})
+            original=self.events[ids[0]]['source_event']
+            rows=decision.get('measured_loss_context',[])
+            direction=decision.get('direction',{})
+            last=clock(decision.get('last_observed_pts'))
+            end=clock(direction.get('end_pts'))
+            if (not item.get('observation_key')
+                    or any(self.evidence[eid]['observation_key']!=item['observation_key'] for eid in ids)
+                    or ids!=[decision.get('event_id')] or decision.get('rule_id')!='delayed_raw_gate_loss_v1'
+                    or decision.get('automatic_confirmation') is not True
+                    or original.get('reason')!='recent_gate_presence_then_loss'
+                    or decision.get('original_source')!=original
+                    or decision.get('segment')!=original.get('segment')
+                    or decision.get('raw_id')!=original.get('raw_id')
+                    or decision.get('original_decision_time_pts')!=self.events[ids[0]]['decision_time_pts']
+                    or decision.get('original_last_observed_pts')!=original.get('last_observed_pts')
+                    or decision.get('decision_time_pts')!=at or decision.get('continuation')!='unresolved'
+                    or decision.get('continuation_assessment',{}).get('source_continuous') is not True
+                    or not rows or rows[-1]['pts']!=last or last<=original['last_observed_pts']
+                    or any(a['pts']>=b['pts'] for a,b in zip(rows,rows[1:]))
+                    or any(r['pts']>last or r.get('observed') is False for r in rows)
+                    or clock(decision.get('loss_wait'))<1.-1e-6 or at-last<decision['loss_wait']-1e-6
+                    or not 0<=last-end<=clock(decision.get('direction_history_seconds'))+1e-9
+                    or direction.get('direction') not in ('inward','outward')
+                    or not (decision.get('gate_contact') or decision.get('gate_history'))
+                    or (direction['direction']=='outward' and not decision.get('inside_origin'))):
+                raise ValueError('Delayed loss requires the same original event and fresh measured endpoint evidence')
+            matches=decision['continuation_assessment'].get('matches',[])
+            for row in rows:
+                if row['pts']<=original['last_observed_pts']:continue
+                if not any(row['frame_index']==m['target_frame'] and row['cache_index']==m['target_cache_index']
+                        and row['pts']==m['target_pts'] and row['bbox']==m['target_bbox'] for m in matches):
+                    raise ValueError('Delayed loss context must retain trusted actual observation references')
+            physical=item.get('physical_loss_ref',{})
+            if physical!={k:rows[-1][k] for k in ('frame_index','cache_index','pts')}|{'direction':direction['direction']}:
+                raise ValueError('Delayed loss physical source binding differs')
         elif item.get('confirmation_source') == 'outward_gate_loss_v1':
             decision = item.get('source_decision', {})
             if (decision.get('rule_id') != 'outward_gate_loss_v1'

@@ -134,6 +134,11 @@ def followup_run(history, engine, run_id, index):
     actual = {r['frame_index']:r for r in rows}
     size = engine.geometry['size']; target = pixel_box(last['bbox'],size)
     matches = {}; blocked = []
+    trusted=None
+    if getattr(engine,'observation_continuation_enabled',False):
+        details=engine.continuation_details(dict(id=run_id,raw_id=None,rows=rows),index)
+        trusted={(m['window_id'],m['target_frame'],m['target_cache_index']):m
+                 for m in details['matches']}
     for wid,path in engine.paths.get(start,{}).items():
         born,seed = engine.births[wid]; observed = actual.get(born)
         if observed is None: continue
@@ -150,6 +155,10 @@ def followup_run(history, engine, run_id, index):
             b = pixel_box(box['bbox'],size)
             ids = [pid for pid in anchor_ids if pid in positions and inside(positions[pid],b)]
             if len(ids) < engine.policy.minimum_points or len(ids)/len(anchor_ids) < .6: continue
+            if trusted is not None and (wid,index,box['cache_index']) not in trusted:
+                blocked.append(dict(window_id=wid,target_frame=index,target_cache_index=box['cache_index'],
+                    reason='untrusted_target_box_correspondence'))
+                continue
             choices = history.by_reference.get((index,box['cache_index']),set())
             if len(choices)!=1: continue
             successor = next(iter(choices))
@@ -171,6 +180,7 @@ def followup_run(history, engine, run_id, index):
     return dict(successor=next(iter(matches)) if len(matches)==1 else None,
         reason='same_points_successor' if len(matches)==1 else
                'competing_successors' if matches else
+               'untrusted_target_box_correspondence' if any(b['reason']=='untrusted_target_box_correspondence' for b in blocked) else
                'aliased_successor_not_current_correspondence' if blocked else 'no_mapped_successor',
         matches=list(matches.values()),blocked_matches=blocked)
 

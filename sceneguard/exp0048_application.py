@@ -55,6 +55,22 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
             source_decision=deepcopy(d))
         r['resolution_id']=digest(r);confirmations[i].append(r)
     attempted=set();audits=[];counts=Counter();crossing_sources={};observed_attempted=set();retry_after={}
+    raw_sources={};raw_retry_after={};raw_finished=set();raw_physical=set()
+    if observe_gate_crossings:
+        positive_ids={d['event_id'] for d in history['decisions'] if d['automatic_confirmation']}
+        for event in history['events']:
+            source=event['source_event'];eid=event['event_id']
+            if (eid in positive_ids or event['source_ref'].get('collection')!='events'
+                    or source.get('reason')!='recent_gate_presence_then_loss'):
+                continue
+            segment=segments[source['segment']]
+            rows=[r for r in segment['rows'] if r['pts']<=source['last_observed_pts']+1e-9]
+            if (segment['raw_id']!=source['raw_id'] or not rows
+                    or rows[-1]['pts']!=source['last_observed_pts']
+                    or source['decision_time_pts']!=event['decision_time_pts']):
+                raise ValueError('Raw retry source differs from original event observations')
+            raw_sources[eid]=(deepcopy(source),dict(segment,rows=deepcopy(rows)))
+            raw_retry_after[eid]=event['decision_time_pts']
     def assess_current_loss(rid,index,ids,handoff,identity):
         audit=assess_loss(obs,engine,portal,rid,index,loss_wait=engine.policy.loss_wait)
         if confirm_outward_crossings and audit.get('outcome') == 'outward_loss':
@@ -75,7 +91,15 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
             retry_after[identity]=audit['retry_after_pts']
         else:
             attempted.add(identity);retry_after.pop(identity,None)
-        return loss_resolution(audit,ids) if audit.get('outcome') else None
+        if not audit.get('outcome'):return None
+        resolution=loss_resolution(audit,ids)
+        if observe_gate_crossings and audit['outcome'] in ('inward_loss','outward_crossing_loss'):
+            rows=audit.get('measured_loss_context',obs.motion_rows(rid))
+            resolution['physical_loss_ref']={k:rows[-1][k] for k in ('frame_index','cache_index','pts')}
+            resolution['physical_loss_ref']['direction']=audit['direction']['direction']
+            resolution['evidence']['measured_loss_context']=deepcopy(rows)
+            resolution['resolution_id']=digest(resolution)
+        return resolution
     for index,frame in enumerate(frames):
         at=frame['pts'];obs.advance(frame)
         candidates=[obs.bind(e,segments) for e in scheduled[index]]
@@ -86,6 +110,39 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
         for c in candidates:
             if c['observation_key'] is not None:pending[c['observation_key']].append(c['event']['event_id'])
         resolutions=deepcopy(confirmations[index]);proposals={}
+        if observe_gate_crossings:
+            available=set(life.pending())|{c['event']['event_id'] for c in candidates}
+            for eid,(source,segment) in raw_sources.items():
+                if eid not in available or eid in raw_finished or at<raw_retry_after[eid]-1e-6:
+                    continue
+                observation_key=(life.evidence[eid]['observation_key'] if eid in life.evidence else
+                    next(c['observation_key'] for c in candidates if c['event']['event_id']==eid))
+                if observation_key is None:
+                    raw_finished.add(eid)
+                    audits.append(dict(run_id=segment['id'],event_ids=[eid],decision_time_pts=at,
+                        reason='unbound_original_event_cannot_route_delayed_loss',outcome=None))
+                    counts['unbound_original_event_cannot_route_delayed_loss']+=1
+                    continue
+                decision=engine.delayed_raw_loss(source,segment,index)
+                decision.update(event_id=eid)
+                audits.append(dict(run_id=segment['id'],event_ids=[eid],decision_time_pts=at,
+                    reason=decision['reason'],outcome='delayed_raw_gate_loss' if decision['automatic_confirmation'] else None,
+                    source_decision=deepcopy(decision)))
+                counts[decision['reason']]+=1
+                if decision.get('retry_after_pts') is not None:
+                    raw_retry_after[eid]=decision['retry_after_pts']
+                else:raw_finished.add(eid)
+                if decision['automatic_confirmation']:
+                    last=decision['measured_loss_context'][-1]
+                    physical=(eid,last['frame_index'],last['cache_index'],last['pts'],decision['direction']['direction'])
+                    if physical in raw_physical:continue
+                    raw_physical.add(physical)
+                    r=dict(kind='preserved_confirmation',event_ids=[eid],decision_time_pts=at,evidence_until_pts=at,
+                        observation_key=observation_key,
+                        confirmation_source='delayed_raw_gate_loss_v1',source_decision=decision,
+                        physical_loss_ref=dict(frame_index=last['frame_index'],cache_index=last['cache_index'],
+                            pts=last['pts'],direction=decision['direction']['direction']))
+                    r['resolution_id']=digest(r);resolutions.append(r)
         for rid,ids in pending.items():
             rows=obs.rows[rid]
             if not rows:continue
