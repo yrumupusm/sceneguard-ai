@@ -185,7 +185,8 @@ class CompositionContracts(unittest.TestCase):
         self.assertEqual(f['pipeline_version'], VERSION)
         self.assertEqual(f['positive_crossing_directions'], ['outside_to_inside', 'inside_to_outside'])
         self.assertTrue(f['direction_rule_changed'])
-        self.assertTrue(f['release_rule_changed'])
+        self.assertFalse(f['release_rule_changed'])
+        self.assertFalse(f['continuation_observation_rules_enabled'])
         self.assertFalse(f['activity_grouping_changed_decision_rules'])
 
 
@@ -214,6 +215,14 @@ class BackendEmptyContracts(unittest.TestCase):
 
 class ProductionBackendContracts(unittest.TestCase):
     """Full production rule composition on synthetic native-clock measurements."""
+    def test_default_pipeline_excludes_experimental_observation_engine(self):
+        with patch('sceneguard.gate_observation.GateObservationDirection.__init__',
+                   side_effect=AssertionError('Experimental engine entered production default')):
+            result=self.analyze(visible=True)['cards']
+        self.assertFalse(result['release_rule_changed'])
+        self.assertNotIn('observed_gate_continuation_v1',result['source_algorithm_versions'])
+        self.assertNotIn('ambiguous_gate_loss_v1',result['source_algorithm_versions'])
+
     def analyze(self, *, visible=False, total=150):
         from sceneguard.portal_births import make_region
         scene = dict(source_size=[1000, 1000], line=[[.4, .7], [.6, .7]],

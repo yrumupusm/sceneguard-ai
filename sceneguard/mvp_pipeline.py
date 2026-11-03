@@ -91,14 +91,14 @@ def normalize_portal(raw: dict, scope: dict, video_id: str, run_id: str) -> dict
 class RuleBackend:
     """Compose the existing implementations; do not copy their thresholds here."""
     def __post_init__(self) -> None:
-        from .gate_observation import GateObservationDirection
+        from .directional_loss import SavedGateDirection
         from .gate_episode_evidence import history_decision
         from .portal_births import PortalGate, compare_births
         from .exp0048_application import replay_scoped
         from .exp0049_application import replay_activity, activity_references
         from .incident_outcome_scope import ScopedIncidentLifecycle
         from .gate_activity_episodes import GateActivityEpisodes
-        self.direction_class = GateObservationDirection
+        self.direction_class = SavedGateDirection
         self.history_decision = history_decision
         self.portal_class = PortalGate
         self.compare_births = compare_births
@@ -160,7 +160,7 @@ class RuleBackend:
         if history['events'] or events:
             result, _ = self.replay_scoped(baseline, history, events, runs, frames,
                 scene, region, direction_engine=engine, portal_gate=portal,
-                confirm_outward_crossings=True, observe_gate_crossings=True)
+                confirm_outward_crossings=True, observe_gate_crossings=False)
             return result
         # Negative clips are valid inputs. Never insert a dummy suspicion.
         result = self.empty_lifecycle(namespace=scope['session_id']).export()
@@ -233,10 +233,10 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
     final.update(experiment='MVP-0002', pipeline_version=VERSION, analysis_run_id=run_id,
         execution_mode='current_input_analysis', source_evidence_mode='computed_in_current_run',
         source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049',
-            'visible_gate_crossing_v1', 'outward_gate_loss_v1', 'existing_alert_gate_crossing_v1',
-            'observed_gate_continuation_v1', 'ambiguous_gate_loss_v1'],
+            'visible_gate_crossing_v1', 'outward_gate_loss_v1', 'existing_alert_gate_crossing_v1'],
         positive_crossing_directions=['outside_to_inside', 'inside_to_outside'],
-        direction_rule_changed=True, release_rule_changed=True,
+        direction_rule_changed=True, release_rule_changed=False,
+        continuation_observation_rules_enabled=False,
         activity_grouping_changed_decision_rules=False,
         historical_experiment_results_required=False, rejected_transition_candidates_used=False,
         candidate_generation_changed=True, evidence_decisions_changed=True,
