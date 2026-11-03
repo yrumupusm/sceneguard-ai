@@ -50,7 +50,7 @@ class LifecycleTests(unittest.TestCase):
 
     def test_visible_confirmation_rejects_future_stale_or_wrong_event(self):
         for changes in [dict(decision_time_pts=4.), dict(last_observed_pts=2.),
-                        dict(event_id='other'), dict(direction='inside_to_outside'),
+                        dict(event_id='other'), dict(direction='unclear'),
                         dict(automatic_confirmation=False)]:
             with self.subTest(changes=changes):
                 self.engine=IncidentLifecycle(); self.open()

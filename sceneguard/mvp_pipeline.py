@@ -19,7 +19,7 @@ from pathlib import Path
 import time
 from typing import Any
 
-VERSION = 'MVP-1.0-rc2'
+VERSION = 'MVP-1.0-rc3'
 CONTRACT = 'gate_activity_episodes_v1'
 STATES = {'침입 의심', '침입 확인', '의심 해제'}
 
@@ -116,6 +116,7 @@ class RuleBackend:
             raise ValueError('Do not change the adopted loss wait during integration')
         from .approach_disappearance import Policy
         from .visible_crossing import visible_crossing_decision
+        from .outward_crossing import outward_loss_decision
         segments = {s['id']: s for s in baseline['segments']}
         policy = Policy(**baseline['policy'])
         decisions = []
@@ -132,6 +133,7 @@ class RuleBackend:
                 d = visible_crossing_decision(source, segment, scene, policy)
             else:
                 d = self.history_decision(engine.classify(source, segment), segment, scene)
+                d = outward_loss_decision(d, segment, scene, policy)
             d.update(event_id=event['event_id'], source_ref=deepcopy(event['source_ref']),
                 analysis_run_id=run_id, computed_in_current_run=True,
                 rule_implementation=d.get('rule_id', 'gate_history_loss_v1'))
@@ -144,7 +146,8 @@ class RuleBackend:
     def lifecycle(self, baseline, history, events, runs, frames, scene, region, engine, portal, scope):
         if history['events'] or events:
             result, _ = self.replay_scoped(baseline, history, events, runs, frames,
-                scene, region, direction_engine=engine, portal_gate=portal)
+                scene, region, direction_engine=engine, portal_gate=portal,
+                confirm_outward_crossings=True)
             return result
         # Negative clips are valid inputs. Never insert a dummy suspicion.
         result = self.empty_lifecycle(namespace=scope['session_id']).export()
@@ -216,7 +219,10 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
             historical_experiment_results_required=False)
     final.update(experiment='MVP-0002', pipeline_version=VERSION, analysis_run_id=run_id,
         execution_mode='current_input_analysis', source_evidence_mode='computed_in_current_run',
-        source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049', 'visible_gate_crossing_v1'],
+        source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049', 'visible_gate_crossing_v1', 'outward_gate_loss_v1'],
+        positive_crossing_directions=['outside_to_inside', 'inside_to_outside'],
+        direction_rule_changed=True, release_rule_changed=True,
+        activity_grouping_changed_decision_rules=False,
         historical_experiment_results_required=False, rejected_transition_candidates_used=False,
         candidate_generation_changed=True, evidence_decisions_changed=True,
         live_notifications_enabled=False, notification_delivery_measured=False,

@@ -18,10 +18,14 @@ def row(t,x,y=.5):
     return dict(pts=t,frame_index=round(t*30),cache_index=0,bbox=[x-.02,y-.05,x+.02,y+.05])
 
 
-def inputs():
+def inputs(direction='outside_to_inside'):
     rows=[row(i/10,x) for i,x in enumerate([.44,.45,.46,.48,.5,.52,.54,.55])]
+    if direction == 'inside_to_outside':
+        for r in rows:
+            left, top, right, bottom = r['bbox']
+            r['bbox'] = [1-right, top, 1-left, bottom]
     return (dict(segment='s1',raw_id=1,pts=.7,decision_time_pts=.7,
-                 reason='observed_side_transition',direction='outside_to_inside'),
+                 reason='observed_side_transition',direction=direction),
             dict(id='s1',raw_id=1,rows=rows),scene())
 
 
@@ -33,7 +37,7 @@ class VisibleCrossingTests(unittest.TestCase):
         self.assertEqual(result['last_observed_pts'],.7)
         self.assertFalse(result['loss_wait_required'])
         self.assertFalse(result['human_verified'])
-    def test_reverse_direction_is_not_inward_confirmation(self):
+    def test_direction_metadata_cannot_override_measured_path(self):
         source,seg,sc=inputs();source['direction']='inside_to_outside'
         self.assertFalse(visible_crossing_decision(source,seg,sc)['automatic_confirmation'])
     def test_inside_only_does_not_establish_crossing(self):
@@ -130,6 +134,72 @@ class VisibleCrossingTests(unittest.TestCase):
     def test_direction_disabled(self):
         source,seg,sc=inputs();sc['directions']=['inside_to_outside']
         self.assertFalse(visible_crossing_decision(source,seg,sc)['automatic_confirmation'])
+
+    def test_outward_continuous_passage_confirms_with_physical_side_evidence(self):
+        result=visible_crossing_decision(*inputs('inside_to_outside'))
+        self.assertTrue(result['automatic_confirmation'])
+        self.assertEqual(result['status'],'침입 확인')
+        self.assertEqual(result['direction'],'inside_to_outside')
+        self.assertEqual(result['reason'],'continuous_observed_inside_to_outside')
+        self.assertEqual(result['decision_time_pts'],.7)
+        self.assertEqual(result['last_observed_pts'],.7)
+        self.assertFalse(result['loss_wait_required'])
+        self.assertFalse(result['human_verified'])
+        self.assertLess(result['inside_support'][-1]['pts'],result['outside_support'][0]['pts'])
+        self.assertTrue(result['finite_gate_crossings'])
+
+    def test_outward_direction_must_be_enabled(self):
+        source,seg,sc=inputs('inside_to_outside');sc['directions']=['outside_to_inside']
+        self.assertFalse(visible_crossing_decision(source,seg,sc)['automatic_confirmation'])
+
+    def test_outward_metadata_cannot_claim_inward_path(self):
+        source,seg,sc=inputs('inside_to_outside');source['direction']='outside_to_inside'
+        self.assertFalse(visible_crossing_decision(source,seg,sc)['automatic_confirmation'])
+
+    def test_outward_requires_stable_actual_sides_and_continuity(self):
+        for failure in ('no_inside','short_outside','gap','jump','scale','overlap'):
+            with self.subTest(failure=failure):
+                source,seg,sc=inputs('inside_to_outside')
+                if failure=='no_inside':
+                    for r in seg['rows']:r['bbox']=row(r['pts'],.45)['bbox']
+                elif failure=='short_outside':seg['rows'][-3]['bbox']=row(.5,.5)['bbox']
+                elif failure=='gap':seg['rows']=[r for r in seg['rows'] if r['pts'] not in [.3,.4]]
+                elif failure=='jump':
+                    for r in seg['rows'][-3:]:r['bbox']=row(r['pts'],.3)['bbox']
+                elif failure=='scale':seg['rows'][4]['bbox']=[.49,.495,.51,.505]
+                else:sc['zones']['inside']=[[.4,0],[1,0],[1,1],[.4,1]]
+                self.assertFalse(visible_crossing_decision(source,seg,sc)['automatic_confirmation'])
+
+    def test_outward_future_rows_cannot_complete_stability(self):
+        source,seg,sc=inputs('inside_to_outside');source.update(pts=.6,decision_time_pts=.6)
+        self.assertFalse(visible_crossing_decision(source,seg,sc)['automatic_confirmation'])
+
+    def test_outward_future_append_does_not_change_decision(self):
+        source,seg,sc=inputs('inside_to_outside');before=visible_crossing_decision(source,seg,sc)
+        seg['rows'] += [row(.8,.44),row(.9,.43)]
+        self.assertEqual(before,visible_crossing_decision(source,seg,sc))
+
+    def test_outward_line_extension_crossing_rejected(self):
+        source,seg,sc=inputs('inside_to_outside')
+        for r in seg['rows']:r['bbox']=row(r['pts'],sum(r['bbox'][::2])/2,.8)['bbox']
+        result=visible_crossing_decision(source,seg,sc)
+        self.assertFalse(result['automatic_confirmation'])
+        self.assertEqual(result['reason'],'no_observed_finite_gate_crossing')
+
+    def test_inward_finite_crossing_cannot_support_outward_extension_crossings(self):
+        source,seg,sc=inputs('inside_to_outside')
+        positions=[(.46,.8),(.47,.8),(.48,.8),(.505,.8),(.505,.76),
+                   (.505,.72),(.505,.69),(.495,.69),(.495,.73),
+                   (.495,.77),(.495,.8),(.52,.8),(.53,.8),(.54,.8)]
+        seg['rows']=[row(i/10,1-x,y) for i,(x,y) in enumerate(positions)]
+        source.update(pts=1.3,decision_time_pts=1.3)
+        result=visible_crossing_decision(source,seg,sc)
+        self.assertFalse(result['automatic_confirmation'])
+        self.assertEqual(result['reason'],'no_observed_finite_gate_crossing')
+
+    def test_reversing_line_does_not_change_outward_meaning(self):
+        source,seg,sc=inputs('inside_to_outside');sc['line'].reverse()
+        self.assertTrue(visible_crossing_decision(source,seg,sc)['automatic_confirmation'])
 
 
 if __name__=='__main__':unittest.main()

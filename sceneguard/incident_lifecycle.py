@@ -122,7 +122,7 @@ class IncidentLifecycle:
         if (clock(item['decision_time_pts']) != at or
                 clock(item['evidence_until_pts']) != at):
             raise ValueError('No future or backdated outcome evidence')
-        if kind not in ('outward_loss', 'inward_loss', 'preserved_confirmation', 'observation_handoff'):
+        if kind not in ('outward_loss', 'inward_loss', 'outward_crossing_loss', 'preserved_confirmation', 'observation_handoff'):
             raise ValueError('Unknown lifecycle resolution')
         ids = item['event_ids']
         if not ids or len(ids) != len(set(ids)) or any(eid not in self.events for eid in ids):
@@ -145,7 +145,7 @@ class IncidentLifecycle:
                     item.get('recording_continuous') is not True or
                     item.get('observation_continues') is not False):
                 raise ValueError('Actual absence interval required; not a clip end or ID timeout')
-            expected = 'outward' if kind == 'outward_loss' else 'inward'
+            expected = 'outward' if kind in ('outward_loss', 'outward_crossing_loss') else 'inward'
             if item.get('direction') != expected:
                 raise ValueError('Wrong signed movement for outcome')
             direction_at = clock(item['direction_end_pts'])
@@ -154,15 +154,33 @@ class IncidentLifecycle:
                 raise ValueError('Last measured direction is stale or from the future')
             if kind == 'inward_loss' and item.get('recent_gate_contact') is not True:
                 raise ValueError('Inward loss requires observed gate context')
+            if kind == 'outward_crossing_loss':
+                decision = item.get('evidence', {}).get('outward_crossing_evidence', {})
+                if (decision.get('rule_id') != 'outward_gate_loss_v1'
+                        or decision.get('automatic_confirmation') is not True
+                        or decision.get('crossing_direction') != 'inside_to_outside'
+                        or not decision.get('inside_origin') or not decision.get('gate_contact')
+                        or decision.get('last_observed_pts') != last
+                        or decision.get('decision_time_pts') != at):
+                    raise ValueError('Outward crossing requires linked inside-origin gate evidence')
         elif item.get('confirmation_source') == 'visible_gate_crossing_v1':
             decision = item.get('source_decision', {})
             if (decision.get('rule_id') != 'visible_gate_crossing_v1'
                     or decision.get('automatic_confirmation') is not True
-                    or decision.get('direction') != 'outside_to_inside'
+                    or decision.get('direction') not in ('outside_to_inside', 'inside_to_outside')
                     or decision.get('decision_time_pts') != at
                     or decision.get('last_observed_pts') != at
                     or ids != [decision.get('event_id')]):
                 raise ValueError('Visible crossing requires current, event-bound observation evidence')
+        elif item.get('confirmation_source') == 'outward_gate_loss_v1':
+            decision = item.get('source_decision', {})
+            if (decision.get('rule_id') != 'outward_gate_loss_v1'
+                    or decision.get('automatic_confirmation') is not True
+                    or decision.get('crossing_direction') != 'inside_to_outside'
+                    or not decision.get('inside_origin') or not decision.get('gate_contact')
+                    or decision.get('decision_time_pts') != at
+                    or ids != [decision.get('event_id')]):
+                raise ValueError('Outward loss requires event-bound inside-origin gate evidence')
         elif item.get('confirmation_source') != 'EXP-0045':
             raise ValueError('Preserved confirmations must retain their source')
         payload = canonical(item)
@@ -229,7 +247,7 @@ class IncidentLifecycle:
         touched = set()
         for row in sorted(candidates, key=lambda r:(r['event']['decision_time_pts'],r['event']['event_id'])):
             self._candidate(row, at, touched)
-        rank = {'preserved_confirmation':0, 'observation_handoff':1, 'inward_loss':2, 'outward_loss':3}
+        rank = {'preserved_confirmation':0, 'observation_handoff':1, 'inward_loss':2, 'outward_crossing_loss':2, 'outward_loss':3}
         for resolution in sorted(resolutions, key=lambda r:(rank.get(r['kind'],9), r['resolution_id'])):
             self._resolve(resolution, at, touched)
         snapshots = []

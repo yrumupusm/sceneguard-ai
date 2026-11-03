@@ -93,7 +93,7 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
             # Does not block inward incident evidence. Prevents one departure
             # from clearing all suspicions that joined across several sources.
             selected = []; reason = 'mixed_origins_not_blanket_release'
-        elif kind == 'inward_loss':
+        elif kind in ('inward_loss', 'outward_crossing_loss'):
             existing = [eid for eid in selected
                         if self.evidence[eid]['automatic_status'] == CONFIRMED]
             anchor = self._outcome_anchors.setdefault(outcome, max(existing or selected,

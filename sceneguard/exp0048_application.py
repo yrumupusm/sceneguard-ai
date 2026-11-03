@@ -26,7 +26,7 @@ def locate_time(stamps, at):
 
 
 def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
-                  *,direction_engine=None,portal_gate=None):
+                  *,direction_engine=None,portal_gate=None,confirm_outward_crossings=False):
     from .directional_loss import SavedGateDirection
     from .portal_births import PortalGate
     from .lifecycle_followup import ObservationHistory, followup_run, assess_loss, loss_resolution
@@ -48,8 +48,8 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
         i=locate_time(stamps,d['decision_time_pts'])
         r=dict(kind='preserved_confirmation',event_ids=[d['event_id']],
             decision_time_pts=stamps[i],evidence_until_pts=stamps[i],
-            confirmation_source=('visible_gate_crossing_v1'
-                if d.get('rule_id') == 'visible_gate_crossing_v1' else 'EXP-0045'),
+            confirmation_source=(d['rule_id'] if d.get('rule_id') in
+                ('visible_gate_crossing_v1', 'outward_gate_loss_v1') else 'EXP-0045'),
             source_decision=deepcopy(d))
         r['resolution_id']=digest(r);confirmations[i].append(r)
     attempted=set();audits=[];counts=Counter()
@@ -73,6 +73,16 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
                 proposals[rid]=(handoff,ids,identity);continue
             if at-rows[-1]['pts']<engine.policy.loss_wait-1e-6:continue
             audit=assess_loss(obs,engine,portal,rid,index,loss_wait=engine.policy.loss_wait)
+            if confirm_outward_crossings and audit.get('outcome') == 'outward_loss':
+                from .outward_crossing import outward_loss_decision
+                from .approach_disappearance import Policy
+                decision = outward_loss_decision(audit,
+                    dict(id=rid, raw_id=None, rows=obs.motion_rows(rid)), scene,
+                    Policy(**baseline['policy']))
+                if decision.get('automatic_confirmation'):
+                    audit.update(outcome='outward_crossing_loss',
+                        reason=decision['reason'], recent_gate_contact=True,
+                        outward_crossing_evidence=decision)
             audit.update(event_ids=sorted(ids),handoff=handoff)
             audits.append(audit);counts[audit['reason']]+=1;attempted.add(identity)
             if audit['outcome']:resolutions.append(loss_resolution(audit,ids))
@@ -101,7 +111,7 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
         available_after_pts=history.get('available_after_pts',history['source_window'][1]),
         binding_audit=obs.bindings,followup_audit=audits,followup_counts=dict(counts),
         preserved_confirmation_source_pts={eid:d['decision_time_pts'] for eid,d in positive.items()},
-        direction_rule_changed=False,source_end_forced_release=False,
+        direction_rule_changed=confirm_outward_crossings,source_end_forced_release=False,
         detector_calls=0,tracker_calls=0,flow_calls=0,vlm_calls=0)
     audit=audit_all_runs(runs,frames,result,engine,portal)
     return result,audit

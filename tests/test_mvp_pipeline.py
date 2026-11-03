@@ -183,6 +183,10 @@ class CompositionContracts(unittest.TestCase):
         f = self.run_analysis(DoubleBackend())['cards']
         self.assertEqual(f['experiment'], 'MVP-0002')
         self.assertEqual(f['pipeline_version'], VERSION)
+        self.assertEqual(f['positive_crossing_directions'], ['outside_to_inside', 'inside_to_outside'])
+        self.assertTrue(f['direction_rule_changed'])
+        self.assertTrue(f['release_rule_changed'])
+        self.assertFalse(f['activity_grouping_changed_decision_rules'])
 
 
 class BackendEmptyContracts(unittest.TestCase):

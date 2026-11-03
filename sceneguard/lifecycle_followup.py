@@ -206,7 +206,7 @@ def assess_loss(history, engine, portal, run_id, index, *, loss_wait=1., gate_hi
 
 
 def loss_resolution(assessment, event_ids):
-    if assessment.get('outcome') not in ('outward_loss','inward_loss'):
+    if assessment.get('outcome') not in ('outward_loss','inward_loss','outward_crossing_loss'):
         raise ValueError('Only an evaluated disappearance can resolve a suspicion')
     ids=sorted(event_ids); at=assessment['decision_time_pts']; direction=assessment['direction']
     result=dict(kind=assessment['outcome'],event_ids=ids,observation_key=assessment['run_id'],

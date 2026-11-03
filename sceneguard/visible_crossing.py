@@ -1,4 +1,4 @@
-"""Confirm a continuously observed outside-to-inside passage without a loss wait.
+"""Confirm an enabled continuously observed gate passage without a loss wait.
 
 This uses measured box/region continuity, not a claim of verified identity or
 physical/legal intrusion. The existing disappearance branch remains separate.
@@ -22,10 +22,10 @@ def _ref(row):
     return {k: deepcopy(row[k]) for k in ('pts', 'frame_index', 'cache_index', 'bbox') if k in row}
 
 
-def _finite_crossings(rows, scene, outside_sign):
+def _finite_crossings(rows, scene, origin_sign):
     """Find actual adjacent proxy paths across the finite configured segment.
 
-    Require the same signed direction as the stable outside-to-inside anchors.
+    Require the same signed direction as the stable origin-to-destination anchors.
     Radius-to-endpoint proximity is insufficient. With exact on-line samples,
     require opposite nonzero sides around the whole on-line run and keep every
     on-line point within the gate; touching then walking past an endpoint does
@@ -46,7 +46,7 @@ def _finite_crossings(rows, scene, outside_sign):
         if abs(distance) <= 1e-7:
             continue
         if (previous is not None and distances[previous]*distance < 0
-                and distances[previous]*outside_sign > 0 and distance*outside_sign < 0):
+                and distances[previous]*origin_sign > 0 and distance*origin_sign < 0):
             if i == previous+1:
                 fraction = distances[previous]/(distances[previous]-distance)
                 point = tuple(points[previous][k]+fraction*(points[i][k]-points[previous][k]) for k in (0,1))
@@ -90,10 +90,13 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
     def reject(reason):
         return dict(result, reason=reason)
 
+    direction = source.get('direction')
+    sides = {'outside_to_inside': ('outside', 'inside'),
+             'inside_to_outside': ('inside', 'outside')}
     if (source.get('reason') != 'observed_side_transition'
-            or source.get('direction') != 'outside_to_inside'
-            or 'outside_to_inside' not in scene['directions']):
-        return reject('not_an_enabled_observed_inward_transition')
+            or direction not in sides or direction not in scene['directions']):
+        return reject('not_an_enabled_observed_side_transition')
+    origin_side, destination_side = sides[direction]
     # Inspect the prefix only. A later disappearance or crossing cannot prove
     # what was observable at this candidate's timestamp.
     prefix = [r for r in segment['rows'] if _number(r['pts']) <= at+1e-9]
@@ -129,31 +132,31 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
         return (len(streak) >= policy.stable_observations
                 and streak[-1]['pts']-streak[0]['pts'] >= policy.stable_seconds-1e-9)
 
-    inside = []
+    destination = []
     for row in reversed(rows):
-        if zone(row, scene) != 'inside':
+        if zone(row, scene) != destination_side:
             break
-        inside.append(row)
-    inside.reverse()
-    if not stable(inside):
-        return reject('inside_observations_not_stable')
-    outside, streak = [], []
+        destination.append(row)
+    destination.reverse()
+    if not stable(destination):
+        return reject(f'{destination_side}_observations_not_stable')
+    origin, streak = [], []
     for row in rows:
-        if row['pts'] >= inside[0]['pts']:
+        if row['pts'] >= destination[0]['pts']:
             break
-        if zone(row, scene) == 'outside':
+        if zone(row, scene) == origin_side:
             streak.append(row)
             if stable(streak):
-                outside = list(streak)
+                origin = list(streak)
         else:
             streak = []
-    if not outside:
-        return reject('continuous_stable_outside_history_missing')
-    passage = [r for r in rows if outside[-1]['pts'] <= r['pts'] <= at]
+    if not origin:
+        return reject(f'continuous_stable_{origin_side}_history_missing')
+    passage = [r for r in rows if origin[-1]['pts'] <= r['pts'] <= at]
     # Require the observed proxies to cross the configured boundary, not merely
     # transition between arbitrary disconnected image polygons.
-    before = center(outside[-1], size, .65)
-    after = center(inside[-1], size, .65)
+    before = center(origin[-1], size, .65)
+    after = center(destination[-1], size, .65)
     if signed_distance(before, scene)*signed_distance(after, scene) >= 0:
         return reject('no_observed_boundary_side_change')
     crossings = _finite_crossings(passage, scene, signed_distance(before, scene))
@@ -164,12 +167,14 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
                 <= max(12., (r['bbox'][3]-r['bbox'][1])*size[1]*policy.near_line_heights)]
     if not contacts:
         return reject('no_recent_finite_gate_contact')
+    support = {origin_side: origin, destination_side: destination}
     result.update(status='침입 확인', automatic_confirmation=True, notify=True,
-        reason='continuous_observed_outside_to_inside', continuation='cross_side_observation',
-        direction='outside_to_inside',
+        reason=f'continuous_observed_{direction}', continuation='cross_side_observation',
+        direction=direction,
         direction_evidence=dict(method='measured_box_region_transition',
-                                start_pts=outside[-1]['pts'], end_pts=at),
-        outside_support=[_ref(r) for r in outside], inside_support=[_ref(r) for r in inside],
+                                start_pts=origin[-1]['pts'], end_pts=at),
+        outside_support=[_ref(r) for r in support['outside']],
+        inside_support=[_ref(r) for r in support['inside']],
         gate_contact=_ref(contacts[-1]), finite_gate_crossings=crossings, observation_refs=[_ref(r) for r in passage],
         stable_seconds=policy.stable_seconds, stable_observations=policy.stable_observations,
         maximum_observation_gap_seconds=max((b['pts']-a['pts'] for a,b in zip(passage,passage[1:])),default=0.))
