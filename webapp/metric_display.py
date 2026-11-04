@@ -25,6 +25,10 @@ UNITS = {
     'per hour': '회/시간', 'notices/hour': '알림/시간', 'wall/source': '실행 시간/원본 시간',
     'not_closed': '미종료', 'unmeasured': '', 'not established': '',
     'unevaluated': '', 'not measured': '',
+    # Later reports already store localized units; preserve their display verbatim.
+    '건': '건', '개': '개', '초': '초', '미측정': '미측정',
+    '원본 초': '원본 초', '비율': '비율', '프레임': '프레임',
+    '회': '회', 'px': 'px', '배': '배',
 }
 
 

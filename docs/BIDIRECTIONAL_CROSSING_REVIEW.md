@@ -80,4 +80,4 @@
 
 로컬 최종 자료는 `outputs/validation/bidirectional-crossing-v1/run-002/`의 `summary.json`, `before-report.json`, `after-report.json`, `per-video-comparison.json`, `confirmation-changes.json`, `provenance.json`이다. 상위 폴더 `replay.py`와 `finalize.py`로 재현할 수 있다. 사용자 전달용 CSV는 `SceneGuard_양방향수정후_침입누락검수.csv`로 기존 목록과 별도로 저장했다.
 
-기존 프로젝트와 웹의 과거 실험 수치는 이 재생과 별도이며 자동 교체하지 않는다. 페이지5의 소실 중심 설명은 다음 편집 시 새 연속 관측 및 양방향 범위를 반영해야 한다.
+이 보고서는 해당 실행의 결과 기록이며, 다른 버전의 평가 결과를 대체하지 않음.

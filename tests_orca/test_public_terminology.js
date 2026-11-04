@@ -5,10 +5,20 @@ const cases = [
   ['자동 확인','침입 검출'], ['자동확인','침입 검출'],
   ['침입 확인 · 자동','침입 검출'], ['침입 확인(자동)','침입 검출'],
   ['침입 자동 확인','침입 검출'], ['침입 확인','침입 검출'],
+  ['자동 침입 확인','침입 검출'], ['자동침입확인','침입 검출'],
+  ['자동 확인으로 전환','침입 검출로 전환'],
+  ['침입 확인(자동)으로 전환','침입 검출로 전환'],
+  ['침입 확인 · 자동으로 전환','침입 검출로 전환'],
+  ['침입 검출으로 전환','침입 검출로 전환'],
   ['침입 의심 / 의심 해제','침입 의심 / 의심 해제'],
   ['automatic_confirmation / confirmation','automatic_confirmation / confirmation']
 ];
 for (const [before, after] of cases) test(before, () => assert.equal(ui.text(before),after));
+test('normalization is idempotent for all display variants', () => {
+  for (const [before, after] of cases) {
+    assert.equal(ui.text(ui.text(before)), after);
+  }
+});
 test('non-string values and stored records stay unchanged', () => {
   const record = {automatic_confirmation:true,status:'침입 확인',count:37};
   const snapshot = JSON.stringify(record);

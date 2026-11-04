@@ -12,11 +12,13 @@
   function text(value) {
     if (typeof value !== 'string') return value;
     return value
+      .replace(/자동[ \t]*침입[ \t]*확인/g, '침입 검출')
       .replace(/침입[ \t]*확인[ \t]*(?:[·ㆍ/][ \t]*자동|\([ \t]*자동[ \t]*\))/g, '침입 검출')
       .replace(/침입[ \t]*자동[ \t]*확인/g, '침입 검출')
       .replace(/자동[ \t]*확인/g, '침입 검출')
       .replace(/침입[ \t]*확인/g, '침입 검출')
-      .replace(/침입 침입 검출/g, '침입 검출');
+      .replace(/침입 침입 검출/g, '침입 검출')
+      .replace(/침입 검출으로/g, '침입 검출로');
   }
   function skip(node) {
     for (let p = node.nodeType === 1 ? node : node.parentNode; p; p = p.parentNode) {
@@ -50,7 +52,7 @@
     const observer = new MutationObserver(records => {
       for (const record of records) {
         if (record.type === 'childList') {
-for (const child of record.addedNodes) visit(child);
+          for (const child of record.addedNodes) visit(child);
         } else visit(record.target);
       }
     });
