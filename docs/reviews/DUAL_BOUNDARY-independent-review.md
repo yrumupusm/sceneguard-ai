@@ -1,4 +1,62 @@
-# Dual-boundary independent review — preflight
+# Dual-boundary independent review
+
+## Frozen code verdict — ready for the comparison, behavior pending
+
+2026-11-04. **Accepted for the authorized saved-measurement comparison:** `2cdfc3eb9966e69a4211035df6eea8fa21c41fcc`. The implementation checkout was clean before and after the final independent run. `sceneguard/dual_boundary.py` SHA256 was `267fce3936cdcd6b45f05a35eba36f2880b9e1ad503c4083e6aecc659648d3d1`. Reviewed the committed delta, then ran **559 tests with zero failures/errors/skips**: 25 independent review tests (19 using production `analyze_observations`), 39 implementation tests and 495 legacy regressions. The endpoint touch, contiguous competing-box inheritance and collinear self-overlap findings are fixed at this revision. No remaining reproduced false-positive correctness blocker was found within this review scope; the conservative run-lifetime limitation below is explicit and is not certified as successful behavior.
+
+Final command, from the implementation checkout:
+
+```bash
+PYTHONPATH=.:tests:/home/jhc7484/dev/sceneguard-ai/sg-dual-boundary-review/tests \
+  /home/jhc7484/dev/sceneguard-ai/.venv-cv-batch02/bin/python -m unittest \
+  test_dual_boundary_review test_dual_boundary test_mvp_pipeline \
+  test_visible_crossing test_existing_alert_crossing test_outward_crossing \
+  test_gate_observation test_gate_observation_integration test_lifecycle_followup \
+  test_incident_lifecycle test_incident_outcome_scope test_gate_activity_episodes \
+  test_gate_episode_evidence test_directional_loss test_portal_births \
+  test_incident_cards test_video_cards test_target_binding_contract \
+  test_handoff_binding_contract test_stationary_origin_crossing_contract \
+  test_delayed_raw_loss test_delayed_loss_binding_contract \
+  test_delayed_loss_ownership_contract -q
+```
+
+The independent fixtures preserve input values, compare every causal prefix of both scoped and final activity timelines, and run the production backend/run builder without injected rule stubs. They cover exact candidate anchors and clocks, one physical outcome/one current evidence owner, no reuse by later candidates, finite polyline passage, actual absence versus EOF/source gaps, fresh versus stale direction, saved-point continuity/competition, old origins and sticky positives. The known-limit test intentionally measures suppression of a later fresh passage; it is not counted as successful recovery. `git diff --check` passed for the two owned review files. **Actual full45 comparison and behavioral adoption remain separate, pending the coordinator's frozen result artifacts.**
+
+## Current review scope and conservative ambiguity limitation
+
+The corrected candidate is reviewed for **saved-measurement comparison readiness only**. Code acceptance does not establish behavioral improvement, default adoption, person identity, physical crossing or release accuracy. Final frozen revision and test results are recorded separately from the historical failed checkpoint below.
+
+The optional mode is selected in production by `scene.inner_line`. `RuleBackend.prepare` selects `DualBoundaryDirection`; `RuleBackend.confirmations` guards every seed instead of executing old positive classifiers; and `replay_scoped` selects the dual lifecycle before any legacy replay branch. Direct old existing-alert/visible/history/outward helpers also guard the field. In the dual lifecycle, only its causal measured-passage or directed-corridor-loss resolutions can confirm; no legacy inward/outward/delayed/ambiguous-loss/observed-continuation/preserved-seed path runs, and no automatic release is emitted. The unchanged no-inner-line branches are covered by the independently rerun legacy regressions.
+
+The correction checks the complete adjacent actual-box association graph before advancing a run. Both predecessor and successor competition block lineage; birth deduplication and greedy tie-breaking cannot establish uniqueness. Across gaps, saved-point endpoints are counted by actual cache index before unique run mapping. The final selected design deliberately keeps an affected run ambiguous until a source-clock reset and propagates ambiguity through handoff. **A later complete, independently supported passage on that same run may therefore remain unconfirmed, even after the 60-second origin episode expires.** This is an explicit conservative recall limitation, not successful identity disambiguation or episode recovery.
+
+Independent `test_known_limit_ambiguous_run_veto_suppresses_even_fresh_episode` demonstrates the limitation: competing boxes only at 0/.1s, a many-predecessor edge at .2s, unique stationary outside observations afterward, a new candidate at .6s and then a complete two-boundary passage. Both old and new candidates remain suspected. The test asserts the **present suppression**, not a successful fresh episode. A safe future recovery must both discard ambiguous origin/proof and prevent old pending evidence from consuming a fresh episode. The coordinator explicitly deferred that change before any actual comparison result was seen; it is not tuned from replay outcomes. Already confirmed passage remains sticky when later competition appears.
+
+The draft correction tested from a single in-memory source load had `dual_boundary.py` SHA256 `b3d61cbe499f4dcaafd2ee8a79e5f65987fbe69adc4152037833db19c0e6d4f6`; the then-current 24 independent tests all passed. Exact frozen acceptance still requires the commit-specific rerun below. Read-only actual geometry validation retained all eight contours, C5's five vertices and C8 endpoint reversal. The canonical draft-manifest SHA256 is `d9364ed671e0f4cb545af2bcdde9a321d423826737a07f92cd9b567892d7d56f`; all 17 protected registry/scene/portal hashes matched. Old manifest approval flags remain untouched; current authorization is the later explicit plan.
+
+## Historical follow-up checkpoint — 278c463 required corrections
+
+2026-11-04. Reviewed frozen implementation `278c4637e2aea484e64604de66f79070a9ed9aed` in the implementation checkout (clean status). **Acceptance of that revision was withheld for the two reproducible correctness findings below.** The coordinator was notified immediately; the attempt to notify the original implementer directly returned `dispatch_inactive`, and the exact reproduction was relayed to the coordinator for a follow-up dispatch. No production files were edited by this reviewer.
+
+The initial endpoint-touch counterexample is fixed: opposite nonzero anchors and every finite on-line observation now protect the bbox and saved-point paths. The original six independent tests pass. The preflight section below is retained as the earlier findings and evidence, not the current endpoint-fix status.
+
+### Must-fix: contiguous geometric matching bypasses competition checks
+
+Production `analyze_observations` calls the unchanged `InsideBirths` greedy run builder. In the new replay, a `connected()` same-run row goes straight to `PassageState.step`; competitor checks are only applied by `successor()` across a break. Thus a greedy alternating choice among plausible boxes can inherit a stable origin and confirm, with an empty `associations` list. One-to-many and many-to-one contiguous association must not supply unambiguous lineage merely because the run builder chose a winner. Preserve the legacy birth bookkeeping and apply this protection in the optional dual-boundary evidence layer.
+
+Independent production reproduction uses outer x=.4, inner x=.6, y=.2..8, 0.2-height actual boxes and x proxies `.35,.36,.37,.41,.45,.50,.55,.60,.65,.66,.67` at 0.1-second steps. Add a second actual box shifted x=-.04 from frame 3 onward, with a distinct cache index and no saved points. Frozen code confirms at 1.0s; its origin, entry and exit actually alternate cache indices. Mirroring all x coordinates fails identically. The inverse fixture supplies two plausible source boxes (second shifted -.04) for the first three frames and one afterward; that also wrongly confirms. The tests use the actual production backend and its run construction, not caller-supplied runs.
+
+### Must-fix: collinear self-overlap passes geometry validation
+
+For outer `[[.4,.2],[.4,.8]]`, inner `[[.6,.2],[.6,.7],[.6,.4],[.6,.8]]` backtracks and overlaps itself, but `Corridor` accepts it. `intersection()` returns no hit for collinear segments, while adjacent edges are skipped entirely. The documented simple finite-contour contract requires rejecting adjacent backtracking and nonadjacent overlap. Ordinary collinear forward vertices may remain valid; this is input validation, not a request to change reviewed camera geometry.
+
+### Follow-up tests and scope
+
+The independent suite now runs **23 tests**, including **17 through production `analyze_observations`** using separately constructed fixtures. At `278c463`, three tests fail with four failing subcases: contiguous competition in both directions, many-source inheritance and the collinear malformed contour. The other tests pass, covering finite touch/endpoints, a five-vertex joint versus its chord, actual symmetric passage, all timeline prefixes including the activity layer, exact existing-alert anchors, latest-evidence ownership, no passage reuse by a later event, >3-second origins and 60-second expiry, sticky return, same-side return without release, unique saved-point occlusion with missing-box provenance, competing/absent/interrupted point support, actual absence wait, stationary and stale direction, EOF/source gaps, disabled direction, predicted input rejection and empty candidate streams. Synthetic bbox/point movements are not physical-body or CCTV truth.
+
+Independently reran the implementation report's explicit suite of **528 tests: all passed** at the same clean frozen commit. This includes 495 legacy tests and 33 implementation tests; passing those tests did not expose the production competition issue. Required web review lookup again succeeded with `requests: []`, with no DB changes. No inference, tracking, flow, full45 replay or media upload occurred in this review. Canonical `outputs/validation/dual-boundary-passage-v1/run-001` had no ready result files at this checkpoint; actual behavior acceptance is separate and pending.
+
+## Earlier preflight record
 
 2026-11-04. **Preflight complete; frozen-code acceptance and actual replay review remain outstanding.** The implementation is authorized by `docs/DUAL_BOUNDARY_PASSAGE_PLAN.md`; the older draft's approval wait does not block that work. This review does not approve default adoption or claim behavioral improvement.
 
