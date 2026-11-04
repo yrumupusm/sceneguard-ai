@@ -18,4 +18,4 @@ summary SHA256: `e86c01dd4574950f837f2c873675be4b87d0cff2a2a797bc867d01df87f5ef2
 
 provenance SHA256: `4065f7ab633acbca9ad03a7722fa9b348fc744377c2e268c7f8de3af7e285883`
 
-[계획과 수정 시점](EXP-0051-protocol.md) · [독립 검토](../reviews/EXP-0051-independent-review.md)
+[계획과 수정 시점](EXP-0051-protocol.md) · [회고 결과 검토](../reviews/EXP-0051-coordinator-review.md)
