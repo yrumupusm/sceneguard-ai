@@ -8,7 +8,7 @@
 
 실험85모듈 manifest a5c3520de23c952a46efa0ae421fe1e05b61c64eb1aff9312a119cd2b6310eae, 관련368시험·독립21방법 통과. 새 경로를 끄면 원래349시험도 통과한다. 운영85모듈은970c3ed94ae96b168bcf752f7202f23b4ee53e2c7d711b44f61d8c9f468a46cc 그대로이며 실험은 [별도 패치](experiments/patches/EXP-0057-approach-history-loss.patch)로 보존한다. 패치의 기준ba82722 격리 인덱스 적용 결과가 고정 소스/시험과 같음을 확인했다. 기본 채택 보류다.
 
-결과·원천 감사는 outputs/validation/approach-history-loss-v1/run-001, 구현·독립 검토·전달 영수증은 runtime/approach-history-loss-v1에 보존한다. 새 모델·검출·추적·flow·GPU추론0, 분석 실패·재시도0이다. 공개 기록·등록·GitHub·실제 화면 확인은 진행 중이며 아래 사전 승인과 과거 기록을 보존한다.
+결과·원천 감사는 outputs/validation/approach-history-loss-v1/run-001, 구현·독립 검토·전달 영수증은 runtime/approach-history-loss-v1에 보존한다. 새 모델·검출·추적·flow·GPU추론0, 분석 실패·재시도0이다. [결과](experiments/EXP-0057-results.md)·36측정·[독립 검토](reviews/EXP-0057-coordinator-review.md)·binding 등록, GitHub3e93193 게시/원격 바이트 검증, 실제 로컬 화면36행·주기 갱신 확인을 완료했다. 등록 미디어0이므로 영상 재생 검증은 아니다. [전달 기록](experiments/EXP-0057-delivery.md). 운영85모듈·기존 공개368파일·59카탈로그/53배정 보존을 확인했고 두 작업자 반환 완료·남은 반환 대상0이다. 아래 사전 승인과 과거 기록을 보존한다.
 
 ---
 
