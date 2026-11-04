@@ -22,7 +22,7 @@ def _ref(row):
     return {k: deepcopy(row[k]) for k in ('pts', 'frame_index', 'cache_index', 'bbox') if k in row}
 
 
-def _finite_crossings(rows, scene, origin_sign):
+def _finite_crossings(rows, scene, origin_sign, fraction=.65):
     """Find actual adjacent proxy paths across the finite configured segment.
 
     Require the same signed direction as the stable origin-to-destination anchors.
@@ -32,7 +32,7 @@ def _finite_crossings(rows, scene, origin_sign):
     not establish a crossing through the gate.
     """
     size = scene['source_size']
-    points = [center(row, size, .65) for row in rows]
+    points = [center(row, size, fraction) for row in rows]
     distances = [signed_distance(point, scene) for point in points]
     a, b = [tuple(q[k]*size[k] for k in (0,1)) for q in scene['line']]
     v = (b[0]-a[0], b[1]-a[1]); length2 = v[0]**2+v[1]**2
@@ -70,9 +70,6 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
     ending at its timestamp, dropping continuity across gaps/size jumps/box jumps.
     Future rows never help the decision and are not returned as evidence.
     """
-    if 'inner_line' in scene:
-        from .dual_boundary import guarded
-        return guarded(source)
     policy.validate()
     validate_scene(scene)
     at = _number(source.get('decision_time_pts', source.get('pts')))
@@ -100,6 +97,11 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
             or direction not in sides or direction not in scene['directions']):
         return reject('not_an_enabled_observed_side_transition')
     origin_side, destination_side = sides[direction]
+    from .legacy_directional import source_scene, boundary_zone, measured_origin
+    inner_source = origin_side == 'inside' and 'inner_line' in scene
+    fraction = 1. if inner_source else .65
+    side_zone = boundary_zone if inner_source else zone
+    scene = source_scene(scene, origin_side, segment['rows'][0]['bbox'])
     # Inspect the prefix only. A later disappearance or crossing cannot prove
     # what was observable at this candidate's timestamp.
     prefix = [r for r in segment['rows'] if _number(r['pts']) <= at+1e-9]
@@ -116,7 +118,7 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
         if i and (row['pts'] <= prefix[i-1]['pts'] or row['frame_index'] <= prefix[i-1]['frame_index']):
             raise ValueError('Ordered actual source observations required')
     history = EpisodePolicy().history_seconds
-    rows = [r for r in prefix if at-r['pts'] <= history+1e-9]
+    rows = prefix if inner_source else [r for r in prefix if at-r['pts'] <= history+1e-9]
     # Same geometric association distance as existing short-run bookkeeping;
     # numeric track ID alone is not enough after a disconnected box jump.
     size = scene['source_size']
@@ -130,6 +132,8 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
                 or jump > .5):
             start = i
     rows = rows[start:]
+    if inner_source and measured_origin(rows,scene,policy)[0] != 'inside':
+        return reject('continuous_stable_inside_origin_missing')
 
     def stable(streak):
         return (len(streak) >= policy.stable_observations
@@ -137,7 +141,7 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
 
     destination = []
     for row in reversed(rows):
-        if zone(row, scene) != destination_side:
+        if side_zone(row, scene) != destination_side:
             break
         destination.append(row)
     destination.reverse()
@@ -147,7 +151,7 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
     for row in rows:
         if row['pts'] >= destination[0]['pts']:
             break
-        if zone(row, scene) == origin_side:
+        if side_zone(row, scene) == origin_side:
             streak.append(row)
             if stable(streak):
                 origin = list(streak)
@@ -158,15 +162,15 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
     passage = [r for r in rows if origin[-1]['pts'] <= r['pts'] <= at]
     # Require the observed proxies to cross the configured boundary, not merely
     # transition between arbitrary disconnected image polygons.
-    before = center(origin[-1], size, .65)
-    after = center(destination[-1], size, .65)
+    before = center(origin[-1], size, fraction)
+    after = center(destination[-1], size, fraction)
     if signed_distance(before, scene)*signed_distance(after, scene) >= 0:
         return reject('no_observed_boundary_side_change')
-    crossings = _finite_crossings(passage, scene, signed_distance(before, scene))
+    crossings = _finite_crossings(passage, scene, signed_distance(before, scene), fraction)
     if not crossings:
         return reject('no_observed_finite_gate_crossing')
-    contacts = [r for r in passage if polygon(center(r, (1, 1), .65), scene['approach_polygon'])
-                and line_distance(center(r, size, .65), scene)
+    contacts = [r for r in passage if (inner_source or polygon(center(r, (1, 1), fraction), scene['approach_polygon']))
+                and line_distance(center(r, size, fraction), scene)
                 <= max(12., (r['bbox'][3]-r['bbox'][1])*size[1]*policy.near_line_heights)]
     if not contacts:
         return reject('no_recent_finite_gate_contact')
@@ -181,4 +185,6 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
         gate_contact=_ref(contacts[-1]), finite_gate_crossings=crossings, observation_refs=[_ref(r) for r in passage],
         stable_seconds=policy.stable_seconds, stable_observations=policy.stable_observations,
         maximum_observation_gap_seconds=max((b['pts']-a['pts'] for a,b in zip(passage,passage[1:])),default=0.))
+    if inner_source:
+        result['boundary_position_formula'] = 'bbox_bottom_center'
     return result

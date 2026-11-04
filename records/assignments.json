@@ -636,6 +636,19 @@
       "synthetic": false,
       "task_id": "task_61e44fe77234",
       "title": "013 하단 중앙점만 변경한 한정 비교"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "native receipt 모델 미지정 (Codex)",
+      "assigned_at": "2026-11-04T09:46:38+00:00",
+      "dispatch_id": "ctx_51ce176f57cc",
+      "experiment_id": "EXP-0053",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_c53e9ad63fcb",
+      "title": "기존 방향 판정 복구와 013 소실·출현 한정 비교"
     }
   ],
   "schema_version": 1

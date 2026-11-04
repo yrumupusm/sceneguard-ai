@@ -12,9 +12,6 @@ from .gate_episode_evidence import EpisodePolicy, Gate
 
 
 def outward_loss_decision(previous, segment, scene, policy=Policy()):
-    if 'inner_line' in scene:
-        from .dual_boundary import guarded
-        return guarded(previous)
     result = deepcopy(previous)
     if (previous.get('automatic_confirmation')
             or 'inside_to_outside' not in scene['directions']
@@ -35,7 +32,8 @@ def outward_loss_decision(previous, segment, scene, policy=Policy()):
     if any(r.get('observed') is False for r in rows) or any(
             a['pts'] >= b['pts'] for a,b in zip(rows,rows[1:])):
         raise ValueError('Chronological actual observations required')
-    gate = Gate(scene)
+    from .legacy_directional import BoundaryGate, boundary_zone, connected_rows, measured_origin, retained_origin
+    gate = BoundaryGate(scene, 'inside') if 'inner_line' in scene else Gate(scene)
     recent = [r for r in rows if 0 <= last-r['pts'] <= gate.policy.history_seconds+1e-9]
     # Keep only the connected recent prefix ending at the last real box.
     start = 0
@@ -48,7 +46,11 @@ def outward_loss_decision(previous, segment, scene, policy=Policy()):
                 or math.dist(center(a,size),center(b,size)) > .5*max(ah,bh)*size[1]):
             start = i
     recent = recent[start:]
+    if 'inner_line' in scene:
+        # Keep the connected source origin through a valid slow approach.
+        recent = connected_rows(rows, scene, policy)
     contacts = [r for r in recent if r['pts'] <= end+1e-9
+                and last-r['pts'] <= gate.policy.history_seconds+1e-9
                 and gate.locate(r['bbox'], birth=False)['near']
                 and 0 <= gate.locate(r['bbox'], birth=False)['along'] <= 1]
     if not contacts:
@@ -65,6 +67,14 @@ def outward_loss_decision(previous, segment, scene, policy=Policy()):
         if (len(streak) >= policy.stable_observations
                 and streak[-1]['pts']-streak[0]['pts'] >= policy.stable_seconds-1e-9):
             origin = list(streak)
+    if 'inner_line' in scene:
+        side, origin = measured_origin(recent, scene, policy)
+        if side != 'inside':
+            return result
+        source = [r for r in recent if r['pts'] >= origin[0]['pts']]
+        if (any(boundary_zone(r,scene) == 'outside' for r in source)
+                or not retained_origin(source,scene,gate,'inside',policy)):
+            return result
     if not origin:
         return result
     result.update(rule_id='outward_gate_loss_v1', status='침입 확인',
@@ -75,4 +85,8 @@ def outward_loss_decision(previous, segment, scene, policy=Policy()):
         decision_source='automatic_rule', human_verified=False, identity_verified=False,
         confirmation_basis='camera_rule_not_manual_or_ground_truth',
         evidence_until_pts=at)
+    if 'inner_line' in scene:
+        result.update(source_boundary=deepcopy(scene['inner_line']),
+            boundary_position_formula='bbox_bottom_center',
+            gate_contact_site=gate.locate(contacts[-1]['bbox'],birth=False))
     return result

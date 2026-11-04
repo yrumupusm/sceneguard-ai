@@ -110,20 +110,13 @@ class RuleBackend:
 
     def prepare(self, frames, scene, region, camera):
         if 'inner_line' in scene:
-            from .dual_boundary import DualBoundaryDirection
-            return DualBoundaryDirection(frames, scene), self.portal_class(scene, region, camera)
+            from .legacy_directional import DirectionalGate
+            return DirectionalGate(frames, scene), self.portal_class(scene, region, camera)
         return self.direction_class(frames, scene), self.portal_class(scene, region, camera)
 
     def confirmations(self, baseline, bundle, scene, engine, run_id):
         if abs(baseline['policy']['loss_wait'] - engine.policy.loss_wait) > 1e-6:
             raise ValueError('Do not change the adopted loss wait during integration')
-        if 'inner_line' in scene:
-            from .dual_boundary import guarded
-            return [dict(guarded(dict(decision_time_pts=e['decision_time_pts'],
-                evidence_until_pts=e['decision_time_pts'])), event_id=e['event_id'],
-                source_ref=deepcopy(e['source_ref']), analysis_run_id=run_id,
-                computed_in_current_run=True, rule_implementation='dual_boundary_passage_v1')
-                for e in bundle['events']]
         from .approach_disappearance import Policy
         from .visible_crossing import visible_crossing_decision
         from .outward_crossing import outward_loss_decision
@@ -167,10 +160,6 @@ class RuleBackend:
         return self.compare_births(frames, scene, region, camera)
 
     def lifecycle(self, baseline, history, events, runs, frames, scene, region, engine, portal, scope):
-        if 'inner_line' in scene:
-            result, _ = self.replay_scoped(baseline, history, events, runs, frames,
-                scene, region, direction_engine=engine, portal_gate=portal, scope=scope)
-            return result
         if history['events'] or events:
             result, _ = self.replay_scoped(baseline, history, events, runs, frames,
                 scene, region, direction_engine=engine, portal_gate=portal,
@@ -221,23 +210,22 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
     engine, portal = rules.prepare(frames, scene, region, scope['camera_id'])
     decisions = rules.confirmations(baseline, bundle, scene, engine, run_id)
     history = dict(deepcopy(bundle), decisions=decisions)
+    if 'inner_line' in scene:
+        from .legacy_directional import loss_appearance_candidates
+        derived, derived_decisions = loss_appearance_candidates(
+            baseline, frames, scene, scope, run_id)
+        history['events'].extend(derived)
+        decisions.extend(derived_decisions)
     comparison = rules.births(frames, scene, region, scope['camera_id'])
     events = [normalize_portal(r, scope, bundle['video_id'], run_id)
               for r in comparison['portal_events']]
-    combined = list(bundle['events']) + events
+    combined = list(history['events']) + events
     if len({e['event_id'] for e in combined}) != len(combined):
         raise ValueError('Original and portal candidate IDs collide')
     scoped = rules.lifecycle(baseline, history, events, comparison['observation_runs'],
         frames, scene, region, engine, portal, scope)
     final = rules.activity(scoped, frames, portal, scope, run_id)
     expected = {e['event_id']:e for e in combined}
-    if 'inner_line' in scene:
-        measured = {e['event_id']:e for e in scoped['events']}
-        if (any(measured.get(eid) != event for eid,event in expected.items()) or
-                any(event.get('source_ref', {}).get('collection') != 'measured_passage_events'
-                    for eid,event in measured.items() if eid not in expected)):
-            raise ValueError('Dual passage route must preserve original candidates and derived provenance')
-        expected = measured
     if {e['event_id']: e for e in final['events']} != expected:
         raise ValueError('Final episodes lost or edited current-run candidate payloads')
     if digest(dict(baseline=baseline, bundle=bundle, frames=frames,
@@ -257,9 +245,9 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
         source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049',
             'visible_gate_crossing_v1', 'outward_gate_loss_v1', 'existing_alert_gate_crossing_v1'],
         positive_crossing_directions=['outside_to_inside', 'inside_to_outside'],
-        direction_rule_changed=True, release_rule_changed='inner_line' in scene,
-        continuation_observation_rules_enabled='inner_line' in scene,
-        dual_boundary_rules_enabled='inner_line' in scene,
+        direction_rule_changed=True, release_rule_changed=False,
+        continuation_observation_rules_enabled=False,
+        dual_boundary_rules_enabled=False,
         activity_grouping_changed_decision_rules=False,
         historical_experiment_results_required=False, rejected_transition_candidates_used=False,
         candidate_generation_changed=True, evidence_decisions_changed=True,
@@ -267,8 +255,9 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
         manual_reviews_modified=False, realtime=False, accuracy=None,
         release_video_validation='not_established', human_verified=False)
     if 'inner_line' in scene:
-        final['source_algorithm_versions'] = ['dual_boundary_passage_v1', 'gate_activity_episodes_v1']
-        final['dual_boundary_audit'] = deepcopy(scoped.get('dual_boundary_audit', {}))
+        final['source_algorithm_versions'].append('directional_loss_appearance_v1')
+        final['inner_line_role'] = 'inside_to_outside_source_boundary'
+        final['directional_sequence_boundary_position_formula'] = 'bbox_bottom_center'
     final['source_experiment'] = 'MVP-0002-current-lifecycle'
     for card in final['cards']:
         card['decision_source'] = 'automatic_rule_current_run'

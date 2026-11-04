@@ -204,6 +204,11 @@ class IncidentLifecycle:
                     {'direction':item['direction']}) if rows else None
                 if item['physical_loss_ref']!=expected or rows[-1]['pts']!=last:
                     raise ValueError('Physical loss ownership must retain the actual measured endpoint')
+        elif item.get('confirmation_source') == 'directional_loss_appearance_v1':
+            from .legacy_directional import validate_loss_appearance
+            if ids != [item.get('source_decision', {}).get('event_id')]:
+                raise ValueError('One source event owns each loss/appearance confirmation')
+            validate_loss_appearance(item['source_decision'], self.events[ids[0]], at)
         elif item.get('confirmation_source') == 'dual_boundary_passage_v1':
             from .dual_boundary import validate_decision
             decision = item.get('source_decision', {})

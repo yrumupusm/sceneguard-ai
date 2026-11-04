@@ -227,7 +227,8 @@ def assess_loss(history, engine, portal, run_id, index, *, loss_wait=1., gate_hi
     if end is None or not 0 <= last['pts']-end <= engine.policy.history_seconds+1e-9:
         return dict(result,reason='no_recent_target_direction')
     if label=='outward': result.update(outcome='outward_loss',reason='outward_motion_then_loss')
-    elif label=='inward' and contact: result.update(outcome='inward_loss',reason='inward_motion_then_portal_loss')
+    elif label=='inward' and contact and direction.get('source_origin_side') != 'inside':
+        result.update(outcome='inward_loss',reason='inward_motion_then_portal_loss')
     else: result['reason']='direction_unclear_or_no_recent_gate_contact'
     result.update(loss_wait=loss_wait,direction_history_seconds=engine.policy.history_seconds)
     return result

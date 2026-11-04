@@ -112,9 +112,6 @@ def history_decision(previous, segment, scene, policy=EpisodePolicy()):
     Current same-side continuation cannot prove intrusion absence; it simply is
     not a disappearance confirmation. Original alarms are never deleted here.
     """
-    if 'inner_line' in scene:
-        from .dual_boundary import guarded
-        return guarded(previous)
     p = policy.validate(); gate = Gate(scene, p); result = deepcopy(previous)
     rows = segment['rows']; last = rows[-1]
     if any(number(a['pts']) >= number(b['pts']) for a,b in zip(rows, rows[1:])):
@@ -132,6 +129,10 @@ def history_decision(previous, segment, scene, policy=EpisodePolicy()):
         terminal_gate_test_required=False, human_verified=False, identity_verified=False)
     if previous.get('automatic_confirmation'):
         return result
+    if 'inner_line' in scene:
+        from .legacy_directional import measured_origin
+        if measured_origin(rows, scene)[0] == 'inside':
+            return result
     # Invalid/no observed waiting interval is not upgraded by this helper.
     if previous.get('reason') == 'loss_wait_not_observed':
         return result

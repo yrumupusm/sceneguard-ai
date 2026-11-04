@@ -28,12 +28,12 @@ def locate_time(stamps, at):
 def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
                   *,direction_engine=None,portal_gate=None,confirm_outward_crossings=False,
                   observe_gate_crossings=False, scope=None):
-    if 'inner_line' in scene:
-        from .dual_boundary import replay
-        return replay(baseline, history, portal_events, runs, frames, scene, region, portal_gate=portal_gate, scope=scope)
     from .directional_loss import SavedGateDirection
     from .portal_births import PortalGate
     from .lifecycle_followup import ObservationHistory, followup_run, assess_loss, loss_resolution
+    if 'inner_line' in scene:
+        from .legacy_directional import validate_directional_inputs
+        validate_directional_inputs(frames, scene)
     engine=direction_engine or SavedGateDirection(frames,scene)
     obs=ObservationHistory(runs,frames)
     events=deepcopy(history['events']+list(portal_events))
@@ -54,7 +54,8 @@ def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
             decision_time_pts=stamps[i],evidence_until_pts=stamps[i],
             confirmation_source=(d['rule_id'] if d.get('rule_id') in
                 ('visible_gate_crossing_v1', 'outward_gate_loss_v1', 'existing_alert_gate_crossing_v1',
-                 'observed_gate_continuation_v1', 'ambiguous_gate_loss_v1') else 'EXP-0045'),
+                 'observed_gate_continuation_v1', 'ambiguous_gate_loss_v1',
+                 'directional_loss_appearance_v1') else 'EXP-0045'),
             source_decision=deepcopy(d))
         r['resolution_id']=digest(r);confirmations[i].append(r)
     attempted=set();audits=[];counts=Counter();crossing_sources={};observed_attempted=set();retry_after={}

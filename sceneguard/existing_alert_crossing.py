@@ -52,9 +52,6 @@ def existing_alert_crossing_decision(source, segments, scene, policy=Policy()):
     baseline segment collection. A unique fragment must contain emission and
     both original anchors. No candidate metadata substitutes for actual boxes.
     """
-    if 'inner_line' in scene:
-        from .dual_boundary import guarded
-        return guarded(source)
     policy.validate(); validate_scene(scene)
     at = _number(source['emitted_at_pts'])
     before = _number(source['observed_pts_before'])
@@ -118,6 +115,8 @@ def existing_alert_crossing_decision(source, segments, scene, policy=Policy()):
         return reject('ambiguous_configured_boundary_orientation')
     destination_side = 'inside' if side_distances['inside']*origin_sign < 0 else 'outside'
     origin_side = 'outside' if destination_side == 'inside' else 'inside'
+    from .legacy_directional import source_scene
+    scene = source_scene(scene, origin_side, anchors[0]['bbox'])
     direction = origin_side+'_to_'+destination_side
     if direction not in scene['directions']:
         return reject('existing_alert_crossing_direction_disabled')
