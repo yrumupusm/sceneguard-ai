@@ -662,6 +662,19 @@
       "synthetic": false,
       "task_id": "task_a36ce0781a7b",
       "title": "방향 불명확 소실의 보조 확인 · 안→밖 우선 9영상"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "configured agent default",
+      "assigned_at": "2026-11-04T11:11:49Z",
+      "dispatch_id": "ctx_21fe654b9aee",
+      "experiment_id": "EXP-0055",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_5b9c8d6cb468",
+      "title": "안쪽선·하단 중앙점 소실 후보 연결 · 같은 9영상"
     }
   ],
   "schema_version": 1

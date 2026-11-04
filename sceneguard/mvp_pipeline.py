@@ -208,6 +208,14 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
                           scene=scene, region=region))
     rules = RuleBackend() if backend is None else backend
     engine, portal = rules.prepare(frames, scene, region, scope['camera_id'])
+    runtime_baseline = baseline
+    candidates = []
+    if 'inner_line' in scene:
+        from .legacy_directional import inner_loss_candidates
+        candidates, sources = inner_loss_candidates(baseline, bundle, frames, scene, scope, run_id)
+        if candidates:
+            runtime_baseline = deepcopy(baseline)
+            runtime_baseline['segments'].extend(sources)
     decisions = rules.confirmations(baseline, bundle, scene, engine, run_id)
     history = dict(deepcopy(bundle), decisions=decisions)
     if 'inner_line' in scene:
@@ -216,13 +224,19 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
             baseline, frames, scene, scope, run_id)
         history['events'].extend(derived)
         decisions.extend(derived_decisions)
+    if candidates:
+        # Append new evidence after all existing evidence, preserving original
+        # ordering and keeping auxiliary allocation on the original baseline.
+        runtime_bundle = dict(deepcopy(bundle), events=candidates)
+        decisions.extend(rules.confirmations(runtime_baseline, runtime_bundle, scene, engine, run_id))
+        history['events'].extend(candidates)
     comparison = rules.births(frames, scene, region, scope['camera_id'])
     events = [normalize_portal(r, scope, bundle['video_id'], run_id)
               for r in comparison['portal_events']]
     combined = list(history['events']) + events
     if len({e['event_id'] for e in combined}) != len(combined):
         raise ValueError('Original and portal candidate IDs collide')
-    scoped = rules.lifecycle(baseline, history, events, comparison['observation_runs'],
+    scoped = rules.lifecycle(runtime_baseline, history, events, comparison['observation_runs'],
         frames, scene, region, engine, portal, scope)
     final = rules.activity(scoped, frames, portal, scope, run_id)
     expected = {e['event_id']:e for e in combined}

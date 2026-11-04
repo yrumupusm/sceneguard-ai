@@ -6,6 +6,7 @@ separate event evidence, never identity correspondence or an invisible path.
 from bisect import bisect_left
 from copy import deepcopy
 import math
+import statistics
 
 from .approach_disappearance import Policy, center, polygon
 from .directional_loss import SavedGateDirection, gate_geometry
@@ -167,6 +168,102 @@ def _actual_rows(frames):
             for f in frames for b in f['actual_boxes']
             if b.get('observed') is not False and b.get('predicted') is not True
             and b.get('confirmed') is not False and b.get('score', 0) >= p.detection_floor]
+
+
+def inner_loss_candidates(baseline, bundle, frames, scene, scope, run_id):
+    """Additional suspicions only; keep source inputs and primary rules intact.
+
+    Relaxed loss support uses its existing median-height radius and finite
+    segment distance, now at the actual bottom center on the inner polyline.
+    No motion test supplies eligibility or confirmation here. Derived source
+    slices keep a past loss causal even if a raw ID is subsequently reused.
+    """
+    from .relaxed_suspicion import RelaxedPolicy, _distance_to_segment
+    if 'inner_line' not in scene or 'inside_to_outside' not in scene['directions']:
+        return [], []
+    policy = Policy(**baseline['policy']).validate()
+    relaxed = RelaxedPolicy().validate(); ep = EpisodePolicy()
+    actual = _actual_rows(frames)
+    by_ref = {(r['frame_index'], r['cache_index']): r for r in actual}
+    stamps = [f['pts'] for f in frames]
+    lines = list(zip(scene['inner_line'], scene['inner_line'][1:]))
+    events = []; sources = []; claimed = set()
+    for segment_index, segment in enumerate(baseline['segments']):
+        pieces = []
+        for row in segment['rows']:
+            if not pieces or len(connected_rows([pieces[-1][-1], row], scene, policy)) == 1:
+                pieces.append([])
+            pieces[-1].append(row)
+        for rows in pieces:
+            if any((r['frame_index'], r.get('cache_index')) not in by_ref
+                   or any(by_ref[(r['frame_index'], r['cache_index'])][k] != r[k]
+                          for k in ('bbox', 'pts'))
+                   or r.get('observed') is False or r.get('predicted') is True
+                   or r.get('confirmed') is False for r in rows):
+                continue
+            origin, origin_refs = measured_origin(rows, scene, policy)
+            if origin != 'inside':
+                continue
+            last = rows[-1]
+            recent = [r for r in rows if last['pts']-r['pts'] <= relaxed.history_seconds+1e-9]
+            height = statistics.median((r['bbox'][3]-r['bbox'][1])*scene['source_size'][1]
+                                       for r in recent)
+            radius = max(ep.minimum_near_pixels, height*policy.near_line_heights)
+            support = [r for r in recent if min(_distance_to_segment(
+                center(r, scene['source_size'], 1.), line, scene['source_size'])
+                for line in lines) <= radius]
+            if len(support) < relaxed.min_near_observations:
+                continue
+            index = bisect_left(stamps, last['pts']+policy.loss_wait-1e-9)
+            if index == len(stamps):
+                continue
+            at = stamps[index]
+            clock_rows = frames[rows[0]['frame_index']:index+1]
+            if (not clock_rows or clock_rows[0]['pts'] != rows[0]['pts']
+                    or any(b['pts']-a['pts'] > ep.source_gap_seconds+1e-9
+                           for a, b in zip(clock_rows, clock_rows[1:]))):
+                continue
+            # Existing actual same-side continuation safeguard, independent of ID.
+            if any(last['pts'] < r['pts'] <= at and boundary_zone(r, scene) == origin
+                   and association(r['bbox'], last['bbox'], ep.association_overlap) is not None
+                   for r in actual):
+                continue
+            if any(e.get('segment') == segment['id'] and e.get('reason') == 'observed_same_side_exit'
+                   and e.get('status') == '침입 아님' and support[-1]['pts'] < e['pts'] <= last['pts']
+                   for e in baseline.get('events', [])) and not any(
+                       loss.get('segment') == segment['id'] and loss.get('ever_crossed', False)
+                       for loss in baseline.get('losses', [])):
+                continue
+            key = (last['frame_index'], last['cache_index'])
+            if key in claimed or any(
+                    e['source_event'].get('segment') == segment['id']
+                    and e['source_event'].get('reason') == 'recent_gate_presence_then_loss'
+                    and e['source_event'].get('last_observed_pts') == last['pts']
+                    for e in bundle['events']):
+                continue
+            provenance = dict(collection='segments', segment=segment['id'], raw_id=segment['raw_id'],
+                source_pointer='/segments/'+str(segment_index),
+                first_ref=deepcopy(rows[0]), last_ref=deepcopy(last))
+            sid = 'inner-loss-source-'+digest(provenance)
+            source = dict(id=sid, raw_id=segment['raw_id'], rows=deepcopy(rows),
+                          derived_source_ref=deepcopy(provenance))
+            raw = dict(segment=sid, raw_id=segment['raw_id'], pts=at,
+                decision_time_pts=at, last_observed_pts=last['pts'], source_observed_pts=last['pts'],
+                status='침입 의심', reason='recent_gate_presence_then_loss',
+                candidate_source='inner_boundary_loss_v1', automatic_confirmation=False,
+                confirmed_intrusion=False, identity_verified=False, loss_wait_elapsed=at-last['pts'],
+                source_boundary=deepcopy(scene['inner_line']), boundary_position_formula='bbox_bottom_center',
+                source_origin_refs=deepcopy(origin_refs), near_observation_refs=deepcopy(support),
+                recent_height_pixels=height, near_radius_pixels=radius,
+                source_clock_continuous=True, original_source_ref=deepcopy(provenance))
+            eid = digest(dict(scope=scope, run_id=run_id, evidence=raw))
+            events.append(dict(**scope, event_id=eid, video_id=baseline['video_id'],
+                status='침입 의심', decision_time_pts=at, track_ids=[], source_event=raw,
+                source_ref=dict(collection='inner_boundary_loss_candidates',
+                    source_pointer='/inner_boundary_loss_candidates/'+eid,
+                    segment=sid, raw_id=segment['raw_id'], original_source_ref=deepcopy(provenance))))
+            sources.append(source); claimed.add(key)
+    return events, sources
 
 
 def _destination_site(row, scene, destination, gate, sign):
