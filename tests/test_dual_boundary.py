@@ -208,7 +208,9 @@ class IntegrationTests(unittest.TestCase):
         return analyze_observations(b,h,f,s,p,
             dict(session_id='recording',camera_id='C',gate_id='G'),'association-regression')
 
-    def test_contiguous_branch_and_merge_stay_uncertain_in_both_directions(self):
+    def test_contiguous_branch_and_merge_preserve_passage_in_both_directions(self):
+        # EXP0051 supersedes universal graph-uniqueness refusal: these actual
+        # coherent paths cross, irrespective of uncertain person assignment.
         for reverse in (False,True):
             xs=[400,410,420,460,490,520,560,570,580]
             if reverse:xs=[1000-x for x in xs]
@@ -222,13 +224,13 @@ class IntegrationTests(unittest.TestCase):
                     original=deepcopy(args)
                     out=self.analyze(args)['scoped_lifecycle']
                     with self.subTest(reverse=reverse,merge=merge,offset=offset):
-                        self.assertEqual(out['counts']['confirmation_notifications'],0)
+                        self.assertEqual(out['counts']['confirmation_notifications'],1)
                         self.assertEqual(out['events'],args[1]['events'])
                         self.assertTrue(any(a['reason']=='competing_contiguous_actual_box_associations'
                             for a in out['followup_audit']))
                         self.assertEqual(args,original)
 
-    def test_gap_raw_competitor_cannot_be_hidden_by_birth_deduplication(self):
+    def test_gap_raw_competitor_does_not_erase_supported_moving_point_path(self):
         args=fixture([400,410,420,460,490,510,530,550,570,580,590])
         for frame in args[3][5:8]:frame['actual_boxes']=[]
         for frame in args[3][8:]:
@@ -236,11 +238,13 @@ class IntegrationTests(unittest.TestCase):
             box['bbox'][0]+=.004;box['bbox'][2]+=.004
             frame['actual_boxes'].append(box)
         out=self.analyze(args)['scoped_lifecycle']
-        self.assertEqual(out['counts']['confirmation_notifications'],0)
-        self.assertTrue(any(a['reason']=='competing_or_untrusted_successor'
-            for a in out['followup_audit']))
+        self.assertEqual(out['counts']['confirmation_notifications'],1)
+        decision=next(r['source_decision'] for r in out['resolutions']
+            if r.get('confirmation_source')==RULE)
+        self.assertTrue(decision['associations'])
+        self.assertTrue(decision['associations'][0]['missing_box_interval_is_not_measured_box_path'])
 
-    def test_conservative_same_run_veto_also_blocks_later_new_candidates(self):
+    def test_local_competition_allows_later_candidate_without_confirming_old_one(self):
         args=fixture([400]*7+[460,490,520,560,570,580],paths=False)
         b,h,r,f,s,p=args
         for frame in f[:2]:
@@ -253,8 +257,8 @@ class IntegrationTests(unittest.TestCase):
         out=self.analyze(args)['scoped_lifecycle']
         evidence={e['event_id']:e for e in out['evidence']}
         self.assertEqual(evidence['e']['automatic_status'],SUSPECTED)
-        self.assertEqual(evidence['fresh']['automatic_status'],SUSPECTED)
-        self.assertEqual(out['counts']['confirmation_notifications'],0)
+        self.assertEqual(evidence['fresh']['automatic_status'],CONFIRMED)
+        self.assertEqual(out['counts']['confirmation_notifications'],1)
 
     def test_later_competition_preserves_prior_confirmation_and_causal_prefix(self):
         xs=[400,410,420,460,490,520,560,570,580,590,600]
@@ -325,11 +329,14 @@ class IntegrationTests(unittest.TestCase):
         d=next(x['source_decision'] for x in r['resolutions'] if x['kind']=='preserved_confirmation')
         self.assertTrue(d['associations']);self.assertEqual(d['origin_side'],'outside')
 
-    def test_competing_successors_and_no_points_cannot_inherit(self):
+    def test_supported_competing_successors_inherit_but_real_gap_without_points_does_not(self):
         xs=[400,410,420,460,490,520,560,570,580]+[580]*12
-        for kw in (dict(split=5,second=True),dict(split=5,paths=False)):
-            r=replay_case(xs,**kw)
-            self.assertEqual(r['counts']['confirmation_notifications'],0)
+        self.assertEqual(replay_case(xs,split=5,second=True)['counts']['confirmation_notifications'],1)
+        b,h,r,f,s,p=fixture(xs,split=5,paths=False)
+        f[4]['actual_boxes']=[];r['a'].pop()
+        b['segments'][0]['rows']=deepcopy(r['a'])
+        out,_=replay_scoped(b,h,[],r,f,s,p)
+        self.assertEqual(out['counts']['confirmation_notifications'],0)
 
     def test_recording_end_and_source_gap_are_not_loss(self):
         xs=[400,410,420,460,490,510,530]
@@ -410,7 +417,9 @@ class IntegrationTests(unittest.TestCase):
         self.assertTrue(out['binding_audit'][0]['observation_key'])
         event['source_event']['observed_pts_after']=.65
         out,_=replay_scoped(b,h,[],r,f,s,p)
-        self.assertEqual(out['counts']['confirmation_notifications'],0)
+        self.assertEqual(next(e for e in out['evidence'] if e['event_id']=='e')['automatic_status'],SUSPECTED)
+        self.assertEqual(out['counts']['confirmation_notifications'],1)
+        self.assertEqual(len([e for e in out['events'] if e['source_ref']['collection']=='measured_passage_events']),1)
 
     def test_production_rejects_predicted_boxes_even_when_id_is_confirmed(self):
         b,h,r,f,s,p=fixture([400,410,420,460,490,520,560,570,580])

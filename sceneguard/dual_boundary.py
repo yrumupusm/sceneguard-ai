@@ -8,6 +8,7 @@ continuity, the adopted pair horizon and an explicit episode horizon.
 from collections import Counter, defaultdict, deque
 from copy import deepcopy
 import math
+from statistics import median
 
 from .approach_disappearance import Policy, center, polygon, validate_scene
 from .directional_loss import path_map, inside, pixel_box
@@ -22,6 +23,7 @@ PROXY = 'actual_bbox_height_65_percent_not_reconstructed_feet'
 # An episode may retain a measured origin beyond the old 3s lookback, but not
 # indefinitely through a gate corridor. This is a common bound, not video tuning.
 EPISODE_SECONDS = 60.0
+ASSOCIATION_POLICY = 'measured_path_support_without_identity_uniqueness_v1'
 
 
 def active(scene):
@@ -224,10 +226,14 @@ class PassageState:
         self.reset('origin_not_stable')
 
     def reset(self, reason):
+        self.reset_serial = getattr(self, 'reset_serial', 0)+1
         self.origin = None; self.origin_refs = []; self.streak = []
         self.entry = None; self.exit = None; self.destination = []
         self.tail = deque(); self.associations = []; self.started = None
         self.boundary_paths = {}
+        self.episode_start = None
+        self.measured_rows = deque()
+        self.episode_references = set()
         self.reason = reason; self.proof = None
 
     def stable(self, rows):
@@ -250,6 +256,7 @@ class PassageState:
             self.reset('disconnected_actual_box_path')
         if self.started is not None and row['pts']-self.started > EPISODE_SECONDS:
             self.reset('episode_origin_expired')
+        if self.episode_start is None: self.episode_start = deepcopy(row)
         if association is not None:
             self.associations.append(deepcopy(association))
         # Exact-on-line samples need nonzero anchors on both sides.
@@ -257,15 +264,16 @@ class PassageState:
         if not continuous: self.boundary_paths = {}
         hits = self.corridor.advance_path(self.boundary_paths,
             center(row, self.corridor.size, .65), row)
-        if association is not None:
+        point_bridge = association is not None and association.get('missing_box_interval_is_not_measured_box_path')
+        if point_bridge:
             hits = association.get('boundary_crossings', [])
         side = self.corridor.classify(row)
         if self.origin:
             entry_name = 'outer' if self.origin == 'outside' else 'inner'
             exit_name = 'inner' if self.origin == 'outside' else 'outer'
             for hit in hits:
-                ref = dict(hit, measurement='saved_point_path' if association is not None else 'actual_bbox_65_percent_proxy_path')
-                if association is not None:
+                ref = dict(hit, measurement='saved_point_path' if point_bridge else 'actual_bbox_65_percent_proxy_path')
+                if point_bridge:
                     ref.update(source_actual_bbox=deepcopy(previous), destination_actual_bbox=deepcopy(row))
                 if hit['boundary'] == entry_name and hit['into_corridor']:
                     self.entry = ref; self.exit = None
@@ -300,8 +308,23 @@ class PassageState:
                 if self.origin is None: self.started = row['pts']
                 self.origin = side; self.origin_refs = deepcopy(self.streak)
                 if not self.entry: self.started = row['pts']
+        elif side in ('outside', 'inside') and not self.exit and not self.proof:
+            # A stable independently observed opposite-side origin can start
+            # again after an incomplete/endcap path. It cannot confirm the old
+            # approach; episode ownership below quarantines its pending anchors.
+            if self.streak and self.corridor.classify(self.streak[-1]) != side: self.streak = []
+            self.streak.append(row)
+            if self.stable(self.streak):
+                fresh = deepcopy(self.streak)
+                self.reset('fresh_measured_origin_without_prior_passage'); self.last = None
+                for sample in fresh: self.step(sample)
+                return self.proof
         else: self.streak = []
         self.last = row; self.tail.append(row)
+        self.measured_rows.append(row)
+        self.episode_references.add((row['frame_index'], row['cache_index']))
+        while self.measured_rows and row['pts']-self.measured_rows[0]['pts'] > EPISODE_SECONDS+1e-9:
+            self.measured_rows.popleft()
         while self.tail and row['pts']-self.tail[0]['pts'] > self.policy.direction_window+1e-9:
             self.tail.popleft()
         return self.proof
@@ -313,6 +336,7 @@ class PassageState:
             observation_proxy=PROXY, human_verified=False, identity_verified=False,
             enabled_directions=deepcopy(self.corridor.scene['directions']),
             origin_side=self.origin, origin_observation_refs=deepcopy(self.origin_refs),
+            episode_start_observation_ref=deepcopy(self.episode_start),
             entry=deepcopy(self.entry), exit=deepcopy(self.exit), associations=deepcopy(self.associations),
             loss_wait_required=loss, loss_wait=self.policy.loss_wait)
         if ambiguous: return dict(result, reason='competing_or_untrusted_successor')
@@ -355,7 +379,7 @@ class PassageState:
 
 
 class DualBoundaryDirection(GateObservationDirection):
-    """Existing saved-path reader, with bounded unique actual-point associations."""
+    """Saved-path support selects passage evidence, without proving identity."""
     def __init__(self, frames, scene):
         if any(b.get('predicted') is True for f in frames for b in f['actual_boxes']):
             raise ValueError('Predicted boxes cannot be used as actual measurements')
@@ -408,9 +432,8 @@ class DualBoundaryDirection(GateObservationDirection):
                 vectors = [sub(self.corrected(index, wid)[pid], self.corrected(start, wid)[pid]) for pid in ids]
                 if (math.hypot(*delta) < policy.min_motion_pixels or
                         sum(sum(v[k]*delta[k] for k in (0, 1)) > 0 for v in vectors)/len(vectors) < .6): continue
-                # Count every physically plausible actual endpoint before run
-                # mapping. Birth deduplication cannot remove a competitor from
-                # the saved-point association proof across a missing-box gap.
+                # Alternatives remain diagnostics. Several actual endpoints
+                # supported by the same moving cohort do not erase its path.
                 choices = history.by_reference.get((index, box['cache_index']), set())
                 dest = next(iter(choices)) if len(choices) == 1 else None
                 if dest is not None and ((dest == rid and not allow_same) or
@@ -433,16 +456,60 @@ class DualBoundaryDirection(GateObservationDirection):
                     target_frame=index, target_cache_index=box['cache_index'], coverage=len(ids)/len(cohort),
                     gap_seconds=at-last['pts'], actual_correspondence=True, identity_verified=False,
                     missing_box_interval_is_not_measured_box_path=True,
+                    point_box_displacement_residual_heights=math.dist(delta,
+                        tuple(median(v[k] for v in vectors) for k in (0, 1)))/(max(ah, bh)*size[1]),
                     boundary_crossings=sorted(crossings, key=lambda x:(x['frame_index'],x['fraction'])))
                 ci = box['cache_index']
-                if ci not in matches or matches[ci]['coverage'] < evidence['coverage']: matches[ci] = evidence
-        successor = next(iter(matches.values()))['successor'] if len(matches) == 1 else None
-        return dict(successor=successor,
-            reason='unique_saved_moving_point_successor' if successor is not None else
-                'competing_successors' if len(matches) > 1 else 'no_trusted_successor', matches=list(matches.values()))
+                if ci not in matches or association_rank(evidence) < association_rank(matches[ci]):
+                    matches[ci] = evidence
+        # Birth bookkeeping can switch to another already-present run even
+        # while an adjacent actual path remains coherent. That is a measured
+        # bbox edge, not an occlusion chord or a claim of unique identity.
+        for dest, row in history.scheduled[index]:
+            if ((dest == rid and not allow_same) or history.current_key(dest) != dest
+                    or not connected(last, row, size)):
+                continue
+            evidence = dict(successor=dest, source_frame=start, target_frame=index,
+                target_cache_index=row['cache_index'], coverage=0., point_ids=[], window_id='',
+                point_box_displacement_residual_heights=math.dist(center(last, size), center(row, size))/
+                    (max(last['bbox'][3]-last['bbox'][1], row['bbox'][3]-row['bbox'][1])*size[1]),
+                actual_correspondence=True, identity_verified=False, gap_seconds=at-last['pts'],
+                measurement='adjacent_actual_bbox_continuity',
+                missing_box_interval_is_not_measured_box_path=False)
+            ci = row['cache_index']
+            if ci not in matches or association_rank(evidence) < association_rank(matches[ci]):
+                matches[ci] = evidence
+        alternatives = sorted(matches.values(), key=association_rank)
+        supported = [m for m in alternatives if m['successor'] is not None]
+        selected = supported[0] if supported else None
+        reason = ('no_trusted_successor' if selected is None else
+            'supported_adjacent_actual_box_successor' if selected.get('measurement') == 'adjacent_actual_bbox_continuity'
+            else 'supported_saved_moving_point_successor')
+        return dict(successor=None if selected is None else selected['successor'], selected=selected, reason=reason,
+            matches=alternatives, association_policy=ASSOCIATION_POLICY, identity_verified=False)
 
 
-def replay(baseline, history, portal_events, runs, frames, scene, region, *, portal_gate=None):
+def association_rank(evidence):
+    """Predeclared measured support ordering; no direction, crossing or truth score."""
+    return (-evidence['coverage'], -len(evidence['point_ids']),
+        evidence['point_box_displacement_residual_heights'], evidence['target_frame'],
+        evidence['target_cache_index'], evidence['window_id'])
+
+
+def distinct_paths(paths):
+    """Collapse equivalent reset hypotheses, never cap distinct measured paths."""
+    result = []; seen = set()
+    for state in paths:
+        payload = {k:v for k,v in state.__dict__.items()
+            if k not in ('corridor', 'policy', 'reset_serial', 'tail', 'measured_rows', 'episode_references')}
+        payload.update(tail=list(state.tail), measured_rows=list(state.measured_rows),
+            episode_references=sorted(state.episode_references))
+        key = digest(payload)
+        if key not in seen: result.append(state); seen.add(key)
+    return result
+
+
+def replay(baseline, history, portal_events, runs, frames, scene, region, *, portal_gate=None, scope=None):
     """Single guarded production lifecycle; old positive decisions are only audits.
 
     Every source candidate is preserved. No old positive resolution, raw-loss
@@ -458,11 +525,14 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
     engine = DualBoundaryDirection(frames, scene)
     obs = ObservationHistory(runs, frames)
     events = deepcopy(history['events']+list(portal_events))
-    if not events or len({e['event_id'] for e in events}) != len(events):
-        raise ValueError('Distinct nonempty candidate stream required')
+    if len({e['event_id'] for e in events}) != len(events):
+        raise ValueError('Distinct candidate stream required')
     scopes = {tuple(e[k] for k in ('session_id', 'camera_id', 'gate_id')) for e in events}
+    if scope is not None:
+        scopes.add(tuple(scope[k] for k in ('session_id', 'camera_id', 'gate_id')))
     if len(scopes) != 1: raise ValueError('One recording/camera/gate per replay')
-    portal = portal_gate or PortalGate(scene, region, events[0]['camera_id'])
+    scope = dict(zip(('session_id', 'camera_id', 'gate_id'), next(iter(scopes))))
+    portal = portal_gate or PortalGate(scene, region, scope['camera_id'])
     life = ScopedIncidentLifecycle(GroupPolicy(**history['policy']),
         namespace=RULE+':'+digest(dict(scope=next(iter(scopes)), scene=scene, region=region))[:16])
     segments = {s['id']: s for s in baseline['segments']}
@@ -472,7 +542,13 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
         at = event['decision_time_pts']
         if at not in by_time: raise ValueError('Candidate requires an actual source clock')
         scheduled[by_time[at]].append(event)
-    states = {}; audits = []; counts = Counter(); ambiguous = set(); emitted = set()
+    states = {}; audits = []; counts = Counter(); emitted = set(); candidate_anchors = {}
+    claimed_source_endpoints = set()
+    alternative_states = defaultdict(list); generated_events = []
+    max_active_hypotheses = 0
+
+    def paths(rid):
+        return [states[rid]]+alternative_states[rid]
     suppressed = [dict(event_id=d.get('event_id'), reason='legacy_confirmation_suppressed_in_dual_mode',
         source_rule=d.get('rule_id'), decision_time_pts=d['decision_time_pts'])
         for d in history['decisions'] if d.get('automatic_confirmation')]
@@ -498,6 +574,24 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
         bound['binding']['existing_alert_binding_is_not_passage_proof'] = True
         return bound
 
+    def remember_anchor(candidate):
+        binding = candidate['binding']
+        refs = binding.get('refs', [])
+        ref = max(refs, key=lambda r:r['pts']) if refs else binding.get('reference')
+        if ref and binding.get('method') == 'unique_same_frame_containment':
+            selected = [row for rid,row in obs.scheduled[ref['frame_index']]
+                if rid == binding['source_observation_key']]
+            if len(selected) == 1: ref = selected[0]
+        candidate_anchors[candidate['event']['event_id']] = deepcopy(ref)
+
+    def episode_ids(state, ids):
+        # A later independent origin cannot retroactively rescue old pending
+        # evidence. Exact source references and the normal scoped owner remain
+        # required; event notification clocks alone cannot establish support.
+        return [eid for eid in ids if candidate_anchors.get(eid) and
+                (candidate_anchors[eid]['frame_index'], candidate_anchors[eid]['cache_index'])
+                in state.episode_references]
+
     def audit(rid, decision):
         # Log changes, not duplicate every frame of a lingering observation.
         key = (rid, decision['reason'], decision['last_observed_pts'] if decision['automatic_confirmation'] else None)
@@ -510,10 +604,17 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
     for index, frame in enumerate(frames):
         at = frame['pts']; obs.advance(frame)
         if index and at-frames[index-1]['pts'] > obs.gap_seconds+1e-9:
-            for state in states.values():
-                state.reset('source_gap_not_person_loss'); state.last = None
-            ambiguous.clear()
+            for rid in states:
+                states[rid].reset('source_gap_not_person_loss'); states[rid].last = None
+                alternative_states[rid] = []
         current = dict(obs.scheduled[index])
+        for rid in current:
+            if rid in obs.aliases:
+                # A bookkeeping key can reappear after a handoff. Its new
+                # actual row is usable; an old alias is not identity evidence.
+                obs.aliases.pop(rid)
+                states[rid] = PassageState(engine.corridor)
+                alternative_states[rid] = []
         if index:
             competition = contiguous_ambiguities(frames[index-1], frame, engine.corridor.size)
             affected = set()
@@ -521,10 +622,8 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
                 for row in (edge['source'], edge['target']):
                     affected.update(obs.current_key(rid) for rid in obs.by_reference.get(
                         (row['frame_index'], row['cache_index']), ()))
-            # Conservative lineage veto: later unique boxes do not silently
-            # revive uncertain origin/proof or confirm its older candidates.
-            # Episode recovery needs separate evidence-ownership isolation.
-            ambiguous.update(affected)
+            # Raw graph competition describes identity ambiguity, not absence
+            # of a measured gate passage. Never taint this or later episodes.
             if competition:
                 audits.append(dict(decision_time_pts=at,
                     reason='competing_contiguous_actual_box_associations',
@@ -532,17 +631,22 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
                 counts['competing_contiguous_actual_box_associations'] += 1
         for rid, row in current.items():
             if obs.current_key(rid) != rid: continue
-            state = states.setdefault(rid, PassageState(engine.corridor))
-            association = None
-            if state.last and not connected(state.last, row, engine.corridor.size):
-                prefix = [r for r in obs.motion_rows(rid) if r['pts'] <= state.last['pts']]
-                handoff = engine.successor(obs, rid, index, source_rows=prefix, allow_same=True)
-                if handoff['successor'] == rid:
-                    association = handoff['matches'][0]
-                elif handoff['reason'] == 'competing_successors':
-                    ambiguous.add(rid)
-            state.step(row, association=association)
+            states.setdefault(rid, PassageState(engine.corridor))
+            reset_occurred = False
+            for state in paths(rid):
+                before_reset = state.reset_serial
+                association = None
+                if state.last and not connected(state.last, row, engine.corridor.size):
+                    handoff = engine.successor(obs, rid, index,
+                        source_rows=list(state.measured_rows), allow_same=True)
+                    if handoff['successor'] == rid: association = handoff['selected']
+                state.step(row, association=association)
+                reset_occurred |= state.reset_serial != before_reset
+            if reset_occurred and alternative_states[rid]:
+                unique = distinct_paths(paths(rid))
+                states[rid], alternative_states[rid] = unique[0], unique[1:]
         candidates = [bind(e) for e in scheduled[index]]
+        for candidate in candidates: remember_anchor(candidate)
         pending = defaultdict(list)
         for eid in life.pending():
             key = life.evidence[eid]['observation_key']
@@ -555,29 +659,49 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
         # candidate must not erase a pre-gate origin just because it arrived late.
         for rid, state in list(states.items()):
             if obs.current_key(rid) != rid or state.last is None or state.last['frame_index'] == index: continue
+            endpoint = (rid, state.last['frame_index'], state.last['cache_index'])
+            if endpoint in claimed_source_endpoints: continue
             if at-state.last['pts'] > Policy().pair_seconds+1e-9: continue
-            handoff = engine.successor(obs, rid, index)
-            if handoff['reason'] == 'competing_successors':
-                ambiguous.add(rid)
-                audit(rid, state.decision(at, ambiguous=True))
-            if handoff['successor']:
+            options = [(path, engine.successor(obs, rid, index, source_rows=list(path.measured_rows)))
+                for path in paths(rid) if path.last is not None]
+            options = [(path,h) for path,h in options if h['successor']]
+            if options:
+                source_state, handoff = min(options, key=lambda pair:association_rank(pair[1]['selected']))
                 dest = handoff['successor']
-                # Never overwrite a run already observed alongside this source.
-                if obs.rows[dest][0]['pts'] <= state.last['pts']:
-                    ambiguous.add(rid); continue
-                proposals[rid] = handoff
-        destinations = Counter(h['successor'] for h in proposals.values())
-        for rid, handoff in proposals.items():
+                if states.get(dest) and any(path.proof for path in paths(dest)):
+                    audits.append(dict(run_id=rid, decision_time_pts=at,
+                        reason='completed_destination_passage_retained', handoff=handoff))
+                    continue
+                proposals[rid] = (source_state, handoff)
+        # Pick one actually supported path for a shared endpoint; do not merge
+        # the losing source's event ownership or veto all competing sources.
+        selected_sources = {}
+        for rid, (source_state, handoff) in sorted(proposals.items(), key=lambda item:
+                (association_rank(item[1][1]['selected']), -item[1][0].last['pts'], item[0])):
+            selected_sources.setdefault(handoff['successor'], (rid, source_state, handoff))
+            # A losing source cannot retry tomorrow's independently accumulated
+            # destination proof. New actual source rows are new endpoints and
+            # remain fully eligible; this is ownership, never lineage taint.
+            claimed_source_endpoints.add((rid, states[rid].last['frame_index'], states[rid].last['cache_index']))
+        for rid, source_state, handoff in selected_sources.values():
             dest = handoff['successor']
-            if destinations[dest] != 1:
-                ambiguous.add(rid); ambiguous.add(dest)
-                audit(rid, states[rid].decision(at, ambiguous=True)); continue
-            inherited = deepcopy(states[rid]); row = obs.rows[dest][-1]
+            inherited = deepcopy(source_state); row = obs.rows[dest][-1]
             # Only the endpoint has correspondence proof. Earlier unbound rows
             # cannot be silently reconstructed or credited as a box path.
-            inherited.step(row, association=handoff['matches'][0])
+            inherited.step(row, association=handoff['selected'])
+            # Keep independently observed destination paths. Their earlier
+            # candidates cannot consume an incoming path they never measured.
+            previous_paths = paths(dest) if dest in states else []
+            for other, (other_state, other_handoff) in proposals.items():
+                if other == rid or other_handoff['successor'] != dest: continue
+                # Retain a weaker supported path as a hypothesis, without
+                # merging its pending events. Stronger association support is
+                # not proof that a second measured origin never existed.
+                alternate = deepcopy(other_state)
+                alternate.step(row, association=other_handoff['selected'])
+                previous_paths.append(alternate)
             states[dest] = inherited
-            if rid in ambiguous: ambiguous.add(dest)
+            alternative_states[dest] = previous_paths
             ids = pending.pop(rid, [])
             if ids:
                 resolution = dict(kind='observation_handoff', event_ids=sorted(ids), observation_key=rid,
@@ -586,18 +710,54 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
                 resolution['resolution_id'] = digest(resolution); resolutions.append(resolution)
                 pending[dest].extend(ids)
             obs.link(rid, dest); counts['observation_handoffs'] += 1
+            states.pop(rid, None); alternative_states.pop(rid, None)
             audits.append(dict(run_id=rid, decision_time_pts=at, reason=handoff['reason'], handoff=handoff))
-        for rid, ids in pending.items():
-            state = states.get(rid)
-            if state is None or state.last is None: continue
-            loss = state.last['frame_index'] != index
-            if loss and at-state.last['pts'] > Policy().pair_seconds+1e-9:
-                audit(rid, dict(state.decision(at), reason='association_horizon_expired')); continue
-            direction = engine.direction(dict(id=rid, raw_id=None, rows=obs.motion_rows(rid))) if loss else None
-            decision = state.decision(at, loss=loss, direction=direction,
-                continuous=state.last['pts'] >= obs.continuous_since-1e-9, ambiguous=rid in ambiguous)
-            audit(rid, decision)
-            if not decision['automatic_confirmation']: continue
+        for rid, state in states.items():
+            if state.last and at-state.last['pts'] > Policy().pair_seconds+1e-9:
+                alternative_states[rid] = []
+        max_active_hypotheses = max(max_active_hypotheses,
+            sum(len(paths(rid)) for rid,state in states.items() if obs.current_key(rid) == rid
+                and state.last and at-state.last['pts'] <= Policy().pair_seconds+1e-9))
+        consumed = {}
+        for rid in list(states):
+            if obs.current_key(rid) != rid: continue
+            ids = pending.get(rid, [])
+            supported = []; unclaimed = []
+            for state in paths(rid):
+                if state.last is None: continue
+                loss = state.last['frame_index'] != index
+                if loss and at-state.last['pts'] > Policy().pair_seconds+1e-9:
+                    if ids: audit(rid, dict(state.decision(at), reason='association_horizon_expired'))
+                    continue
+                direction = engine.direction(dict(id=rid, raw_id=None, rows=list(state.measured_rows))) if loss and ids else None
+                decision = state.decision(at, loss=loss, direction=direction,
+                    continuous=state.last['pts'] >= obs.continuous_since-1e-9)
+                eligible = episode_ids(state, ids)
+                if ids: audit(rid, decision if eligible else dict(decision,
+                    automatic_confirmation=False, notify=False, status='침입 의심',
+                    reason='pending_anchor_outside_measured_episode'))
+                if decision['automatic_confirmation']:
+                    if eligible: supported.append((state, decision, eligible))
+                    elif state.proof: unclaimed.append((state, decision))
+            if supported:
+                state, decision, ids = supported[0]
+            elif unclaimed:
+                state, decision = unclaimed[0]
+                physical = dict(kind='passage', entry=decision['entry'], exit=decision['exit'])
+                eid = digest(dict(rule=RULE, scope=scope, physical=physical))
+                event = dict(event_id=eid, decision_time_pts=at, track_ids=[], status='침입 의심',
+                    **scope, video_id=history['video_id'],
+                    source_ref=dict(collection='measured_passage_events', source_pointer='/'+eid),
+                    source_event=dict(rule_id=RULE, reason='current_measured_passage_without_eligible_seed',
+                        run_id=rid, observation_refs=deepcopy(state.proof['destination_observation_refs']),
+                        passage=deepcopy(state.proof), identity_verified=False))
+                candidate = dict(event=event, observation_key=rid, release_protected=False,
+                    binding=dict(method='current_measured_passage', source_observation_key=rid,
+                        reference=deepcopy(state.last), passage_is_not_identity=True))
+                remember_anchor(candidate); candidates.append(candidate); generated_events.append(event)
+                ids = [eid]
+                audit(rid, decision)
+            else: continue
             if decision['last_observed_pts'] > at: raise ValueError('Future passage evidence')
             physical = (dict(kind='passage', entry=decision['entry'], exit=decision['exit'])
                 if decision.get('passage') else dict(kind='loss', last=state.last, entry=decision['entry']))
@@ -607,24 +767,30 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
                 source_decision=decision, last_observed_pts=state.last['pts'],
                 physical_crossing_ref=dict(direction=decision['direction'], evidence=physical))
             resolution['resolution_id'] = digest(resolution); resolutions.append(resolution)
+            consumed[rid] = state
         if candidates or resolutions: life.process(at, candidates, resolutions)
         # A consumed passage can start a new measured episode on its arrival
         # side. Previously confirmed evidence remains sticky in the lifecycle.
         for resolution in resolutions:
             if resolution.get('confirmation_source') != RULE: continue
-            rid = resolution['observation_key']; state = states[rid]
+            rid = resolution['observation_key']; state = consumed[rid]
             proof = state.proof
             if proof:
                 destination = deepcopy(proof['destination_observation_refs'])
                 state.reset('previous_passage_consumed'); state.last = None
                 for row in destination: state.step(row)
+                states[rid] = state; alternative_states[rid] = []
     result = life.export()
-    if {e['event_id']:e for e in result['events']} != {e['event_id']:e for e in events}:
+    exported = {e['event_id']:e for e in result['events']}
+    if any(exported.get(e['event_id']) != e for e in events):
         raise ValueError('Dual boundary replay edited source candidates')
     result.update(video_id=history['video_id'], source_window=deepcopy(history['source_window']),
         available_after_pts=history.get('available_after_pts', history['source_window'][1]),
         binding_audit=obs.bindings, followup_audit=audits, followup_counts=dict(counts),
         dual_boundary_audit=dict(rule_id=RULE, geometry=engine.corridor.audit(),
+            association_policy=ASSOCIATION_POLICY, raw_box_competition_is_diagnostic=True,
+            original_source_candidates=len(events), derived_passage_candidates=len(generated_events),
+            max_active_path_hypotheses=max_active_hypotheses,
             suppressed_legacy_confirmations=suppressed, episode_seconds=EPISODE_SECONDS,
             association_horizon_seconds=Policy().pair_seconds, loss_wait=Policy().loss_wait),
         preserved_confirmation_source_pts={}, direction_rule_changed=True,

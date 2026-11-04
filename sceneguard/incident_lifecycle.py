@@ -356,7 +356,13 @@ class IncidentLifecycle:
         for row in sorted(candidates, key=lambda r:(r['event']['decision_time_pts'],r['event']['event_id'])):
             self._candidate(row, at, touched)
         rank = {'preserved_confirmation':0, 'observation_handoff':1, 'inward_loss':2, 'outward_crossing_loss':2, 'observed_gate_crossing':2, 'outward_loss':3}
-        for resolution in sorted(resolutions, key=lambda r:(rank.get(r['kind'],9), r['resolution_id'])):
+        def resolution_rank(row):
+            # Dual-boundary evidence can finish on the same actual endpoint as
+            # its handoff. Bind that measured ownership before validating the
+            # new confirmation; keep all legacy ordering unchanged.
+            if row.get('confirmation_source') == 'dual_boundary_passage_v1': return 2
+            return rank.get(row['kind'],9)
+        for resolution in sorted(resolutions, key=lambda r:(resolution_rank(r), r['resolution_id'])):
             self._resolve(resolution, at, touched)
         snapshots = []
         for cid in sorted(touched):

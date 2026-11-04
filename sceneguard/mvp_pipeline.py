@@ -167,6 +167,10 @@ class RuleBackend:
         return self.compare_births(frames, scene, region, camera)
 
     def lifecycle(self, baseline, history, events, runs, frames, scene, region, engine, portal, scope):
+        if 'inner_line' in scene:
+            result, _ = self.replay_scoped(baseline, history, events, runs, frames,
+                scene, region, direction_engine=engine, portal_gate=portal, scope=scope)
+            return result
         if history['events'] or events:
             result, _ = self.replay_scoped(baseline, history, events, runs, frames,
                 scene, region, direction_engine=engine, portal_gate=portal,
@@ -226,7 +230,15 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
     scoped = rules.lifecycle(baseline, history, events, comparison['observation_runs'],
         frames, scene, region, engine, portal, scope)
     final = rules.activity(scoped, frames, portal, scope, run_id)
-    if {e['event_id']: e for e in final['events']} != {e['event_id']: e for e in combined}:
+    expected = {e['event_id']:e for e in combined}
+    if 'inner_line' in scene:
+        measured = {e['event_id']:e for e in scoped['events']}
+        if (any(measured.get(eid) != event for eid,event in expected.items()) or
+                any(event.get('source_ref', {}).get('collection') != 'measured_passage_events'
+                    for eid,event in measured.items() if eid not in expected)):
+            raise ValueError('Dual passage route must preserve original candidates and derived provenance')
+        expected = measured
+    if {e['event_id']: e for e in final['events']} != expected:
         raise ValueError('Final episodes lost or edited current-run candidate payloads')
     if digest(dict(baseline=baseline, bundle=bundle, frames=frames,
                    scene=scene, region=region)) != original:

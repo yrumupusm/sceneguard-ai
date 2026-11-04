@@ -94,6 +94,12 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
                    digest(dict(scope=list(key[:-1]), observation=key[-1], kind=kind,
                                last_observed_pts=item['last_observed_pts'])))
         candidate_owner = self._owners.get(key)
+        if item.get('confirmation_source') == 'dual_boundary_passage_v1':
+            # Dual replay supplies exact measured-path-compatible anchors.
+            # A preexisting stationary path at the same later endpoint cannot
+            # claim an incoming passage through its newer unrelated candidate.
+            latest = max(ids, key=lambda eid:(self.evidence[eid]['opened_pts'], eid))
+            candidate_owner = (self.evidence[latest]['opened_pts'], self._event_cards[latest])
         if candidate_owner is None:
             latest = max(ids, key=lambda eid:(self.evidence[eid]['opened_pts'], eid))
             candidate_owner = (self.evidence[latest]['opened_pts'], self._event_cards[latest])
