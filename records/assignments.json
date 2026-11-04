@@ -727,6 +727,19 @@
       "synthetic": false,
       "task_id": "task_4dcc1fb0602f",
       "title": "재출현 유예·접근 확인 결합 · 안→밖 우선 9영상"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "설정 기본 에이전트 (native 모델 미명시)",
+      "assigned_at": "2026-11-04T15:40:25.002359+00:00",
+      "dispatch_id": "ctx_70dead3e1cf2",
+      "experiment_id": "EXP-0060",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_a85bcd56fda3",
+      "title": "고정 결합 규칙 · 전체45영상 및 늦은 확인 분석"
     }
   ],
   "schema_version": 1
