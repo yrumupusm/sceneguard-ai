@@ -70,6 +70,9 @@ def visible_crossing_decision(source, segment, scene, policy=Policy()):
     ending at its timestamp, dropping continuity across gaps/size jumps/box jumps.
     Future rows never help the decision and are not returned as evidence.
     """
+    if 'inner_line' in scene:
+        from .dual_boundary import guarded
+        return guarded(source)
     policy.validate()
     validate_scene(scene)
     at = _number(source.get('decision_time_pts', source.get('pts')))

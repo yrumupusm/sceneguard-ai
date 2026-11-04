@@ -28,6 +28,9 @@ def locate_time(stamps, at):
 def replay_scoped(baseline,history,portal_events,runs,frames,scene,region,
                   *,direction_engine=None,portal_gate=None,confirm_outward_crossings=False,
                   observe_gate_crossings=False):
+    if 'inner_line' in scene:
+        from .dual_boundary import replay
+        return replay(baseline, history, portal_events, runs, frames, scene, region, portal_gate=portal_gate)
     from .directional_loss import SavedGateDirection
     from .portal_births import PortalGate
     from .lifecycle_followup import ObservationHistory, followup_run, assess_loss, loss_resolution

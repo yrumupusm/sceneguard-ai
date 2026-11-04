@@ -204,6 +204,18 @@ class IncidentLifecycle:
                     {'direction':item['direction']}) if rows else None
                 if item['physical_loss_ref']!=expected or rows[-1]['pts']!=last:
                     raise ValueError('Physical loss ownership must retain the actual measured endpoint')
+        elif item.get('confirmation_source') == 'dual_boundary_passage_v1':
+            from .dual_boundary import validate_decision
+            decision = item.get('source_decision', {})
+            if (not item.get('observation_key') or
+                    any(self.evidence[eid]['observation_key'] != item['observation_key'] for eid in ids)
+                    or decision.get('segment') != item['observation_key']
+                    or not set(ids) <= set(decision.get('event_ids', []))
+                    or item.get('last_observed_pts') != decision.get('last_observed_pts')
+                    or item.get('physical_crossing_ref') != dict(direction=decision.get('direction'),
+                        evidence=decision.get('physical_evidence_ref'))):
+                raise ValueError('Dual boundary passage must bind to its measured observation')
+            validate_decision(decision, at)
         elif item.get('confirmation_source') in ('visible_gate_crossing_v1','existing_alert_gate_crossing_v1'):
             decision = item.get('source_decision', {})
             if (decision.get('rule_id') != item['confirmation_source']

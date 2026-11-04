@@ -109,11 +109,21 @@ class RuleBackend:
         self.empty_activity = GateActivityEpisodes
 
     def prepare(self, frames, scene, region, camera):
+        if 'inner_line' in scene:
+            from .dual_boundary import DualBoundaryDirection
+            return DualBoundaryDirection(frames, scene), self.portal_class(scene, region, camera)
         return self.direction_class(frames, scene), self.portal_class(scene, region, camera)
 
     def confirmations(self, baseline, bundle, scene, engine, run_id):
         if abs(baseline['policy']['loss_wait'] - engine.policy.loss_wait) > 1e-6:
             raise ValueError('Do not change the adopted loss wait during integration')
+        if 'inner_line' in scene:
+            from .dual_boundary import guarded
+            return [dict(guarded(dict(decision_time_pts=e['decision_time_pts'],
+                evidence_until_pts=e['decision_time_pts'])), event_id=e['event_id'],
+                source_ref=deepcopy(e['source_ref']), analysis_run_id=run_id,
+                computed_in_current_run=True, rule_implementation='dual_boundary_passage_v1')
+                for e in bundle['events']]
         from .approach_disappearance import Policy
         from .visible_crossing import visible_crossing_decision
         from .outward_crossing import outward_loss_decision
@@ -235,14 +245,18 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
         source_algorithm_versions=['EXP-0035', 'EXP-0045', 'EXP-0046', 'EXP-0048', 'EXP-0049',
             'visible_gate_crossing_v1', 'outward_gate_loss_v1', 'existing_alert_gate_crossing_v1'],
         positive_crossing_directions=['outside_to_inside', 'inside_to_outside'],
-        direction_rule_changed=True, release_rule_changed=False,
-        continuation_observation_rules_enabled=False,
+        direction_rule_changed=True, release_rule_changed='inner_line' in scene,
+        continuation_observation_rules_enabled='inner_line' in scene,
+        dual_boundary_rules_enabled='inner_line' in scene,
         activity_grouping_changed_decision_rules=False,
         historical_experiment_results_required=False, rejected_transition_candidates_used=False,
         candidate_generation_changed=True, evidence_decisions_changed=True,
         live_notifications_enabled=False, notification_delivery_measured=False,
         manual_reviews_modified=False, realtime=False, accuracy=None,
         release_video_validation='not_established', human_verified=False)
+    if 'inner_line' in scene:
+        final['source_algorithm_versions'] = ['dual_boundary_passage_v1', 'gate_activity_episodes_v1']
+        final['dual_boundary_audit'] = deepcopy(scoped.get('dual_boundary_audit', {}))
     final['source_experiment'] = 'MVP-0002-current-lifecycle'
     for card in final['cards']:
         card['decision_source'] = 'automatic_rule_current_run'
@@ -322,7 +336,7 @@ def execute(video, camera, output, *, scene_path, portal_path, cache=None,
         base_path = vc.SCENES.get(camera, frozen_scene)
     scene, region, base_scene = read(scene_path), read(portal_path), read(base_path)
     revised_scene(base_scene, scene)  # inside-only approved geometry; no moving the line.
-    if camera == 'C6' and scene != base_scene:
+    if camera == 'C6' and {k:v for k,v in scene.items() if k != 'inner_line'} != {k:v for k,v in base_scene.items() if k != 'inner_line'}:
         raise ValueError('C6 must retain its current approved scene')
     PortalGate(scene, region, camera)  # explicit binding, no whole-inside fallback.
     code = {str(p.relative_to(vc.ROOT)): vc.sha256(p)

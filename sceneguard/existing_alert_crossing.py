@@ -52,6 +52,9 @@ def existing_alert_crossing_decision(source, segments, scene, policy=Policy()):
     baseline segment collection. A unique fragment must contain emission and
     both original anchors. No candidate metadata substitutes for actual boxes.
     """
+    if 'inner_line' in scene:
+        from .dual_boundary import guarded
+        return guarded(source)
     policy.validate(); validate_scene(scene)
     at = _number(source['emitted_at_pts'])
     before = _number(source['observed_pts_before'])

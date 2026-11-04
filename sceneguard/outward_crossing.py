@@ -12,6 +12,9 @@ from .gate_episode_evidence import EpisodePolicy, Gate
 
 
 def outward_loss_decision(previous, segment, scene, policy=Policy()):
+    if 'inner_line' in scene:
+        from .dual_boundary import guarded
+        return guarded(previous)
     result = deepcopy(previous)
     if (previous.get('automatic_confirmation')
             or 'inside_to_outside' not in scene['directions']

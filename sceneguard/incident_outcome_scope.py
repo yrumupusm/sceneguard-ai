@@ -65,7 +65,7 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         IncidentLifecycle._resolve(probe, item, at, set())
         self._routed_payloads[rid] = payload
         ids = item['event_ids']; kind = item['kind']
-        delayed=item.get('confirmation_source')=='delayed_raw_gate_loss_v1'
+        delayed=item.get('confirmation_source') in ('delayed_raw_gate_loss_v1', 'dual_boundary_passage_v1')
         if kind == 'preserved_confirmation' and not delayed:
             super()._resolve(item, at, touched)
             self.outcome_routing.append(dict(resolution_id=rid, decision_time_pts=at,
@@ -90,7 +90,7 @@ class ScopedIncidentLifecycle(IncidentLifecycle):
         physical=item.get('physical_loss_ref')
         outcome = (digest(dict(scope=list(key[:-1]),measured_loss=physical)) if physical else
                    digest(dict(scope=list(key[:-1]),kind=kind,passage=item['physical_crossing_ref']))
-                   if kind=='observed_gate_crossing' else
+                   if kind=='observed_gate_crossing' or item.get('confirmation_source')=='dual_boundary_passage_v1' else
                    digest(dict(scope=list(key[:-1]), observation=key[-1], kind=kind,
                                last_observed_pts=item['last_observed_pts'])))
         candidate_owner = self._owners.get(key)

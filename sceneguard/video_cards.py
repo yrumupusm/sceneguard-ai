@@ -98,7 +98,7 @@ def camera_profile(camera_id, video, camera_registry=None):
         from .gate_episode_evidence import revised_scene
         base, selected = read(SCENES[camera_id]), read(paths[0])
         revised_scene(base, selected)
-        if camera_id == 'C6' and base != selected:
+        if camera_id == 'C6' and {k:v for k,v in base.items() if k != 'inner_line'} != {k:v for k,v in selected.items() if k != 'inner_line'}:
             raise ValueError('C6 must retain its current approved scene')
     return camera, *paths, registry_path
 

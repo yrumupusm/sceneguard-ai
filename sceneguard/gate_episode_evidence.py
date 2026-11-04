@@ -112,6 +112,9 @@ def history_decision(previous, segment, scene, policy=EpisodePolicy()):
     Current same-side continuation cannot prove intrusion absence; it simply is
     not a disappearance confirmation. Original alarms are never deleted here.
     """
+    if 'inner_line' in scene:
+        from .dual_boundary import guarded
+        return guarded(previous)
     p = policy.validate(); gate = Gate(scene, p); result = deepcopy(previous)
     rows = segment['rows']; last = rows[-1]
     if any(number(a['pts']) >= number(b['pts']) for a,b in zip(rows, rows[1:])):
@@ -232,10 +235,18 @@ class InsideBirths:
 
 
 def revised_scene(original, revision):
-    """The approved local revision changes inside ONLY; old bindings remain intact."""
+    """Allow inside geometry and an explicitly selected optional inner boundary.
+
+    The original outer line and all other policy/calibration fields stay fixed.
+    The optional inner contour is validated separately; no source is rewritten.
+    """
     before, after = deepcopy(original), deepcopy(revision)
     before['zones'].pop('inside'); after['zones'].pop('inside')
+    before.pop('inner_line', None); after.pop('inner_line', None)
+    if 'inner_line' in revision:
+        from .dual_boundary import Corridor
+        Corridor(revision)
     if before != after:
-        raise ValueError('Only zones.inside may change in the approved scene revision')
+        raise ValueError('Only zones.inside and optional inner_line may change in the approved scene revision')
     Gate(revision)
     return deepcopy(revision)
