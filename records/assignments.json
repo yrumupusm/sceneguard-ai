@@ -623,6 +623,19 @@
       "synthetic": false,
       "task_id": "task_98c5d5865119",
       "title": "모호함 일괄 거절 제거와 실제 통과 우선 비교"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "native receipt 모델 미지정 (Codex)",
+      "assigned_at": "2026-11-04T09:05:11+00:00",
+      "dispatch_id": "ctx_f041b7cabf9f",
+      "experiment_id": "EXP-0052",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_61e44fe77234",
+      "title": "013 하단 중앙점만 변경한 한정 비교"
     }
   ],
   "schema_version": 1

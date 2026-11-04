@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0052",
+  "metrics": [
+    {
+      "label": "조건별 이력 포함 재생 프레임",
+      "value": 2160,
+      "unit": "프레임",
+      "sample_n": 2160,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "frames",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "조건별 검토 프레임",
+      "value": 420,
+      "unit": "프레임",
+      "sample_n": 420,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "review_frames",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "새 추론 호출",
+      "value": 0,
+      "unit": "회",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "inference_calls",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "전체45개 실행",
+      "value": 0,
+      "unit": "회",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "full45_runs",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "첫 의심 시각 · 기존65%점",
+      "value": 62.6,
+      "unit": "원본 초",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.control.review_suspicion_notice_pts",
+      "source_operation": "min_or_null",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "첫 확인 시각 · 기존65%점",
+      "value": null,
+      "unit": "원본 초",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.control.review_confirmation_notice_pts",
+      "source_operation": "min_or_null",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "확인 알림 · 기존65%점",
+      "value": 0,
+      "unit": "건",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.control.review_confirmation_notice_pts",
+      "source_operation": "length",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "분석 경과 · 기존65%점",
+      "value": 97.54468118795194,
+      "unit": "초",
+      "sample_n": 2160,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.control.timing.analyze_wall_seconds",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "분석 CPU · 기존65%점",
+      "value": 93.791258286,
+      "unit": "초",
+      "sample_n": 2160,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.control.timing.analyze_cpu_seconds",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "저장 포함 경과 · 기존65%점",
+      "value": 99.43068029498681,
+      "unit": "초",
+      "sample_n": 2160,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.control.timing.wrapper_wall_seconds",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "안쪽 진입 근거 끝 시각 · 기존65%점",
+      "value": 62.6,
+      "unit": "원본 초",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다. 근거 시각이며 알림 시각이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "entry_evidence_change_at_62_6.control.after.pts",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "첫 의심 시각 · 하단 중앙",
+      "value": 62.6,
+      "unit": "원본 초",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.candidate.review_suspicion_notice_pts",
+      "source_operation": "min_or_null",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "첫 확인 시각 · 하단 중앙",
+      "value": null,
+      "unit": "원본 초",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.candidate.review_confirmation_notice_pts",
+      "source_operation": "min_or_null",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "확인 알림 · 하단 중앙",
+      "value": 0,
+      "unit": "건",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.candidate.review_confirmation_notice_pts",
+      "source_operation": "length",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "분석 경과 · 하단 중앙",
+      "value": 97.6074061000254,
+      "unit": "초",
+      "sample_n": 2160,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.candidate.timing.analyze_wall_seconds",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "분석 CPU · 하단 중앙",
+      "value": 93.746221353,
+      "unit": "초",
+      "sample_n": 2160,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.candidate.timing.analyze_cpu_seconds",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "저장 포함 경과 · 하단 중앙",
+      "value": 99.49225416302215,
+      "unit": "초",
+      "sample_n": 2160,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "sides.candidate.timing.wrapper_wall_seconds",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "안쪽 진입 근거 끝 시각 · 하단 중앙",
+      "value": 62.4,
+      "unit": "원본 초",
+      "sample_n": 1,
+      "scope": "013만 원본0≤t<72초 재생, 준비0≤t<58초, 검토58≤t<72초. 각 조건1회이며 전체영상/45개 성능이 아니다. 근거 시각이며 알림 시각이 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "entry_evidence_change_at_62_6.candidate.after.pts",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "관련 시험 통과",
+      "value": 42,
+      "unit": "개",
+      "sample_n": 42,
+      "scope": "당시 저장 시험 결과. 행동 성능 수치가 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "tests.focused_passed",
+      "verification": "saved_json_field_read_and_hash_verified"
+    },
+    {
+      "label": "전후 공통 기존 실패 항목",
+      "value": 8,
+      "unit": "건",
+      "sample_n": 8,
+      "scope": "후보84개/대조81개 기존 시험에서 같은 실패8항목. 전체 회귀 통과가 아니다.",
+      "source": "outputs/validation/dual-boundary-passage-v1/bottom-center-013-v1/report.json",
+      "source_sha256": "01b64fe2d1c269b02abdaedbcf5a0fbe02136faeff72d424bff5aa8c44c66094",
+      "source_field": "tests.existing_failure_entries",
+      "verification": "saved_json_field_read_and_hash_verified"
+    }
+  ]
+}

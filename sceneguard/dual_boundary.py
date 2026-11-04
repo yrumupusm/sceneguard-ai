@@ -19,7 +19,7 @@ from .incident_outcome_scope import ScopedIncidentLifecycle
 from .lifecycle_followup import ObservationHistory
 
 RULE = 'dual_boundary_passage_v1'
-PROXY = 'actual_bbox_height_65_percent_not_reconstructed_feet'
+PROXY = 'actual_bbox_bottom_center_not_reconstructed_feet'
 # An episode may retain a measured origin beyond the old 3s lookback, but not
 # indefinitely through a gate corridor. This is a common bound, not video tuning.
 EPISODE_SECONDS = 60.0
@@ -117,7 +117,7 @@ class Corridor:
                     signed=sum((point[k]-a[k])*n[k] for k in (0, 1)))
 
     def classify(self, row):
-        p = center(row, self.size, .65)
+        p = center(row, self.size, 1.0)
         outer, inner = self.locate(p, 'outer'), self.locate(p, 'inner')
         deadband = Policy().min_motion_pixels
         # Classification never extends the two gate endpoints into infinite lines.
@@ -269,7 +269,7 @@ class PassageState:
         # Missing boxes cannot create an interpolated bbox crossing.
         if not continuous: self.boundary_paths = {}
         hits = self.corridor.advance_path(self.boundary_paths,
-            center(row, self.corridor.size, .65), row)
+            center(row, self.corridor.size, 1.0), row)
         point_bridge = association is not None and association.get('missing_box_interval_is_not_measured_box_path')
         if point_bridge:
             hits = association.get('boundary_crossings', [])
@@ -278,7 +278,7 @@ class PassageState:
             entry_name = 'outer' if self.origin == 'outside' else 'inner'
             exit_name = 'inner' if self.origin == 'outside' else 'outer'
             for hit in hits:
-                ref = dict(hit, measurement='saved_point_path' if point_bridge else 'actual_bbox_65_percent_proxy_path')
+                ref = dict(hit, measurement='saved_point_path' if point_bridge else 'actual_bbox_bottom_center_path')
                 if point_bridge:
                     ref.update(source_actual_bbox=deepcopy(previous), destination_actual_bbox=deepcopy(row))
                 if hit['boundary'] == entry_name and hit['into_corridor']:
@@ -359,7 +359,7 @@ class PassageState:
                 return dict(result, reason='waiting_since_last_actual_observation')
             if not self.origin or not self.entry:
                 return dict(result, reason='loss_missing_origin_or_measured_entry')
-            terminal = center(self.last, self.corridor.size, .65)
+            terminal = center(self.last, self.corridor.size, 1.0)
             origin_boundary = 'outer' if self.origin == 'outside' else 'inner'
             other = 'inner' if self.origin == 'outside' else 'outer'
             a, b = self.corridor.locate(terminal, origin_boundary), self.corridor.locate(terminal, other)
@@ -369,7 +369,7 @@ class PassageState:
             tail = list(self.tail)
             if len(tail) < 3 or any(not connected(x, y, self.corridor.size) for x, y in zip(tail, tail[1:])):
                 return dict(result, reason='loss_recent_actual_path_missing')
-            progress = self.corridor.locate(center(tail[0], self.corridor.size, .65), other)['distance']-b['distance']
+            progress = self.corridor.locate(center(tail[0], self.corridor.size, 1.0), other)['distance']-b['distance']
             expected = 'inward' if self.origin == 'outside' else 'outward'
             if (progress < self.policy.min_motion_pixels or not direction or direction.get('direction') != expected
                     or direction.get('end_pts') is None or not 0 <= self.last['pts']-direction['end_pts'] <= self.policy.direction_window+1e-9):
