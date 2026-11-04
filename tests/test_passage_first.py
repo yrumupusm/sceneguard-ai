@@ -44,6 +44,44 @@ def newer(args, at, name='fresh'):
 
 
 class PassageFirstTests(unittest.TestCase):
+    def test_active_stationary_source_keeps_departing_actual_branch_origin(self):
+        for mirrored in (False, True):
+            for points in (False, True):
+                xs = [1000-x for x in PASSAGE] if mirrored else PASSAGE
+                args = fixture(xs, paths=points)
+                for i, frame in enumerate(args[3][3:], 3):
+                    box = deepcopy(frame['actual_boxes'][0])
+                    box.update(cache_index=1, track_ids=[99], bbox=row(xs[2], i)['bbox'])
+                    frame['actual_boxes'].append(box)
+                out = analyze(args)
+                with self.subTest(mirrored=mirrored, points=points):
+                    self.assertEqual(len(decisions(out)), 1)
+                    self.assertEqual(out['evidence'][0]['automatic_status'], CONFIRMED)
+                    self.assertLessEqual(min(r['pts'] for r in decisions(out)[0]['origin_observation_refs']), .2)
+                    self.assertTrue(all(Corridor(args[4]).classify(r) == decisions(out)[0]['origin_side']
+                        for r in decisions(out)[0]['origin_observation_refs']))
+                    self.assertTrue(all(not a['missing_box_interval_is_not_measured_box_path']
+                        for a in decisions(out)[0]['associations']))
+
+    def test_duplicate_history_dedup_preserves_a_later_exact_candidate_anchor(self):
+        args = fixture(PASSAGE[:5]+[500]*45+PASSAGE[5:], paths=False)
+        duplicate(args, range(3, len(args[3])), -.04)
+        newer(args, 3.5)
+        out = analyze(args); evidence = {e['event_id']: e for e in out['evidence']}
+        self.assertEqual(evidence['fresh']['automatic_status'], CONFIRMED)
+        self.assertEqual(evidence['e']['automatic_status'], SUSPECTED)
+        self.assertEqual(len(decisions(out)), 1)
+
+    def test_sustained_equivalent_branches_do_not_accumulate_histories(self):
+        maxima = []
+        for length in (40, 80):
+            args = fixture(PASSAGE[:5]+[500]*length, paths=False)
+            duplicate(args, range(3, len(args[3])), -.04)
+            out = analyze(args)
+            self.assertEqual(decisions(out), [])
+            maxima.append(out['dual_boundary_audit']['max_active_path_hypotheses'])
+        self.assertEqual(maxima[0], maxima[1])
+
     def test_equivalent_reset_hypotheses_collapse_without_discarding_distinct_origins(self):
         a = state([400,410,420,460]); b = state([600,590,580,540])
         self.assertEqual(len(distinct_paths([a,b])), 2)
