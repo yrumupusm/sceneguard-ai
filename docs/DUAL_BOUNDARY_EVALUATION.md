@@ -88,7 +88,7 @@ BEFORE는 canonical data root의 다음 **선택된 after 자료**다.
 
 canonical 실제 자료의 `preparation-001`은 11.434초 wall / 11.073초 parent CPU로 끝났다. 보호 입력204개와 소스/snapshot 불변 검사를 통과했다. candidate_replay_executed는 false다. 이 준비 출력은 이후 runner 보완 전의 첫 실행 바이트를 snapshot으로 보존한다. 최종 runner의 `preparation-003`은 10.145초 wall / 9.884초 parent CPU로 성공했고, 입력204개·원래 geometry snapshot19개·코드/snapshot이 보존됐다. 오류는0개이며 후보 재생은 false다. `preparation-002`도 후보 없는 중간 준비 검증으로 보존했다.
 
-| 기준 지표 | 의심 | 자동 확인 |
+| 기준 지표 | 의심 | 침입 검출 |
 | --- | ---: | ---: |
 | TP/FP/FN | 51/10/1 | 39/1/13 |
 | 중복 FP | 9 | 1 |

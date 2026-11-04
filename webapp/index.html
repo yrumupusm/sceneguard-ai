@@ -7,13 +7,14 @@
 <link rel="stylesheet" href="/assets/style.css?v=web0005">
 <script defer src="/assets/app.js?v=web0005">
 </script>
+<script defer src="/assets/terminology.js?v=public-v1"></script>
 </head>
 <body>
 <header>
 <div class="wrap">
 <p class="eyebrow">SCENEGUARD · 로컬 결과 조회</p>
 <h1>SceneGuard</h1>
-<p>영상 분석과 사건 검토</p>
+<p>1차 MVP · 녹화 영상 분석과 사건 검수</p>
 <p id="status" class="status">연결 상태 확인 중</p>
 <nav class="primary-nav" aria-label="주 메뉴">
 <a href="#history" data-route="history">실험 이력</a>
@@ -23,7 +24,7 @@
 <main class="wrap">
 <div id="history-page">
 <section id="experiment-history">
-<div class="section-title"><div><p class="eyebrow">EXPERIMENT LIBRARY</p><h2>실험 이력</h2></div><p>등록된 결과와 아직 결과가 없는 배정을 함께 보여줍니다.</p></div>
+<div class="section-title"><div><p class="eyebrow">EXPERIMENT LIBRARY</p><h2>실험 이력</h2></div><p>등록된 실험 결과와 진행 상태</p></div>
 <div class="filters">
 <label>검색 <input id="experiment-search" type="search" placeholder="실험 번호 또는 제목"></label>
 <label>결과 상태 <select id="experiment-status"><option value="all">전체</option><option value="registered">결과 등록</option><option value="pending">결과 미등록</option></select></label>
@@ -35,6 +36,6 @@
 </div>
 <div id="video-review-page" hidden><section id="linked-video" hidden></section><section id="mvp-view"><h2>영상 검수</h2></section></div>
 </main>
-<footer class="wrap">수동 검토는 로컬에 저장됩니다 · 모델 실행이나 승인 기능 없음</footer>
+<footer class="wrap">검수 결과는 로컬 저장 · 모델 실행과 별개</footer>
 </body>
 </html>

@@ -17,7 +17,7 @@
 
 **CCTV 행동 후보와 근거 구간을 저장하는 로컬 프로토타입 — MVP-0001 코드·실제 전체 영상 실행 완료, 행동 성능 검증·채택 보류**
 
-SceneGuard는 AI Software Engineer 직무 포트폴리오를 위한 실험 프로젝트다. 공개된 CCTV 영상에서 **사람의 출입 경계 통과/넘기 행동**을 감지하고, 카메라별 경계 설정·오탐·감지 시점·실행 비용을 재현 가능하게 평가하는 것이 첫 목표다. 법적 **무단침입이나 출입 권한을 영상만으로 확정하지 않는다.**
+SceneGuard는 CCTV 경계 통과를 분석하고 근거를 검토하는 실험 프로젝트다. 공개된 CCTV 영상에서 **사람의 출입 경계 통과/넘기 행동**을 감지하고, 카메라별 경계 설정·오탐·감지 시점·실행 비용을 재현 가능하게 평가하는 것이 첫 목표다. 법적 **무단침입이나 출입 권한을 영상만으로 확정하지 않는다.**
 
 최신 모델 대안 비교는 [BATCH-0002 종합 결과](docs/experiments/BATCH-0002-summary.md)를 따른다. [실제 입력 감사](docs/experiments/EXP-0018-input-audit.md), [RF-DETR와 기존 FCOS 캐시 비교](docs/experiments/EXP-0019-cv-comparison.md), [Qwen 4B NF4와 기존 2B BF16 비교](docs/experiments/EXP-0020-vlm-comparison.md)를 분리 기록한다. 새 모델은 기존 MVP에 자동 연결하지 않는다. q/v는 개발 자료이며 출력 개수·파싱 성공·GPU 실행 가능성을 행동 정확도로 읽지 않는다. [전달 기록](docs/experiments/BATCH-0002-delivery.md)에서 GitHub 게시와 실제 로컬 화면 확인을 구분한다.
 

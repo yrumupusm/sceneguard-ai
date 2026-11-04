@@ -55,7 +55,7 @@
 
 ## C. 검토 결과 저장 및 화면 연결
 
-`review_store.ReviewStore`를 기존 서비스에 붙인다. 자동 `card.status`는 수정하지 않고 `review_status`, 작성자, 메모, 수정 시각, 버전을 별도로 표시한다. 선택값은 **침입 의심 / 침입 확인 / 침입 아님 / 판단 불가**다. 무응답·시간 경과·VLM 답변이 수동 확인을 대신하지 않는다.
+`review_store.ReviewStore`를 기존 서비스에 붙인다. 자동 `card.status`는 수정하지 않고 `review_status`, 작성자, 메모, 수정 시각, 버전을 별도로 표시한다. 선택값은 **침입 의심 / 침입 검출 / 침입 아님 / 판단 불가**다. 무응답·시간 경과·VLM 답변이 수동 확인을 대신하지 않는다.
 
 - 현재 등록된 bundle SHA + session + incident ID를 서버에서 검증한 뒤만 조회·저장한다. 클라이언트가 보내는 임의 경로/미등록 카드를 수락하지 않는다. 기존 same-origin 요청 검사와 JSON 요청 정책을 재사용한다. 메모는 HTML이 아닌 텍스트로 렌더한다.
 - 검토 DB는 canonical GPU DB/알림 수신 영수증 DB와 **별도 로컬 파일**로 둔다. `runtime/incident-reviews.sqlite3` 등이 가능하다. Git에 DB/검토 메모/원본 자료를 올리지 않는다.

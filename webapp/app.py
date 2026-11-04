@@ -112,7 +112,7 @@ def index():
 
 @app.get('/assets/{name}')
 def assets(name: str):
-    if name not in ('app.js', 'style.css'):
+    if name not in ('app.js', 'style.css', 'terminology.js'):
         raise HTTPException(404)
     return FileResponse(HERE / name, headers={'Cache-Control': 'no-cache'})
 

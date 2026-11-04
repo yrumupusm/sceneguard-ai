@@ -233,7 +233,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', type=Path, default=Path('/mnt/c/Users/jhc74/AppData/Local/Temp/SceneGuard_새테스트_미검수_20261105'))
     p.add_argument('--runtime', type=Path, default=ROOT/'runtime/exp0060-new-scenes')
-    p.add_argument('--font', type=Path, default=Path('/home/jhc7484/.local/share/fonts/sceneguard-portfolio/malgun.ttf'))
+    p.add_argument('--font', type=Path, default=next((p for p in sorted((Path.home() / '.local/share/fonts').glob('sceneguard*/malgun.ttf')) if p.is_file()), Path('/usr/share/fonts/truetype/nanum/NanumGothic.ttf')))
     args = p.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     args.runtime.mkdir(parents=True, exist_ok=True)

@@ -38,7 +38,7 @@
 4. 학습 split을 먼저 고정하고, 그 뒤 train에만 augmentation을 적용한다. 테스트/검증 프레임을 학습에 사용하지 않는다.
 5. 첫 학습은 단일 사전등록 설정(모델/epoch/imgsz/batch/seed/freeze 정책)을 사용하고, 결과를 보고 무제한 hyperparameter sweep하지 않는다.
 6. 기존 Orca canonical GPU queue, 현재 유효한 자원/lease 게이트 및 job 이력 보존을 준수한다. 학습 작업의 사용시간·GPU 메모리·checkpoint SHA를 별도 기록한다.
-7. 모델 가중치·원본 데이터/학습 메타데이터의 민감한 부분을 공개 repo에 업로드하지 않는다. Ultralytics AGPL/Roboflow CC BY 라이선스와 포트폴리오 배포 범위를 점검한다.
+7. 모델 가중치·원본 데이터/학습 메타데이터의 민감한 부분을 공개 repo에 업로드하지 않는다. Ultralytics AGPL/Roboflow CC BY 라이선스와 프로젝트 배포 범위를 점검한다.
 
 ## Gate E0 — 기존 SceneGuard 검출 누락과 직접 비교
 
