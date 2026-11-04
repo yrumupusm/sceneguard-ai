@@ -714,6 +714,19 @@
       "synthetic": false,
       "task_id": "task_eaef6676cc84",
       "title": "재출현 유예·접근 이력 확인 결합 · 013·015"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "설정 기본 에이전트 (native 모델 미명시)",
+      "assigned_at": "2026-11-04T14:48:38.866991+00:00",
+      "dispatch_id": "ctx_c6d9ab9f3b9a",
+      "experiment_id": "EXP-0059",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_4dcc1fb0602f",
+      "title": "재출현 유예·접근 확인 결합 · 안→밖 우선 9영상"
     }
   ],
   "schema_version": 1
