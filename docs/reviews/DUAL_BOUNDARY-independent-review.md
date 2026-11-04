@@ -1,6 +1,123 @@
 # Dual-boundary independent review
 
-## Frozen code verdict — ready for the comparison, behavior pending
+## Final actual-result verdict — valid comparison, candidate rejected
+
+2026-11-04. Independently audited completed **run-002**, all 45 videos and all 52 resolved official events. The saved comparison is internally reproducible, but the candidate fails its behavioral objective: **confirmation TP 39→0, FN 13→52, gained 0, lost 39, retained 0**. Suspicion TP/FP/FN remain **51/10/1**, with all 51 earlier matches retained and no new or lost suspicion matches. The eight early confirmation notices disappear because **all 49 confirmation notices disappear**, not because they become later valid confirmations. Do not adopt this candidate as the default or describe it as an early-confirmation success.
+
+| Saved-output measure | Before | After |
+| --- | ---: | ---: |
+| Confirmation TP / FP / FN | 39 / 1 / 13 | 0 / 0 / 52 |
+| Suspicion TP / FP / FN | 51 / 10 / 1 | 51 / 10 / 1 |
+| First suspicion notices | 112 | 118 |
+| Early first suspicion notices for matched references | 29 | 31 |
+| Unreviewed-time first suspicion notices | 83 | 86 |
+| Unscored suspicion predictions | 58 | 57 |
+| First confirmation notices | 49 | 0 |
+| Early first confirmation notices for matched references | 8 | 0 |
+| Verified-negative first suspicion / confirmation notices | 3 / 0 | 3 / 0 |
+
+All eight earlier early-notice cases (010,011,016,029,030,032,038,041) lose their official confirmation match and have no later confirmation anywhere in that video. For 010, the old first confirmation at 59.933333s, first matching evidence at 62.133333s, official start 62.066667s and approximate user climbing onset 63s remain distinct. New confirmation is absent; its delay is undefined. The limited official-reference confirmation evaluator returns F1=0 and precision=null for the zero-prediction result; this is not an overall behavioral F1 or generalization claim. 006's unresolved reference and 008's semantic-review hold are retained.
+
+Recomputed both before/after reports and aggregates with the frozen evaluation code, extracted predictions independently from all 45 saved card files, and recomputed the entire `comparison.json`: exact agreement. Compared all 39 lost event identifiers, all 52 remaining misses and every notice relation with the public result report. Verified all **31 public metric values and source SHA256s** at review time. The report's failure/nonadoption conclusion is supported. No rule analysis, video decode, tracking, flow, model inference or visual identity review was repeated.
+
+### Final provenance and preservation
+
+The executed root revision is `d40fe5011956acba47bd04b3a17dbf224b325f10`. All package and adapter bytes equal independently reviewed `2cdfc3e`; all **92 snapshot files** equal their committed bytes. `provenance.status=replay_complete`, completed videos=45, errors empty, wall=720.872907s, worker CPU sum=2557.409184s. Independently rehashed **221 protected paths** (204 original inputs plus 17 generated profiles/manifest), **47 generated execution inputs**, **19 archived geometry snapshots** and the 92 code snapshot files: all match. All 45 worker import paths stay within the snapshot, and their stored rule-stage/new detector/tracker/flow counters are zero. This is preservation of the enumerated saved inputs; it is not a new hash audit of raw media, DBs or receipts.
+
+| run-002 artifact | SHA256 |
+| --- | --- |
+| `provenance.json` | `2ba5d2d7d9e8ea06666e09b5aa10c885350370b0c9a825fae2074c91c9df86e0` |
+| `summary.json` | `e86c01dd4574950f837f2c873675be4b87d0cff2a2a797bc867d01df87f5ef23` |
+| `comparison.json` | `dfe23f1362febb23edf5c405e37dc0092b9d764ed3118d85eaa150400c7763f7` |
+| `after-manifest.json` | `fd35ca9968ddb45c6c3bef84d51e39b7f80babb8ae484f481cc4e89c4d1d00f8` |
+| `after-report.json` | `ca1b874da30d77871e9b92aaf8007eed0ad9a328094967388c5276fb0447354e` |
+
+### Nine outward-focus cases and saved refusal chronology
+
+Each of the nine previously missed target references remains missed; none has a new confirmation anywhere in its video. The table shows the first **candidate emitted inside the target official interval**, its bound observation run, and that run's first recorded adjacent-box competition. This is saved bookkeeping evidence, not the action onset, a person count or identity truth.
+
+| Video / target official row | In-window candidates / bound | First in-window candidate (s) | Bound run | First competition on that run (s) | In-window recorded decision reasons |
+| --- | ---: | ---: | --- | ---: | --- |
+| 013 / 000 | 3 / 3 | 62.600 | 00551 | 62.500 | ambiguity 3 |
+| 015 / 000 | 5 / 5 | 60.400 | 00514 | 59.367 | ambiguity 6; expired association 1 |
+| 021 / 000 | 18 / 18 | 69.433 | 00271 | 69.467 | ambiguity 21; expired association 2; disconnected path 1 |
+| 028 / 000 | 10 / 10 | 60.667 | 00083 | 60.567 | ambiguity 10; expired association 1 |
+| 034 / 000 | 13 / 13 | 26.967 | 00044 | 27.100 | expired association 11; ambiguity 9; unstable origin, disconnected path and wait 1 each |
+| 036 / 001 | 7 / 7 | 27.000 | 00228 | 26.967 | ambiguity 7 |
+| 043 / 000 | 7 / 7 | 68.467 | 00341 | 68.467 | ambiguity 9; wait 2; unstable origin and disconnected path 1 each |
+| 044 / 000 | 2 / 2 | 74.300 | 00052 | 74.233 | ambiguity 2; unstable origin, wait and disconnected path 1 each |
+| 045 / 001 | 1 / 1 | 14.300 | 00122 | 11.967 | ambiguity 4, including earlier pending runs |
+
+The full run IDs are prefixed `observation-`. 021 first records a disconnected path at 69.433s before the competition veto at 69.467s. 034 first records unstable origin at 26.967s before competition at 27.100s. 044's second candidate at 77.967s records unstable origin, then waiting/disconnection and competition at 78.900s. Thus absence of a confirmation cannot be attributed exclusively to a single guard. All nine target intervals contain bound candidates, so these misses are not simply a missing-candidate or entirely unbound-input outcome. Their saved in-window snapshots contain no opposing exit; some contain an origin but no entry. These are sparse audit snapshots, not proof that all underlying measured paths lack an origin or crossing.
+
+028's previous 69.300s confirmation is after its official end 69.233333s and disappears without becoming an in-window match. In 036 the early row001 stays missed and the distinct later row000 match is lost. In 045 the early row001 stays missed and the later row000 match (old notice 83.600s) is lost; this does not establish person-specific bidirectional truth. For 010, the 62.133333s candidate binds by same-frame containment to run00504, already marked competing at 61.200s; the 63.433333s portal candidate binds run00520, marked competing at 63.100s. Neither yields a confirmation.
+
+Across all videos, 986 source candidates are preserved and 963 bind to observation runs. Audit totals are 128,604 adjacent-frame competition records, 1,216 ambiguity decision changes, 804 association-horizon expiry changes, 79 disconnected-path changes, 33 unstable-origin changes, 71 wait changes, 35 missing-origin/entry loss changes, six missing ordered finite-passage changes and 58 handoffs. These counts have different units and are not independent failures, people or physical events. The graph considers all eligible raw boxes, including competing footprints discarded by birth deduplication, and its veto persists through the run lineage; it can suppress later evidence after competition has gone away. This mechanism is verified in code and synthetic tests and is present in saved refusal chronology, but no ablation was run to assign each actual miss solely to it. Vehicle/occlusion/identity causes and a claimed benefit from relaxing the guard remain unverified.
+
+### Recorded diagnostics inside each of the 52 missed reference intervals
+
+This table is an audit index, not new ground truth. Candidates are source events emitted in the half-open official interval; bound is their initial binding count. Reasons count only saved `followup_audit` rows with a `source_decision` timestamp inside that interval, including earlier still-pending runs. The implementation suppresses duplicate negative-reason logging, so an empty interval is **not** absence of an active veto. Origin/entry/exit columns count their presence in those saved snapshots, not distinct physical passages. In particular 004 has two unbound candidates, while 042 has no new in-window candidate; other pending evidence may still exist.
+
+Codes: **A** competing/untrusted successor; **H** association horizon expired; **D** disconnected actual box path; **O** origin unstable; **W** waiting since actual observation; **M** loss missing origin or measured entry. Official row `000` means `official-row-000`, etc. Every row below has confirmation FN=1 after replay.
+
+| Video | Official row | In-window candidates | Bound | Recorded reason changes | Origin / entry / exit snapshots |
+| --- | --- | ---: | ---: | --- | --- |
+| 001 | 000 | 21 | 20 | H:20,A:17,D:2,O:1,W:1,M:1 | 0/0/0 |
+| 002 | 000 | 5 | 4 | A:5,D:1,W:1,H:1 | 1/0/0 |
+| 003 | 000 | 24 | 24 | A:26,H:12,D:1,W:1 | 1/0/0 |
+| 004 | 000 | 2 | 0 | none | 0/0/0 |
+| 005 | 000 | 8 | 6 | A:7,D:1,W:1,H:1 | 0/0/0 |
+| 007 | 000 | 8 | 8 | A:4,H:3 | 0/0/0 |
+| 008 | 000 | 7 | 7 | A:7 | 0/0/0 |
+| 009 | 000 | 7 | 7 | A:9,H:3 | 0/0/0 |
+| 010 | 000 | 3 | 3 | A:2,H:1 | 1/0/0 |
+| 011 | 000 | 7 | 7 | A:5,H:3,D:1,W:1 | 0/0/0 |
+| 012 | 000 | 4 | 4 | A:5,D:1 | 0/0/0 |
+| 013 | 000 | 3 | 3 | A:3 | 0/0/0 |
+| 014 | 000 | 21 | 21 | H:20,A:19,D:1 | 0/0/0 |
+| 015 | 000 | 5 | 5 | A:6,H:1 | 3/0/0 |
+| 016 | 000 | 7 | 7 | H:6,A:5 | 0/0/0 |
+| 017 | 000 | 5 | 5 | A:6,H:3 | 0/0/0 |
+| 018 | 000 | 11 | 11 | A:8,D:2,H:1,W:1,M:1 | 0/0/0 |
+| 019 | 000 | 8 | 8 | A:7,H:6 | 0/0/0 |
+| 020 | 000 | 11 | 11 | A:18,H:7 | 3/1/0 |
+| 020 | 001 | 4 | 4 | A:4,H:2 | 1/0/0 |
+| 021 | 000 | 18 | 18 | A:21,H:2,D:1 | 0/0/0 |
+| 022 | 000 | 13 | 12 | A:12,H:2,D:1 | 0/0/0 |
+| 023 | 000 | 4 | 4 | A:5,H:2,O:1,W:1,D:1 | 0/0/0 |
+| 024 | 000 | 2 | 2 | H:4,A:1 | 2/0/0 |
+| 025 | 000 | 12 | 12 | H:11,A:9 | 0/0/0 |
+| 026 | 000 | 3 | 3 | H:6,A:2 | 0/0/0 |
+| 027 | 000 | 3 | 3 | A:3,H:3,M:2,D:1,W:1 | 0/0/0 |
+| 028 | 000 | 10 | 10 | A:10,H:1 | 0/0/0 |
+| 029 | 000 | 9 | 8 | A:11,H:7,D:1,W:1 | 1/0/0 |
+| 029 | 001 | 5 | 4 | A:4,H:1,D:1,W:1,M:1 | 0/0/0 |
+| 030 | 000 | 13 | 13 | H:10,A:8 | 0/0/0 |
+| 031 | 000 | 53 | 53 | A:54,H:51,W:8,D:7,M:5,O:2 | 5/0/0 |
+| 032 | 000 | 4 | 4 | A:4,H:3 | 0/0/0 |
+| 033 | 000 | 6 | 6 | A:11,H:4,D:1 | 0/0/0 |
+| 034 | 000 | 13 | 13 | H:11,A:9,O:1,D:1,W:1 | 1/0/0 |
+| 035 | 000 | 1 | 1 | A:1 | 0/0/0 |
+| 035 | 001 | 2 | 2 | A:2 | 0/0/0 |
+| 035 | 002 | 6 | 5 | A:6 | 0/0/0 |
+| 036 | 001 | 7 | 7 | A:7 | 0/0/0 |
+| 036 | 000 | 15 | 15 | A:11,H:8 | 1/0/0 |
+| 037 | 000 | 5 | 5 | A:2 | 0/0/0 |
+| 038 | 000 | 47 | 47 | A:52,H:44,D:8,W:8,O:2,M:1 | 3/0/0 |
+| 039 | 000 | 9 | 9 | A:14,H:3,D:1,W:1 | 0/0/0 |
+| 039 | 002 | 14 | 14 | A:31,H:6 | 1/0/0 |
+| 039 | 001 | 54 | 50 | A:55,H:36,D:1 | 6/0/0 |
+| 040 | 000 | 4 | 4 | H:4,D:3,A:3,W:2,M:1 | 0/0/0 |
+| 041 | 000 | 4 | 4 | H:13,A:1 | 0/0/0 |
+| 042 | 000 | 0 | 0 | H:2 | 0/0/0 |
+| 043 | 000 | 7 | 7 | A:9,W:2,O:1,D:1 | 0/0/0 |
+| 044 | 000 | 2 | 2 | A:2,O:1,W:1,D:1 | 0/0/0 |
+| 045 | 001 | 1 | 1 | A:4 | 0/0/0 |
+| 045 | 000 | 41 | 41 | A:42,H:23,O:1,W:1 | 4/0/0 |
+
+Only one in-window audit snapshot in this table records an entry: 020/row000 at 7.400s, outside origin, still ambiguous and with no exit. No snapshot in the table records an exit. This is an index of what was actually serialized; early returns and deduplicated logging prevent using it as a complete per-frame geometric diagnosis. No automatic parameter change, repeated rules replay or new human label was made from these findings.
+
+## Frozen code verdict — accepted for comparison, distinct from failed behavior
 
 2026-11-04. **Accepted for the authorized saved-measurement comparison:** `2cdfc3eb9966e69a4211035df6eea8fa21c41fcc`. The implementation checkout was clean before and after the final independent run. `sceneguard/dual_boundary.py` SHA256 was `267fce3936cdcd6b45f05a35eba36f2880b9e1ad503c4083e6aecc659648d3d1`. Reviewed the committed delta, then ran **559 tests with zero failures/errors/skips**: 25 independent review tests (19 using production `analyze_observations`), 39 implementation tests and 495 legacy regressions. The endpoint touch, contiguous competing-box inheritance and collinear self-overlap findings are fixed at this revision. No remaining reproduced false-positive correctness blocker was found within this review scope; the conservative run-lifetime limitation below is explicit and is not certified as successful behavior.
 
@@ -20,7 +137,21 @@ PYTHONPATH=.:tests:/home/jhc7484/dev/sceneguard-ai/sg-dual-boundary-review/tests
   test_delayed_loss_ownership_contract -q
 ```
 
-The independent fixtures preserve input values, compare every causal prefix of both scoped and final activity timelines, and run the production backend/run builder without injected rule stubs. They cover exact candidate anchors and clocks, one physical outcome/one current evidence owner, no reuse by later candidates, finite polyline passage, actual absence versus EOF/source gaps, fresh versus stale direction, saved-point continuity/competition, old origins and sticky positives. The known-limit test intentionally measures suppression of a later fresh passage; it is not counted as successful recovery. `git diff --check` passed for the two owned review files. **Actual full45 comparison and behavioral adoption remain separate, pending the coordinator's frozen result artifacts.**
+The independent fixtures preserve input values, compare every causal prefix of both scoped and final activity timelines, and run the production backend/run builder without injected rule stubs. They cover exact candidate anchors and clocks, one physical outcome/one current evidence owner, no reuse by later candidates, finite polyline passage, actual absence versus EOF/source gaps, fresh versus stale direction, saved-point continuity/competition, old origins and sticky positives. The known-limit test intentionally measures suppression of a later fresh passage; it is not counted as successful recovery. `git diff --check` passed for the two owned review files. **The completed full45 comparison above rejects behavioral adoption despite these software-contract tests passing.**
+
+## Actual execution audit — failed run-001 retained
+
+The coordinator's first full45 attempt used root integration `de72c5ff538cf5351384d1afd9dd563aebb1cded`. Independently confirmed that all `sceneguard` files and `scripts/mvp_full_evaluation_adapter.py` are byte-identical to reviewed `2cdfc3e`. Runner SHA256 was `c2d86d3ca9fedc50b8452b1b70225326bb605e443b88a2408b4eb6b3665af9fc`, the prepared evaluator from `f429bfed7da07960724150aa3f03747bb31965fa`.
+
+Canonical `outputs/validation/dual-boundary-passage-v1/run-001/provenance.json` reports **failed**, 0 completed videos, 45 worker errors plus one runner summary error, 33.043104s wall, and both protected-input/source-snapshot preservation flags true. Its SHA256 is `367d13e2a7507fef0e24a0902f8a124e9d832d11962855e7308fc12b40fe2bc8`. `candidate_replay_executed=true` records invocation, not completed decisions or performance.
+
+Independently traced the worker failure to evaluator profile construction: it adds `inner_line` to a copied scene but byte-copies the portal with its old `scene_digest`. Production `PortalGate` correctly rejects that mismatch before lifecycle decisions. For C1 the new scene digest is `eeeb70e11ddded26d11cb990969719b0d07970b778b3cc31146961b27f556cfd`, while the copied portal references `38be973f80c83fadc5106df3f0a78ab1f7b20eb61eb35d5cbba24615cccb3e90`. The reviewer reported the mismatch promptly; the coordinator owns a narrow evaluator fix to rebind only the newly generated portal fingerprint, preserving original geometry/provenance and the failed run. **No candidate behavior metric can be inferred from run-001.** The subsequent fresh execution and its outcome audit are separate from this failure record.
+
+### Narrow evaluator correction before run-002
+
+Reviewed the binding-only runner correction committed by the coordinator as `d40fe50`; runner SHA256 `822c9783522356f520b2db6a7963fb49f4a551986ea7dd88391af174dc3bb469`. The original portal is validated against its original scene before copying; only the new copy's `scene_digest` is rebound, and that copy is then validated against the exact new scene. Existing profiles are compared by full values, and old/new digests are retained in the profile manifest. No rule, proxy, boundary, wait, direction threshold or truth was changed.
+
+Independently ran all **17 evaluator tests**, then built the actual 45 mappings into a disposable temporary directory without calling analysis. All eight real `PortalGate` bindings validated; every new scene differed only by its exact `inner_line`; every new portal differed only in `scene_digest`; C5 retained five vertices; and all 17 original protected hashes matched before/after. This verifies profile integration rather than candidate behavior. The failed canonical run-001 remains untouched; the fresh run-002 must carry its own final provenance.
 
 ## Current review scope and conservative ambiguity limitation
 
@@ -32,7 +163,7 @@ The correction checks the complete adjacent actual-box association graph before 
 
 Independent `test_known_limit_ambiguous_run_veto_suppresses_even_fresh_episode` demonstrates the limitation: competing boxes only at 0/.1s, a many-predecessor edge at .2s, unique stationary outside observations afterward, a new candidate at .6s and then a complete two-boundary passage. Both old and new candidates remain suspected. The test asserts the **present suppression**, not a successful fresh episode. A safe future recovery must both discard ambiguous origin/proof and prevent old pending evidence from consuming a fresh episode. The coordinator explicitly deferred that change before any actual comparison result was seen; it is not tuned from replay outcomes. Already confirmed passage remains sticky when later competition appears.
 
-The draft correction tested from a single in-memory source load had `dual_boundary.py` SHA256 `b3d61cbe499f4dcaafd2ee8a79e5f65987fbe69adc4152037833db19c0e6d4f6`; the then-current 24 independent tests all passed. Exact frozen acceptance still requires the commit-specific rerun below. Read-only actual geometry validation retained all eight contours, C5's five vertices and C8 endpoint reversal. The canonical draft-manifest SHA256 is `d9364ed671e0f4cb545af2bcdde9a321d423826737a07f92cd9b567892d7d56f`; all 17 protected registry/scene/portal hashes matched. Old manifest approval flags remain untouched; current authorization is the later explicit plan.
+The draft correction tested from a single in-memory source load had `dual_boundary.py` SHA256 `b3d61cbe499f4dcaafd2ee8a79e5f65987fbe69adc4152037833db19c0e6d4f6`; the then-current 24 independent tests all passed. Commit-specific frozen acceptance is recorded above. Read-only actual geometry validation retained all eight contours, C5's five vertices and C8 endpoint reversal. The canonical draft-manifest SHA256 is `d9364ed671e0f4cb545af2bcdde9a321d423826737a07f92cd9b567892d7d56f`; all 17 protected registry/scene/portal hashes matched. Old manifest approval flags remain untouched; current authorization is the later explicit plan.
 
 ## Historical follow-up checkpoint — 278c463 required corrections
 
