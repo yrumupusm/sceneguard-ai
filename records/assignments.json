@@ -701,6 +701,19 @@
       "synthetic": false,
       "task_id": "task_852ab521a284",
       "title": "안쪽 접근 이력·경계 소실 확인 · 013·015"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "설정 기본 에이전트 (native 모델 미명시)",
+      "assigned_at": "2026-11-04T14:24:15.406435+00:00",
+      "dispatch_id": "ctx_08d783c20668",
+      "experiment_id": "EXP-0058",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_eaef6676cc84",
+      "title": "재출현 유예·접근 이력 확인 결합 · 013·015"
     }
   ],
   "schema_version": 1
