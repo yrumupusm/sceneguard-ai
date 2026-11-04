@@ -43,6 +43,36 @@ def fixture(mirror=False, total=41):
 def compute(data):return loss_appearance_candidates(*data,SCOPE,'run')
 
 
+def ambiguous_fixture(mirror=False, earlier_approach=True):
+    """Measured origin and actual loss; no terminal signed motion or flow."""
+    b, fs, s = fixture(mirror)
+    rows = []
+    for i in range(5 if earlier_approach else 10,21):
+        x = .63 + max(0,10-i)*.02 if earlier_approach else .63
+        if mirror:x = 1-x
+        box = dict(cache_index=0,score=.9,bbox=[x-.025,.4,x+.025,.6],
+                   observed=True,track_ids=[7])
+        fs[i]['actual_boxes'] = [deepcopy(box)]
+        rows.append(dict(pts=i/10,frame_index=i,**box))
+    b['segments'][0]['rows'] = rows
+    return b, fs, s
+
+
+def competing_fixture(mirror=False, strong_end=21):
+    """Separate measured source boxes, one destination context, two clocks."""
+    b, fs, s = ambiguous_fixture(mirror)
+    strong = dict(id='strong',raw_id=8,rows=[])
+    for i in range(strong_end-10,strong_end+1):
+        x = .73-(i-(strong_end-10))*.01
+        if mirror:x = 1-x
+        box = dict(cache_index=2,score=.9,bbox=[x-.025,.15,x+.025,.35],
+                   observed=True,track_ids=[8])
+        fs[i]['actual_boxes'].append(deepcopy(box))
+        strong['rows'].append(dict(pts=i/10,frame_index=i,**box))
+    b['segments'].append(strong)
+    return b, fs, s
+
+
 def analyze_fixture(data):
     b, fs, s = data
     region = make_region(s,'C3',s['approach_polygon'],reference_pts=0,note='synthetic')
@@ -191,6 +221,11 @@ class LossAppearanceTests(unittest.TestCase):
                     bb=[x-.025,.4,x+.025,.6]
                     if case=='wrong_gate':bb=[x-.025,.01,x+.025,.15]
                     r['bbox']=bb;fs[r['frame_index']]['actual_boxes'][0]['bbox']=bb
+                if case=='standing':
+                    # Continued actual presence is not loss. A stationary
+                    # terminal history followed by real loss is tested below.
+                    fs[27]['actual_boxes'].append(dict(cache_index=3,score=.9,
+                        bbox=deepcopy(b['segments'][0]['rows'][-1]['bbox']),observed=True))
             elif case=='existing':
                 fs[19]['actual_boxes'].append(dict(cache_index=1,score=.9,bbox=[.345,.4,.395,.6],observed=True))
             elif case=='same_side':
@@ -350,5 +385,117 @@ class LossAppearanceTests(unittest.TestCase):
         expected=existing_alert_crossing_decision(src,segs,sc)
         sc['inner_line']=[[.6,.2],[.6,.8]]
         self.assertEqual(existing_alert_crossing_decision(src,segs,sc),expected)
+
+    def test_ambiguous_terminal_after_measured_approach_both_directions(self):
+        for mirror in (False,True):
+            data = ambiguous_fixture(mirror)
+            events, decisions = compute(data)
+            self.assertEqual(len(decisions),1)
+            d = decisions[0]
+            self.assertTrue(d['source_direction_uncertain'])
+            self.assertEqual(d['direction_evidence']['direction'],'unknown')
+            self.assertEqual(d['confirmation_supplied_by'],
+                             'qualified_opposite_boundary_first_appearance')
+            self.assertEqual(d['decision_time_pts'],3.)
+            self.assertFalse(d['identity_verified'])
+            self.assertFalse(d['reconstructed_path'])
+            validate_loss_appearance(d,events[0],3.)
+            self.assert_appearance(data,1)
+
+    def test_constant_source_with_actual_loss_is_unknown_not_proven_stationary(self):
+        # Coordinator clarified that zero motion alone is no veto when the
+        # source actually disappears and a qualified opposite appearance follows.
+        for mirror in (False,True):
+            self.assert_appearance(ambiguous_fixture(mirror,False),1)
+
+    def test_parallel_measured_motion_needs_no_historical_gateward_window(self):
+        for mirror in (False,True):
+            b, fs, s = ambiguous_fixture(mirror,False)
+            for n, row in enumerate(b['segments'][0]['rows']):
+                row['bbox'][1::2] = [.3+n*.01,.5+n*.01]
+                fs[row['frame_index']]['actual_boxes'][0]['bbox'] = deepcopy(row['bbox'])
+            self.assert_appearance((b,fs,s),1)
+
+    def test_ambiguous_fallback_keeps_actual_loss_and_destination_guards(self):
+        for mirror in (False,True):
+            for case in ('no_destination','retreat','no_origin','source_gap',
+                         'eof','existing_destination','endcap','same_side','continued_standing'):
+                with self.subTest(mirror=mirror,case=case):
+                    b, fs, s = ambiguous_fixture(mirror)
+                    if case=='no_destination':
+                        for frame in fs[25:30]:frame['actual_boxes']=[]
+                    elif case=='retreat':
+                        for n,row in enumerate(b['segments'][0]['rows'][5:]):
+                            dx = n*.005*(-1 if mirror else 1)
+                            row['bbox'] = [v+dx if k in (0,2) else v for k,v in enumerate(row['bbox'])]
+                            fs[row['frame_index']]['actual_boxes'][0]['bbox']=deepcopy(row['bbox'])
+                    elif case=='no_origin':
+                        b['segments'][0]['rows']=b['segments'][0]['rows'][-2:]
+                    elif case=='source_gap':
+                        for frame in fs[22:]:frame['pts']+=.3;frame['native_pts']+=3
+                    elif case=='eof':fs=fs[:28]
+                    elif case=='existing_destination':
+                        fs[19]['actual_boxes'].append(deepcopy(fs[25]['actual_boxes'][0]))
+                    elif case=='endcap':
+                        for frame in fs[25:30]:frame['actual_boxes'][0]['bbox'][1::2]=[.65,.85]
+                    elif case in ('same_side','continued_standing'):
+                        box=deepcopy(fs[20]['actual_boxes'][0]);box['cache_index']=3
+                        fs[27]['actual_boxes'].append(box)
+                        if case=='same_side':
+                            for frame in fs[25:30]:frame['actual_boxes']=[deepcopy(box)]
+                    self.assertEqual(compute((b,fs,s)),([],[]))
+
+    def test_ambiguous_single_birth_and_prefixes(self):
+        for mirror in (False,True):
+            data=ambiguous_fixture(mirror)
+            other=deepcopy(data[0]['segments'][0]);other.update(id='other',raw_id=8)
+            data[0]['segments'].append(other)
+            full=compute(data)
+            self.assertEqual(len(full[0]),1)
+            for length in (21,26,30,31,41):
+                b,fs,s=deepcopy(data)
+                fs=fs[:length]
+                for seg in b['segments']:
+                    seg['rows']=[r for r in seg['rows'] if r['frame_index']<length]
+                expected=tuple([x for x in values if x['decision_time_pts']<=fs[-1]['pts']] for values in full)
+                self.assertEqual(compute((b,fs,s)),expected)
+
+    def test_same_clock_strong_priority_and_original_evidence_bytes(self):
+        for mirror in (False,True):
+            data=competing_fixture(mirror,strong_end=20)
+            strong_only=deepcopy(data);strong_only[0]['segments']=strong_only[0]['segments'][1:]
+            self.assertEqual(compute(data),compute(strong_only))
+
+    def test_original_strong_serialized_outputs_match_frozen_before(self):
+        # Entire event/evidence dictionaries, including IDs, from the approved
+        # df545f42 frozen source; no newly generated expectation at test time.
+        expected = ('c6c86037996d022e6f21900523783980199d25142f74fe4764332bffa8839b7d',
+                    '3165fa6cec22d0339ee7fbf43edccf7951b0ff655ac341aeca4fe63abf736ae3')
+        for mirror, checksum in zip((False,True),expected):
+            self.assertEqual(digest(compute(fixture(mirror))),checksum)
+
+    def test_later_strong_support_preserved_without_rewriting_earlier_auxiliary(self):
+        for mirror in (False,True):
+            data=competing_fixture(mirror)
+            strong_only=deepcopy(data);strong_only[0]['segments']=strong_only[0]['segments'][1:]
+            strong=compute(strong_only)
+            full=compute(data)
+            full_pipeline=analyze_fixture(data)
+            self.assertEqual(len(full[0]),2)
+            for old,new in zip(strong,full):self.assertEqual(new[1:],old)
+            self.assertEqual([d['decision_time_pts'] for d in full[1]],[3.,3.1])
+            for length in (30,31,32,41):
+                b,fs,s=deepcopy(data);fs=fs[:length]
+                for seg in b['segments']:
+                    seg['rows']=[r for r in seg['rows'] if r['frame_index']<length]
+                expected=tuple([x for x in values if x['decision_time_pts']<=fs[-1]['pts']] for values in full)
+                self.assertEqual(compute((b,fs,s)),expected)
+                prefix_pipeline=analyze_fixture((b,fs,s))
+                for layer in ('cards','scoped_lifecycle'):
+                    for key in ('notification_intents','timeline'):
+                        expected=[r for r in full_pipeline[layer][key]
+                                  if r['decision_time_pts']<=fs[-1]['pts']]
+                        self.assertEqual(prefix_pipeline[layer][key],expected)
+            self.assertEqual(full_pipeline['cards']['counts']['confirmation_notifications'],1)
 
 if __name__=='__main__':unittest.main()

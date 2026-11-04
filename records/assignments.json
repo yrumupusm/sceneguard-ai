@@ -649,6 +649,19 @@
       "synthetic": false,
       "task_id": "task_c53e9ad63fcb",
       "title": "기존 방향 판정 복구와 013 소실·출현 한정 비교"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "configured agent default",
+      "assigned_at": "2026-11-04T10:37:02Z",
+      "dispatch_id": "ctx_2ef6d006f846",
+      "experiment_id": "EXP-0054",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_a36ce0781a7b",
+      "title": "방향 불명확 소실의 보조 확인 · 안→밖 우선 9영상"
     }
   ],
   "schema_version": 1

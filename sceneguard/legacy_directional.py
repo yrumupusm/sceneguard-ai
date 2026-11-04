@@ -185,7 +185,8 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
     Use existing 1 s absence, 6 s pairing, stable origin and finite-gate policies.
     Birth lookback excludes earlier boxes qualifying in the same destination
     gate context. This is region-level first appearance, not a globally new
-    person or a source-to-destination identity match. One birth has one source.
+    person or a source-to-destination identity match. Each branch owns a birth
+    once; later original strong evidence survives an earlier auxiliary claim.
     """
     policy = Policy(**baseline['policy']); ep = EpisodePolicy()
     actual = _actual_rows(frames)
@@ -233,8 +234,13 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
         first_site = gate.locate(recent[0]['bbox'], birth=False)
         displacement = sign*(site['signed_pixels']-first_site['signed_pixels'])
         if (not site['near'] or not 0 <= site['along'] <= 1
-                or displacement > -policy.min_motion_pixels
                 or sign*first_site['signed_pixels'] <= 0):
+            continue
+        # Keep the strong branch byte-for-byte compatible. Only an ambiguous
+        # measured terminal direction may use the opposite appearance as the
+        # missing confirmation evidence; observed net retreat is not ambiguity.
+        auxiliary = displacement > -policy.min_motion_pixels
+        if auxiliary and displacement >= policy.min_motion_pixels:
             continue
         for birth in actual:
             if not last['pts'] < birth['pts'] <= last['pts']+policy.pair_seconds+1e-9:
@@ -286,6 +292,15 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
                 identity_verified=False, reconstructed_path=False, shared_point_lineage_required=False,
                 decision_source='automatic_rule', human_verified=False,
                 confirmation_basis='camera_event_sequence_not_identity_or_ground_truth')
+            if auxiliary:
+                evidence.update(
+                    reason='uncertain_source_direction_loss_then_new_destination_appearance',
+                    source_direction_uncertain=True,
+                    confirmation_supplied_by='qualified_opposite_boundary_first_appearance',
+                    direction_evidence=dict(method='measured_bottom_center_source_displacement',
+                        direction='unknown', signed_toward_pixels=-displacement,
+                        start_pts=recent[0]['pts'], end_pts=last['pts'],
+                        interpretation='insufficient_signed_motion_not_proven_stationarity'))
             eid = digest(dict(scope=scope,run_id=run_id,evidence=evidence))
             raw = dict(segment=segment['id'],raw_id=segment['raw_id'],
                 reason=evidence['reason'],decision_time_pts=at,last_observed_pts=last['pts'],
@@ -299,17 +314,24 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
                 analysis_run_id=run_id,computed_in_current_run=True,rule_implementation=RULE)
             candidates.append(event); decisions.append(evidence)
             break
-    # Allocate each new appearance in causal decision order; ties prefer the
-    # latest source loss. This is evidence ownership, not a unique-person test.
+    # Preserve the original strong allocator independently, in causal order.
+    # Auxiliary claims cannot remove its evidence. At the same decision clock
+    # strong evidence wins; an earlier auxiliary claim can coexist with later
+    # strong support for that birth, without rewriting the earlier timeline.
     ordered = sorted(zip(candidates,decisions),key=lambda pair:(
-        pair[1]['decision_time_pts'],-pair[1]['last_observed_pts'],pair[0]['event_id']))
-    selected = []; claimed = []
+        pair[1]['decision_time_pts'],pair[1].get('source_direction_uncertain',False),
+        -pair[1]['last_observed_pts'],pair[0]['event_id']))
+    selected = []; claimed = []; strong_claimed = []
     for event, decision in ordered:
         birth = decision['destination_first_ref']
+        auxiliary = decision.get('source_direction_uncertain',False)
+        owners = claimed if auxiliary else strong_claimed
         if any(birth['frame_index'] == old['frame_index'] and
-               association(birth['bbox'],old['bbox'],ep.association_overlap) is not None for old in claimed):
+               association(birth['bbox'],old['bbox'],ep.association_overlap) is not None for old in owners):
             continue
         selected.append((event,decision));claimed.append(birth)
+        if not auxiliary:
+            strong_claimed.append(birth)
     return [p[0] for p in selected], [p[1] for p in selected]
 
 
