@@ -8,7 +8,7 @@
 
 첫run-001은 새scene과 원래portal digest 불일치로45개 모두 판정 전 실패했다. 실패 기록을 보존하고 사본의 연결digest만 수정한run-002를 사용한다. 원본 보호 입력204개와 새 프로필17개, 코드 snapshot92개 및 geometry snapshot19개가 보존됐다. GPU·새 검출/추적/flow·모델 추론은0이다. 공식52와006 미확정1건·008 의미 보류·010 사용자 등반 약63초를 분리한다. 웹pending0건이다.
 
-[전체 결과](experiments/EXP-0050-results.md) · [독립 검토](reviews/DUAL_BOUNDARY-independent-review.md) · [결정](decisions/ADR-0028-dual-boundary-passage-comparison.md). 결과 등록·원격 게시·실제 화면 확인 상태는 별도 전달 기록에서 확정한다. 아래 초안 검수 대기는 이번 구현 승인 이전의 이력이다.
+[전체 결과](experiments/EXP-0050-results.md) · [독립 검토](reviews/DUAL_BOUNDARY-independent-review.md) · [결정](decisions/ADR-0028-dual-boundary-passage-comparison.md). EXP-0050 웹등록과GitHub 게시/원문해시 확인은 완료했다. 실제 화면의결론·31개수치와원본6개 재생/되감기를 확인했지만036로딩과이후브라우저응답 실패로 나머지4개 및갱신 유지검증은 미완료다. [전달 기록](experiments/EXP-0050-delivery.md)에 실패영수증과재개범위를 남겼다. 분석을 다시 실행하지 말고 브라우저 전달검증만 이어가면 된다. 아래 초안 검수 대기는 이번 구현 승인 이전의 이력이다.
 
 ---
 
