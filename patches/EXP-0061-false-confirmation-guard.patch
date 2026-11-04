@@ -1,0 +1,268 @@
+--- a/sceneguard/exp0048_application.py
++++ b/sceneguard/exp0048_application.py
+@@ -89,6 +89,13 @@
+                 audit.get('association_ambiguous') or handoff.get('reason') in
+                 ('competing_successors','competing_source_handoffs')):
+             audit.update(outcome=None,reason='ambiguous_correspondence_cannot_release')
++        admission = getattr(engine, 'confirmation_admission', None)
++        if admission is not None and audit.get('outcome') in ('inward_loss', 'outward_crossing_loss'):
++            proposed = dict(audit, automatic_confirmation=True)
++            admitted = admission.admit(proposed, audit.get('measured_loss_context', obs.motion_rows(rid)))
++            if not admitted['automatic_confirmation']:
++                audit.update(outcome=None, reason=admitted['reason'],
++                    confirmation_admission=admitted['confirmation_admission'])
+         audit.update(event_ids=sorted(ids),handoff=handoff)
+         audits.append(audit);counts[audit['reason']]+=1
+         if audit.get('retry_after_pts') is not None:
+--- a/sceneguard/legacy_directional.py
++++ b/sceneguard/legacy_directional.py
+@@ -658,3 +658,101 @@
+         expected.pop(key,None)
+     if event['source_event'].get('evidence') != expected:
+         raise ValueError('Loss/appearance evidence differs from its source candidate')
++
++
++class SourceConfirmationAdmission:
++    """Causal admission only: unresolved source evidence is not positive loss.
++
++    Exact measurement witnesses share uncertainty, never raw IDs or inferred
++    identity. Independently measured crossings do not depend on source loss.
++    The original proposed decision remains available in every blocked result.
++    """
++    RULE = 'source_confirmation_admission_v1'
++    CROSSINGS = frozenset(('visible_gate_crossing_v1',
++        'existing_alert_gate_crossing_v1', 'observed_gate_continuation_v1'))
++
++    @staticmethod
++    def key(row):
++        return (row['frame_index'], row.get('cache_index'), row['pts'], tuple(row['bbox']))
++
++    def __init__(self, baseline, events, decisions, scene):
++        self.scene = scene
++        self.policy = Policy(**baseline['policy'])
++        self.segments = {s['id']: s for s in baseline['segments']}
++        self.contexts = []
++        for event in events:
++            source = event['source_event']
++            evidence = source.get('evidence', source)
++            source_at = event.get('decision_time_pts', -1.)
++            validated_at = max((link['validated_at'] for link in evidence.get('reappearance_links', [])
++                                if link['validated_at'] <= source_at), default=-1.)
++            failures = [f for f in evidence.get('provisional_failures', [])
++                        if f['resolved_at'] > validated_at]
++            expired = [f for f in failures if f['reason'] in
++                ('ambiguous_observations_expired', 'measured_chain_expired')]
++            if not expired:
++                continue
++            at = max(event.get('decision_time_pts', -1.),
++                     max(f['resolved_at'] for f in expired))
++            refs = [r for f in failures if f['resolved_at'] <= at
++                    for k in ('observation_refs', 'competing_refs') for r in f.get(k, [])]
++            terminal = evidence.get('source_last_ref')
++            if terminal is None:
++                segment = self.segments.get(source.get('segment'), {})
++                terminal = next((r for r in segment.get('rows', [])
++                    if r['pts'] == source.get('last_observed_pts')), None)
++            if terminal is not None:
++                refs.append(terminal)
++            if refs:
++                self.contexts.append(dict(available_at=at, source_event_id=event['event_id'],
++                    reason='unresolved_source_association_expired', refs=deepcopy(refs)))
++        for decision in decisions:
++            if self.approach_only(decision):
++                refs = self.rows_for(decision)
++                if refs:
++                    self.contexts.append(dict(available_at=decision['decision_time_pts'],
++                        source_event_id=decision['event_id'],
++                        reason='approach_loss_without_outward_direction', refs=[deepcopy(refs[-1])]))
++
++    @staticmethod
++    def approach_only(decision):
++        return (decision.get('rule_id') == 'inside_approach_history_loss_v1'
++            and decision.get('direction', {}).get('direction') != 'outward')
++
++    def rows_for(self, decision, rows=None):
++        if rows is None:
++            rows = decision.get('measured_loss_context')
++        if rows is None:
++            rows = self.segments.get(decision.get('segment'), {}).get('rows', [])
++        last = decision.get('last_observed_pts', decision['decision_time_pts'])
++        rows = [r for r in rows if r['pts'] <= last]
++        if not rows and decision.get('source_last_ref'):
++            rows = [decision['source_last_ref']]
++        return connected_rows(rows, self.scene, self.policy) if rows else []
++
++    def admit(self, decision, rows=None):
++        if not decision.get('automatic_confirmation') or decision.get('rule_id') in self.CROSSINGS:
++            return decision
++        at = decision['decision_time_pts']
++        measured = self.rows_for(decision, rows)
++        keys = {self.key(r) for r in measured}
++        reasons = []
++        if self.approach_only(decision):
++            reasons.append(dict(reason='approach_loss_without_outward_direction',
++                                source_event_id=decision.get('event_id'), matched_refs=[]))
++        for context in self.contexts:
++            if context['available_at'] > at:
++                continue
++            matched = [r for r in context['refs'] if r['pts'] <= at and self.key(r) in keys]
++            if matched:
++                reasons.append(dict(reason=context['reason'],
++                    source_event_id=context['source_event_id'], available_at=context['available_at'],
++                    matched_refs=deepcopy(matched)))
++        if not reasons:
++            return decision
++        result = deepcopy(decision)
++        result.update(status='침입 의심', automatic_confirmation=False, notify=False,
++            reason='source_confirmation_not_admitted',
++            confirmation_admission=dict(rule_id=self.RULE, admitted=False,
++                reasons=reasons, proposed_decision=deepcopy(decision)))
++        return result
+--- a/sceneguard/mvp_pipeline.py
++++ b/sceneguard/mvp_pipeline.py
+@@ -232,6 +232,11 @@
+         runtime_bundle = dict(deepcopy(bundle), events=candidates)
+         decisions.extend(rules.confirmations(runtime_baseline, runtime_bundle, scene, engine, run_id))
+         history['events'].extend(candidates)
++    if 'inner_line' in scene and backend is None:
++        from .legacy_directional import SourceConfirmationAdmission
++        admission = SourceConfirmationAdmission(runtime_baseline, history['events'], decisions, scene)
++        decisions[:] = [admission.admit(d) for d in decisions]
++        engine.confirmation_admission = admission
+     comparison = rules.births(frames, scene, region, scope['camera_id'])
+     events = [normalize_portal(r, scope, bundle['video_id'], run_id)
+               for r in comparison['portal_events']]
+--- /dev/null
++++ b/tests/test_source_confirmation_admission.py
+@@ -0,0 +1,131 @@
++from copy import deepcopy
++import unittest
++from test_legacy_directional import fixture, ambiguous_fixture, compute
++from test_combined_hold_approach import case
++from test_inner_loss_candidates import analyze, generate
++from test_reappearance_hold import put, prefix
++from sceneguard.legacy_directional import SourceConfirmationAdmission as Guard
++
++
++def decision(rows, **kw):
++    return dict(dict(rule_id='gate_history_loss_v1', automatic_confirmation=True,
++        status='침입 확인', notify=True, event_id='proposal', segment='source',
++        decision_time_pts=rows[-1]['pts']+1, last_observed_pts=rows[-1]['pts'],
++        direction={'direction':'inward'}), **kw)
++
++
++def context(data, available=2.8):
++    rows=data[0]['segments'][0]['rows']
++    return dict(event_id='uncertain-source', decision_time_pts=3., source_event=dict(segment='source',
++        last_observed_pts=rows[-1]['pts'], provisional_failures=[
++            dict(reason='ambiguous_geometric_correspondence',resolved_at=2.5,
++                competing_refs=[deepcopy(rows[3])]),
++            dict(reason='ambiguous_observations_expired',resolved_at=available)]))
++
++
++class AdmissionTests(unittest.TestCase):
++    def test_unknown_approach_retains_candidate_and_original_decision(self):
++        data=case();before=deepcopy(data);result=analyze(data)
++        ds=[d for d in result['seed_decisions'] if d['rule_id']=='inside_approach_history_loss_v1']
++        self.assertTrue(ds)
++        self.assertTrue(all(not d['automatic_confirmation'] and d['status']=='침입 의심' for d in ds))
++        self.assertTrue(all(d['confirmation_admission']['proposed_decision']['automatic_confirmation'] for d in ds))
++        self.assertEqual(data,before)
++        self.assertTrue(result['cards']['events'])
++        self.assertFalse(any(c.get('first_confirmation_pts') is not None for c in result['cards']['cards']))
++
++    def test_unknown_approach_same_source_cannot_bypass_via_appearance(self):
++        result=analyze(ambiguous_fixture())
++        ds=[d for d in result['seed_decisions'] if d['rule_id']=='directional_loss_appearance_v1']
++        self.assertTrue(ds);self.assertTrue(all(not d['automatic_confirmation'] for d in ds))
++
++    def test_strong_independent_appearance_remains(self):
++        result=analyze(fixture(True))
++        self.assertTrue(any(d['automatic_confirmation'] and d['rule_id']=='directional_loss_appearance_v1' for d in result['seed_decisions']))
++
++    def test_ambiguity_expiry_is_not_positive_loss_and_no_raw_id_join(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];event=context(data)
++        guard=Guard(data[0],[event],[],data[2]);d=decision(rows)
++        blocked=guard.admit(d);self.assertFalse(blocked['automatic_confirmation']);self.assertTrue(d['automatic_confirmation'])
++        changed=deepcopy(rows)
++        for r in changed:r['cache_index']+=100;r['bbox']=[x+.001 for x in r['bbox']]
++        self.assertTrue(guard.admit(d,changed)['automatic_confirmation'])
++
++    def test_exact_competing_witness_blocks_later_legacy_source(self):
++        data=fixture();event=context(data);rows=deepcopy(data[0]['segments'][0]['rows'])
++        event['source_event']['segment']='other-source'
++        event['source_event']['last_observed_pts']=-1
++        guard=Guard(data[0],[event],[],data[2]);d=decision(rows)
++        self.assertFalse(guard.admit(d)['automatic_confirmation'])
++        rows[3]['cache_index']+=1
++        self.assertTrue(guard.admit(d,rows)['automatic_confirmation'])
++
++    def test_future_failure_cannot_block_prior_decision(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];event=context(data,available=3.1)
++        guard=Guard(data[0],[event],[],data[2]);self.assertTrue(guard.admit(decision(rows))['automatic_confirmation'])
++
++    def test_future_emitted_source_cannot_backdate_taint(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];event=context(data)
++        event['decision_time_pts']=4.
++        self.assertTrue(Guard(data[0],[event],[],data[2]).admit(decision(rows))['automatic_confirmation'])
++
++    def test_future_bridge_cannot_resolve_past_uncertainty(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];event=context(data)
++        event['source_event']['reappearance_links']=[dict(validated_at=99.)]
++        self.assertFalse(Guard(data[0],[event],[],data[2]).admit(decision(rows))['automatic_confirmation'])
++
++    def test_validated_bridge_resolves_earlier_failed_provisional_context(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];event=context(data)
++        event['source_event']['reappearance_links']=[dict(validated_at=2.9)]
++        self.assertTrue(Guard(data[0],[event],[],data[2]).admit(decision(rows))['automatic_confirmation'])
++
++    def test_disconnected_suffix_does_not_inherit_uncertainty(self):
++        data=fixture();event=context(data);rows=deepcopy(data[0]['segments'][0]['rows'])
++        tail=deepcopy(rows[-1]);tail.update(pts=4.,frame_index=40,cache_index=8)
++        guard=Guard(data[0],[event],[],data[2])
++        self.assertTrue(guard.admit(decision(rows+[tail]),rows+[tail])['automatic_confirmation'])
++
++    def test_independent_observed_crossings_survive_shared_refs(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];guard=Guard(data[0],[context(data)],[],data[2])
++        for rule in Guard.CROSSINGS:
++            d=decision(rows,rule_id=rule);self.assertEqual(guard.admit(d),d)
++
++    def test_matching_outward_feature_direction_is_not_approach_only(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];d=decision(rows,
++            rule_id='inside_approach_history_loss_v1',direction={'direction':'outward'})
++        self.assertTrue(Guard(data[0],[],[d],data[2]).admit(d)['automatic_confirmation'])
++
++    def test_measured_chain_expiry_is_unresolved(self):
++        data=fixture();event=context(data);event['source_event']['provisional_failures'][-1]['reason']='measured_chain_expired'
++        rows=data[0]['segments'][0]['rows'];self.assertFalse(Guard(data[0],[event],[],data[2]).admit(decision(rows))['automatic_confirmation'])
++
++    def test_input_order_does_not_change_source_admission(self):
++        data=fixture();rows=data[0]['segments'][0]['rows'];events=[context(data),context(data,2.9)]
++        d=decision(rows)
++        for ordered in [events,events[::-1]]:self.assertFalse(Guard(data[0],ordered,[],data[2]).admit(d)['automatic_confirmation'])
++
++    def test_no_approach_or_retreat_does_not_invent_confirmation(self):
++        data=case(last=40)
++        for f in data[1][32:41]:f['actual_boxes'][0]['bbox']=[.615,.4,.665,.6]
++        self.assertFalse(any(d['automatic_confirmation'] for d in analyze(data)['seed_decisions']))
++
++    def test_eof_unresolved_hold_is_not_loss(self):
++        data=case(total=71,last=70)
++        self.assertEqual(generate(data),([],[]));self.assertFalse(any(d['automatic_confirmation'] for d in analyze(data)['seed_decisions']))
++
++    def test_prefix_causality_and_future_return(self):
++        data=case(last=40);full=analyze(data)
++        for index in (23,24,25,26,40,49,50,60):
++            out=analyze(prefix(data,index))
++            self.assertEqual(out['seed_decisions'],[d for d in full['seed_decisions'] if d['decision_time_pts']<=index/10])
++        put(data,range(65,71),.60)
++        self.assertEqual(analyze(data)['seed_decisions'],full['seed_decisions'])
++
++    def test_relabeling_ids_cannot_change_decisions(self):
++        data=case(last=40);before=analyze(data)
++        for s in data[0]['segments']:s['id']='renamed-'+s['id'];s['raw_id']=9999
++        after=analyze(data)
++        self.assertEqual([(d['decision_time_pts'],d['automatic_confirmation']) for d in before['seed_decisions']],
++                         [(d['decision_time_pts'],d['automatic_confirmation']) for d in after['seed_decisions']])
++
++if __name__=='__main__':unittest.main()

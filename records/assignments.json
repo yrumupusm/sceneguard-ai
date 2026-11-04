@@ -740,6 +740,19 @@
       "synthetic": false,
       "task_id": "task_a85bcd56fda3",
       "title": "고정 결합 규칙 · 전체45영상 및 늦은 확인 분석"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "설정 기본 에이전트 (native 모델 미명시)",
+      "assigned_at": "2026-11-04T17:00:47.952760+00:00",
+      "dispatch_id": "ctx_6021ee36667f",
+      "experiment_id": "EXP-0061",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_222624e57ab8",
+      "title": "검수 오탐 우선 억제 · 첫5영상 비교"
     }
   ],
   "schema_version": 1
