@@ -54,7 +54,7 @@ BEFORE는 canonical data root의 다음 **선택된 after 자료**다.
 
 후보 실행에는 코디네이터가 준 실제 Git commit을 `--implementation-revision`, 실제 구현 checkout을 `--code-root`, 확정한 선택 scene key를 `--scene-key`로 추가하고 `--mode replay`를 지정한다. `--videos 10 13 15 21 28 34 36 43 44 45`는 subset이고, 생략하면 full45다. CPU workers는 1/2/4 중 선택하며 기본4다. 코디네이터 인터페이스 전달 전 후보 실행은 금지한다.
 
-현재 제안한 인터페이스는 `scene[KEY] = draft_normalized`다. 평가기가 canonical `outputs/region-revisions/inside-boundary-draft-20261104-v1/draft-manifest.json`의 카메라별 polyline을 새 output `profiles/Cn-scene.json`에 넣는다. 원래 scene의 `line`·zones와 portal은 보존하고, portal도 새 프로필 폴더에 바이트 복사한다. C5의 꺾인5정점을 직선으로 단순화하지 않는다. `profile-manifest.json`이 exact polyline/원래 geometry 경로/새 profile 경로/key를 묶는다. scene key에 다른 구조가 필요하면 후보 결과를 보기 전에 코디네이터를 통해 계약을 수정한다. 초안 manifest의 과거 pending/applied 상태를 덮어쓰지 않으며, 이번 구현 승인 출처는 상위 계획이다.
+현재 제안한 인터페이스는 `scene[KEY] = draft_normalized`다. 평가기가 canonical `outputs/region-revisions/inside-boundary-draft-20261104-v1/draft-manifest.json`의 카메라별 polyline을 새 output `profiles/Cn-scene.json`에 넣는다. 원래 scene의 `line`·zones와 원본 portal은 보존한다. 새 portal 사본은 다각형·출처를 그대로 유지하면서 `scene_digest`만 새 scene에 연결한다. 원본 portal 바이트는 별도 geometry snapshot에 보존한다. C5의 꺾인5정점을 직선으로 단순화하지 않는다. `profile-manifest.json`이 exact polyline/원래 geometry 경로/새 profile 경로/key를 묶는다. scene key에 다른 구조가 필요하면 후보 결과를 보기 전에 코디네이터를 통해 계약을 수정한다. 초안 manifest의 과거 pending/applied 상태를 덮어쓰지 않으며, 이번 구현 승인 출처는 상위 계획이다.
 
 저장 측정값은 C5의014·016·018·020·021·038에 `mvp-c5-v1`, 나머지에 `mvp-all-v3`의 원래 `attempt-1` analysis와 frame-evidence를 사용한다. `make_bundle`와 `analyze_observations`에 이 자료와 새 geometry만 전달한다. 기존 request/scene/portal/registry를 수정하지 않는다. 모델/GPU/검출/추적/flow/영상 디코딩 호출 경로는 없다. 새 CPU 규칙 판정과 과거 카드 기준 재평가이며 새 추론이 아니다.
 
@@ -114,3 +114,10 @@ canonical 실제 자료의 `preparation-001`은 11.434초 wall / 11.073초 paren
 현재 focused runner fixture17개가 통과했다. 이른 통지 보존·사건별 손실/이득·전체 누락·미검수 알림·정답 변조 거절·006/008 보존·옛 report 거절·카드 누락·미확인 출발/연결 보존·새 C5 프로필·소스 변경 탐지·확정 commit 파일 누락 거절·격리 import·worker 성공/실패 산출물을 검사한다. pipeline 호출 시험은 stub fixture이며 실제 후보 행동 개선을 측정한 것이 아니다. 후보 실행·실제 행동 비교·독립 검토·기본 채택은 아직 미완료다.
 
 최종 준비 실행의 runner SHA256은 `c2d86d3ca9fedc50b8452b1b70225326bb605e443b88a2408b4eb6b3665af9fc`, 고정 protocol SHA256은 `7e528b56577899818f933e3aecd7bee6b3748c76578e1061b3f445fbdf642d7d`다. `preparation-003/code_snapshot`의 runner와 현재 파일이 일치함을 확인했다. 후보 revision/key는 아직 전달받지 않았으므로 이 커밋은 준비 완료만 뜻한다.
+
+
+## 첫 실제 실행의 연결 오류와 수정
+
+`run-001`은 통합 소스 `de72c5ff538cf5351384d1afd9dd563aebb1cded`에서 전체45개를 시작했지만, 새 scene에 `inner_line`을 추가하고 portal의 원래 scene digest를 그대로 복사해45개 모두 `PortalGate` 연결 검사에서 실패했다. 완료 영상0개, 성능 집계 없음, wall33.043104초다. 보호 입력204개와 소스/snapshot 불변 검사는 통과했으며 실패 출력은 보존한다. 합성 worker stub은 이 실제 프로필 연결을 검증하지 못했다.
+
+평가기의 새 사본 생성만 수정한다. 원본 scene/portal의 연결을 먼저 실제 `PortalGate`로 확인하고 새 scene에 대해 portal 사본의 `scene_digest`만 갱신한다. 다각형·카메라·크기·출처는 변경하지 않는다. 변경 전후 digest를 profile manifest에 기록하고 새 사본도 실제 `PortalGate`로 검증한 뒤에만 jobs를 시작한다. 같은 카메라 재사용에서 두 사본이 일치하는지도 확인한다. 실제 Gate 연결, 원래 사본 거절, 손상된 원본 연결 거절, 다각형/출처 동일성을 기존 profile 회귀에 추가했고 runner17개 시험이 통과했다. 규칙·임계값·평가 정의는 바꾸지 않았으며 새 출력 `run-002`에서 재실행한다.

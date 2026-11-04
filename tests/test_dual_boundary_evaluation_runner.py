@@ -214,21 +214,41 @@ class ExecutionBoundaryTests(unittest.TestCase):
             subprocess.run([sys.executable, '-I', '-c', code], check=True, capture_output=True)
 
     def test_profile_preserves_bent_polyline_and_archived_geometry(self):
+        from sceneguard.portal_births import PortalGate, make_region, digest
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder); output = root / 'new'; output.mkdir()
             scene = root / 'scene.json'; portal = root / 'portal.json'
-            write(scene, dict(line=[[.1, .2], [.3, .4]], zones={}))
-            write(portal, dict(vertices=[[0, 0], [1, 1]]))
+            original_scene = dict(source_size=[1000, 1000], line=[[.45,.2],[.45,.8]],
+                approach_polygon=[[.3,.1],[.7,.1],[.7,.9],[.3,.9]],
+                zones={'outside':[[0,0],[.44,0],[.44,1],[0,1]],
+                       'inside':[[.56,0],[1,0],[1,1],[.56,1]]},
+                directions=['outside_to_inside','inside_to_outside'])
+            original_portal = make_region(original_scene, 'C5',
+                [[.4,.2],[.6,.2],[.6,.8],[.4,.8]], reference_pts=0., note='synthetic fixed portal')
+            write(scene, original_scene)
+            write(portal, original_portal)
             before = runner.hashes([scene, portal])
             polyline = [[.2, .1], [.3, .2], [.29, .3], [.4, .4], [.8, .7]]
             write(root / runner.DRAFT, dict(cameras=[dict(camera='C5', group_videos=['014'], draft_normalized=polyline)]))
             paths = [scene] * 4 + [scene, portal]
             with patch.object(runner, 'source_paths', return_value=(root, dict(camera='C5'), paths)):
-                profiles = runner.build_profiles([14], root, output, 'reviewed_boundary')
+                profiles = runner.build_profiles([14,14], root, output, 'reviewed_boundary')
             actual = runner.read(profiles['C5']['scene'])
             self.assertEqual(actual['reviewed_boundary'], polyline)
             self.assertEqual(actual['line'], runner.read(scene)['line'])
+            revised_portal = runner.read(profiles['C5']['portal'])
+            PortalGate(actual, revised_portal, 'C5')
+            self.assertEqual(revised_portal['scene_digest'], digest(actual))
+            self.assertEqual({k:v for k,v in revised_portal.items() if k != 'scene_digest'},
+                             {k:v for k,v in original_portal.items() if k != 'scene_digest'})
+            with self.assertRaisesRegex(ValueError, 'Portal must bind'):
+                PortalGate(actual, original_portal, 'C5')
             runner.verify_hashes(before)
+            original_portal['scene_digest'] = '0'*64
+            write(portal, original_portal)
+            with patch.object(runner, 'source_paths', return_value=(root, dict(camera='C5'), paths)):
+                with self.assertRaisesRegex(ValueError, 'Portal must bind'):
+                    runner.build_profiles([14], root, root / 'bad', 'reviewed_boundary')
 
     def test_frozen_revision_rejects_deleted_package_file(self):
         with tempfile.TemporaryDirectory() as folder:

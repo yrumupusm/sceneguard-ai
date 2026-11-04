@@ -294,6 +294,8 @@ def comparison(before, after, reports):
 
 
 def build_profiles(numbers, data_root, output, scene_key):
+    # In replay this import resolves inside the already-validated code snapshot.
+    from sceneguard.portal_births import PortalGate, digest
     if not scene_key or not scene_key.isidentifier():
         raise ValueError('Explicit frozen optional scene key required')
     draft = read(data_root / DRAFT)
@@ -305,20 +307,28 @@ def build_profiles(numbers, data_root, output, scene_key):
         if f'{number:03d}' not in geometry['group_videos']:
             raise ValueError('Draft camera mapping does not include source')
         scene = read(paths[4]); line = geometry['draft_normalized']
+        original_portal = read(paths[5])
+        PortalGate(scene, original_portal, camera)
         if scene_key in scene:
             raise ValueError('Optional scene key already exists in archived scene')
         if len(line) < 2 or any(len(p) != 2 or any(type(x) not in (int, float) or not 0 <= x <= 1 for x in p) for p in line):
             raise ValueError('Normalized reviewed draft polyline required')
         scene[scene_key] = deepcopy(line)
+        revised_portal = deepcopy(original_portal)
+        revised_portal['scene_digest'] = digest(scene)
+        PortalGate(scene, revised_portal, camera)
         target = output / 'profiles' / f'{camera}-scene.json'
         if camera not in profiles:
             save(target, scene)
             portal = output / 'profiles' / f'{camera}-portal.json'
-            shutil.copyfile(paths[5], portal)
+            save(portal, revised_portal)
             profiles[camera] = dict(scene=str(target.resolve()), portal=str(portal.resolve()),
                                     scene_key=scene_key, exact_draft_polyline=line,
+                                    archived_portal_scene_digest=original_portal['scene_digest'],
+                                    revised_portal_scene_digest=revised_portal['scene_digest'],
+                                    portal_change='scene_digest_only; original polygon and provenance preserved',
                                     archived_scene=str(paths[4]), archived_portal=str(paths[5]))
-        elif read(target) != scene or sha(profiles[camera]['portal']) != sha(paths[5]):
+        elif read(target) != scene or read(profiles[camera]['portal']) != revised_portal:
             raise ValueError('One camera has conflicting source geometry')
     save(output / 'profiles/profile-manifest.json', profiles)
     return profiles
