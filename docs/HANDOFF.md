@@ -8,7 +8,7 @@
 
 관련397시험·독립50방법(새 결합13+이전37)이 통과했고, 양쪽 기능이 모두 필요한 합성과 각 기능 비활성 비교를 확인했다. 고정85모듈 manifest는0bbc027070af9f981b6e0aa1257e2251f97729c3e7821796bc9003d37d87bece, 기본85모듈은970c3ed9 그대로다. [실험 패치](experiments/patches/EXP-0058-combined-hold-approach.patch)를 기준bc4906e에 적용해 고정 소스·시험과 같음을 격리 인덱스로 검증했다. 기본 채택 보류이며 추가9/45개 실행은 없다.
 
-결과는 outputs/validation/combined-hold-approach-v1/run-001, 실행·검토·전달 근거는 runtime/combined-hold-approach-v1에 있다. 독립 저장 결과 검토는 통과했다. 최종 공개 기록·등록·GitHub 게시·실제 화면 확인은 진행 중이다.
+결과는 outputs/validation/combined-hold-approach-v1/run-001, 실행·검토·전달 근거는 runtime/combined-hold-approach-v1에 있다. [결과](experiments/EXP-0058-results.md)·40측정·[독립 검토](reviews/EXP-0058-coordinator-review.md)·binding 등록, GitHubce79cdd 게시와 원격 바이트 검증, 실제 로컬 화면40행·주기 갱신 확인을 완료했다. 등록 미디어0이므로 영상 재생 검증은 아니다. [전달 기록](experiments/EXP-0058-delivery.md). 운영85모듈·기존 공개375파일·60카탈로그/54배정 보존을 확인했고 두 담당 반환 완료·남은 반환 대상0이다.
 
 ---
 
