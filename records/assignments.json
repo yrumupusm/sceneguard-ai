@@ -688,6 +688,19 @@
       "synthetic": false,
       "task_id": "task_e6d6590eac2c",
       "title": "재출현 지속 확인과 안쪽 출발 이력 · 013·015"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "설정 기본 에이전트 (native 모델 미명시)",
+      "assigned_at": "2026-11-04T13:57:16Z",
+      "dispatch_id": "ctx_06736633a887",
+      "experiment_id": "EXP-0057",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_852ab521a284",
+      "title": "안쪽 접근 이력·경계 소실 확인 · 013·015"
     }
   ],
   "schema_version": 1
