@@ -753,6 +753,19 @@
       "synthetic": false,
       "task_id": "task_222624e57ab8",
       "title": "검수 오탐 우선 억제 · 첫5영상 비교"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "설정 기본 에이전트 (native 모델 미명시)",
+      "assigned_at": "2026-11-04T17:40:34.656481+00:00",
+      "dispatch_id": "ctx_8c51ffb47dfb",
+      "experiment_id": "EXP-0062",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_5456d547529b",
+      "title": "고정 오탐 억제안 · 나머지40영상 변화 비교"
     }
   ],
   "schema_version": 1
