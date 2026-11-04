@@ -1,0 +1,801 @@
+diff --git a/sceneguard/legacy_directional.py b/sceneguard/legacy_directional.py
+index 3b988b6..e7c062c 100644
+--- a/sceneguard/legacy_directional.py
++++ b/sceneguard/legacy_directional.py
+@@ -14,6 +14,7 @@ from .gate_episode_evidence import EpisodePolicy, Gate, association
+ from .incident_lifecycle import digest
+ 
+ RULE = 'directional_loss_appearance_v1'
++REAPPEARANCE_RULE = 'inside_source_reappearance_hold_v1'
+ 
+ 
+ def boundary_zone(row, scene):
+@@ -65,17 +66,89 @@ class BoundaryGate(Gate):
+         return min(choices,key=lambda r:(r['distance_pixels'],r['segment']))
+ 
+ 
++def _measurement_ref(row):
++    return {k: deepcopy(row[k]) for k in ('pts', 'frame_index', 'cache_index', 'bbox')}
++
++
++def _box_step(a, b, scene, policy):
++    """Existing position/scale bounds, without assuming a time interval."""
++    ah, bh = a['bbox'][3]-a['bbox'][1], b['bbox'][3]-b['bbox'][1]
++    aw, bw = a['bbox'][2]-a['bbox'][0], b['bbox'][2]-b['bbox'][0]
++    return (b['pts'] > a['pts'] and b['frame_index'] > a['frame_index']
++        and min(ah, bh, aw, bw) > 0
++        and max(ah/bh, bh/ah, aw/bw, bw/aw) <= policy.scale_jump
++        and math.dist(center(a, scene['source_size']), center(b, scene['source_size']))
++        <= .5*max(ah, bh)*scene['source_size'][1])
++
++
++def _source_site(row, scene):
++    side = boundary_zone(row, scene)
++    if side == 'inside':
++        return True
++    if side is not None:
++        return False
++    site = BoundaryGate(scene, 'inside').locate(row['bbox'], birth=False)
++    return site['near'] and 0 <= site['along'] <= 1
++
++
++def _corresponds(a, b, scene, policy):
++    return (_box_step(a, b, scene, policy)
++        and association(a['bbox'], b['bbox'], EpisodePolicy().association_overlap) is not None)
++
++
++def _validated_bridge(a, b, rows, scene, policy):
++    """Only derived context links with complete measured witnesses in this prefix.
++
++    This joins origin context, never interpolated positions or point motion.
++    Original input rows have no such link and retain the .25 s suffix rule.
++    """
++    link = b.get('source_reappearance_link', {})
++    if (link.get('rule_id') != REAPPEARANCE_RULE
++            or link.get('anchor_ref') != _measurement_ref(a)
++            or b['pts']-a['pts'] > policy.loss_wait+1e-9
++            or not _corresponds(a, b, scene, policy)):
++        return False
++    refs = link.get('observation_refs', [])
++    origin = link.get('origin_refs', [])
++    if (len(refs) < policy.stable_observations or not origin
++            or refs[0] != _measurement_ref(b)
++            or refs[-1]['pts']-refs[0]['pts'] < policy.stable_seconds-1e-9
++            or link.get('validated_at') != refs[-1]['pts']
++            or link['validated_at'] > rows[-1]['pts']):
++        return False
++    present = {(r['frame_index'], r.get('cache_index')): r for r in rows}
++    admitted = {(r['frame_index'], r['cache_index']): r
++                for r in link.get('origin_actual_refs', [])}
++    for ref in origin+refs:
++        row = present.get((ref['frame_index'], ref['cache_index']))
++        actual = admitted.get((ref['frame_index'], ref['cache_index']), row)
++        if (row is None or _measurement_ref(row) != ref
++                or actual is None or _measurement_ref(actual) != ref
++                or actual.get('score', 0) < EpisodePolicy().detection_floor
++                or actual.get('observed') is False or actual.get('predicted') is True
++                or actual.get('confirmed') is False
++                or row.get('observed') is False or row.get('predicted') is True
++                or row.get('confirmed') is False):
++            return False
++    if (len(origin) < policy.stable_observations
++            or origin[-1]['pts']-origin[0]['pts'] < policy.stable_seconds-1e-9
++            or origin[-1]['pts'] > a['pts']
++            or any(boundary_zone(r, scene) != 'inside' for r in origin)):
++        return False
++    return (all(_source_site(r, scene) for r in refs)
++        and all(_box_step(x, y, scene, policy)
++            and y['pts']-x['pts'] <= policy.max_direction_step+1e-9
++            for chain in (origin, refs) for x, y in zip(chain, chain[1:]))
++        and all(_corresponds(x, y, scene, policy) for x, y in zip(refs, refs[1:])))
++
++
+ def connected_rows(rows, scene, policy=Policy()):
+-    """Actual contiguous suffix only; raw ID never bridges gaps or box jumps."""
++    """Actual suffix, with validated derived links for origin context only."""
+     start = 0
+     for i, (a, b) in enumerate(zip(rows, rows[1:]), 1):
+-        ah, bh = a['bbox'][3]-a['bbox'][1], b['bbox'][3]-b['bbox'][1]
+-        aw, bw = a['bbox'][2]-a['bbox'][0], b['bbox'][2]-b['bbox'][0]
+-        if (b['pts']-a['pts'] > policy.max_direction_step+1e-9
+-                or b['pts'] <= a['pts'] or b['frame_index'] <= a['frame_index']
+-                or max(ah/bh,bh/ah,aw/bw,bw/aw) > policy.scale_jump
+-                or math.dist(center(a, scene['source_size']), center(b, scene['source_size']))
+-                > .5*max(ah,bh)*scene['source_size'][1]):
++        if (not _box_step(a, b, scene, policy)
++                or (b['pts']-a['pts'] > policy.max_direction_step+1e-9
++                    and not _validated_bridge(a, b, rows[start:], scene, policy))):
+             start = i
+     return rows[start:]
+ 
+@@ -170,6 +243,148 @@ def _actual_rows(frames):
+             and b.get('confirmed') is not False and b.get('score', 0) >= p.detection_floor]
+ 
+ 
++def _inside_reappearance(rows, frames, actual_by_frame, scene, policy):
++    """Resolve the first loss causally; EOF is not a failed provisional chain.
++
++    A new chain must start by the current 1 s deadline. It may finish qualifying
++    after that deadline, but expires only on an observed clock beyond .25 s
++    since its last measurement. Once qualified, actual contiguous observations
++    refresh the loss clock; the next gap requires a fresh qualification.
++    """
++    rows = deepcopy(rows)
++    origin, support = measured_origin(rows, scene, policy)
++    if origin != 'inside':
++        return None
++    pending = []; links = []; failures = []; following = False
++    ambiguous_at = None
++    start = rows[-1]['frame_index']+1
++    for frame in frames[start:]:
++        at = frame['pts']; last = rows[-1]
++        previous = frames[frame['frame_index']-1]
++        if at-previous['pts'] > EpisodePolicy().source_gap_seconds+1e-9:
++            return None
++        if pending and at-pending[-1]['pts'] > policy.max_direction_step+1e-9:
++            failures.append(dict(observation_refs=[_measurement_ref(r) for r in pending],
++                resolved_at=at, reason='measured_chain_expired'))
++            pending = []
++        if ambiguous_at is not None and at-ambiguous_at > policy.max_direction_step+1e-9:
++            failures.append(dict(resolved_at=at, reason='ambiguous_observations_expired',
++                                 last_ambiguous_at=ambiguous_at))
++            ambiguous_at = None
++        # Failure discovered after the deadline emits now, never backdated.
++        if at > last['pts']+policy.loss_wait+1e-9 and not pending and ambiguous_at is None:
++            return dict(rows=rows, loss_ready_at=at, reappearance_links=links,
++                        provisional_failures=failures)
++        anchor = pending[-1] if pending else last
++        matches = [r for r in actual_by_frame.get(frame['frame_index'], [])
++                   if _source_site(r, scene) and _corresponds(anchor, r, scene, policy)]
++        if len(matches) > 1:
++            failures.append(dict(observation_refs=[_measurement_ref(r) for r in pending],
++                competing_refs=[_measurement_ref(r) for r in matches], resolved_at=at,
++                reason='ambiguous_geometric_correspondence'))
++            pending = []; following = False; ambiguous_at = at
++        elif matches:
++            row = matches[0]
++            if ambiguous_at is not None and at > last['pts']+policy.loss_wait+1e-9:
++                # Continuing ambiguous presence may hold, but cannot start a
++                # new bridge outside the already fixed reacquisition window.
++                ambiguous_at = at
++            elif following and at-last['pts'] <= policy.max_direction_step+1e-9:
++                rows.append(deepcopy(row))
++            else:
++                ambiguous_at = None
++                pending.append(row); following = False
++                if (len(pending) >= policy.stable_observations
++                        and at-pending[0]['pts'] >= policy.stable_seconds-1e-9):
++                    link = dict(rule_id=REAPPEARANCE_RULE, anchor_ref=_measurement_ref(last),
++                        origin_refs=[_measurement_ref(r) for r in support],
++                        origin_actual_refs=[deepcopy(next(a for a in actual_by_frame[r['frame_index']]
++                            if _measurement_ref(a) == _measurement_ref(r))) for r in support],
++                        observation_refs=[_measurement_ref(r) for r in pending], validated_at=at)
++                    accepted = deepcopy(pending)
++                    accepted[0]['source_reappearance_link'] = deepcopy(link)
++                    rows.extend(accepted); links.append(link)
++                    pending = []; following = True
++        elif following and at-last['pts'] > policy.max_direction_step+1e-9:
++            following = False
++        if at >= rows[-1]['pts']+policy.loss_wait-1e-9 and not pending and ambiguous_at is None:
++            return dict(rows=rows, loss_ready_at=at, reappearance_links=links,
++                        provisional_failures=failures)
++    return None
++
++
++def _source_pieces(baseline, frames, scene, actual, policy):
++    """Prepare only inside-source context; other branches keep original pieces."""
++    by_ref = {(r['frame_index'], r['cache_index']): r for r in actual}
++    by_frame = {}
++    for row in actual:
++        by_frame.setdefault(row['frame_index'], []).append(row)
++    consumed = set()
++    for segment_index, segment in enumerate(baseline['segments']):
++        pieces = []
++        for row in segment['rows']:
++            if not pieces or len(connected_rows([pieces[-1][-1], row], scene, policy)) == 1:
++                pieces.append([])
++            pieces[-1].append(row)
++        for rows in pieces:
++            if not rows or any((r['frame_index'], r.get('cache_index')) not in by_ref
++                    or _measurement_ref(by_ref[(r['frame_index'], r['cache_index'])]) != _measurement_ref(r)
++                    or r.get('observed') is False or r.get('predicted') is True
++                    or r.get('confirmed') is False for r in rows):
++                continue
++            prepared = dict(rows=rows)
++            if ('inner_line' in scene and 'inside_to_outside' in scene['directions']
++                    and measured_origin(rows, scene, policy)[0] == 'inside'):
++                if (rows[0]['frame_index'], rows[0]['cache_index']) in consumed:
++                    continue
++                prepared = _inside_reappearance(rows, frames, by_frame, scene, policy)
++                if prepared is None:
++                    continue
++                consumed.update((r['frame_index'], r['cache_index']) for r in prepared['rows'])
++            yield dict(segment, **prepared, original_segment_index=segment_index,
++                       original_terminal_ref=deepcopy(rows[-1]))
++
++
++def _qualified_same_side_return(last, frames, actual, scene, policy, decision_at):
++    """Guard a later helper decision without revising an earlier loss event.
++
++    A return after the bridge window cannot inherit origin, but a qualified
++    same-side return before a later destination birth still refutes that pair.
++    An unresolved return at its proposed decision holds that decision only.
++    """
++    by_frame = {}
++    for row in actual:
++        if row['pts'] > last['pts']:
++            by_frame.setdefault(row['frame_index'], []).append(row)
++    chain = []; ambiguous_at = None
++    for frame in frames[last['frame_index']+1:]:
++        at = frame['pts']
++        if at-frames[frame['frame_index']-1]['pts'] > EpisodePolicy().source_gap_seconds+1e-9:
++            return None
++        if chain and at-chain[-1]['pts'] > policy.max_direction_step+1e-9:
++            chain = []
++        if ambiguous_at is not None and at-ambiguous_at > policy.max_direction_step+1e-9:
++            ambiguous_at = None
++        # Resolve an expired hold before considering a new post-decision chain.
++        if at > decision_at+1e-9 and not chain and ambiguous_at is None:
++            return at
++        anchor = chain[-1] if chain else last
++        matches = [r for r in by_frame.get(frame['frame_index'], [])
++            if boundary_zone(r, scene) == 'inside'
++            and association(r['bbox'], last['bbox'], EpisodePolicy().association_overlap) is not None
++            and _corresponds(anchor, r, scene, policy)]
++        if len(matches) > 1:
++            chain = []; ambiguous_at = at
++        elif matches:
++            chain.append(matches[0]); ambiguous_at = None
++            if (len(chain) >= policy.stable_observations
++                    and at-chain[0]['pts'] >= policy.stable_seconds-1e-9):
++                return None
++        if at >= decision_at-1e-9 and not chain and ambiguous_at is None:
++            return at
++    return None
++
++
+ def inner_loss_candidates(baseline, bundle, frames, scene, scope, run_id):
+     """Additional suspicions only; keep source inputs and primary rules intact.
+ 
+@@ -184,85 +399,75 @@ def inner_loss_candidates(baseline, bundle, frames, scene, scope, run_id):
+     policy = Policy(**baseline['policy']).validate()
+     relaxed = RelaxedPolicy().validate(); ep = EpisodePolicy()
+     actual = _actual_rows(frames)
+-    by_ref = {(r['frame_index'], r['cache_index']): r for r in actual}
+     stamps = [f['pts'] for f in frames]
+     lines = list(zip(scene['inner_line'], scene['inner_line'][1:]))
+     events = []; sources = []; claimed = set()
+-    for segment_index, segment in enumerate(baseline['segments']):
+-        pieces = []
+-        for row in segment['rows']:
+-            if not pieces or len(connected_rows([pieces[-1][-1], row], scene, policy)) == 1:
+-                pieces.append([])
+-            pieces[-1].append(row)
+-        for rows in pieces:
+-            if any((r['frame_index'], r.get('cache_index')) not in by_ref
+-                   or any(by_ref[(r['frame_index'], r['cache_index'])][k] != r[k]
+-                          for k in ('bbox', 'pts'))
+-                   or r.get('observed') is False or r.get('predicted') is True
+-                   or r.get('confirmed') is False for r in rows):
+-                continue
+-            origin, origin_refs = measured_origin(rows, scene, policy)
+-            if origin != 'inside':
+-                continue
+-            last = rows[-1]
+-            recent = [r for r in rows if last['pts']-r['pts'] <= relaxed.history_seconds+1e-9]
+-            height = statistics.median((r['bbox'][3]-r['bbox'][1])*scene['source_size'][1]
+-                                       for r in recent)
+-            radius = max(ep.minimum_near_pixels, height*policy.near_line_heights)
+-            support = [r for r in recent if min(_distance_to_segment(
+-                center(r, scene['source_size'], 1.), line, scene['source_size'])
+-                for line in lines) <= radius]
+-            if len(support) < relaxed.min_near_observations:
+-                continue
+-            index = bisect_left(stamps, last['pts']+policy.loss_wait-1e-9)
+-            if index == len(stamps):
+-                continue
+-            at = stamps[index]
+-            clock_rows = frames[rows[0]['frame_index']:index+1]
+-            if (not clock_rows or clock_rows[0]['pts'] != rows[0]['pts']
+-                    or any(b['pts']-a['pts'] > ep.source_gap_seconds+1e-9
+-                           for a, b in zip(clock_rows, clock_rows[1:]))):
+-                continue
+-            # Existing actual same-side continuation safeguard, independent of ID.
+-            if any(last['pts'] < r['pts'] <= at and boundary_zone(r, scene) == origin
+-                   and association(r['bbox'], last['bbox'], ep.association_overlap) is not None
+-                   for r in actual):
+-                continue
+-            if any(e.get('segment') == segment['id'] and e.get('reason') == 'observed_same_side_exit'
+-                   and e.get('status') == '침입 아님' and support[-1]['pts'] < e['pts'] <= last['pts']
+-                   for e in baseline.get('events', [])) and not any(
+-                       loss.get('segment') == segment['id'] and loss.get('ever_crossed', False)
+-                       for loss in baseline.get('losses', [])):
+-                continue
+-            key = (last['frame_index'], last['cache_index'])
+-            if key in claimed or any(
+-                    e['source_event'].get('segment') == segment['id']
+-                    and e['source_event'].get('reason') == 'recent_gate_presence_then_loss'
+-                    and e['source_event'].get('last_observed_pts') == last['pts']
+-                    for e in bundle['events']):
+-                continue
+-            provenance = dict(collection='segments', segment=segment['id'], raw_id=segment['raw_id'],
+-                source_pointer='/segments/'+str(segment_index),
+-                first_ref=deepcopy(rows[0]), last_ref=deepcopy(last))
+-            sid = 'inner-loss-source-'+digest(provenance)
+-            source = dict(id=sid, raw_id=segment['raw_id'], rows=deepcopy(rows),
+-                          derived_source_ref=deepcopy(provenance))
+-            raw = dict(segment=sid, raw_id=segment['raw_id'], pts=at,
+-                decision_time_pts=at, last_observed_pts=last['pts'], source_observed_pts=last['pts'],
+-                status='침입 의심', reason='recent_gate_presence_then_loss',
+-                candidate_source='inner_boundary_loss_v1', automatic_confirmation=False,
+-                confirmed_intrusion=False, identity_verified=False, loss_wait_elapsed=at-last['pts'],
+-                source_boundary=deepcopy(scene['inner_line']), boundary_position_formula='bbox_bottom_center',
+-                source_origin_refs=deepcopy(origin_refs), near_observation_refs=deepcopy(support),
+-                recent_height_pixels=height, near_radius_pixels=radius,
+-                source_clock_continuous=True, original_source_ref=deepcopy(provenance))
+-            eid = digest(dict(scope=scope, run_id=run_id, evidence=raw))
+-            events.append(dict(**scope, event_id=eid, video_id=baseline['video_id'],
+-                status='침입 의심', decision_time_pts=at, track_ids=[], source_event=raw,
+-                source_ref=dict(collection='inner_boundary_loss_candidates',
+-                    source_pointer='/inner_boundary_loss_candidates/'+eid,
+-                    segment=sid, raw_id=segment['raw_id'], original_source_ref=deepcopy(provenance))))
+-            sources.append(source); claimed.add(key)
++    for segment in _source_pieces(baseline, frames, scene, actual, policy):
++        segment_index = segment['original_segment_index']
++        rows = segment['rows']
++        origin, origin_refs = measured_origin(rows, scene, policy)
++        if origin != 'inside':
++            continue
++        last = rows[-1]
++        recent = [r for r in rows if last['pts']-r['pts'] <= relaxed.history_seconds+1e-9]
++        height = statistics.median((r['bbox'][3]-r['bbox'][1])*scene['source_size'][1]
++                                   for r in recent)
++        radius = max(ep.minimum_near_pixels, height*policy.near_line_heights)
++        support = [r for r in recent if min(_distance_to_segment(
++            center(r, scene['source_size'], 1.), line, scene['source_size'])
++            for line in lines) <= radius]
++        if len(support) < relaxed.min_near_observations:
++            continue
++        index = bisect_left(stamps, segment.get('loss_ready_at', last['pts']+policy.loss_wait)-1e-9)
++        if index == len(stamps):
++            continue
++        at = stamps[index]
++        clock_rows = frames[rows[0]['frame_index']:index+1]
++        if (not clock_rows or clock_rows[0]['pts'] != rows[0]['pts']
++                or any(b['pts']-a['pts'] > ep.source_gap_seconds+1e-9
++                       for a, b in zip(clock_rows, clock_rows[1:]))):
++            continue
++        if any(e.get('segment') == segment['id'] and e.get('reason') == 'observed_same_side_exit'
++               and e.get('status') == '침입 아님' and support[-1]['pts'] < e['pts'] <= last['pts']
++               for e in baseline.get('events', [])) and not any(
++                   loss.get('segment') == segment['id'] and loss.get('ever_crossed', False)
++                   for loss in baseline.get('losses', [])):
++            continue
++        key = (last['frame_index'], last['cache_index'])
++        if key in claimed or any(
++                e['source_event'].get('segment') == segment['id']
++                and e['source_event'].get('reason') == 'recent_gate_presence_then_loss'
++                and e['source_event'].get('last_observed_pts') == last['pts']
++                for e in bundle['events']):
++            continue
++        provenance = dict(collection='segments', segment=segment['id'], raw_id=segment['raw_id'],
++            source_pointer='/segments/'+str(segment_index),
++            first_ref=deepcopy(rows[0]), last_ref=deepcopy(segment['original_terminal_ref']))
++        if segment.get('reappearance_links'):
++            provenance['continuation_last_ref'] = _measurement_ref(last)
++        sid = 'inner-loss-source-'+digest(provenance)
++        source = dict(id=sid, raw_id=segment['raw_id'], rows=deepcopy(rows),
++                      derived_source_ref=deepcopy(provenance))
++        raw = dict(segment=sid, raw_id=segment['raw_id'], pts=at,
++            decision_time_pts=at, last_observed_pts=last['pts'], source_observed_pts=last['pts'],
++            status='침입 의심', reason='recent_gate_presence_then_loss',
++            candidate_source='inner_boundary_loss_v1', automatic_confirmation=False,
++            confirmed_intrusion=False, identity_verified=False, loss_wait_elapsed=at-last['pts'],
++            source_boundary=deepcopy(scene['inner_line']), boundary_position_formula='bbox_bottom_center',
++            source_origin_refs=deepcopy(origin_refs), near_observation_refs=deepcopy(support),
++            recent_height_pixels=height, near_radius_pixels=radius,
++            source_clock_continuous=True, original_source_ref=deepcopy(provenance))
++        if segment.get('reappearance_links') or segment.get('provisional_failures'):
++            raw.update(reappearance_rule=REAPPEARANCE_RULE,
++                reappearance_links=deepcopy(segment['reappearance_links']),
++                provisional_failures=deepcopy(segment['provisional_failures']))
++        eid = digest(dict(scope=scope, run_id=run_id, evidence=raw))
++        events.append(dict(**scope, event_id=eid, video_id=baseline['video_id'],
++            status='침입 의심', decision_time_pts=at, track_ids=[], source_event=raw,
++            source_ref=dict(collection='inner_boundary_loss_candidates',
++                source_pointer='/inner_boundary_loss_candidates/'+eid,
++                segment=sid, raw_id=segment['raw_id'], original_source_ref=deepcopy(provenance))))
++        sources.append(source); claimed.add(key)
+     return events, sources
+ 
+ 
+@@ -287,27 +492,12 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
+     """
+     policy = Policy(**baseline['policy']); ep = EpisodePolicy()
+     actual = _actual_rows(frames)
+-    by_ref = {(r['frame_index'], r['cache_index']): r for r in actual}
+     stamps = [f['pts'] for f in frames]
+     candidates = []; decisions = []
+     # Keep each causal contiguous piece, including an earlier disappearance
+     # before a reused raw ID. Future rows cannot erase that observed evidence.
+-    segments = []
+-    for segment in baseline['segments']:
+-        pieces = []
+-        for row in segment['rows']:
+-            if not pieces or len(connected_rows([pieces[-1][-1],row],scene,policy)) == 1:
+-                pieces.append([])
+-            pieces[-1].append(row)
+-        segments.extend(dict(segment,rows=piece) for piece in pieces)
+-    for segment in segments:
++    for segment in _source_pieces(baseline, frames, scene, actual, policy):
+         rows = segment['rows']
+-        if not rows or any((r['frame_index'], r.get('cache_index')) not in by_ref
+-                or by_ref[(r['frame_index'],r['cache_index'])]['bbox'] != r['bbox']
+-                or by_ref[(r['frame_index'],r['cache_index'])]['pts'] != r['pts']
+-                or r.get('observed') is False or r.get('predicted') is True
+-                or r.get('confirmed') is False for r in rows):
+-            continue
+         origin, support = measured_origin(rows, scene, policy)
+         if origin is None:
+             continue
+@@ -325,7 +515,10 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
+         if (any(boundary_zone(r,scene) == destination for r in approach)
+                 or not retained_origin(approach,scene,gate,origin,policy)):
+             continue
+-        recent = [r for r in approach if last['pts']-r['pts'] <= policy.direction_window+1e-9]
++        # Origin links are not measured displacement across the hidden gap.
++        motion_rows = [{k: v for k, v in r.items() if k != 'source_reappearance_link'} for r in approach]
++        motion_rows = connected_rows(motion_rows, scene, policy)
++        recent = [r for r in motion_rows if last['pts']-r['pts'] <= policy.direction_window+1e-9]
+         if len(recent) < policy.stable_observations:
+             continue
+         first_site = gate.locate(recent[0]['bbox'], birth=False)
+@@ -358,10 +551,17 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
+                     and association(r['bbox'],birth['bbox'],ep.association_overlap) is not None
+                     for r in earlier):
+                 continue
+-            index = bisect_left(stamps,max(last['pts']+policy.loss_wait,birth['pts'])-1e-9)
++            index = bisect_left(stamps,max(segment.get('loss_ready_at', last['pts']+policy.loss_wait),
++                                          birth['pts'])-1e-9)
+             if index == len(stamps):
+                 continue
+             at = stamps[index]
++            if 'loss_ready_at' in segment:
++                guarded_at = _qualified_same_side_return(last, frames, actual, scene, policy, at)
++                if guarded_at is None:
++                    continue
++                index = bisect_left(stamps, guarded_at-1e-9)
++                at = stamps[index]
+             clock_rows = frames[rows[0]['frame_index']:index+1]
+             if (not clock_rows or clock_rows[0]['pts'] != rows[0]['pts']
+                     or any(b['pts']-a['pts'] > ep.source_gap_seconds+1e-9
+@@ -369,7 +569,7 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
+                 continue
+             # Positive same-side continuation is not disappearance. This local
+             # veto never associates the destination appearance with the source.
+-            if any(last['pts'] < r['pts'] <= at and boundary_zone(r,scene) == origin
++            if 'loss_ready_at' not in segment and any(last['pts'] < r['pts'] <= at and boundary_zone(r,scene) == origin
+                    and association(r['bbox'],last['bbox'],ep.association_overlap) is not None
+                    for r in actual):
+                 continue
+@@ -389,6 +589,10 @@ def loss_appearance_candidates(baseline, frames, scene, scope, run_id):
+                 identity_verified=False, reconstructed_path=False, shared_point_lineage_required=False,
+                 decision_source='automatic_rule', human_verified=False,
+                 confirmation_basis='camera_event_sequence_not_identity_or_ground_truth')
++            if segment.get('reappearance_links') or segment.get('provisional_failures'):
++                evidence.update(reappearance_rule=REAPPEARANCE_RULE,
++                    reappearance_links=deepcopy(segment['reappearance_links']),
++                    provisional_failures=deepcopy(segment['provisional_failures']))
+             if auxiliary:
+                 evidence.update(
+                     reason='uncertain_source_direction_loss_then_new_destination_appearance',
+diff --git a/sceneguard/mvp_pipeline.py b/sceneguard/mvp_pipeline.py
+index ec9e4bd..f95854d 100644
+--- a/sceneguard/mvp_pipeline.py
++++ b/sceneguard/mvp_pipeline.py
+@@ -270,6 +270,8 @@ def analyze_observations(baseline: dict, bundle: dict, frames: list[dict],
+         release_video_validation='not_established', human_verified=False)
+     if 'inner_line' in scene:
+         final['source_algorithm_versions'].append('directional_loss_appearance_v1')
++        final['source_algorithm_versions'].append('inside_source_reappearance_hold_v1')
++        final['inside_source_reappearance_hold_enabled'] = True
+         final['inner_line_role'] = 'inside_to_outside_source_boundary'
+         final['directional_sequence_boundary_position_formula'] = 'bbox_bottom_center'
+     final['source_experiment'] = 'MVP-0002-current-lifecycle'
+diff --git a/tests/test_inner_loss_candidates.py b/tests/test_inner_loss_candidates.py
+index 0b99162..46bd2d1 100644
+--- a/tests/test_inner_loss_candidates.py
++++ b/tests/test_inner_loss_candidates.py
+@@ -104,11 +104,12 @@ class InnerLossCandidateTests(unittest.TestCase):
+             f['pts'] += .2; f['native_pts'] += 2
+         self.assertEqual(generate(data), ([], []))
+ 
+-    def test_continued_source_rejects_even_changed_raw_id(self):
++    def test_single_return_is_provisional_even_changed_raw_id(self):
+         data = fixture()
+         box = deepcopy(data[1][20]['actual_boxes'][0]); box.update(cache_index=99, track_ids=[999])
+         data[1][27]['actual_boxes'].append(box)
+-        self.assertEqual(generate(data), ([], []))
++        # EXP-0056: one observation no longer permanently vetoes the loss.
++        self.assertEqual(generate(data)[0][0]['decision_time_pts'], 3.)
+ 
+     def test_stationary_and_retreating_losses_are_not_motion_filtered(self):
+         for retreat in (False, True):
+diff --git a/tests/test_legacy_directional.py b/tests/test_legacy_directional.py
+index 0277c02..71d77c0 100644
+--- a/tests/test_legacy_directional.py
++++ b/tests/test_legacy_directional.py
+@@ -224,8 +224,10 @@ class LossAppearanceTests(unittest.TestCase):
+                 if case=='standing':
+                     # Continued actual presence is not loss. A stationary
+                     # terminal history followed by real loss is tested below.
+-                    fs[27]['actual_boxes'].append(dict(cache_index=3,score=.9,
+-                        bbox=deepcopy(b['segments'][0]['rows'][-1]['bbox']),observed=True))
++                    # EXP-0056: continued inside presence requires .2 s/3 rows.
++                    for index in (27,28,29):
++                        fs[index]['actual_boxes'].append(dict(cache_index=3,score=.9,
++                            bbox=deepcopy(b['segments'][0]['rows'][-1]['bbox']),observed=True))
+             elif case=='existing':
+                 fs[19]['actual_boxes'].append(dict(cache_index=1,score=.9,bbox=[.345,.4,.395,.6],observed=True))
+             elif case=='same_side':
+@@ -238,9 +240,10 @@ class LossAppearanceTests(unittest.TestCase):
+             elif case=='bad_clock':b['segments'][0]['rows'][-1]['pts']=1.95
+             self.assertEqual(compute((b,fs,s)),([],[]),case)
+ 
+-    def test_source_return_before_decision_rejects(self):
++    def test_single_source_return_before_decision_is_provisional(self):
+         b,fs,s=fixture();fs[27]['actual_boxes'].append(dict(cache_index=3,score=.9,bbox=[.605,.4,.655,.6]))
+-        self.assertEqual(compute((b,fs,s)),([],[]))
++        # EXP-0056 authorizes replacing the one-hit veto, not birth criteria.
++        self.assertEqual(compute((b,fs,s))[1][0]['decision_time_pts'],3.)
+ 
+     def test_source_clock_gap_before_loss_rejects(self):
+         b,fs,s=fixture()
+@@ -441,6 +444,9 @@ class LossAppearanceTests(unittest.TestCase):
+                     elif case in ('same_side','continued_standing'):
+                         box=deepcopy(fs[20]['actual_boxes'][0]);box['cache_index']=3
+                         fs[27]['actual_boxes'].append(box)
++                        if case=='continued_standing':
++                            # Inside now needs stable evidence; outside unchanged.
++                            for index in (28,29):fs[index]['actual_boxes'].append(deepcopy(box))
+                         if case=='same_side':
+                             for frame in fs[25:30]:frame['actual_boxes']=[deepcopy(box)]
+                     self.assertEqual(compute((b,fs,s)),([],[]))
+diff --git a/tests/test_reappearance_hold.py b/tests/test_reappearance_hold.py
+new file mode 100644
+index 0000000..bdb7620
+--- /dev/null
++++ b/tests/test_reappearance_hold.py
+@@ -0,0 +1,232 @@
++"""Synthetic source-context counterexamples; no saved-video replay or identity truth."""
++from copy import deepcopy
++import unittest
++
++from sceneguard.legacy_directional import (connected_rows, measured_origin,
++    loss_appearance_candidates, REAPPEARANCE_RULE, DirectionalGate)
++from test_legacy_directional import fixture, SCOPE
++from test_inner_loss_candidates import generate, analyze
++
++
++def put(data, indices, x=.63, *, cache=8, score=.9, bbox=None, tracked=False):
++    baseline, frames, _ = data
++    for i in indices:
++        box = dict(cache_index=cache, score=score, observed=True,
++                   bbox=deepcopy(bbox or [x-.025,.4,x+.025,.6]), track_ids=[7])
++        frames[i]['actual_boxes'].append(box)
++        if tracked:
++            baseline['segments'][0]['rows'].append(dict(pts=frames[i]['pts'], frame_index=i, **deepcopy(box)))
++    return data
++
++
++def prefix(data, index):
++    b, fs, s = deepcopy(data)
++    for segment in b['segments']:
++        segment['rows'] = [r for r in segment['rows'] if r['frame_index'] <= index]
++    return b, fs[:index+1], s
++
++
++class ReappearanceHoldTests(unittest.TestCase):
++    def test_one_and_two_transient_orange_rows_cannot_veto(self):
++        for indices in ([26], [26,27]):
++            data = put(fixture(), indices, score=.251)
++            events, sources = generate(data)
++            self.assertEqual(len(events), 1)
++            self.assertEqual(events[0]['decision_time_pts'], 3.)
++            self.assertEqual(sources[0]['rows'][-1]['pts'], 2.)
++            self.assertEqual(events[0]['source_event']['provisional_failures'][-1]['reason'],
++                             'measured_chain_expired')
++
++    def test_sustained_continuation_refreshes_actual_loss_clock(self):
++        data = put(fixture(total=51), range(23,32))
++        events, sources = generate(data)
++        self.assertEqual([e['decision_time_pts'] for e in events], [4.1])
++        raw = events[0]['source_event']
++        self.assertEqual(raw['last_observed_pts'], 3.1)
++        self.assertEqual(raw['reappearance_links'][0]['validated_at'], 2.5)
++        self.assertEqual(raw['reappearance_links'][0]['anchor_ref']['pts'], 2.)
++        self.assertEqual(raw['original_source_ref']['last_ref']['pts'], 2.)
++        self.assertEqual(raw['original_source_ref']['continuation_last_ref']['pts'], 3.1)
++        self.assertEqual(raw['source_origin_refs'][0]['pts'], 1.)
++        self.assertEqual(sources[0]['rows'][-1]['pts'], 3.1)
++        self.assertEqual(generate(prefix(data, 32)), ([], []))
++
++    def test_corridor_two_bridges_preserve_origin_and_measured_approach(self):
++        data = fixture(total=51)
++        put(data, range(23,28), .59, tracked=True)
++        put(data, range(31,35), .57, tracked=True)
++        events, sources = generate(data)
++        self.assertEqual(len(events), 1)
++        self.assertEqual(events[0]['decision_time_pts'], 4.4)
++        links = events[0]['source_event']['reappearance_links']
++        self.assertEqual([x['validated_at'] for x in links], [2.5, 3.3])
++        self.assertEqual([x['anchor_ref']['pts'] for x in links], [2., 2.7])
++        self.assertEqual(measured_origin(sources[0]['rows'], data[2])[0], 'inside')
++        self.assertEqual([r['pts'] for r in sources[0]['rows']],
++                         [r['pts'] for r in data[0]['segments'][0]['rows']])
++        # Raw observations still split: only the derived witnessed context joins.
++        self.assertIsNone(measured_origin(data[0]['segments'][0]['rows'], data[2])[0])
++        self.assertEqual(DirectionalGate(data[1], data[2]).direction(sources[0])['source_origin_side'], 'inside')
++        self.assertFalse(any(d['automatic_confirmation'] for d in analyze(data)['seed_decisions']))
++
++    def test_pending_at_deadline_holds_until_first_qualified_frame(self):
++        data = put(fixture(total=51), [29,30,31])
++        self.assertEqual(generate(prefix(data,30)), ([], []))
++        events, _ = generate(data)
++        self.assertEqual(events[0]['decision_time_pts'], 4.1)
++        self.assertEqual(events[0]['source_event']['reappearance_links'][0]['validated_at'], 3.1)
++
++    def test_failed_deadline_pending_emits_at_first_observed_expiry(self):
++        data = put(fixture(total=51), [29,30])
++        self.assertEqual(generate(prefix(data,32)), ([], []))
++        events, _ = generate(data)
++        self.assertEqual(events[0]['decision_time_pts'], 3.3)
++        self.assertEqual(events[0]['source_event']['provisional_failures'][-1]['resolved_at'], 3.3)
++        self.assertEqual(events[0]['source_event']['last_observed_pts'], 2.)
++
++    def test_first_future_validation_cannot_rewrite_any_prefix(self):
++        for indices in ([29,30], [29,30,31], [31,32,33]):
++            data = put(fixture(total=51), indices, tracked=True)
++            events, _ = generate(data)
++            for index in range(20,51):
++                with self.subTest(indices=indices,index=index):
++                    actual, _ = generate(prefix(data,index))
++                    self.assertEqual(actual, [e for e in events if e['decision_time_pts'] <= index/10])
++
++    def test_pipeline_prefix_notifications_and_confirmations(self):
++        data = put(fixture(total=51), [29,30])
++        full = analyze(data)
++        for index in (30,32,33,40):
++            result = analyze(prefix(data,index))
++            self.assertEqual(result['seed_decisions'], [d for d in full['seed_decisions']
++                                                      if d['decision_time_pts'] <= index/10])
++            for key in ('timeline', 'notification_intents'):
++                self.assertEqual(result['cards'][key], [r for r in full['cards'][key]
++                                                       if r['decision_time_pts'] <= index/10])
++
++    def test_eof_and_source_clock_gap_are_not_failure_evidence(self):
++        data = put(fixture(total=33), [29,30])
++        self.assertEqual(generate(data), ([], []))
++        data = put(fixture(total=51), [29,30])
++        for frame in data[1][32:]:frame['pts'] += .3
++        self.assertEqual(generate(data), ([], []))
++
++    def test_same_id_does_not_bridge_size_jump_position_jump_or_wrong_side(self):
++        for case in ('size', 'position', 'wrong_side'):
++            data = fixture(total=51)
++            if case == 'size':
++                put(data, [23,24,25], bbox=[.58,.2,.68,.6], tracked=True)
++            elif case == 'position':
++                put(data, [23,24,25], .9, tracked=True)
++            else:
++                data[2]['zones']['outside'] = [[.05,.1],[.60,.1],[.60,.95],[.05,.95]]
++                put(data, [23,24,25], .59, tracked=True)
++            events, _ = generate(data)
++            first = next(e for e in events if e['source_event']['original_source_ref']['first_ref']['pts'] == 1.)
++            self.assertEqual(first['source_event']['last_observed_pts'], 2.)
++            self.assertNotIn('reappearance_links', first['source_event'])
++
++    def test_stable_observations_duration_and_step_are_separate(self):
++        cases = ([21,22], [21,24,27], [21,24])
++        for indices in cases:
++            data = put(fixture(total=51), indices)
++            events, _ = generate(data)
++            self.assertEqual(events[0]['source_event']['last_observed_pts'], 2.)
++
++    def test_subthreshold_boxes_do_not_hold_but_floor_is_inclusive(self):
++        for score, last in ((.249,2.), (.25,2.5)):
++            data = put(fixture(total=51), [23,24,25], score=score)
++            self.assertEqual(generate(data)[0][0]['source_event']['last_observed_pts'], last)
++
++    def test_no_aspect_ratio_filter(self):
++        data = fixture(total=51)
++        for row in data[0]['segments'][0]['rows']:
++            x=(row['bbox'][0]+row['bbox'][2])/2
++            row['bbox']=[x-.2,.4,x+.2,.6]
++            data[1][row['frame_index']]['actual_boxes'][0]['bbox']=deepcopy(row['bbox'])
++        put(data,[23,24,25],bbox=[.43,.4,.83,.6])
++        self.assertEqual(generate(data)[0][0]['source_event']['last_observed_pts'],2.5)
++
++    def test_competing_boxes_hold_without_pooling_or_id_selection(self):
++        data = fixture(total=51)
++        put(data,[29,30],cache=8);put(data,[29,30],cache=9)
++        self.assertEqual(generate(prefix(data,32)), ([], []))
++        events, _ = generate(data)
++        self.assertEqual(events[0]['decision_time_pts'],3.3)
++        self.assertEqual(events[0]['source_event']['last_observed_pts'],2.)
++        self.assertFalse(events[0]['source_event']['reappearance_links'])
++
++    def test_derived_witness_requires_validation_prefix_and_exact_refs(self):
++        data = put(fixture(total=51), [23,24,25], .59)
++        rows = generate(data)[1][0]['rows']
++        self.assertEqual(measured_origin(rows,data[2])[0],'inside')
++        self.assertIsNone(measured_origin(rows[:-1],data[2])[0])
++        for field in ('validated_at','anchor_ref','observation_refs','origin_refs','rule_id'):
++            bad = deepcopy(rows)
++            del bad[11]['source_reappearance_link'][field]
++            self.assertIsNone(measured_origin(bad,data[2])[0])
++        bad = deepcopy(rows);bad[-1]['bbox'][0] += .001
++        self.assertIsNone(measured_origin(bad,data[2])[0])
++
++    def test_sparse_saved_source_uses_checked_actual_admission_without_enrichment(self):
++        data=fixture(total=51)
++        for row in data[0]['segments'][0]['rows']:
++            for key in ('score','observed','track_ids'):row.pop(key,None)
++        before=deepcopy(data[0]['segments'][0]['rows'])
++        put(data,[23,24,25],.59)
++        events,sources=generate(data)
++        self.assertEqual(events[0]['source_event']['last_observed_pts'],2.5)
++        self.assertEqual(sources[0]['rows'][:len(before)],before)
++        self.assertEqual(measured_origin(sources[0]['rows'],data[2])[0],'inside')
++        self.assertNotIn('score',sources[0]['rows'][0])
++        self.assertGreaterEqual(events[0]['source_event']['reappearance_links'][0]
++                                ['origin_actual_refs'][0]['score'],.25)
++
++    def test_helper_later_birth_obeys_qualified_return_without_revising_old_loss(self):
++        for indices,expected,at in (([35,36,37],0,None),([44,45],1,4.8),([44,45,46],0,None)):
++            data=fixture(total=61)
++            birth=deepcopy(data[1][25]['actual_boxes'][0])
++            for frame in data[1][25:30]:frame['actual_boxes']=[]
++            data[1][45]['actual_boxes'].append(birth)
++            put(data,indices)
++            old=generate(data)[0][0]
++            self.assertEqual(old['decision_time_pts'],3.)
++            events,_=loss_appearance_candidates(*data,SCOPE,'run')
++            self.assertEqual(len(events),expected)
++            if expected:
++                self.assertEqual(events[0]['decision_time_pts'],at)
++            for index in range(30,61):
++                short,_=loss_appearance_candidates(*prefix(data,index),SCOPE,'run')
++                self.assertEqual(short,[e for e in events if e['decision_time_pts']<=index/10])
++
++    def test_helper_keeps_recent_start_side_even_with_retained_origin(self):
++        data = put(fixture(total=61), [23,24,25,26], .59)
++        birth = deepcopy(data[1][25]['actual_boxes'][0])
++        for f in data[1][25:30]:f['actual_boxes'] = [b for b in f['actual_boxes'] if b['cache_index'] != 1]
++        data[1][40]['actual_boxes'].append(birth)
++        self.assertEqual(loss_appearance_candidates(*data,SCOPE,'run'),([],[]))
++
++    def test_013_shaped_no_return_keeps_old_65_566667_helper_clock(self):
++        # Synthetic clock/provenance regression, not a replay of video 013.
++        data=fixture(total=71);b,fs,s=data
++        birth=deepcopy(fs[25]['actual_boxes'][0])
++        for f in fs[25:30]:f['actual_boxes']=[]
++        fs[48]['actual_boxes'].append(birth)
++        offset=60.766666666666666
++        for f in fs:f['pts'] += offset
++        for r in b['segments'][0]['rows']:r['pts'] += offset
++        events, decisions=loss_appearance_candidates(*data,SCOPE,'run')
++        self.assertEqual(len(events),1)
++        self.assertAlmostEqual(decisions[0]['decision_time_pts'],65.56666666666666)
++        self.assertEqual(decisions[0]['source_origin_refs'][0]['pts'],61.766666666666666)
++        self.assertNotIn('reappearance_links',decisions[0])
++
++    def test_outside_single_hit_veto_and_no_inner_branch_unchanged(self):
++        data=put(fixture(True),[27],.37)
++        self.assertEqual(loss_appearance_candidates(*data,SCOPE,'run'),([],[]))
++        data=put(fixture(),[27]);del data[2]['inner_line']
++        self.assertEqual(generate(data),([],[]))
++
++
++if __name__ == '__main__':
++    unittest.main()

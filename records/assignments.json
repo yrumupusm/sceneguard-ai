@@ -675,6 +675,19 @@
       "synthetic": false,
       "task_id": "task_5b9c8d6cb468",
       "title": "안쪽선·하단 중앙점 소실 후보 연결 · 같은 9영상"
+    },
+    {
+      "agent_model_effective": null,
+      "agent_model_requested": "설정 기본 에이전트 (native 모델 미명시)",
+      "assigned_at": "2026-11-04T13:08:23Z",
+      "dispatch_id": "ctx_b1925590927a",
+      "experiment_id": "EXP-0056",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_e6d6590eac2c",
+      "title": "재출현 지속 확인과 안쪽 출발 이력 · 013·015"
     }
   ],
   "schema_version": 1
