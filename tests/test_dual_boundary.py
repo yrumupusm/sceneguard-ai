@@ -110,6 +110,16 @@ class GeometryTests(unittest.TestCase):
             s=scene();s['inner_line']=line
             with self.subTest(line=line),self.assertRaises(ValueError):Corridor(s)
 
+    def test_collinear_backtracking_and_nonadjacent_contact_are_not_simple(self):
+        for line in ([[.6,.2],[.6,.7],[.6,.4],[.6,.8]],
+                     [[.6,.2],[.65,.5],[.6,.5],[.6,.2],[.6,.8]],
+                     [[.45,.3],[.45,.7]]):
+            s=scene();s['inner_line']=line
+            with self.subTest(line=line),self.assertRaises(ValueError):Corridor(s)
+        # Collinear vertices in forward order are a valid reviewed polyline.
+        s=scene();s['inner_line']=[[.6,.2],[.6,.4],[.6,.8]]
+        self.assertEqual(len(Corridor(s).inner),3)
+
 
 class PassageTests(unittest.TestCase):
     def test_both_directions_need_opposing_boundary(self):
@@ -193,6 +203,89 @@ class PassageTests(unittest.TestCase):
 
 
 class IntegrationTests(unittest.TestCase):
+    def analyze(self, args):
+        b,h,r,f,s,p=args
+        return analyze_observations(b,h,f,s,p,
+            dict(session_id='recording',camera_id='C',gate_id='G'),'association-regression')
+
+    def test_contiguous_branch_and_merge_stay_uncertain_in_both_directions(self):
+        for reverse in (False,True):
+            xs=[400,410,420,460,490,520,560,570,580]
+            if reverse:xs=[1000-x for x in xs]
+            for merge in (False,True):
+                for offset in (.04,.004):
+                    args=fixture(xs,paths=False)
+                    for frame in (args[3][:3] if merge else args[3][3:]):
+                        box=deepcopy(frame['actual_boxes'][0]);box['cache_index']=1
+                        box['bbox'][0]-=offset;box['bbox'][2]-=offset
+                        frame['actual_boxes'].append(box)
+                    original=deepcopy(args)
+                    out=self.analyze(args)['scoped_lifecycle']
+                    with self.subTest(reverse=reverse,merge=merge,offset=offset):
+                        self.assertEqual(out['counts']['confirmation_notifications'],0)
+                        self.assertEqual(out['events'],args[1]['events'])
+                        self.assertTrue(any(a['reason']=='competing_contiguous_actual_box_associations'
+                            for a in out['followup_audit']))
+                        self.assertEqual(args,original)
+
+    def test_gap_raw_competitor_cannot_be_hidden_by_birth_deduplication(self):
+        args=fixture([400,410,420,460,490,510,530,550,570,580,590])
+        for frame in args[3][5:8]:frame['actual_boxes']=[]
+        for frame in args[3][8:]:
+            box=deepcopy(frame['actual_boxes'][0]);box['cache_index']=1
+            box['bbox'][0]+=.004;box['bbox'][2]+=.004
+            frame['actual_boxes'].append(box)
+        out=self.analyze(args)['scoped_lifecycle']
+        self.assertEqual(out['counts']['confirmation_notifications'],0)
+        self.assertTrue(any(a['reason']=='competing_or_untrusted_successor'
+            for a in out['followup_audit']))
+
+    def test_conservative_same_run_veto_also_blocks_later_new_candidates(self):
+        args=fixture([400]*7+[460,490,520,560,570,580],paths=False)
+        b,h,r,f,s,p=args
+        for frame in f[:2]:
+            box=deepcopy(frame['actual_boxes'][0]);box['cache_index']=1
+            box['bbox'][0]-=.04;box['bbox'][2]-=.04
+            frame['actual_boxes'].append(box)
+        new=deepcopy(h['events'][0]);new.update(event_id='fresh',decision_time_pts=.6)
+        h['events'].append(new)
+        h['policy']=asdict(GroupPolicy(gap_seconds=.05,max_span_seconds=10.))
+        out=self.analyze(args)['scoped_lifecycle']
+        evidence={e['event_id']:e for e in out['evidence']}
+        self.assertEqual(evidence['e']['automatic_status'],SUSPECTED)
+        self.assertEqual(evidence['fresh']['automatic_status'],SUSPECTED)
+        self.assertEqual(out['counts']['confirmation_notifications'],0)
+
+    def test_later_competition_preserves_prior_confirmation_and_causal_prefix(self):
+        xs=[400,410,420,460,490,520,560,570,580,590,600]
+        prefix=self.analyze(fixture(xs[:9],paths=False))['scoped_lifecycle']
+        args=fixture(xs,paths=False)
+        for frame in args[3][9:]:
+            box=deepcopy(frame['actual_boxes'][0]);box['cache_index']=1
+            box['bbox'][0]-=.04;box['bbox'][2]-=.04
+            frame['actual_boxes'].append(box)
+        out=self.analyze(args)['scoped_lifecycle']
+        self.assertEqual(out['evidence'][0]['first_confirmation_pts'],.8)
+        self.assertEqual(out['evidence'][0]['automatic_status'],CONFIRMED)
+        self.assertEqual(out['counts']['confirmation_notifications'],1)
+        self.assertEqual(prefix['timeline'],[t for t in out['timeline'] if t['decision_time_pts']<=.8])
+
+    def test_distant_actual_boxes_do_not_veto_unique_passage_or_change_birth_bookkeeping(self):
+        from sceneguard.portal_births import compare_births
+        args=fixture([400,410,420,460,490,520,560,570,580],paths=False)
+        b,h,r,f,s,p=args
+        for frame in f:
+            box=deepcopy(frame['actual_boxes'][0]);box['cache_index']=1
+            box['bbox'][1]=.02;box['bbox'][3]=.12
+            frame['actual_boxes'].append(box)
+        self.assertEqual(self.analyze(args)['scoped_lifecycle']['counts']['confirmation_notifications'],1)
+        dual=compare_births(f,s,p,'C')
+        legacy=deepcopy(s);legacy.pop('inner_line')
+        portal=make_region(legacy,'C',legacy['approach_polygon'],reference_pts=0.,note='Synthetic legacy')
+        old=compare_births(f,legacy,portal,'C')
+        self.assertEqual(dual['observation_runs'],old['observation_runs'])
+        self.assertTrue(old['observation_bookkeeping_unchanged'])
+
     def test_production_backend_and_causal_replay(self):
         args=fixture([400,410,420,460,490,520,560,570,580])
         b,h,r,f,s,p=args

@@ -70,9 +70,17 @@ class Corridor:
         if any(math.dist(a, b) < 1e-6 for a, b in edges):
             raise ValueError('Dual boundary edges must be nondegenerate')
         for i, (a, b) in enumerate(edges):
+            c = edges[(i+1) % len(edges)][1]
+            v, w = sub(b, a), sub(c, b)
+            if abs(cross(v, w)) < 1e-9 and sum(x*y for x, y in zip(v, w)) < 0:
+                raise ValueError('Dual boundary contour cannot backtrack')
             for j, (c, d) in enumerate(edges):
                 if j <= i+1 or (i == 0 and j == len(edges)-1): continue
-                if self.intersection(a, b, c, d) is not None:
+                # The crossing helper intentionally ignores parallel motion;
+                # contour validation must also reject collinear overlap/touch.
+                if (self.intersection(a, b, c, d) is not None or
+                        min(nearest(a, c, d)[0], nearest(b, c, d)[0],
+                            nearest(c, a, b)[0], nearest(d, a, b)[0]) < 1e-7):
                     raise ValueError('Dual boundary corridor must be simple and finite')
         if abs(sum(cross(a, b) for a, b in edges)) < 1e-6:
             raise ValueError('Dual boundary corridor has no area')
@@ -184,6 +192,29 @@ def connected(a, b, size, policy=Policy()):
         and 0 < b['pts']-a['pts'] <= policy.max_direction_step+1e-9
         and max(aw/bw, bw/aw, ah/bh, bh/ah) <= policy.scale_jump
         and math.dist(center(a, size), center(b, size)) <= .5*max(ah, bh)*size[1])
+
+
+def contiguous_ambiguities(previous, current, size):
+    """Competing actual-box edges, before greedy birth bookkeeping chooses one.
+
+    Inspect the complete causal frame pair, including actual footprints omitted
+    from observation runs as nested duplicates. A selected run or numeric ID
+    cannot make a one-to-many or many-to-one geometric association unique.
+    """
+    def rows(frame):
+        return [dict(pts=frame['pts'], frame_index=frame['frame_index'],
+                     cache_index=b['cache_index'], bbox=b['bbox'])
+                for b in frame['actual_boxes']
+                if b.get('observed') is not False and b['score'] >= .25]
+    sources, targets = rows(previous), rows(current)
+    edges = [(a, b) for a in sources for b in targets if connected(a, b, size)]
+    outgoing = Counter(a['cache_index'] for a, b in edges)
+    incoming = Counter(b['cache_index'] for a, b in edges)
+    return [dict(source=deepcopy(a), target=deepcopy(b),
+                 source_successors=outgoing[a['cache_index']],
+                 target_predecessors=incoming[b['cache_index']])
+            for a, b in edges
+            if outgoing[a['cache_index']] > 1 or incoming[b['cache_index']] > 1]
 
 
 class PassageState:
@@ -367,10 +398,6 @@ class DualBoundaryDirection(GateObservationDirection):
                 if box.get('observed') is False or box['score'] < .25: continue
                 ids = [pid for pid in common if inside(maps[index][pid], pixel_box(box['bbox'], size))]
                 if len(ids) < self.policy.minimum_points or len(ids)/len(cohort) < .6: continue
-                choices = history.by_reference.get((index, box['cache_index']), set())
-                if len(choices) != 1: continue
-                dest = next(iter(choices))
-                if (dest == rid and not allow_same) or history.current_key(dest) != dest: continue
                 row = dict(pts=at, frame_index=index, cache_index=box['cache_index'], bbox=box['bbox'])
                 a, b = last['bbox'], row['bbox']; ah, bh = a[3]-a[1], b[3]-b[1]
                 aw, bw = a[2]-a[0], b[2]-b[0]
@@ -381,6 +408,13 @@ class DualBoundaryDirection(GateObservationDirection):
                 vectors = [sub(self.corrected(index, wid)[pid], self.corrected(start, wid)[pid]) for pid in ids]
                 if (math.hypot(*delta) < policy.min_motion_pixels or
                         sum(sum(v[k]*delta[k] for k in (0, 1)) > 0 for v in vectors)/len(vectors) < .6): continue
+                # Count every physically plausible actual endpoint before run
+                # mapping. Birth deduplication cannot remove a competitor from
+                # the saved-point association proof across a missing-box gap.
+                choices = history.by_reference.get((index, box['cache_index']), set())
+                dest = next(iter(choices)) if len(choices) == 1 else None
+                if dest is not None and ((dest == rid and not allow_same) or
+                        history.current_key(dest) != dest): dest = None
                 hits = defaultdict(list)
                 for pid in ids:
                     trackers = {}
@@ -400,10 +434,12 @@ class DualBoundaryDirection(GateObservationDirection):
                     gap_seconds=at-last['pts'], actual_correspondence=True, identity_verified=False,
                     missing_box_interval_is_not_measured_box_path=True,
                     boundary_crossings=sorted(crossings, key=lambda x:(x['frame_index'],x['fraction'])))
-                if dest not in matches or matches[dest]['coverage'] < evidence['coverage']: matches[dest] = evidence
-        return dict(successor=next(iter(matches)) if len(matches) == 1 else None,
-            reason='unique_saved_moving_point_successor' if len(matches) == 1 else
-                'competing_successors' if matches else 'no_trusted_successor', matches=list(matches.values()))
+                ci = box['cache_index']
+                if ci not in matches or matches[ci]['coverage'] < evidence['coverage']: matches[ci] = evidence
+        successor = next(iter(matches.values()))['successor'] if len(matches) == 1 else None
+        return dict(successor=successor,
+            reason='unique_saved_moving_point_successor' if successor is not None else
+                'competing_successors' if len(matches) > 1 else 'no_trusted_successor', matches=list(matches.values()))
 
 
 def replay(baseline, history, portal_events, runs, frames, scene, region, *, portal_gate=None):
@@ -478,6 +514,22 @@ def replay(baseline, history, portal_events, runs, frames, scene, region, *, por
                 state.reset('source_gap_not_person_loss'); state.last = None
             ambiguous.clear()
         current = dict(obs.scheduled[index])
+        if index:
+            competition = contiguous_ambiguities(frames[index-1], frame, engine.corridor.size)
+            affected = set()
+            for edge in competition:
+                for row in (edge['source'], edge['target']):
+                    affected.update(obs.current_key(rid) for rid in obs.by_reference.get(
+                        (row['frame_index'], row['cache_index']), ()))
+            # Conservative lineage veto: later unique boxes do not silently
+            # revive uncertain origin/proof or confirm its older candidates.
+            # Episode recovery needs separate evidence-ownership isolation.
+            ambiguous.update(affected)
+            if competition:
+                audits.append(dict(decision_time_pts=at,
+                    reason='competing_contiguous_actual_box_associations',
+                    run_ids=sorted(affected), association_edges=competition))
+                counts['competing_contiguous_actual_box_associations'] += 1
         for rid, row in current.items():
             if obs.current_key(rid) != rid: continue
             state = states.setdefault(rid, PassageState(engine.corridor))
