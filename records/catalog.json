@@ -4361,6 +4361,100 @@
       "task_id": "task_aa2d8f8b832c",
       "title": "사용자 영역으로 전체 원본 지원 확장·재평가",
       "worker_opinion": "전구간 실행과 고정 평가의 무결성 검증 완료. 행동성능 충족과 구분."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-04T06:37:20.204679+00:00",
+      "attempt_id": "saved-rules-run-002",
+      "decision_status": "rejected",
+      "dispatch_id": "ctx_d5a3784daaeb",
+      "evaluated_model": "기존 FCOS 저장 측정값 + 두 경계 CPU 규칙; 새 모델 추론 없음",
+      "evidence": [
+        {
+          "artifact_id": "exp0050-original-010",
+          "kind": "video",
+          "label": "010 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-013",
+          "kind": "video",
+          "label": "013 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-015",
+          "kind": "video",
+          "label": "015 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-021",
+          "kind": "video",
+          "label": "021 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-028",
+          "kind": "video",
+          "label": "028 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-034",
+          "kind": "video",
+          "label": "034 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-036",
+          "kind": "video",
+          "label": "036 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-043",
+          "kind": "video",
+          "label": "043 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-044",
+          "kind": "video",
+          "label": "044 원본 · 판정 표시는 보고서 시각 참조"
+        },
+        {
+          "artifact_id": "exp0050-original-045",
+          "kind": "video",
+          "label": "045 원본 · 판정 표시는 보고서 시각 참조"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0050",
+      "limitations": [
+        "공식52사건 매칭은 전체 행동 정확도가 아니다. 새 모델 추론은 없다.",
+        "이른 확인 감소는 전체 확인 통지 소실의 결과이며 개선 성공이 아니다.",
+        "연결 모호함이 같은 관측 계보의 뒤 사건을 계속 막을 수 있다.",
+        "박스 높이65% 지점은 가려진 발 복원이 아니다. 물리적 가림·다인·신원은 미확정이다.",
+        "006 시간 미확정,008 의미 보류,010 사용자 약63초 관찰을 별도 보존한다.",
+        "등록 영상은 기존 원본이며 새 판정 오버레이가 아니다."
+      ],
+      "metric_definitions": "records/EXP-0050/metrics.json",
+      "metrics_path": "records/EXP-0050/metrics.json",
+      "metrics_sha256": "3319b66372ba425389108699a19341b032241327c669a950bc3fbf09236c07dc",
+      "next_step": "기존 기본 설정을 유지한다. 경쟁 연결 거절의 지속과 새 사건 근거 소속을 검토하며, 이번 결과에 맞춘 임계값 탐색은 수행하지 않았다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "0db3e2e0a3e9caf8f8a51f0a06192afda904a5aa3d21fae4b3b934c7118a0e03",
+      "report_path": "docs/experiments/EXP-0050-results.md",
+      "report_sha256": "2dd8866f985e91134567b22b92968d793c50756f9ea9020b6506a5d175c02a00",
+      "review_binding_path": "docs/reviews/EXP-0050.binding.json",
+      "review_path": "docs/reviews/EXP-0050-coordinator-review.md",
+      "review_sha256": "332c1ed0432d5596942da20c6a1d5ce8657cff91b565a897533fec585e23727c",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "3319b66372ba425389108699a19341b032241327c669a950bc3fbf09236c07dc",
+      "reviewed_report_sha256": "2dd8866f985e91134567b22b92968d793c50756f9ea9020b6506a5d175c02a00",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "공식 사건 확인 매칭39/52→0/52, 의심51/52→51/52, 이른 최초 확인8→0건이다. 새 확인 매칭0건과 기존 매칭 손실39건을 함께 확인했다. 확인 알림 전체가 사라져 이른 판단 보완 성공으로 볼 수 없으며, 현재 수정안은 미채택한다.",
+      "synthetic": false,
+      "task_id": "task_7401f8b9ce5b",
+      "title": "두 경계·출발 이력 보완과 이른 확인 비교",
+      "worker_opinion": "구현과 회귀 검사는 통과했지만 실제45개 비교에서 확인이 모두 사라졌다. 현재 수정안 미채택."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
