@@ -1,0 +1,51 @@
+name: Public text audit (one-time)
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/public-text-audit.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect public documents without model execution
+        shell: bash
+        env:
+          REPOSITORY: ${{ github.repository }}
+          REVISION: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git clone --quiet --depth 1 "https://github.com/${REPOSITORY}.git" source
+          cd source
+          git checkout --quiet "$REVISION"
+          python3 - <<'PY'
+          import json, pathlib, re, subprocess
+          root = pathlib.Path('.')
+          tracked = subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0')
+          catalog = json.loads((root / 'records/catalog.json').read_text())
+          protected = set()
+          for entry in catalog.get('experiments', []):
+              for key in ('report_path', 'review_path', 'metrics_path', 'review_binding_path'):
+                  if entry.get(key): protected.add(entry[key])
+          purpose = re.compile(r'노타|\bnota\b|포트폴리오|portfolio|채용|이력서|입사지원', re.I)
+          label = re.compile(r'자동\s*확인|침입\s*확인\s*[·ㆍ/(-]\s*자동')
+          counts = {'purpose_files': 0, 'label_files': 0, 'protected_label_files': 0}
+          for name in tracked:
+              if not name or name.startswith(('.github/', 'sceneguard/vendor/')): continue
+              path = root / name
+              if path.suffix not in {'.md', '.txt', '.py', '.js', '.html', '.json', '.yaml', '.yml'}: continue
+              try: text = path.read_text(encoding='utf-8')
+              except (UnicodeError, OSError): continue
+              if purpose.search(text):
+                  counts['purpose_files'] += 1
+                  print('PURPOSE_FILE', name, 'protected=' + str(name in protected))
+                  for n, line in enumerate(text.splitlines(), 1):
+                      if purpose.search(line): print(f'  {n}: {line[:600]}')
+              if label.search(text):
+                  counts['label_files'] += 1
+                  counts['protected_label_files'] += name in protected
+                  print('LABEL_FILE', name, 'protected=' + str(name in protected))
+          print('AUDIT_COUNTS', json.dumps(counts, ensure_ascii=False))
+          PY
