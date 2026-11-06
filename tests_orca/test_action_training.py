@@ -20,7 +20,7 @@ CONTEXT = dict(run_id='run_3d23462a014a',task_id='task-test',dispatch_id='ctx-te
 
 class ActionQueueTests(unittest.TestCase):
     def config(self):
-        return dict(stage='smoke',context=copy.deepcopy(CONTEXT),
+        return dict(stage='smoke',execution_revision=command.EXECUTION_REVISION,context=copy.deepcopy(CONTEXT),
                     files={k:dict(path='/tmp/'+k,sha256='a'*64) for k in command.FILE_KEYS},
                     authorization=dict(path='/tmp/authorization',sha256='b'*64))
 
@@ -52,7 +52,8 @@ class ActionQueueTests(unittest.TestCase):
         config=self.config();inputs=dict(bound='input');content=b'reviewed-source'
         import hashlib
         sources={'owned.py':hashlib.sha256(content).hexdigest()}
-        authorization=dict(context=CONTEXT,stage='smoke',input_hash=digest(inputs),sources=sources,code_sha='a'*40,
+        authorization=dict(context=CONTEXT,stage='smoke',execution_revision=command.EXECUTION_REVISION,
+                           recovery_from_attempt=command.RECOVERY_ATTEMPT,input_hash=digest(inputs),sources=sources,code_sha='a'*40,
                            confirmed=True,training_authorized=True,independent_review_passed=True,explicit_gpu_go=True)
         def git(argv,**kwargs):return 'a'*40 if argv[1]=='rev-parse' else content
         with tempfile.TemporaryDirectory() as t:
@@ -60,10 +61,11 @@ class ActionQueueTests(unittest.TestCase):
             def write(value):
                 path.write_text(json.dumps(value));config['authorization']=dict(path=str(path),sha256=command.file_hash(path))
             with patch.object(command,'input_contract',return_value=inputs),patch.object(command,'sources',return_value=sources),\
-                 patch.object(command,'validate_assignment'),patch.object(command.subprocess,'check_output',side_effect=git):
+                 patch.object(command,'validate_assignment'),patch.object(command,'validate_recovery_parent',return_value={}),patch.object(command.subprocess,'check_output',side_effect=git):
                 write(authorization);command.validate(config,inputs,command.RUNTIME)
                 for key,value in [('explicit_gpu_go',False),('training_authorized',False),('code_sha','b'*40),
-                                  ('independent_review_passed',False),('input_hash','old'),('sources',{})]:
+                                  ('independent_review_passed',False),('input_hash','old'),('sources',{}),
+                                  ('execution_revision','unreviewed'),('recovery_from_attempt','other-attempt')]:
                     write({**authorization,key:value})
                     with self.assertRaises(ValueError,msg=key):command.validate(config,inputs,command.RUNTIME)
                 write(authorization)

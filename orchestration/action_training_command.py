@@ -4,11 +4,14 @@ This module does not initialize/migrate the real queue or execute a GPU job on i
 Authorization is a local reviewed snapshot; Orca is queried again at execution time.
 """
 import argparse
+import ast
+import copy
 import datetime as dt
 import fcntl
 import hashlib
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -23,6 +26,11 @@ INTERPRETER = ROOT / '.venv-cv-batch02/bin/python'
 OUTPUT = ROOT / 'outputs/action-recognition/exp0063/queued-training'
 FROZEN_SEQUENTIAL_SHA = '080bf01a7cd5c686e73cdd744b2087f46c3631ae73df9371e67b501f2c07633c'
 FROZEN_SPLIT_SHA = 'bfb0f9fcd570794036cc6d2eaad46f988679b612996e21282a34821203ad5499'
+EXECUTION_REVISION = 'amp-overflow-v2'
+RECOVERY_ATTEMPT = '058639f80f394a71b345eb4eae5ceacb'
+OPTIMIZER_HELPERS = {'install_actual_step_counter','amp_optimizer_update','ensure_finite_training_state'}
+PRODUCER_COMMIT = '99d18b3e1e899ef17380ca3f7e87de290f1e3859'
+PRODUCER_TRAINER_SHA = '2a0d01de3ec9b872c99761472b0626ba1e5f41a5b9f2c9be4eef4fe5626ff350'
 FILE_KEYS = {'manifest', 'baseline_lock', 'split_manifest', 'config', 'prepared', 'review_release', 'weights'}
 
 
@@ -113,6 +121,10 @@ def input_contract(config):
                   review_snapshot_sha256=release['review_snapshot']['sha256'])
     if provenance is not None:
         result['preparation_provenance'] = provenance
+    if 'execution_revision' in config:
+        if config['execution_revision'] != EXECUTION_REVISION:
+            raise ValueError('Only the explicitly reviewed numerical recovery revision is allowed')
+        result['execution_revision'] = config['execution_revision']
     return result
 
 
@@ -121,6 +133,110 @@ def evidence_binding(entry):
             or not isinstance(entry['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', entry['sha256'])):
         raise ValueError('Exact preparation artifact path/hash binding required')
     return checked_file(entry)
+
+
+def preprocessing_compatibility(producer_sha):
+    """Prove immutable old pixels are compatible with an optimization-only core revision."""
+    if producer_sha != PRODUCER_TRAINER_SHA:
+        raise ValueError('Pinned historical producer trainer required')
+    old = subprocess.check_output(['git','show',PRODUCER_COMMIT+':scripts/train_action_recognizer.py'],cwd=ROOT)
+    if hashlib.sha256(old).hexdigest() != PRODUCER_TRAINER_SHA:
+        raise ValueError('Historical Git trainer anchor differs')
+    current = (ROOT/'scripts/train_action_recognizer.py').read_bytes()
+    proof = compare_preprocessing_sources(old.decode('utf-8'),current.decode('utf-8'))
+    return dict(producer_commit=PRODUCER_COMMIT,producer_trainer_sha256=producer_sha,
+                execution_trainer_sha256=hashlib.sha256(current).hexdigest(),**proof)
+
+
+def compare_preprocessing_sources(old, current):
+    """Pure source comparison, never execute historical code or load a model."""
+    left,right = ast.parse(old),ast.parse(current)
+    def functions(tree):
+        rows = [n for n in tree.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))]
+        result = {n.name:n for n in rows}
+        if len(rows) != len(result):
+            raise ValueError('Duplicate/shadowed trainer helper definitions')
+        return result
+    before,after = functions(left),functions(right)
+    if 'main' not in before or not set(before).issubset(after):
+        raise ValueError('Missing historical preprocessing helper')
+    checked = {}
+    for name,node in before.items():
+        if name == 'main':continue
+        old_text,new_text = ast.get_source_segment(old,node),ast.get_source_segment(current,after[name])
+        if old_text != new_text or ast.dump(node,include_attributes=False) != ast.dump(after[name],include_attributes=False):
+            raise ValueError('Preprocessing/helper source changed: '+name)
+        checked[name] = hashlib.sha256(old_text.encode()).hexdigest()
+    added = set(after)-set(before)
+    if not added.issubset(OPTIMIZER_HELPERS):
+        raise ValueError('Unreviewed/shadowing optimization helper name')
+    for name in added:
+        node = after[name]
+        defaults = [*node.args.defaults,*[n for n in node.args.kw_defaults if n is not None]]
+        args = [*node.args.posonlyargs,*node.args.args,*node.args.kwonlyargs]
+        if node.args.vararg:args.append(node.args.vararg)
+        if node.args.kwarg:args.append(node.args.kwarg)
+        annotations = [a.annotation for a in args if a.annotation is not None]
+        if node.returns is not None:annotations.append(node.returns)
+        if (node.decorator_list or getattr(node,'type_params',[]) or any(not isinstance(n,ast.Constant) for n in defaults)
+                or any(not isinstance(n,(ast.Name,ast.Constant)) for n in annotations)):
+            raise ValueError('New optimization helper has executable definition side effects')
+    def globals_ast(tree):
+        return [n for n in tree.body if not isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))
+                and not (isinstance(n,ast.Expr) and isinstance(n.value,ast.Constant) and isinstance(n.value.value,str))]
+    old_globals,new_globals = globals_ast(left),globals_ast(right)
+    globals_text = ast.dump(ast.Module(body=old_globals,type_ignores=[]),include_attributes=False)
+    if globals_text != ast.dump(ast.Module(body=new_globals,type_ignores=[]),include_attributes=False):
+        raise ValueError('Preprocessing imports/globals/dependencies changed')
+    def prefix(node):
+        for index,statement in enumerate(node.body):
+            if isinstance(statement,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='optimizer' for t in statement.targets):
+                return ast.dump(ast.Module(body=node.body[:index+1],type_ignores=[]),include_attributes=False)
+        raise ValueError('Protected model/preprocessing optimizer boundary is missing')
+    def definition_metadata(node):
+        clone = copy.copy(node)
+        clone.body = []
+        return ast.dump(clone,include_attributes=False)
+    if definition_metadata(before['main']) != definition_metadata(after['main']):
+        raise ValueError('Main preprocessing entrypoint definition metadata changed')
+    old_prefix,new_prefix = prefix(before['main']),prefix(after['main'])
+    if old_prefix != new_prefix:
+        raise ValueError('Model/preprocessing/normalization prelude changed')
+    return dict(checked_helpers_sha256=checked,imports_globals_ast_sha256=hashlib.sha256(globals_text.encode()).hexdigest(),
+                main_prefix_through_optimizer_ast_sha256=hashlib.sha256(old_prefix.encode()).hexdigest(),
+                compatibility='unchanged_pixel_preprocessing_and_model_prelude_optimization_loop_revision_only')
+
+
+def validate_recovery_parent(config):
+    """Observe the fixed failed parent; never retry, mutate, or reuse its output."""
+    with sqlite3.connect('file:'+str(RUNTIME/'queue.sqlite3')+'?mode=ro',uri=True) as db:
+        db.row_factory = sqlite3.Row
+        row = db.execute('SELECT j.*,a.status AS attempt_status,a.exit_code,a.result_manifest '
+                         'FROM jobs j JOIN attempts a USING(job_id) WHERE a.attempt_id=?',(RECOVERY_ATTEMPT,)).fetchone()
+        attempts = db.execute('SELECT COUNT(*) FROM attempts WHERE job_id=?',(row['job_id'],)).fetchone()[0] if row else 0
+    if (row is None or row['command']!='action-train' or row['status']!='failed'
+            or row['attempt_status']!='failed' or row['exit_code']!=1 or attempts!=1
+            or row['code_sha']!=PRODUCER_COMMIT):
+        raise ValueError('Exact preserved failed numerical parent attempt required')
+    parent = json.loads(row['config_json']);old_inputs = json.loads(row['input_json'])
+    keys = ['manifest','baseline_lock','split_manifest','config','review_release','weights']
+    if config['stage']=='train':keys += ['prepared','preparation_evidence']
+    if (parent.get('stage')!='train' or parent.get('execution_revision') is not None
+            or row['job_key'] != job_key(parent) or digest(parent)!=row['config_hash'] or digest(old_inputs)!=row['input_hash']
+            or any(parent['files'][key]!=config['files'][key] for key in keys)):
+        raise ValueError('Recovery must preserve the failed parent data/config/pixel bindings')
+    receipt_path = RUNTIME/'attempts'/RECOVERY_ATTEMPT/'manifest.json'
+    if row['result_manifest']!=str(receipt_path):
+        raise ValueError('Failed parent receipt path differs')
+    receipt = read(receipt_path)
+    if (receipt.get('synthetic') is not False or receipt.get('execution_status')!='failed'
+            or receipt.get('attempt_id')!=RECOVERY_ATTEMPT
+            or receipt.get('result_path')!=str(output_path('train',RECOVERY_ATTEMPT))
+            or receipt.get('registration')!={key:row[key] for key in
+                 ('command','job_id','run_id','task_id','dispatch_id','owner','code_sha','source_hash','input_hash','config_hash')}):
+        raise ValueError('Canonical failed parent receipt differs')
+    return dict(attempt_id=RECOVERY_ATTEMPT,receipt_sha256=file_hash(receipt_path),input_hash=row['input_hash'],
+                status='failed_exit1_preserved_no_retry',execution_revision=EXECUTION_REVISION)
 
 
 def preparation_evidence(config, paths, manifest, counts, release):
@@ -157,12 +273,15 @@ def preparation_evidence(config, paths, manifest, counts, release):
             or producer.get('expected_clips') != len(rows) or producer.get('counts') != counts):
         raise ValueError('Successful full preparation with exact clip inventory required')
     prep = prepared.get('preparation', {})
-    trainer_sha = file_hash(ROOT/'scripts/train_action_recognizer.py')
     driver_sha = file_hash(ROOT/'scripts/prepare_action_pixels_parallel.py')
     if (prep.get('contract') != evidence['producer_contract'] or prep.get('workers') != 4
-            or prep.get('trainer_sha256') != trainer_sha or producer.get('trainer_sha256') != trainer_sha
+            or prep.get('trainer_sha256') != producer.get('trainer_sha256')
             or prep.get('driver_sha256') != driver_sha or producer.get('driver_sha256') != driver_sha):
         raise ValueError('Reviewed producer contract/trainer/driver binding differs')
+    compatibility = preprocessing_compatibility(producer.get('trainer_sha256'))
+    if (compatibility['producer_trainer_sha256'] != compatibility['execution_trainer_sha256']
+            and config.get('execution_revision') != EXECUTION_REVISION):
+        raise ValueError('Explicit recovery revision required for historical prepared pixels')
     for key in ('manifest','baseline_lock','split_manifest','config','review_release'):
         if (producer.get('paths',{}).get(key) != str(paths[key])
                 or producer.get('hashes',{}).get(key) != config['files'][key]['sha256']):
@@ -212,7 +331,51 @@ def preparation_evidence(config, paths, manifest, counts, release):
                         producer_contract_sha256=evidence['producer_contract']['sha256'],
                         source_gate_receipt_sha256=evidence['source_gate_receipt']['sha256'],
                         successful_result_sha256=evidence['successful_result']['sha256'],
-                        equivalence_sha256=evidence['equivalence']['report']['sha256'])
+                        equivalence_sha256=evidence['equivalence']['report']['sha256'],
+                        preprocessing_compatibility=compatibility)
+
+
+def validate_smoke_numerics(result_path):
+    result = read(result_path)
+    if (type(result.get('optimizer_steps')) is not int or type(result.get('optimizer_step_attempts')) is not int or type(result.get('amp_skipped_steps')) is not int
+            or result['optimizer_step_attempts'] != 2 or result['amp_skipped_steps'] != 0
+            or result['optimizer_step_attempts'] != result['optimizer_steps'] + result['amp_skipped_steps']):
+        raise ValueError('Smoke needs two actual updates with exact attempted/skipped accounting')
+    scale = result.get('amp_scale')
+    finite = result.get('finite_state',{})
+    if (type(scale) not in (int,float) or not math.isfinite(scale) or scale <= 0
+            or finite.get('model_parameters_and_buffers_finite') is not True
+            or finite.get('optimizer_state_finite') is not True
+            or any(type(finite.get('checked_tensors',{}).get(key)) is not int
+                   or finite['checked_tensors'][key] <= 0 for key in ('model_tensors','optimizer_tensors'))):
+        raise ValueError('Finite smoke scale/model/optimizer telemetry required')
+    path = result_path.parent/'amp-updates.jsonl'
+    if not re.fullmatch('[0-9a-f]{64}',result.get('amp_updates_sha256','')) or file_hash(path) != result['amp_updates_sha256']:
+        raise ValueError('Actual AMP update telemetry binding differs')
+    rows = [json.loads(line) for line in path.read_text().splitlines()]
+    if len(rows) != 2:
+        raise ValueError('Exact two actual smoke update records required')
+    previous = None
+    for index,row in enumerate(rows,1):
+        before,after = row.get('scale_before'),row.get('scale_after')
+        if (any(type(row.get(k)) is not int for k in ('optimizer_step_attempts','optimizer_steps','amp_skipped_steps'))
+                or row.get('optimizer_step_attempts') != index or row.get('optimizer_steps') != index
+                or row.get('amp_skipped_steps') != 0 or row.get('step_applied') is not True
+                or row.get('overflow_skipped') is not False or row.get('epoch') != 1
+                or row.get('microbatch_end') != 4*index or row.get('effective_batch_samples') != 16
+                or any(type(x) not in (int,float) or not math.isfinite(x) or x <= 0 for x in (before,after))
+                or after < before or (previous is not None and before != previous)):
+            raise ValueError('Smoke actual-step/scaler telemetry is inconsistent')
+        previous = after
+    history = read(result_path.parent/'history.json')
+    if (previous != scale or len(history) != 1 or history[0].get('epoch') != 1
+            or history[0].get('optimizer_steps') != 2 or history[0].get('optimizer_step_attempts') != 2
+            or history[0].get('amp_skipped_steps') != 0 or history[0].get('amp_scale') != scale
+            or history[0].get('finite_state') != finite):
+        raise ValueError('Smoke result/history/actual updates differ')
+    return dict(actual_updates=2,attempted_updates=2,skipped_updates=0,amp_scale=scale,
+                updates_sha256=result['amp_updates_sha256'],history_sha256=file_hash(result_path.parent/'history.json'),
+                finite_state=finite)
 
 
 def validate_canonical_smoke(binding, config, inputs):
@@ -256,6 +419,7 @@ def validate_canonical_smoke(binding, config, inputs):
         raise ValueError('Reviewed historical smoke authorization differs')
     if authorization['sources'].get('scripts/train_action_recognizer.py') != file_hash(ROOT/'scripts/train_action_recognizer.py'):
         raise ValueError('Historical smoke training-core source differs from current frozen trainer')
+    numerics = validate_smoke_numerics(result_path)
     for name, expected in authorization['sources'].items():
         committed = subprocess.check_output(['git','show',row['code_sha']+':'+name],cwd=ROOT)
         if hashlib.sha256(committed).hexdigest() != expected:
@@ -263,6 +427,9 @@ def validate_canonical_smoke(binding, config, inputs):
     for key in ('manifest','baseline_lock','split_manifest','config','review_release','weights'):
         if saved['files'][key] != config['files'][key]:
             raise ValueError('Smoke/training input binding differs: '+key)
+    if (saved.get('execution_revision') != config.get('execution_revision')
+            or original.get('execution_revision') != saved.get('execution_revision')):
+        raise ValueError('Canonical smoke and train execution revisions differ')
     if (original.get('files') != {key:value['sha256'] for key,value in saved['files'].items()}
             or original.get('review_snapshot_sha256') != inputs['review_snapshot_sha256']):
         raise ValueError('Smoke queued file/review bindings differ')
@@ -280,7 +447,7 @@ def validate_canonical_smoke(binding, config, inputs):
             or any(old_prepared['clips'][key]['sha256'] != pixels[key] for key in ids)):
         raise ValueError('Canonical smoke pixel provenance differs')
     return dict(attempt_id=attempt,receipt_sha256=file_hash(directory/'manifest.json'),
-                input_hash=row['input_hash'],matching_pixels=36)
+                input_hash=row['input_hash'],matching_pixels=36,numerics=numerics)
 
 
 def validate_assignment(context):
@@ -305,7 +472,8 @@ def validate_assignment(context):
 
 
 def validate(config, inputs, runtime):
-    if (set(config) != {'stage','context','files','authorization'} or config['stage'] not in ('smoke','train')
+    if (set(config) != {'stage','context','files','authorization','execution_revision'}
+            or config['execution_revision'] != EXECUTION_REVISION or config['stage'] not in ('smoke','train')
             or Path(runtime).resolve() != RUNTIME or not INTERPRETER.is_file()):
         raise ValueError('Canonical runtime, existing interpreter and smoke/train stage required')
     actual = input_contract(config)
@@ -314,6 +482,8 @@ def validate(config, inputs, runtime):
     authorization = read(checked_file(config['authorization']))
     if (authorization.get('context') != config['context'] or authorization.get('stage') != config['stage']
             or authorization.get('input_hash') != digest(inputs) or authorization.get('sources') != sources()
+            or authorization.get('execution_revision') != EXECUTION_REVISION
+            or authorization.get('recovery_from_attempt') != RECOVERY_ATTEMPT
             or any(authorization.get(k) is not True for k in
                    ('confirmed','training_authorized','independent_review_passed','explicit_gpu_go'))):
         raise ValueError('Reviewed exact source/input assignment and explicit GPU GO required')
@@ -324,11 +494,12 @@ def validate(config, inputs, runtime):
         committed = subprocess.check_output(['git','show',head+':'+name],cwd=ROOT)
         if hashlib.sha256(committed).hexdigest() != expected:
             raise ValueError('Reviewed sources must be committed: '+name)
+    recovery = validate_recovery_parent(config)
     smoke_proof = None
     if config['stage'] == 'train':
         smoke_proof = validate_canonical_smoke(authorization.get('smoke_result'),config,inputs)
     live_assignment = validate_assignment(config['context'])
-    result = dict(authorization=authorization, live_assignment=live_assignment)
+    result = dict(authorization=authorization, live_assignment=live_assignment,recovery=recovery)
     if smoke_proof is not None:
         result['canonical_smoke'] = smoke_proof
     return result
@@ -349,7 +520,12 @@ def validate_smoke(binding, config):
 
 
 def job_key(config):
-    return 'exp0063-action-'+config['stage']+'-'+config['files']['manifest']['sha256']
+    key = 'exp0063-action-'+config['stage']+'-'+config['files']['manifest']['sha256']
+    if 'execution_revision' in config:
+        if config['execution_revision'] != EXECUTION_REVISION:
+            raise ValueError('Unreviewed execution revision')
+        key += '-'+config['execution_revision']
+    return key
 
 
 def output_path(stage, attempt):

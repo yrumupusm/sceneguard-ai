@@ -28,7 +28,7 @@ def bind(path):
 class Fixture:
     def __init__(self,folder):
         self.root=Path(folder);self.pixels=self.root/'full';self.pixels.mkdir()
-        self.config=dict(stage='train',context=CONTEXT,files={},authorization={})
+        self.config=dict(stage='train',execution_revision=command.EXECUTION_REVISION,context=CONTEXT,files={},authorization={})
         for key in command.FILE_KEYS:
             path=self.root/(key+'.json');save(path,{})
             self.config['files'][key]=bind(path)
@@ -70,7 +70,7 @@ class Fixture:
         self.module=command.trainer()
         self.counts=self.module.validate_manifest(self.manifest,self.baseline,8,self.split)
         self.producer=dict(mode='prepare',workers=4,expected_clips=len(self.rows),counts=self.counts,
-            trainer_sha256=command.file_hash(ROOT/'scripts/train_action_recognizer.py'),
+            trainer_sha256=command.PRODUCER_TRAINER_SHA,
             driver_sha256=command.file_hash(ROOT/'scripts/prepare_action_pixels_parallel.py'),paths={},hashes={})
         for key in ('manifest','baseline_lock','split_manifest','config','review_release'):
             self.producer['paths'][key]=str(self.paths[key]);self.producer['hashes'][key]=command.file_hash(self.paths[key])
@@ -251,21 +251,32 @@ class SmokeProof:
         self.result=dict(status='smoke_passed',test_accessed=False,training_complete=False,real_train_clips=32,
             real_validation_clips=4,actual_microbatch_sizes=[4]*8,accumulation=4,optimizer_steps=2,
             manifest_sha256=f.config['files']['manifest']['sha256'],config_sha256=f.config['files']['config']['sha256'])
+        finite=dict(model_parameters_and_buffers_finite=True,optimizer_state_finite=True,
+                    checked_tensors=dict(model_tensors=1,optimizer_tensors=2))
+        self.updates=[dict(optimizer_steps=i,optimizer_step_attempts=i,amp_skipped_steps=0,step_applied=True,
+            overflow_skipped=False,scale_before=65536.,scale_after=65536.,epoch=1,microbatch_end=i*4,effective_batch_samples=16) for i in (1,2)]
+        self.updates_path=self.result_path.parent/'amp-updates.jsonl'
+        self.updates_path.write_text(''.join(json.dumps(r)+'\n' for r in self.updates))
+        self.result.update(optimizer_step_attempts=2,amp_skipped_steps=0,amp_scale=65536.,finite_state=finite,
+                           amp_updates_sha256=command.file_hash(self.updates_path))
         save(self.result_path,self.result)
+        save(self.result_path.parent/'history.json',[dict(epoch=1,optimizer_steps=2,optimizer_step_attempts=2,
+             amp_skipped_steps=0,amp_scale=65536.,finite_state=finite)])
         selected=f.module.partition_rows(f.manifest,'smoke');self.ids={r['clip_id'] for r in selected}
         old_prepared=f.root/'smoke-prepared.json'
         save(old_prepared,dict(manifest_sha256=f.config['files']['manifest']['sha256'],
             config_sha256=f.config['files']['config']['sha256'],clips={k:f.clips[k] for k in self.ids}))
-        self.config=dict(stage='smoke',context=CONTEXT,files={k:copy.deepcopy(f.config['files'][k]) for k in command.FILE_KEYS},authorization={})
+        self.config=dict(stage='smoke',execution_revision=command.EXECUTION_REVISION,context=CONTEXT,files={k:copy.deepcopy(f.config['files'][k]) for k in command.FILE_KEYS},authorization={})
         self.config['files']['prepared']=bind(old_prepared)
-        self.original=dict(files={k:v['sha256'] for k,v in self.config['files'].items()},
+        self.original=dict(execution_revision=command.EXECUTION_REVISION,files={k:v['sha256'] for k,v in self.config['files'].items()},
             pixels={k:self.inputs['pixels'][k] for k in self.ids},
             sources={r[p]:r[h] for r in selected for p,h in [('source_path','source_sha256'),('label_path','label_sha256')]},
             review_snapshot_sha256=self.inputs['review_snapshot_sha256'])
-        self.head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+        self.head='a'*40
         names=('orchestration/queue.py','orchestration/mock_job.py','orchestration/action_training_command.py',
                'scripts/train_action_recognizer.py','tests/test_action_recognizer.py','tests_orca/test_action_training.py')
-        self.sources={name:hashlib.sha256(subprocess.check_output(['git','show',self.head+':'+name],cwd=ROOT)).hexdigest() for name in names}
+        self.source_bytes={name:(ROOT/name).read_bytes() for name in names}
+        self.sources={name:hashlib.sha256(value).hexdigest() for name,value in self.source_bytes.items()}
         self.authorization=dict(stage='smoke',context=CONTEXT,input_hash=digest(self.original),sources=self.sources,code_sha=self.head,
             confirmed=True,training_authorized=True,independent_review_passed=True,explicit_gpu_go=True)
         auth=self.directory/'authorization.json';save(auth,self.authorization);self.config['authorization']=bind(auth)
@@ -286,7 +297,8 @@ class SmokeProof:
         def hashed(path):
             if Path(path).suffix=='.mp4':raise AssertionError('Canonical smoke proof reopened original media')
             return original(path)
-        with patch.object(command,'RUNTIME',self.runtime),patch.object(command,'OUTPUT',self.output),patch.object(command,'file_hash',side_effect=hashed):
+        with patch.object(command,'RUNTIME',self.runtime),patch.object(command,'OUTPUT',self.output),patch.object(command,'file_hash',side_effect=hashed),\
+             patch.object(command.subprocess,'check_output',side_effect=lambda argv,**kw:self.source_bytes[argv[2].split(':',1)[1]]):
             result=command.validate_canonical_smoke(bind(self.result_path),self.fixture.config,self.inputs if inputs is None else inputs)
         assert command.file_hash(self.runtime/'queue.sqlite3')==before
         return result
@@ -355,9 +367,9 @@ class CanonicalSmokeProofTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'training-core'):proof.verify()
 
     def test_live_train_validation_cannot_skip_canonical_smoke_proof(self):
-        config=dict(stage='train',context=CONTEXT,files={},authorization={});inputs={'bound':'inputs'}
+        config=dict(stage='train',execution_revision=command.EXECUTION_REVISION,context=CONTEXT,files={},authorization={});inputs={'bound':'inputs'}
         content=b'reviewed';sources={'owned.py':hashlib.sha256(content).hexdigest()}
-        auth=dict(stage='train',context=CONTEXT,input_hash=digest(inputs),sources=sources,code_sha='a'*40,
+        auth=dict(stage='train',execution_revision=command.EXECUTION_REVISION,recovery_from_attempt=command.RECOVERY_ATTEMPT,context=CONTEXT,input_hash=digest(inputs),sources=sources,code_sha='a'*40,
                   confirmed=True,training_authorized=True,independent_review_passed=True,explicit_gpu_go=True,
                   smoke_result=dict(path='/not-actual-smoke',sha256='0'*64))
         with tempfile.TemporaryDirectory() as t:
@@ -365,7 +377,7 @@ class CanonicalSmokeProofTests(unittest.TestCase):
             with patch.object(command,'input_contract',return_value=inputs),patch.object(command,'sources',return_value=sources),\
                  patch.object(command.subprocess,'check_output',side_effect=lambda argv,**kwargs:'a'*40 if argv[1]=='rev-parse' else content),\
                  patch.object(command,'validate_canonical_smoke',side_effect=ValueError('canonical proof mandatory')) as proof,\
-                 patch.object(command,'validate_assignment') as assignment:
+                 patch.object(command,'validate_assignment') as assignment,patch.object(command,'validate_recovery_parent',return_value={}):
                 with self.assertRaisesRegex(ValueError,'canonical proof mandatory'):command.validate(config,inputs,command.RUNTIME)
                 proof.assert_called_once_with(auth['smoke_result'],config,inputs);assignment.assert_not_called()
 
@@ -383,6 +395,111 @@ class CanonicalSmokeProofTests(unittest.TestCase):
             with patch.object(f.module,'sha',side_effect=checked):
                 for _ in range(4):f.contract()
             self.assertEqual(len(opened),4*len(f.rows));self.assertEqual(set(opened),{e['path'] for e in f.clips.values()})
+
+
+
+class RecoveryCompatibilityTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.old=subprocess.check_output(['git','show',command.PRODUCER_COMMIT+':scripts/train_action_recognizer.py'],cwd=ROOT).decode()
+
+    def test_optimization_only_loop_and_reviewed_helper_preserve_exact_pixel_contract(self):
+        changed=self.old.replace('optimizer_steps+=1','optimizer_steps+=1; skipped=0',1)
+        changed=changed.replace('def main(argv=None):','def amp_optimizer_update(optimizer, scaler, counts):\n    return None\n\n\ndef main(argv=None):',1)
+        proof=command.compare_preprocessing_sources(self.old,changed)
+        self.assertIn('decode_clip',proof['checked_helpers_sha256']);self.assertIn('validate_manifest',proof['checked_helpers_sha256'])
+        self.assertEqual(len(proof['checked_helpers_sha256']),10)
+
+    def test_shadowing_imports_side_effects_and_entrypoint_attacks_fail(self):
+        variants=[self.old+'\ndef math():\n    return None\n',self.old+'\ndef len(value):\n    return 1\n',
+            self.old+'\nmath=None\n',self.old+'\nimport torch\n',
+            self.old.replace('def main(argv=None):','@print("decorator")\ndef main(argv=None):',1),
+            self.old.replace('def main(argv=None):','def main(argv=print("default")):',1),
+            self.old.replace('def main(argv=None):','def main(argv=None) -> print("return-annotation"):',1),
+            self.old+'\ndef decode_clip(row,size):\n    return None\n',
+            self.old.replace('def main(argv=None):','def amp_optimizer_update(value=print("bad")):\n    pass\n\ndef main(argv=None):',1),
+            self.old.replace('def main(argv=None):','def amp_optimizer_update(value: print("bad")):\n    pass\n\ndef main(argv=None):',1)]
+        for index,source in enumerate(variants):
+            with self.subTest(index=index),self.assertRaises(ValueError):command.compare_preprocessing_sources(self.old,source)
+
+    def test_decoder_validation_normalization_model_or_seed_drift_fails(self):
+        variants=[self.old.replace('return np.stack(result)','return np.stack(result)[::-1]',1),
+            self.old.replace("baseline.get('status') != 'verified'","baseline.get('status') != 'unsafe'",1),
+            self.old.replace('.43216','.5',1),self.old.replace('r3d_18(weights=None)','r3d_18(weights="wrong")',1),
+            self.old.replace("torch.manual_seed(config['seed'])",'torch.manual_seed(0)',1)]
+        for index,source in enumerate(variants):
+            with self.subTest(index=index),self.assertRaises(ValueError):command.compare_preprocessing_sources(self.old,source)
+
+    def test_historical_git_anchor_and_producer_sha_cannot_be_substituted(self):
+        with self.assertRaisesRegex(ValueError,'Pinned'):command.preprocessing_compatibility('0'*64)
+        with patch.object(command.subprocess,'check_output',return_value=b'not historical source'):
+            with self.assertRaisesRegex(ValueError,'Git'):command.preprocessing_compatibility(command.PRODUCER_TRAINER_SHA)
+        proof=command.preprocessing_compatibility(command.PRODUCER_TRAINER_SHA)
+        self.assertEqual(proof['producer_trainer_sha256'],command.PRODUCER_TRAINER_SHA)
+        self.assertEqual(proof['execution_trainer_sha256'],command.file_hash(ROOT/'scripts/train_action_recognizer.py'))
+
+    def test_legacy_keys_are_historical_and_new_revision_is_distinct_and_bounded(self):
+        old=dict(stage='smoke',files=dict(manifest={'sha256':'a'*64}))
+        legacy=command.job_key(old);new=command.job_key({**old,'execution_revision':command.EXECUTION_REVISION})
+        self.assertEqual(legacy,'exp0063-action-smoke-'+'a'*64)
+        self.assertEqual(new,legacy+'-amp-overflow-v2')
+        with self.assertRaises(ValueError):command.job_key({**old,'execution_revision':'unreviewed-retry'})
+        with patch.object(command,'input_contract',side_effect=AssertionError('must reject before inputs')):
+            with self.assertRaises(ValueError):command.validate(dict(stage='smoke',context=CONTEXT,files={},authorization={}),{},command.RUNTIME)
+
+    def test_recovery_parent_smoke_uses_shared_six_train_keeps_full_eight(self):
+        with tempfile.TemporaryDirectory() as t:
+            f=Fixture(t);runtime=Path(t)/'queue';directory=runtime/'attempts'/command.RECOVERY_ATTEMPT;directory.mkdir(parents=True)
+            parent=copy.deepcopy(f.config);parent.pop('execution_revision');original={'historical':'unchanged'}
+            values=dict(command='action-train',job_key=command.job_key(parent),status='failed',config_json=json.dumps(parent),
+                input_json=json.dumps(original),config_hash=digest(parent),input_hash=digest(original),source_hash='a'*64,
+                code_sha=command.PRODUCER_COMMIT,**CONTEXT)
+            receipt=dict(synthetic=False,execution_status='failed',attempt_id=command.RECOVERY_ATTEMPT,
+                result_path=str(command.output_path('train',command.RECOVERY_ATTEMPT)),
+                registration=dict(job_id='failed-parent',**{k:v for k,v in values.items() if k in
+                    ('command','run_id','task_id','dispatch_id','owner','code_sha','source_hash','input_hash','config_hash')}))
+            save(directory/'manifest.json',receipt)
+            with sqlite3.connect(runtime/'queue.sqlite3') as db:
+                db.execute('CREATE TABLE jobs(job_id TEXT,'+','.join(k+' TEXT' for k in values)+')')
+                db.execute('INSERT INTO jobs VALUES ('+','.join('?' for _ in range(len(values)+1))+')',['failed-parent',*values.values()])
+                db.execute('CREATE TABLE attempts(job_id TEXT,attempt_id TEXT,status TEXT,exit_code INTEGER,result_manifest TEXT)')
+                db.execute('INSERT INTO attempts VALUES (?,?,?,?,?)',['failed-parent',command.RECOVERY_ATTEMPT,'failed',1,str(directory/'manifest.json')])
+            before=command.file_hash(runtime/'queue.sqlite3')
+            with patch.object(command,'RUNTIME',runtime):
+                self.assertEqual(command.validate_recovery_parent(f.config)['attempt_id'],command.RECOVERY_ATTEMPT)
+                smoke=copy.deepcopy(f.config);smoke['stage']='smoke';smoke['files'].pop('preparation_evidence')
+                smoke['files']['prepared']=dict(path='/new/smoke-only/prepared.json',sha256='b'*64)
+                self.assertEqual(command.validate_recovery_parent(smoke)['attempt_id'],command.RECOVERY_ATTEMPT)
+                self.assertEqual(command.file_hash(runtime/'queue.sqlite3'),before)
+                for status in ('running','unknown','succeeded'):
+                    with sqlite3.connect(runtime/'queue.sqlite3') as db:db.execute('UPDATE jobs SET status=?',(status,))
+                    with self.assertRaises(ValueError):command.validate_recovery_parent(f.config)
+                with sqlite3.connect(runtime/'queue.sqlite3') as db:db.execute("UPDATE jobs SET status='failed'")
+                bad=copy.deepcopy(f.config);bad['files']['prepared']['sha256']='0'*64
+                with self.assertRaisesRegex(ValueError,'preserve'):command.validate_recovery_parent(bad)
+
+    def test_revised_smoke_finite_and_actual_step_telemetry_is_mandatory(self):
+        for change in ('attempts','skips','nan-scale','nonfinite-state','zero-tensors','false-step','bad-counter','tamper'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as t:
+                proof=SmokeProof(Fixture(t))
+                if change=='attempts':proof.result['optimizer_step_attempts']=3
+                elif change=='skips':proof.result['amp_skipped_steps']=1
+                elif change=='nan-scale':proof.result['amp_scale']=float('nan')
+                elif change=='nonfinite-state':proof.result['finite_state']['optimizer_state_finite']=False
+                elif change=='zero-tensors':proof.result['finite_state']['checked_tensors']['model_tensors']=0
+                elif change=='false-step':proof.updates[0]['step_applied']=False
+                elif change=='bad-counter':proof.updates[0]['optimizer_steps']=0
+                else:proof.updates_path.write_text('changed')
+                if change in ('false-step','bad-counter'):
+                    proof.updates_path.write_text(''.join(json.dumps(r)+'\n' for r in proof.updates))
+                    proof.result['amp_updates_sha256']=command.file_hash(proof.updates_path)
+                save(proof.result_path,proof.result)
+                with self.assertRaises(ValueError):proof.verify()
+
+    def test_same_core_with_wrong_execution_revision_cannot_authorize_recovery_train(self):
+        with tempfile.TemporaryDirectory() as t:
+            f=Fixture(t);proof=SmokeProof(f);f.config['execution_revision']='different'
+            with self.assertRaisesRegex(ValueError,'revisions'):proof.verify()
 
 
 
