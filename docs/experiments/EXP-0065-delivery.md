@@ -35,6 +35,8 @@
 
 웹 코드 SHA `8c7efc6403525fa2693906e50295d6d605b83c8abba790dbcf4e673660c5ccef`는 변경하지 않았다. 세 담당의 실제 worker_done을 수신·확인했고 release는 기존 사용자 세션이므로 `retained/no_owned_resource`로 종료했다. 사용자 터미널을 닫지 않았다.
 
-GitHub 게시·병합은 이 로컬 전달 이후 정확한 커밋과 네 원문 해시를 대조해 아래에 추가한다.
+[PR #2](https://github.com/yrumupusm/sceneguard-ai/pull/2)에 실제 결과 커밋 `dbadfb3e87339ded256491cb23b94cafab6a4716`을 게시하고 이 정확한 head를 지정해 병합했다. 병합 커밋은 `d2255d792c870c83b746450bc20cc7d79aa3f56c`다. 로컬 main을 fast-forward했고 GitHub main의 커밋·카탈로그·배정과 위 네 원문 바이트가 모두 일치함을 확인했다(`github-merge-receipt.json`). 이 전달 확인 문서만 후속 게시하며 고정 보고서/지표/독립 검토/바인딩은 수정하지 않는다.
+
+실제 진단·자료 보강 준비·웹 전달·GitHub 반영은 완료다. 종료 전 pending 조회는 성공했고 신규/수정 답변은 없었다. 새 9질문은 미응답으로 남기며, 이 결과만으로 추가 학습·판정 변경을 시작하지 않는다.
 
 로컬 증거는 `runtime/action-recognition/exp0065/delivery/`에 보존한다. 원본 CCTV, 라벨 원문, 세부 점수, 분할별 파일 목록, 영상 픽셀과 모델 가중치는 공개하지 않는다. GitHub에는 재현 코드·비식별 집계·보고서·검토와 등록 메타데이터만 게시한다.
