@@ -82,4 +82,18 @@
 1. **CPU preflight/prepare: GO.** 위 고정 소스·v2 manifest·release·config·baseline·split만 사용하고 새 출력 경로에 원본 SHA 및 exact native PTS를 확인해 준비한다. 실패 프레임을 가까운 프레임·반복·보간으로 대체하지 않는다.
 2. **GPU smoke: 대기.** 실제 prepared receipt의 manifest/config/pixel SHA, 공식 weight 바이트, 현재 Run/Task/Dispatch/owner와 큐 authorization을 확인한 뒤 별도 판단한다. 지금은 큐 enqueue나 GPU GO를 뜻하지 않는다.
 3. **전체10epoch 학습: 대기.** 같은 검토 소스·입력으로 실제 smoke32train/4val, batch4/누적4, 두 optimizer step 및 test 미접근이 성공해야 한다. smoke checkpoint를 이어 학습하지 않고 공식 사전학습 weight에서 고정 조건을 시작한다. validation CE로만 선택하고 test는 선택 후 한 번 평가한다.
-4. **45개 통합·운영 적용: 본 판정 밖.** 이후 고정 통합 계획과 별도 코드/큐 검토가 필요하다. 행동 점수만으로 침입 완료를 생성하는 권한은 없다.
+4. **45개 통합·운영 적용: 본 판정 밖.** 추가 배정된 관측층 CPU 소스/큐 준비 검토는 `EXP-0064-integration-readiness-review.md`에 기록했다. 실제 학습·시험 완료와 별도 GPU 추론 GO는 여전히 필요하다. 행동 점수만으로 침입 완료를 생성하는 권한은 없다.
+
+## CPU 병렬 준비 보완 검토 — 실제 영수증 대기
+
+원래 순차 prepare가 진행 중인 상태에서 총괄이 별도 CPU 병렬 driver와 실제 동등성 benchmark 검토를 배정했다. 고정 trainer의 픽셀 decode 함수·native PTS·ROI·정규화·후보·분할은 바꾸지 않는다. source commit `930e21b`의 `scripts/prepare_action_pixels_parallel.py` SHA256은 `a9184eeae221f52a8033c24212f6c8eb6323525d4e6c24e425c2624f267e451b`, `tests/test_action_parallel_prepare.py`는 `78aee0c5fb7293817d912f9faeeeecd8c05ec454715d257f6fa27b8b5b3e0e01`다. 독립7시험 통과와 시험 전후 동일 소스를 확인했다.
+
+초기 draft의 모든 task 선제 제출은 실패 뒤에도 불필요하게 계속 처리할 수 있어 수정 요청했다. 최종 driver는 spawn4개, 제출+완료 버퍼 최대4개, FIRST_COMPLETED에서 실패를 확인한 뒤에만 새 작업을 제출한다. 실패 시 미시작 작업을 취소하고 이미 진행한 최대4개 종료를 기다린다. frozen trainer.decode_clip을 그대로 호출하고 임시 NPY를 원자적으로 확정한다. 준비 완료 marker는 전체 성공 뒤에만 만든다.
+
+전체 원본/주석 SHA gate를 decode 전에 실행하고, 최종 단계에서 driver/trainer·직접 입력·검수 snapshot/정책 및 contract 자체 SHA를 다시 확인한다. prepared metadata는 실제 contract 경로/SHA와 driver/trainer/worker 수를 연결한다. 새 병렬 prepare는 중단 확인된 순차 작업의 완료 픽셀 snapshot을 받아 모든 해당 clip의 NPY 바이트·배열·dtype·shape를 비교해야 한다.
+
+고정17개 benchmark 계획은 `runtime/action-recognition/exp0063/execution-v1/parallel-benchmark-plan.json` SHA256 `e6792ea989649ec238ffc5a14d2a6be29c7725401bfb0902a9bf8a5daf031b9b`다. 전체 class/split/cohort와 ROI 경계·가로/세로·종횡비 극단을 포함하며, 동일 원본을 순차/병렬로 decode해 NPY 전체 SHA와 배열을 비교한다. 시험 분할 픽셀도 CPU 준비 동등성에만 사용하고 모델 점수·threshold·선택에 사용하지 않는다. 실제 GPU smoke에는 시험 분할이 들어가지 않는다.
+
+현재 허용은 **이 exact17개 CPU benchmark만 GO**다. 실제 benchmark 동등성·시간 receipt 확인 → 총괄의 원래 PID 종료 및 불변 완료-prefix snapshot → 별도 prepared-v3 전체 준비 → 모든 픽셀/계약 독립 확인 순으로 진행한다. 원래 순차 결과를 삭제하거나 미완료 파일을 성공 픽셀로 세지 않는다. 실제 속도 개선·전체 병렬 prepare·GPU smoke·전체 학습은 아직 이 보완 검토에서 완료 인증하지 않았다.
+
+통합 큐 추가 소스 `43867d3a8c937c3096ae7bd2cf972d05e78f0aafef80d1a0c20305c5888e6279`에서는 action-train 동작을 유지하고 action-infer만 추가했다. 최종 소스로 integration/inference/training adapter/queue44시험을 독립 재실행해 통과했다. 따라서 이전 source-freeze-v2의 queue SHA를 실제 GPU authorization에 재사용하지 않고 최종 커밋 HEAD와 현재 소스 전체를 새로 묶어야 한다. 이후 authorization된 단계 동안 HEAD/소스 변경은 금지한다.
