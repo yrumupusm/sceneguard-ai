@@ -253,6 +253,70 @@ def evaluation_report(scores, rows, held_out):
     return result
 
 
+def install_actual_step_counter(optimizer):
+    """Count completed ordinary AdamW.step calls, including AMP's skipped calls correctly."""
+    if optimizer.defaults.get('fused'):
+        raise ValueError('Actual-step accounting requires the reviewed non-fused optimizer')
+    counts = {'attempted': 0, 'actual': 0, 'skipped': 0}
+    def after_step(optimizer, args, kwargs):
+        counts['actual'] += 1
+    return counts, optimizer.register_step_post_hook(after_step)
+
+
+def amp_optimizer_update(optimizer, scaler, counts):
+    """Let GradScaler handle overflow; never mutate gradients after its inf check."""
+    scale_before = float(scaler.get_scale())
+    if not math.isfinite(scale_before) or scale_before <= 0:
+        raise ValueError('Invalid AMP scale before optimizer update')
+    actual_before = counts['actual']
+    counts['attempted'] += 1
+    scaler.unscale_(optimizer)
+    # There is no finite clipping threshold in this experiment. An infinite clip
+    # can create inf/inf NaNs; changing its error flag is not overflow recovery.
+    scaler.step(optimizer)
+    scaler.update()
+    scale_after = float(scaler.get_scale())
+    if not math.isfinite(scale_after) or scale_after <= 0:
+        raise ValueError('Invalid AMP scale after optimizer update')
+    applied = counts['actual'] - actual_before
+    if applied not in (0, 1):
+        raise ValueError('Unexpected number of actual optimizer updates')
+    skipped = applied == 0
+    if skipped:
+        counts['skipped'] += 1
+    if ((skipped and scale_after >= scale_before) or
+            (not skipped and scale_after < scale_before) or
+            counts['attempted'] != counts['actual'] + counts['skipped']):
+        raise ValueError('AMP step/backoff accounting differs from actual optimizer calls')
+    return dict(optimizer_step_attempts=counts['attempted'], optimizer_steps=counts['actual'],
+                amp_skipped_steps=counts['skipped'], step_applied=bool(applied),
+                overflow_skipped=skipped, scale_before=scale_before, scale_after=scale_after)
+
+
+def ensure_finite_training_state(model, optimizer):
+    """Do not accept an epoch/checkpoint with nonfinite parameters, buffers or Adam state."""
+    import torch
+    checked = {'model_tensors': 0, 'optimizer_tensors': 0}
+    def check(value, name, group):
+        if isinstance(value, torch.Tensor):
+            if value.is_floating_point() or value.is_complex():
+                checked[group] += 1
+                if not bool(torch.isfinite(value).all()):
+                    raise ValueError('Nonfinite training state: ' + name)
+        elif isinstance(value, dict):
+            for key, item in value.items():
+                check(item, name+'.'+str(key), group)
+        elif isinstance(value, (list, tuple)):
+            for index, item in enumerate(value):
+                check(item, name+'.'+str(index), group)
+        elif isinstance(value, float) and not math.isfinite(value):
+            raise ValueError('Nonfinite training state: ' + name)
+    check(model.state_dict(), 'model', 'model_tensors')
+    check(optimizer.state_dict(), 'optimizer', 'optimizer_tensors')
+    return dict(model_parameters_and_buffers_finite=True, optimizer_state_finite=True,
+                checked_tensors=checked)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest', type=Path, required=True)
@@ -366,10 +430,12 @@ def main(argv=None):
     test=[r for r in selected if r['split']=='test']
     optimizer=torch.optim.AdamW(model.parameters(),lr=config['learning_rate'],weight_decay=config['weight_decay'])
     scaler=torch.amp.GradScaler('cuda'); best=float('inf'); history=[]; optimizer_steps=0
+    step_counts, optimizer_step_hook = install_actual_step_counter(optimizer)
     save(args.output/'environment.json', {'torch':torch.__version__,'torchvision':torchvision.__version__,
         'cuda':torch.version.cuda,'gpu':torch.cuda.get_device_name(),'pretrained_sha256':sha(args.weights)})
     for epoch in range(1 if args.mode == 'smoke' else config['epochs']):
         random.shuffle(train); model.train(); optimizer.zero_grad(set_to_none=True)
+        actual_steps_before_epoch = optimizer_steps
         batches=[train[i:i+config['batch_size']] for i in range(0,len(train),config['batch_size'])]
         total=0.
         for i, rows in enumerate(batches):
@@ -382,19 +448,29 @@ def main(argv=None):
                 raise ValueError('Nonfinite real training loss')
             total+=loss.item(); scaler.scale(loss/group_samples).backward()
             if (i+1)%config['accumulation']==0 or i+1==len(batches):
-                scaler.unscale_(optimizer)
-                torch.nn.utils.clip_grad_norm_(model.parameters(),float('inf'),error_if_nonfinite=True)
-                scaler.step(optimizer); scaler.update(); optimizer.zero_grad(set_to_none=True); optimizer_steps+=1
+                event = amp_optimizer_update(optimizer, scaler, step_counts)
+                event.update(epoch=epoch+1, microbatch_end=i+1, effective_batch_samples=group_samples)
+                with (args.output/'amp-updates.jsonl').open('a') as stream:
+                    stream.write(json.dumps(event, allow_nan=False)+'\n')
+                optimizer_steps = step_counts['actual']
+                optimizer.zero_grad(set_to_none=True)
+        if optimizer_steps == actual_steps_before_epoch:
+            raise ValueError('No actual optimizer update completed in this epoch')
+        finite_state = ensure_finite_training_state(model, optimizer)
         val_loss,scores=evaluate(val)
         if not math.isfinite(val_loss):
             raise ValueError('Nonfinite real validation loss')
         row={'epoch':epoch+1,'train_loss':total/len(train),'validation_loss':val_loss,
              'validation':metrics(scores),'actual_microbatch_sizes':[len(b) for b in batches],
-             'optimizer_steps':optimizer_steps,'peak_gpu_bytes':torch.cuda.max_memory_allocated()}
+             'optimizer_steps':optimizer_steps,'optimizer_step_attempts':step_counts['attempted'],
+             'amp_skipped_steps':step_counts['skipped'],'amp_scale':float(scaler.get_scale()),
+             'finite_state':finite_state,'peak_gpu_bytes':torch.cuda.max_memory_allocated()}
         history.append(row);save(args.output/'history.json',history)
         save(args.output/f'validation-epoch-{epoch+1:03d}-scores.json',scores)
         checkpoint={'model':model.state_dict(),'optimizer':optimizer.state_dict(),'scaler':scaler.state_dict(),
                     'epoch':epoch+1,'config':config,'manifest_sha256':sha(args.manifest),
+                    'optimizer_steps':optimizer_steps,'optimizer_step_attempts':step_counts['attempted'],
+                    'amp_skipped_steps':step_counts['skipped'],
                     'rng_torch':torch.get_rng_state(),'rng_cuda':torch.cuda.get_rng_state_all(),
                     'rng_python':random.getstate(),'rng_numpy':np.random.get_state()}
         torch.save(checkpoint,args.output/'last.pt')
@@ -402,10 +478,15 @@ def main(argv=None):
             best=val_loss;torch.save(checkpoint,args.output/'best.pt')
             save(args.output/'best-validation-scores.json',scores)
     if args.mode == 'smoke':
+        if optimizer_steps != 2:
+            raise ValueError('Smoke requires exactly two actual optimizer updates')
         save(args.output/'result.json', dict(status='smoke_passed', real_train_clips=len(train),
             real_validation_clips=len(val), test_accessed=False, epochs=1, training_complete=False,
             actual_microbatch_sizes=[len(b) for b in batches], accumulation=config['accumulation'],
-            optimizer_steps=optimizer_steps, manifest_sha256=sha(args.manifest), config_sha256=sha(args.config)))
+            optimizer_steps=optimizer_steps, optimizer_step_attempts=step_counts['attempted'],
+            amp_skipped_steps=step_counts['skipped'], amp_updates_sha256=sha(args.output/'amp-updates.jsonl'),
+            finite_state=finite_state, amp_scale=float(scaler.get_scale()),
+            manifest_sha256=sha(args.manifest), config_sha256=sha(args.config)))
         return
     # Locally produced trusted checkpoint. Test data is evaluated only after selection.
     checkpoint=torch.load(args.output/'best.pt',weights_only=False,map_location='cpu')
@@ -417,6 +498,8 @@ def main(argv=None):
     save(args.output/'result.json',{'status':'trained','best_epoch':checkpoint['epoch'],
         'test':evaluation_report(scores,test,set(manifest.get('held_out_test_locations',[]))),
         'human_precision':None,'human_f1':None,'weights_sha256':sha(args.output/'best.pt'),
+        'optimizer_steps':optimizer_steps,'optimizer_step_attempts':step_counts['attempted'],
+        'amp_skipped_steps':step_counts['skipped'],'amp_updates_sha256':sha(args.output/'amp-updates.jsonl'),
         'pipeline_comparison':'not_executed','intrusion_completion_accuracy':None})
 
 

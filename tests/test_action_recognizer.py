@@ -216,4 +216,136 @@ class ReleaseAndSmokeTests(unittest.TestCase):
             with self.assertRaises(ValueError):trainer.validate_config({**config,key:value})
 
 
+class AmpUpdateTests(unittest.TestCase):
+    def setup_training(self, growth_interval=100):
+        import torch
+        model = torch.nn.Linear(2, 1, bias=False)
+        with torch.no_grad():
+            model.weight.fill_(1.)
+        optimizer = torch.optim.AdamW(model.parameters(), lr=.0001, weight_decay=.0001)
+        scaler = torch.amp.GradScaler('cpu', init_scale=8., growth_interval=growth_interval)
+        counts, handle = trainer.install_actual_step_counter(optimizer)
+        self.assertTrue(scaler.is_enabled())
+        return model, optimizer, scaler, counts, handle
+
+    def backward(self, model, optimizer, scaler, poison=None):
+        import torch
+        optimizer.zero_grad(set_to_none=True)
+        loss = model(torch.ones(1, 2)).square().sum()
+        self.assertTrue(bool(torch.isfinite(loss)))
+        scaler.scale(loss).backward()
+        if poison is not None:
+            model.weight.grad.fill_(poison)
+        return loss
+
+    def test_real_cpu_amp_overflow_skips_backoffs_then_updates_twice(self):
+        import torch
+        model, optimizer, scaler, counts, handle = self.setup_training()
+        initial = model.weight.detach().clone()
+        self.backward(model, optimizer, scaler, float('inf'))
+        skipped = trainer.amp_optimizer_update(optimizer, scaler, counts)
+        self.assertFalse(skipped['step_applied'])
+        self.assertTrue(skipped['overflow_skipped'])
+        self.assertEqual((skipped['scale_before'], skipped['scale_after']), (8., 4.))
+        self.assertTrue(torch.equal(initial, model.weight))
+        self.assertEqual(len(optimizer.state), 0)
+        for _ in range(2):
+            self.backward(model, optimizer, scaler)
+            applied = trainer.amp_optimizer_update(optimizer, scaler, counts)
+            self.assertTrue(applied['step_applied'])
+        self.assertEqual(counts, dict(attempted=3, actual=2, skipped=1))
+        self.assertEqual(float(optimizer.state[model.weight]['step']), 2.)
+        self.assertFalse(torch.equal(initial, model.weight))
+        self.assertTrue(trainer.ensure_finite_training_state(model, optimizer)['optimizer_state_finite'])
+
+    def test_nan_skip_preserves_existing_adam_moments_and_checkpoint_counters(self):
+        import torch
+        model, optimizer, scaler, counts, handle = self.setup_training()
+        self.backward(model, optimizer, scaler)
+        trainer.amp_optimizer_update(optimizer, scaler, counts)
+        old_parameter = model.weight.detach().clone()
+        old_state = {k: v.clone() for k, v in optimizer.state[model.weight].items()}
+        self.backward(model, optimizer, scaler, float('nan'))
+        event = trainer.amp_optimizer_update(optimizer, scaler, counts)
+        self.assertTrue(event['overflow_skipped'])
+        self.assertTrue(torch.equal(old_parameter, model.weight))
+        for key, value in old_state.items():
+            self.assertTrue(torch.equal(value, optimizer.state[model.weight][key]))
+        self.backward(model, optimizer, scaler)
+        trainer.amp_optimizer_update(optimizer, scaler, counts)
+        with tempfile.TemporaryDirectory() as folder:
+            checkpoint = Path(folder)/'state.pt'
+            torch.save(dict(optimizer=optimizer.state_dict(), scaler=scaler.state_dict(), counts=counts), checkpoint)
+            saved = torch.load(checkpoint, map_location='cpu', weights_only=False)
+        self.assertEqual(saved['counts'], dict(attempted=3, actual=2, skipped=1))
+        self.assertEqual({float(s['step']) for s in saved['optimizer']['state'].values()}, {2.})
+        self.assertEqual(saved['scaler']['scale'], 4.)
+
+    def test_actual_update_count_survives_scale_growth_and_none_step_return(self):
+        model, optimizer, scaler, counts, handle = self.setup_training(growth_interval=1)
+        self.backward(model, optimizer, scaler)
+        event = trainer.amp_optimizer_update(optimizer, scaler, counts)
+        self.assertTrue(event['step_applied'])
+        self.assertEqual((event['scale_before'], event['scale_after']), (8., 16.))
+        self.assertEqual(counts, dict(attempted=1, actual=1, skipped=0))
+
+    def test_finite_elements_with_overflowing_norm_are_not_corrupted_by_infinite_clip(self):
+        import torch
+        model, optimizer, scaler, counts, handle = self.setup_training()
+        self.backward(model, optimizer, scaler, 8.*3.e19)
+        self.assertTrue(bool(torch.isfinite(model.weight.grad).all()))
+        unsafe = torch.nn.Parameter(torch.ones(2))
+        unsafe.grad = torch.full_like(unsafe, 3.e19)
+        self.assertFalse(bool(torch.isfinite(unsafe.grad.norm())))
+        torch.nn.utils.clip_grad_norm_([unsafe], float('inf'), error_if_nonfinite=False)
+        self.assertTrue(bool(torch.isnan(unsafe.grad).all()))
+        event = trainer.amp_optimizer_update(optimizer, scaler, counts)
+        self.assertTrue(event['step_applied'])
+        self.assertTrue(bool(torch.isfinite(model.weight.grad).all()))
+        trainer.ensure_finite_training_state(model, optimizer)
+
+    def test_nonfinite_model_parameters_buffers_and_optimizer_state_reject(self):
+        import torch
+        for target in ['parameter', 'buffer', 'moment', 'step']:
+            with self.subTest(target=target):
+                model, optimizer, scaler, counts, handle = self.setup_training()
+                self.backward(model, optimizer, scaler)
+                trainer.amp_optimizer_update(optimizer, scaler, counts)
+                model.register_buffer('audit_buffer', torch.zeros(1))
+                with torch.no_grad():
+                    if target == 'parameter':
+                        model.weight.fill_(float('nan'))
+                    elif target == 'buffer':
+                        model.audit_buffer.fill_(float('inf'))
+                    elif target == 'moment':
+                        optimizer.state[model.weight]['exp_avg_sq'].fill_(float('nan'))
+                    else:
+                        optimizer.state[model.weight]['step'].fill_(float('inf'))
+                with self.assertRaisesRegex(ValueError, 'Nonfinite training state'):
+                    trainer.ensure_finite_training_state(model, optimizer)
+
+    def test_invalid_scale_and_fused_counter_are_rejected_without_updates(self):
+        import torch
+        model, optimizer, scaler, counts, handle = self.setup_training()
+        self.backward(model, optimizer, scaler)
+        before = model.weight.detach().clone()
+        with patch.object(scaler, 'get_scale', return_value=0.):
+            with self.assertRaisesRegex(ValueError, 'Invalid AMP scale'):
+                trainer.amp_optimizer_update(optimizer, scaler, counts)
+        self.assertEqual(counts, dict(attempted=0, actual=0, skipped=0))
+        self.assertTrue(torch.equal(before, model.weight))
+        optimizer.defaults['fused'] = True
+        with self.assertRaisesRegex(ValueError, 'non-fused'):
+            trainer.install_actual_step_counter(optimizer)
+
+    def test_amp_counterexamples_use_no_cuda_context(self):
+        import torch
+        initialized_before = torch.cuda.is_initialized()
+        model, optimizer, scaler, counts, handle = self.setup_training()
+        self.backward(model, optimizer, scaler)
+        trainer.amp_optimizer_update(optimizer, scaler, counts)
+        self.assertEqual(torch.cuda.is_initialized(), initialized_before)
+        self.assertEqual(model.weight.device.type, 'cpu')
+
+
 if __name__=='__main__':unittest.main()
