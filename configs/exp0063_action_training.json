@@ -1,14 +1,14 @@
 {
   "experiment_id": "EXP-0063",
-  "status": "preparation_only_pending_temporal_box_and_negative_review",
+  "status": "official_annotations_sampled_alignment_review_prepared_for_first_training",
   "model": "torchvision.models.video.r3d_18",
   "pretrained": "R3D_18_Weights.KINETICS400_V1",
   "seed": 6301,
   "frames": 8,
   "sample_fps": 3,
   "image_size": 112,
-  "spatial_policy": "reviewed_actor_plus_fence_context_roi_letterbox",
-  "temporal_policy": "all8_native_frames_inside_explicit_reviewed_action_interval_no_padding",
+  "spatial_policy": "static_official_target_box_union_both_origins_context_expansion_letterbox",
+  "temporal_policy": "all8_consecutive_native_frames_inside_both_origin_annotation_intersection_no_padding",
   "batch_size": 4,
   "accumulation": 4,
   "epochs": 10,
@@ -19,5 +19,12 @@
   "precision": "amp_float16",
   "production_integration": false,
   "minimum_gpu_free_mib": 6144,
-  "actual_gpu_smoke": false
+  "actual_gpu_smoke": false,
+  "negative_classes": [
+    "moving",
+    "stand",
+    "sit_down_bench",
+    "sit_down_floor"
+  ],
+  "validation_negative_coverage": "sitting_only"
 }

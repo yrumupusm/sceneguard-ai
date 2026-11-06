@@ -1,0 +1,270 @@
+"""EXP-0063 one-configuration training through the existing canonical GPU queue.
+
+This module does not initialize/migrate the real queue or execute a GPU job on import.
+Authorization is a local reviewed snapshot; Orca is queried again at execution time.
+"""
+import argparse
+import datetime as dt
+import fcntl
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+
+from orchestration.queue import digest, process_state
+
+ROOT = Path(__file__).resolve().parents[1]
+RUNTIME = Path('/home/jhc7484/dev/sceneguard-orca-lab/runtime/orca-lab/gpu-queue')
+INTERPRETER = ROOT / '.venv-cv-batch02/bin/python'
+OUTPUT = ROOT / 'outputs/action-recognition/exp0063/queued-training'
+FROZEN_SPLIT_SHA = 'bfb0f9fcd570794036cc6d2eaad46f988679b612996e21282a34821203ad5499'
+FILE_KEYS = {'manifest', 'baseline_lock', 'split_manifest', 'config', 'prepared', 'review_release', 'weights'}
+
+
+def file_hash(path):
+    h = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for block in iter(lambda: stream.read(1024*1024), b''):
+            h.update(block)
+    return h.hexdigest()
+
+
+def read(path):
+    return json.loads(Path(path).read_text())
+
+
+def trainer():
+    spec = importlib.util.spec_from_file_location('exp0063_trainer', ROOT/'scripts/train_action_recognizer.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def sources(config=None):
+    paths = ('orchestration/queue.py', 'orchestration/mock_job.py',
+             'orchestration/action_training_command.py', 'scripts/train_action_recognizer.py',
+             'tests/test_action_recognizer.py', 'tests_orca/test_action_training.py')
+    return {name:file_hash(ROOT/name) for name in paths}
+
+
+def checked_file(entry):
+    path = Path(entry['path'])
+    if not path.is_absolute() or path.is_symlink() or file_hash(path) != entry['sha256']:
+        raise ValueError('Immutable absolute local input required: '+str(path))
+    return path
+
+
+def input_contract(config):
+    """Verify selected real sources/pixels without reading test pixels during smoke."""
+    if set(config['files']) != FILE_KEYS:
+        raise ValueError('Exact action training file bindings required')
+    paths = {k:checked_file(v) for k,v in config['files'].items()}
+    if config['files']['weights']['sha256'] != 'b3b3357ead25631ec9c57362ff2128a92d0427e01e2cd184951a44380c3f2e9d':
+        raise ValueError('Exact official R3D-18 pretrained weight hash required')
+    if file_hash(paths['split_manifest']) != FROZEN_SPLIT_SHA:
+        raise ValueError('Frozen source/group/split v3 required')
+    module = trainer()
+    settings = read(paths['config'])
+    module.validate_config(settings)
+    manifest, baseline, split = (read(paths[k]) for k in ('manifest','baseline_lock','split_manifest'))
+    if (len(baseline.get('regression_only_videos', [])) != 45
+            or len({r['sha256'] for r in baseline['regression_only_videos']}) != 45):
+        raise ValueError('All45 regression hashes must remain forbidden')
+    if manifest.get('config_sha256') != config['files']['config']['sha256']:
+        raise ValueError('Manifest preprocessing config binding differs')
+    if manifest.get('baseline_lock_sha256') != config['files']['baseline_lock']['sha256']:
+        raise ValueError('Manifest baseline binding differs')
+    if manifest.get('source_split_sha256') != FROZEN_SPLIT_SHA:
+        raise ValueError('Manifest split binding differs')
+    module.validate_manifest(manifest, baseline, settings['frames'], split)
+    release = module.validate_release(paths['manifest'], paths['split_manifest'], paths['review_release'],
+                                      config['files']['review_release']['sha256'])
+    selected = module.partition_rows(manifest, config['stage'])
+    original_sources = {}
+    for row in selected:
+        path = row['source_path']
+        if path not in original_sources:
+            original_sources[path] = file_hash(path)
+        if original_sources[path] != row['source_sha256']:
+            raise ValueError('Source video changed')
+        if not row.get('label_path') or not row.get('label_sha256'):
+            raise ValueError('Official annotation path/hash required')
+        label_path = row['label_path']
+        if label_path not in original_sources:
+            original_sources[label_path] = file_hash(label_path)
+        if original_sources[label_path] != row['label_sha256']:
+            raise ValueError('Official annotation changed')
+    arrays = module.prepared_entries(paths['prepared'].parent, paths['manifest'], paths['config'], selected)
+    prepared = read(paths['prepared'])
+    return dict(files={k:v['sha256'] for k,v in config['files'].items()}, sources=original_sources,
+                pixels={key:prepared['clips'][key]['sha256'] for key in arrays},
+                review_snapshot_sha256=release['review_snapshot']['sha256'])
+
+
+def validate_assignment(context):
+    if set(context) != {'run_id','task_id','dispatch_id','owner'} or context['run_id'] != 'run_3d23462a014a':
+        raise ValueError('Existing canonical Orca assignment required')
+    cli = os.environ.get('ORCA_CLI_COMMAND', 'orca-ide')
+    data = json.loads(subprocess.check_output([cli,'orchestration','worker-show','--dispatch',
+                      context['dispatch_id'],'--json'], text=True, timeout=25))
+    if not data.get('ok'):
+        raise ValueError('Live Orca assignment unavailable')
+    dispatch = data['result']['dispatch']
+    if (dispatch.get('runId') != context['run_id'] or dispatch.get('taskId') != context['task_id']
+            or dispatch.get('assigneeHandle') != context['owner'] or dispatch.get('status') != 'dispatched'
+            or dispatch.get('capabilityRevokedAt') is not None):
+        raise ValueError('Current live Run/Task/Dispatch/owner required')
+    live = data['result'].get('projection', {}).get('liveness', {})
+    observation = data['result'].get('observation', {})
+    if live.get('verdict') != 'live' or observation.get('status') != 'live' or observation.get('exactWorker') is not True:
+        raise ValueError('Exact Orca worker liveness is not established')
+    return dict(dispatch=dispatch, liveness=live, observation=observation,
+                observed_utc=dt.datetime.now(dt.timezone.utc).isoformat())
+
+
+def validate(config, inputs, runtime):
+    if (set(config) != {'stage','context','files','authorization'} or config['stage'] not in ('smoke','train')
+            or Path(runtime).resolve() != RUNTIME or not INTERPRETER.is_file()):
+        raise ValueError('Canonical runtime, existing interpreter and smoke/train stage required')
+    actual = input_contract(config)
+    if inputs != actual:
+        raise ValueError('Action training input contract changed')
+    authorization = read(checked_file(config['authorization']))
+    if (authorization.get('context') != config['context'] or authorization.get('stage') != config['stage']
+            or authorization.get('input_hash') != digest(inputs) or authorization.get('sources') != sources()
+            or any(authorization.get(k) is not True for k in
+                   ('confirmed','training_authorized','independent_review_passed','explicit_gpu_go'))):
+        raise ValueError('Reviewed exact source/input assignment and explicit GPU GO required')
+    head = subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    if authorization.get('code_sha') != head:
+        raise ValueError('Reviewed committed code SHA differs')
+    for name, expected in authorization['sources'].items():
+        committed = subprocess.check_output(['git','show',head+':'+name],cwd=ROOT)
+        if hashlib.sha256(committed).hexdigest() != expected:
+            raise ValueError('Reviewed sources must be committed: '+name)
+    if config['stage'] == 'train':
+        validate_smoke(authorization.get('smoke_result'),config)
+    live_assignment = validate_assignment(config['context'])
+    return dict(authorization=authorization, live_assignment=live_assignment)
+
+
+def validate_smoke(binding, config):
+    if not binding:
+        raise ValueError('A successful actual smoke result is required before training')
+    result = read(checked_file(binding))
+    batch_size = read(config['files']['config']['path'])['batch_size']
+    if (result.get('status') != 'smoke_passed' or result.get('test_accessed') is not False
+            or result.get('manifest_sha256') != config['files']['manifest']['sha256']
+            or result.get('config_sha256') != config['files']['config']['sha256']
+            or result.get('real_train_clips') != 32 or result.get('real_validation_clips') != 4
+            or result.get('actual_microbatch_sizes') != [batch_size]*(32//batch_size)
+            or result.get('accumulation') != 4 or result.get('optimizer_steps',0) < 2):
+        raise ValueError('Actual smoke does not validate the requested manifest/config/batch/accumulation')
+
+
+def job_key(config):
+    return 'exp0063-action-'+config['stage']+'-'+config['files']['manifest']['sha256']
+
+
+def output_path(stage, attempt):
+    if stage not in ('smoke','train') or not re.fullmatch('[0-9a-f]{32}', attempt):
+        raise ValueError('Exact action stage/attempt required')
+    return OUTPUT/stage/attempt
+
+
+def resources():
+    value = subprocess.check_output(['nvidia-smi','--id=0','--query-gpu=memory.free',
+                                     '--format=csv,noheader,nounits'],text=True,timeout=15)
+    free = int(value.strip())
+    if free < 6144:
+        raise ValueError('Action training requires at least 6144MiB free')
+    return {'device':0,'free_mib':free}
+
+
+def command(config, inputs, runtime, attempt, lock_fd):
+    provenance = validate(config, inputs, runtime)
+    os.fstat(lock_fd)
+    resources()
+    directory = Path(runtime)/'attempts'/attempt
+    directory.mkdir(parents=True, exist_ok=True)
+    snapshot = directory/'action-training-config.json'
+    if snapshot.exists():
+        raise ValueError('Action queue config snapshot already exists')
+    snapshot.write_text(json.dumps(config,sort_keys=True,indent=2)+'\n')
+    (directory/'action-live-assignment.json').write_text(json.dumps(provenance,sort_keys=True,indent=2)+'\n')
+    files = config['files']
+    argv = [str(INTERPRETER),'-I',str(ROOT/'scripts/train_action_recognizer.py'),
+            '--mode',config['stage'],'--output',str(output_path(config['stage'],attempt)),
+            '--queue-config',str(snapshot),'--queue-config-sha256',file_hash(snapshot),
+            '--queue-attempt',attempt,'--review-release-sha256',files['review_release']['sha256'],
+            '--weights-sha256',files['weights']['sha256']]
+    for name in ('manifest','baseline_lock','split_manifest','config','review_release','weights'):
+        argv += ['--'+name.replace('_','-'),files[name]['path']]
+    return argv+['--prepared',str(Path(files['prepared']['path']).parent)]
+
+
+def runner_guard(args):
+    """Child must inherit the actual running queue attempt and its held lock."""
+    from orchestration.queue import Queue, source_hash
+    fd = int(os.environ['SCENEGUARD_GPU_LOCK_FD'])
+    actual, held = (RUNTIME/'gpu.lock').stat(), os.fstat(fd)
+    if (actual.st_dev, actual.st_ino) != (held.st_dev, held.st_ino):
+        raise ValueError('Wrong canonical GPU reservation FD')
+    # A separate open must fail: simply acquiring a supplied unheld FD is insufficient.
+    with (RUNTIME/'gpu.lock').open('a+') as probe:
+        try:
+            fcntl.flock(probe, fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:
+            pass
+        else:
+            raise ValueError('Canonical GPU reservation is not held')
+    fcntl.flock(fd, fcntl.LOCK_EX|fcntl.LOCK_NB)
+    if not args.queue_config or file_hash(args.queue_config) != args.queue_config_sha256:
+        raise ValueError('Queue config snapshot differs')
+    config = read(args.queue_config)
+    expected = output_path(config['stage'],args.queue_attempt)
+    if (args.mode != config['stage'] or args.output.resolve() != expected
+            or args.prepared.resolve() != Path(config['files']['prepared']['path']).parent.resolve()):
+        raise ValueError('Runner mode/output/prepared differ from queue registration')
+    for name in ('manifest','baseline_lock','split_manifest','config','review_release','weights'):
+        if getattr(args,name).resolve() != Path(config['files'][name]['path']).resolve():
+            raise ValueError('Runner input path differs: '+name)
+    if (args.weights_sha256 != config['files']['weights']['sha256']
+            or args.review_release_sha256 != config['files']['review_release']['sha256']):
+        raise ValueError('Runner input hash differs')
+    q = Queue(RUNTIME)
+    with q.connection() as db:
+        row = db.execute('SELECT j.*,a.status AS attempt_status,a.supervisor_pid,a.supervisor_identity '
+                         'FROM jobs j JOIN attempts a USING(job_id) WHERE a.attempt_id=?',
+                         (args.queue_attempt,)).fetchone()
+    if row is None:
+        raise ValueError('Actual running canonical queue attempt required')
+    inputs = json.loads(row['input_json'])
+    validate(config, inputs, RUNTIME)
+    if (row['command'] != 'action-train' or row['status'] != 'running'
+            or row['attempt_status'] != 'running' or json.loads(row['config_json']) != config
+            or row['input_hash'] != digest(inputs) or row['source_hash'] != source_hash('action-train',config)
+            or any(row[k] != v for k,v in config['context'].items())
+            or process_state(row['supervisor_pid'],row['supervisor_identity']) != 'live'):
+        raise ValueError('Actual running canonical queue attempt required')
+    if os.environ.get('CUDA_VISIBLE_DEVICES') != '0':
+        raise ValueError('Canonical GPU0 device binding required')
+    resources()
+
+
+def retry_guard(db, job):
+    raise ValueError('Action training retries require a separately reviewed execution plan')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--queue-config', type=Path, required=True)
+    args = parser.parse_args()
+    print(json.dumps(input_contract(read(args.queue_config)),sort_keys=True,indent=2))
+
+
+if __name__ == '__main__':
+    main()
