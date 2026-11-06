@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0065",
+  "metrics": [
+    {
+      "label": "공식 참조 전체 · 시간대 겹치는 후보 있음",
+      "value": 33,
+      "unit": "건",
+      "sample_n": 52,
+      "scope": "공식 참조 전체 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "공식 참조 전체 · 입력 있음 · 점수 낮음",
+      "value": 13,
+      "unit": "건",
+      "sample_n": 52,
+      "scope": "공식 참조 전체 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "공식 참조 전체 · 일부 관측 · 입력 부족",
+      "value": 5,
+      "unit": "건",
+      "sample_n": 52,
+      "scope": "공식 참조 전체 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "공식 참조 전체 · 시간대 내 관측 입력 없음",
+      "value": 1,
+      "unit": "건",
+      "sample_n": 52,
+      "scope": "공식 참조 전체 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 대응 · 시간대 겹치는 후보 있음",
+      "value": 26,
+      "unit": "건",
+      "sample_n": 37,
+      "scope": "기존 확인 대응 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 대응 · 입력 있음 · 점수 낮음",
+      "value": 8,
+      "unit": "건",
+      "sample_n": 37,
+      "scope": "기존 확인 대응 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 대응 · 일부 관측 · 입력 부족",
+      "value": 2,
+      "unit": "건",
+      "sample_n": 37,
+      "scope": "기존 확인 대응 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 대응 · 시간대 내 관측 입력 없음",
+      "value": 1,
+      "unit": "건",
+      "sample_n": 37,
+      "scope": "기존 확인 대응 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 누락 · 시간대 겹치는 후보 있음",
+      "value": 7,
+      "unit": "건",
+      "sample_n": 15,
+      "scope": "기존 확인 누락 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 누락 · 입력 있음 · 점수 낮음",
+      "value": 5,
+      "unit": "건",
+      "sample_n": 15,
+      "scope": "기존 확인 누락 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 누락 · 일부 관측 · 입력 부족",
+      "value": 3,
+      "unit": "건",
+      "sample_n": 15,
+      "scope": "기존 확인 누락 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 확인 누락 · 시간대 내 관측 입력 없음",
+      "value": 0,
+      "unit": "건",
+      "sample_n": 15,
+      "scope": "기존 확인 누락 · 고정 3 FPS 입력의 시간 관계 · 사람 대응 검수 전",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "대조한 기존 영상",
+      "value": 45,
+      "unit": "videos",
+      "sample_n": 45,
+      "scope": "EXP-0062 AFTER와 EXP-0064 저장 점수 진단",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "실제 저장된 입력 점수",
+      "value": 3573,
+      "unit": "windows",
+      "sample_n": 45,
+      "scope": "45영상의 완전한 8시점 입력 · 독립 사건 수 아님",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "0.5 이상 후보 입력",
+      "value": 467,
+      "unit": "windows",
+      "sample_n": 3573,
+      "scope": "저장 점수 0.5 이상 · 침입 성공 수 아님",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "시간 미확정 공식 참조",
+      "value": 1,
+      "unit": "건",
+      "sample_n": 53,
+      "scope": "52개 시간 참조 외 006 미확정 유지",
+      "source": "outputs/action-recognition/exp0065/coverage-v1/summary.json",
+      "source_sha256": "99db42a936988b94054fb856f593cb8edbae4a0df1619553c39c641c291e69ca",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "생성한 검수 영상",
+      "value": 25,
+      "unit": "videos",
+      "sample_n": 25,
+      "scope": "학교 23구간과 별도 장소 오판 2구간",
+      "source": "outputs/action-recognition/exp0065/review-media-v2/review-manifest.json",
+      "source_sha256": "d1ab37cf391fc7730d7d7d6f1f1715f5fa7e86240d7f33a7e49102af90ae009e",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검수 영상의 표시 프레임",
+      "value": 647,
+      "unit": "프레임",
+      "sample_n": 25,
+      "scope": "실제 25개 MP4 · 표시 원본 PTS 보존",
+      "source": "outputs/action-recognition/exp0065/review-media-v2/review-manifest.json",
+      "source_sha256": "d1ab37cf391fc7730d7d7d6f1f1715f5fa7e86240d7f33a7e49102af90ae009e",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "원래 평가 배열과 같은 오판 입력",
+      "value": 16,
+      "unit": "프레임",
+      "sample_n": 16,
+      "scope": "별도 장소 오판 2개 × 8시점 · RGB 픽셀 동일",
+      "source": "outputs/action-recognition/exp0065/review-media-v2/review-manifest.json",
+      "source_sha256": "d1ab37cf391fc7730d7d7d6f1f1715f5fa7e86240d7f33a7e49102af90ae009e",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "조사한 행동 원본·라벨 대응",
+      "value": 6534,
+      "unit": "videos",
+      "sample_n": 6534,
+      "scope": "보유 공원 Training·Validation ZIP 멤버 · 행동 의미 검수 전",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/inventory-summary.json",
+      "source_sha256": "cd69cf515d7f535eb0f4430575fac529914254527ebd86e6000633abdadbed3d",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "공식 라벨에 기록된 장소",
+      "value": 10,
+      "unit": "개",
+      "sample_n": 6534,
+      "scope": "기존·신규 장소 포함 · 장소 독립 성능 지표 아님",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/inventory-summary.json",
+      "source_sha256": "cd69cf515d7f535eb0f4430575fac529914254527ebd86e6000633abdadbed3d",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "보행으로 명시된 공식 구간",
+      "value": 1413,
+      "unit": "개",
+      "sample_n": 33796,
+      "scope": "공식 actor-event 기준 · 모두 시민공원 · 학습 허용 수 아님",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/inventory-summary.json",
+      "source_sha256": "cd69cf515d7f535eb0f4430575fac529914254527ebd86e6000633abdadbed3d",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 시험 보호 원본",
+      "value": 296,
+      "unit": "videos",
+      "sample_n": 1440,
+      "scope": "기존 EXP-0064 시험 분할 전체 원본 보존",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/summary.json",
+      "source_sha256": "70a1644ff99f7b0c93e4469c6d28c5aa170a5ff125b9daf99c1a15659995170d",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 보강 후보로 선정한 원본",
+      "value": 96,
+      "unit": "videos",
+      "sample_n": 6534,
+      "scope": "분할·장소·명시적 행동별 사전 선정 · 의미 검수 전",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/summary.json",
+      "source_sha256": "70a1644ff99f7b0c93e4469c6d28c5aa170a5ff125b9daf99c1a15659995170d",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "내용 지문 대조한 보호 원본",
+      "value": 341,
+      "unit": "videos",
+      "sample_n": 341,
+      "scope": "원본당 다섯 시점 · 전체 재인코딩 중복 검증 아님",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/fingerprint-summary.json",
+      "source_sha256": "60e11934c02b59b1e104d87f53abf69dfee0e6d104ae62abe185fc6a95962dc2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "신규 원본 해시 계산",
+      "value": 96,
+      "unit": "videos",
+      "sample_n": 96,
+      "scope": "선정한 ZIP 멤버의 SHA256 · 전체 ZIP 해시 아님",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/fingerprint-summary.json",
+      "source_sha256": "60e11934c02b59b1e104d87f53abf69dfee0e6d104ae62abe185fc6a95962dc2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "제한된 중복 점검 통과 · 의미 검수 대기",
+      "value": 67,
+      "unit": "videos",
+      "sample_n": 96,
+      "scope": "보강 후보의 내용 점검 상태 · 학습 승인 아님",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/fingerprint-summary.json",
+      "source_sha256": "60e11934c02b59b1e104d87f53abf69dfee0e6d104ae62abe185fc6a95962dc2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "중복 의심 또는 같은 촬영 묶음 보류",
+      "value": 29,
+      "unit": "videos",
+      "sample_n": 96,
+      "scope": "보강 후보의 내용 점검 상태 · 학습 승인 아님",
+      "source": "outputs/action-recognition/exp0065/augmentation-v1/fingerprint-summary.json",
+      "source_sha256": "60e11934c02b59b1e104d87f53abf69dfee0e6d104ae62abe185fc6a95962dc2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학교 CCTV 행동 정밀도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "대상·문·행동 의미 검수 미완료",
+      "source": "docs/experiments/EXP-0065-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "학교 CCTV 행동 재현율",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "대상·문·행동 의미 검수 미완료",
+      "source": "docs/experiments/EXP-0065-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "학교 CCTV 행동 F1",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "대상·문·행동 의미 검수 미완료",
+      "source": "docs/experiments/EXP-0065-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "침입 완료 정확도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "대상·문·행동 의미 검수 미완료",
+      "source": "docs/experiments/EXP-0065-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "EXP-0062 대비 침입 성능 개선",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "대상·문·행동 의미 검수 미완료",
+      "source": "docs/experiments/EXP-0065-results.md",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ],
+  "scope_note": "입력 상태·공식 라벨 목록·제한된 중복 점검의 실제 수치이며 사람 행동 성능 개선 지표가 아니다."
+}
