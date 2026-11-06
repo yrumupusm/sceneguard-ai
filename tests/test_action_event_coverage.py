@@ -26,7 +26,7 @@ def fixture():
                             available_after_pts=points[start + 7]))
     plan = dict(video_id='E01_001', source_sha256='1' * 64, last_pts=points[-1],
                 samples=[dict(pts=p) for p in points], windows=windows,
-                missing_windows=[dict(track_id='b', start_target_index=0, missing_target_indices=list(range(1, 8))),
+                missing_windows=[dict(track_id='b', start_target_index=0, missing_target_indices=[0, 1, 2, 4, 5, 6, 7]),
                                  dict(track_id='c', start_target_index=0, missing_target_indices=list(range(8)))],
                 counts=dict(eligible_windows=2, partial_observations_windows=1, no_observations_windows=1))
     scores = [dict(**w, video_id=plan['video_id'], source_sha256=plan['source_sha256'],
@@ -58,7 +58,9 @@ def saved_fixture(root):
     refs_hash = put(refs_path, dict(videos=[refs]))
     report_path = root / 'baseline/after-report.json'
     report_hash = put(report_path, dict(modes=dict(confirmation=dict(by_video=[
-        dict(video_id='E01_001', matches=[dict(outcome='tp', truth_id='event-1')])]))))
+        dict(video_id='E01_001', matches=[dict(outcome='tp', truth_id='event-1')],
+             missed_truth_ids=[], counts=dict(tp=1, fn=0, known_reference_events=1,
+                                               unresolved_reference_events=0))]))))
     lock_path = root / 'baseline/lock.json'
     lock_hash = put(lock_path, dict(status='verified', baseline_experiment='EXP-0062',
                                    verified_paths={str(refs_path): refs_hash, str(report_path): report_hash}))
@@ -114,6 +116,39 @@ class EventCoverageTests(unittest.TestCase):
         self.plan['counts']['partial_observations_windows'] = 0
         self.scores = []
         self.assertEqual(self.audit()['events'][0]['diagnostic'], 'no_observed_window_in_reference')
+
+    def test_partial_nominal_overlap_without_actual_observation_is_distinct(self):
+        self.plan['windows'] = []
+        self.plan['counts']['eligible_windows'] = 0
+        self.scores = []
+        self.plan['missing_windows'][0]['missing_target_indices'] = list(range(1, 8))
+        event = self.audit()['events'][0]
+        self.assertEqual(event['diagnostic'], 'no_observed_window_in_reference')
+        self.assertEqual(event['partial_windows'], 0)
+        self.assertEqual(event['partial_nominal_time_windows'], 1)
+        self.assertEqual(event['partial_observations_outside_reference_windows'], 1)
+
+    def test_partial_observed_end_boundary_is_excluded(self):
+        self.plan['windows'] = []
+        self.plan['counts']['eligible_windows'] = 0
+        self.scores = []
+        self.refs['events'][0].update(start=0., end=1.)
+        self.assertEqual(self.audit()['events'][0]['diagnostic'], 'no_observed_window_in_reference')
+
+    def test_missing_record_must_agree_with_actual_observed_track(self):
+        for i, sample in enumerate(self.plan['samples']):
+            sample['observed'] = {'b': [.1, .2, .3, .4]} if i == 3 else {}
+        self.audit()
+        self.plan['samples'][4]['observed']['b'] = [.1, .2, .3, .4]
+        with self.assertRaisesRegex(ValueError, 'actual track observations'):
+            self.audit()
+
+    def test_missing_indices_reject_bool_and_fraction(self):
+        for value in (True, 1.5):
+            with self.subTest(value=value):
+                self.plan['missing_windows'][0]['missing_target_indices'] = [value]
+                with self.assertRaises(ValueError):
+                    self.audit()
 
     def test_half_open_boundary_and_actual_samples_not_bounding_span(self):
         self.assertFalse(AUDIT.has_sample([0., 1., 2.], (0.1, .9)))
@@ -193,8 +228,113 @@ class EventCoverageTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 AUDIT.parse(raw)
 
+    def test_tracking_queue_and_native_sample_provenance_are_verified(self):
+        self.plan.update(tracking_path='/old/tracking.jsonl',
+                         input_hashes={'/old/tracking.jsonl': '3' * 64})
+        for i, sample in enumerate(self.plan['samples']):
+            sample.update(target_index=i, target_pts=sample['pts'], native_pts=i,
+                          time_base='1/3', frame_index=i)
+        for score in self.scores:
+            score.update(tracking_sha256='3' * 64, queue_attempt='attempt-a',
+                         sample_provenance=[{k: s[k] for k in ('target_index', 'target_pts', 'native_pts',
+                                                              'time_base', 'pts', 'frame_index')}
+                                            for s in self.plan['samples'][score['start_target_index']:
+                                                                          score['end_target_index']+1]])
+        AUDIT.validate_scores(self.plan, self.scores, '2' * 64, AUDIT.MODEL_SHA, 'attempt-a')
+        for key, value in [('tracking_sha256', '4' * 64), ('queue_attempt', 'attempt-b'),
+                           ('sample_provenance', [])]:
+            with self.subTest(key=key):
+                wrong = copy.deepcopy(self.scores)
+                wrong[0][key] = value
+                with self.assertRaises(ValueError):
+                    AUDIT.validate_scores(self.plan, wrong, '2' * 64, AUDIT.MODEL_SHA, 'attempt-a')
+
+    def test_representatives_cover_every_baseline_category_camera_stratum(self):
+        events = [dict(self.audit()['events'][0], baseline_confirmation_matched=matched,
+                       gate_id=gate, reference_id=f'{matched}-{gate}-{i}')
+                  for matched in (True, False) for gate in ('C1_fence', 'C2_fence') for i in range(2)]
+        selected = AUDIT.representative_selection(events)
+        self.assertEqual(len(selected['selected']), 4)
+        self.assertEqual(len(selected['unselected']), 4)
+        self.assertEqual(len({(x['baseline_confirmation_matched'], x['diagnostic'], x['camera'])
+                              for x in selected['selected']}), 4)
+
 
 class SavedInputTests(unittest.TestCase):
+    def test_baseline_unknown_duplicate_missing_truth_and_wrong_counts_rejected(self):
+        for mutation in ('unknown', 'duplicate', 'missing', 'count'):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as folder:
+                args = saved_fixture(Path(folder))
+                report = json.loads(args.baseline_report.read_text())
+                row = report['modes']['confirmation']['by_video'][0]
+                if mutation == 'unknown': row['matches'][0]['truth_id'] = 'invented'
+                if mutation == 'duplicate': row['matches'] *= 2
+                if mutation == 'missing': row['matches'] = []
+                if mutation == 'count': row['counts']['tp'] = 99
+                refs = {'E01_001': fixture()[2]}
+                with self.assertRaises(ValueError):
+                    AUDIT.baseline_matches(report, refs)
+
+    def test_inference_receipt_rejects_changed_valid_score_bytes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            args = saved_fixture(Path(folder))
+            score_path = args.inference_result.parent / 'E01_001/window-scores.jsonl'
+            receipt = dict(actual_attempt=dict(status='succeeded', exit_code=0, attempt_id='attempt-a'),
+                           artifacts={str(args.inference_result): args.inference_result_sha256},
+                           video_output_hashes={str(score_path): hashlib.sha256(score_path.read_bytes()).hexdigest()})
+            result = json.loads(args.inference_result.read_text())
+            result['queue_attempt'] = 'attempt-a'
+            args.inference_result_sha256 = put(args.inference_result, result)
+            receipt['artifacts'][str(args.inference_result)] = args.inference_result_sha256
+            args.inference_receipt = Path(folder) / 'receipt.json'
+            args.inference_receipt_sha256 = put(args.inference_receipt, receipt)
+            scores = [json.loads(line) for line in score_path.read_text().splitlines()]
+            scores[0]['score'] = .8
+            put(score_path, scores, jsonl=True)
+            with self.assertRaisesRegex(ValueError, 'Input hash differs'):
+                AUDIT.run(args)
+            self.assertFalse(args.output.exists())
+
+    def test_original_inference_receipt_success_and_missing_hash_rejection(self):
+        for omit_hash in (False, True):
+            with self.subTest(omit_hash=omit_hash), tempfile.TemporaryDirectory() as folder:
+                args = saved_fixture(Path(folder))
+                score_path = args.inference_result.parent / 'E01_001/window-scores.jsonl'
+                scores = [json.loads(line) for line in score_path.read_text().splitlines()]
+                for row in scores: row['queue_attempt'] = 'attempt-a'
+                score_hash = put(score_path, scores, jsonl=True)
+                result = json.loads(args.inference_result.read_text())
+                result['queue_attempt'] = 'attempt-a'
+                result['input_contract'] = dict(files=dict(checkpoint=args.checkpoint_sha256,
+                    manifest=args.plan_sha256, baseline_lock=args.baseline_lock_sha256))
+                args.inference_result_sha256 = put(args.inference_result, result)
+                receipt = dict(actual_attempt=dict(status='succeeded', exit_code=0, attempt_id='attempt-a'),
+                               artifacts={str(args.inference_result): args.inference_result_sha256},
+                               video_output_hashes={} if omit_hash else {str(score_path): score_hash})
+                args.inference_receipt = Path(folder) / 'receipt.json'
+                args.inference_receipt_sha256 = put(args.inference_receipt, receipt)
+                if omit_hash:
+                    with self.assertRaisesRegex(ValueError, 'absent from original inference'):
+                        AUDIT.run(args)
+                    self.assertFalse(args.output.exists())
+                else:
+                    self.assertTrue(AUDIT.run(args)['score_hashes_verified_against_original_receipt'])
+
+    def test_locked_evaluation_receipt_must_bind_actual_reference_and_report(self):
+        with tempfile.TemporaryDirectory() as folder:
+            args = saved_fixture(Path(folder))
+            lock = json.loads(args.baseline_lock.read_text())
+            args.evaluation_receipt = Path(folder) / 'evaluation-manifest.json'
+            put(args.evaluation_receipt, dict(output_hashes={str(args.references): '0' * 64}))
+            lock['verified_paths'][str(args.evaluation_receipt)] = hashlib.sha256(args.evaluation_receipt.read_bytes()).hexdigest()
+            args.baseline_lock_sha256 = put(args.baseline_lock, lock)
+            manifest = json.loads(args.plan.read_text())
+            manifest['baseline_lock']['sha256'] = args.baseline_lock_sha256
+            args.plan_sha256 = put(args.plan, manifest)
+            with self.assertRaisesRegex(ValueError, 'Evaluation receipt'):
+                AUDIT.run(args)
+            self.assertFalse(args.output.exists())
+
     def test_end_to_end_saved_json_inputs_and_output_preservation(self):
         with tempfile.TemporaryDirectory() as folder:
             args = saved_fixture(Path(folder))

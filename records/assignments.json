@@ -792,6 +792,19 @@
       "synthetic": false,
       "task_id": "task_097e754be4db",
       "title": "첫 행동 모델 학습 · 공식 라벨 참조 평가"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-06T17:41:04+00:00",
+      "dispatch_id": "ctx_f6bdafb3cc3f",
+      "experiment_id": "EXP-0065",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_7f2aba8173dc",
+      "title": "학교 CCTV 행동 후보 진단 · 다음 학습 자료 준비"
     }
   ],
   "schema_version": 1

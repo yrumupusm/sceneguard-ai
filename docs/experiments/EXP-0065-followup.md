@@ -2,7 +2,7 @@
 
 2026-11-07. 사용자가 EXP-0064 후속 진단과 데이터 보강을 진행하도록 요청했다.
 
-**현재 상태: CPU 진단 도구와 로컬 실행 지침 준비. 학교 CCTV 45개 실제 진단·새 의미 검수·추가 데이터 확보·학습은 아직 수행하지 않았다.** 이 작업 환경에는 실행 PC의 원본, 세부 점수, 검수 DB가 없다. 연결 불가를 검수 답변 없음이나 실제 실험 완료로 취급하지 않는다. EXP-0064 공개 결과를 다시 계산한 것처럼 보고하지 않는다.
+**후속 상태: 실행 PC에서 실제 저장 점수 진단과 검수 자료 생성을 진행했다.** 최신 결과는 [EXP-0065 결과](EXP-0065-results.md), 사건별 실제 대조는 [52참조 진단](EXP-0065-coverage-results.md)을 따른다. 아래 준비 지침의 “이번 환경에서 읽지 못함”은 PR 작성 당시의 이력이다. 실제 실행·의미 검수·성능 개선은 별도로 보고하며 새 학습은 하지 않는다.
 
 ## 목표와 기준
 
@@ -47,9 +47,9 @@ EXP-0064의 467개 후보는 겹치는 입력 창이다. EXP-0062의 37/52 확�
 ```bash
 python -m unittest discover -s tests -p 'test_action_event_coverage.py' -v
 
-# 아래 두 변수에는 2단계에서 실제로 확인한 잠금 목록의 파일을 지정한다.
-sg_reference_manifest='/실제/고정된/평가-manifest.json'
-sg_baseline_report='/실제/고정된/평가-report.json'
+# 실행 PC의 잠금 목록에서 확인한 실제 자료다.
+sg_reference_manifest='outputs/validation/false-confirmation-guard-all45-v1/run-001/after-manifest.json'
+sg_baseline_report='outputs/validation/false-confirmation-guard-all45-v1/run-001/after-scoring.json'
 
 python scripts/audit_action_event_coverage.py \
   --baseline-lock outputs/action-recognition/exp0063/baseline/attempt-002/baseline-lock.json \
@@ -57,7 +57,9 @@ python scripts/audit_action_event_coverage.py \
   --inference-result outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json \
   --references "$sg_reference_manifest" \
   --baseline-report "$sg_baseline_report" \
-  --output outputs/action-recognition/exp0065/coverage-v1
+  --evaluation-receipt outputs/validation/false-confirmation-guard-all45-v1/run-001/evaluation-manifest.json \
+  --inference-receipt outputs/action-recognition/exp0064/regression-plan-v2/integration-execution-report-v1.json \
+  --output outputs/action-recognition/exp0065/coverage-reproduction-new
 ```
 
 기존 report 계약을 아직 연결하지 못했다면 `--baseline-report`만 생략할 수 있다. 정답 manifest와 45영상/52참조 수 검사는 필수다. 기본 SHA와 개수 인자를 바꾸는 옵션은 합성 fixture나 명시적으로 기록한 새 revision용이며 현재 실제 실행을 우회하기 위한 수단이 아니다.
@@ -78,8 +80,8 @@ python scripts/audit_action_event_coverage.py \
 |---|---|
 | `candidate_time_overlap` | 사건 시간대와 겹치는 넘기 후보가 있음. 대상·문 대응은 검수 필요 |
 | `scored_without_candidate_time_overlap` | 겹치는 입력 점수는 있지만 모두 0.5 미만. 그 입력이 대상 사람인지 별도 확인 |
-| `partial_observations_only` | 겹치는 완전한 입력 없이 부분 관측 창만 있음 |
-| `no_observed_window_in_reference` | 해당 시간대와 겹치는 완전/부분 관측 창이 없음. 원인의 단정은 금지 |
+| `partial_observations_only` | 완전한 입력은 없고, 부분 창의 **실제로 관측된 시점**이 해당 시간대 안에 있음 |
+| `no_observed_window_in_reference` | 해당 시간대에 완전한 입력이나 부분 창의 실제 관측 시점이 없음. 예정된 결측 시점만 겹치는 경우는 별도 열에 기록하며 원인의 단정은 금지 |
 
 정상 참조는 여덟 샘플 모두 해당 정상 구간에 들어가는 입력과 경계에 걸친 입력을 분리한다. 구간의 대상·문 대응을 확인하기 전 false alarm으로 확정하지 않는다. 공식 사건 바깥의 후보는 미주석일 수 있어 자동 음성으로 만들지 않는다. 연속 후보 묶음 수는 독립 인원·사건 수가 아니다.
 
@@ -104,7 +106,7 @@ EXP-0064의 별도 장소 오판 두 장면도 기존 자료를 재사용한다.
 
 보강 우선순위는 다른 장소의 정상·접근·돌아가기 사례다. 검증 정상행위가 앉기에만 치우친 문제도 새 revision에서 해소한다. 보호45의 오판 장면이나 이미 열어 본 시험을 몰래 학습으로 옮기지 않는다. 다음 학습은 이 진단과 데이터 목록을 근거로 입력/데이터 변경 축을 고정한 뒤 별도 결과로 수행한다.
 
-## 완료 기준과 현재 검증
+## 완료 기준과 PR 작성 당시 검증 이력
 
 - 이번 코드의 합성/파일 입출력 테스트 **21개 통과**. 타임스탬프 반열린 구간, 입력 부족과 낮은 점수 구분, 무관측 crossproduct 분리, 정상 구간 경계, 모델/영상/입력 불일치, 점수 결측, 기존 출력 보존을 확인했다.
 - 실제45의 점수 재집계, 원본 의미 검수, 데이터 보강, 로컬 웹 등록·재생은 **미실행**이다. 전체 저장소 회귀나 독립 에이전트 검토를 수행했다고 주장하지 않는다.
