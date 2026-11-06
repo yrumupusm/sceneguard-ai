@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0064",
+  "metrics": [
+    {
+      "label": "새 시험 전체 정밀도",
+      "value": 99.65753424657534,
+      "unit": "%",
+      "sample_n": 1431,
+      "scope": "새 시험 전체 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 시험 전체 재현율",
+      "value": 100.0,
+      "unit": "%",
+      "sample_n": 1431,
+      "scope": "새 시험 전체 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 시험 전체 F1",
+      "value": 99.82847341337907,
+      "unit": "%",
+      "sample_n": 1431,
+      "scope": "새 시험 전체 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 시험 전체 넘기 포착",
+      "value": 582,
+      "unit": "클립",
+      "sample_n": 1431,
+      "scope": "새 시험 전체 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 시험 전체 넘기 놓침",
+      "value": 0,
+      "unit": "클립",
+      "sample_n": 1431,
+      "scope": "새 시험 전체 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 시험 전체 정상 오판",
+      "value": 2,
+      "unit": "클립",
+      "sample_n": 1431,
+      "scope": "새 시험 전체 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 시험 전체 정상 구별",
+      "value": 847,
+      "unit": "클립",
+      "sample_n": 1431,
+      "scope": "새 시험 전체 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "같은 장소 별도 촬영 정밀도",
+      "value": 100.0,
+      "unit": "%",
+      "sample_n": 1099,
+      "scope": "같은 장소 별도 촬영 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "같은 장소 별도 촬영 재현율",
+      "value": 100.0,
+      "unit": "%",
+      "sample_n": 1099,
+      "scope": "같은 장소 별도 촬영 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "같은 장소 별도 촬영 F1",
+      "value": 100.0,
+      "unit": "%",
+      "sample_n": 1099,
+      "scope": "같은 장소 별도 촬영 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "같은 장소 별도 촬영 넘기 포착",
+      "value": 252,
+      "unit": "클립",
+      "sample_n": 1099,
+      "scope": "같은 장소 별도 촬영 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "같은 장소 별도 촬영 넘기 놓침",
+      "value": 0,
+      "unit": "클립",
+      "sample_n": 1099,
+      "scope": "같은 장소 별도 촬영 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "같은 장소 별도 촬영 정상 오판",
+      "value": 0,
+      "unit": "클립",
+      "sample_n": 1099,
+      "scope": "같은 장소 별도 촬영 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "같은 장소 별도 촬영 정상 구별",
+      "value": 847,
+      "unit": "클립",
+      "sample_n": 1099,
+      "scope": "같은 장소 별도 촬영 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "별도 장소 시험 정밀도",
+      "value": 99.3975903614458,
+      "unit": "%",
+      "sample_n": 332,
+      "scope": "별도 장소 시험 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님 · 음성 2개로 일반화 성능 입증 불가",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "별도 장소 시험 재현율",
+      "value": 100.0,
+      "unit": "%",
+      "sample_n": 332,
+      "scope": "별도 장소 시험 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님 · 음성 2개로 일반화 성능 입증 불가",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "별도 장소 시험 F1",
+      "value": 99.69788519637463,
+      "unit": "%",
+      "sample_n": 332,
+      "scope": "별도 장소 시험 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님 · 음성 2개로 일반화 성능 입증 불가",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "별도 장소 시험 넘기 포착",
+      "value": 330,
+      "unit": "클립",
+      "sample_n": 332,
+      "scope": "별도 장소 시험 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님 · 음성 2개로 일반화 성능 입증 불가",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "별도 장소 시험 넘기 놓침",
+      "value": 0,
+      "unit": "클립",
+      "sample_n": 332,
+      "scope": "별도 장소 시험 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님 · 음성 2개로 일반화 성능 입증 불가",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "별도 장소 시험 정상 오판",
+      "value": 2,
+      "unit": "클립",
+      "sample_n": 332,
+      "scope": "별도 장소 시험 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님 · 음성 2개로 일반화 성능 입증 불가",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "별도 장소 시험 정상 구별",
+      "value": 0,
+      "unit": "클립",
+      "sample_n": 332,
+      "scope": "별도 장소 시험 · 공식 사람별 행동 라벨 참조 · 임계값 0.5 · 사람 검수 완료 지표 아님 · 음성 2개로 일반화 성능 입증 불가",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "걷기 오탐률",
+      "value": 0.0,
+      "unit": "%",
+      "sample_n": 304,
+      "scope": "새 시험 음성 행동별 · 공식 라벨 참조 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "서 있기·대기 오탐률",
+      "value": 0.3669724770642202,
+      "unit": "%",
+      "sample_n": 545,
+      "scope": "새 시험 음성 행동별 · 공식 라벨 참조 · 사람 검수 완료 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "가중치 갱신 시도",
+      "value": 2250,
+      "unit": "회",
+      "sample_n": 10,
+      "scope": "전체 10 epoch 실행 기록 · 성능 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "실제 가중치 갱신",
+      "value": 2248,
+      "unit": "회",
+      "sample_n": 10,
+      "scope": "전체 10 epoch 실행 기록 · 성능 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "AMP 수치 오류로 건너뛴 갱신",
+      "value": 2,
+      "unit": "회",
+      "sample_n": 10,
+      "scope": "전체 10 epoch 실행 기록 · 성능 지표 아님",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "선택 epoch",
+      "value": 6,
+      "unit": "epoch",
+      "sample_n": 725,
+      "scope": "검증 손실 최저 모델 선택 · 검증 음성은 앉기만 포함",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "최대 PyTorch 할당 메모리",
+      "value": 848.65771484375,
+      "unit": "MiB",
+      "sample_n": 10,
+      "scope": "전체 학습 실제 할당 최대값 · GPU 전체 프로세스 사용량과 다름",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "전구간 처리 영상",
+      "value": 45,
+      "unit": "개",
+      "sample_n": 45,
+      "scope": "기존 45개 회귀 · EXP-0062 사건 판단 보존 · 행동 후보는 침입 완료 아님",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "원본 처리 프레임",
+      "value": 184300,
+      "unit": "프레임",
+      "sample_n": 45,
+      "scope": "기존 45개 회귀 · EXP-0062 사건 판단 보존 · 행동 후보는 침입 완료 아님",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "행동 점수 계산 입력",
+      "value": 3573,
+      "unit": "클립",
+      "sample_n": 45,
+      "scope": "기존 45개 회귀 · EXP-0062 사건 판단 보존 · 행동 후보는 침입 완료 아님",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "넘기 점수 0.5 이상 후보",
+      "value": 467,
+      "unit": "클립",
+      "sample_n": 45,
+      "scope": "기존 45개 회귀 · EXP-0062 사건 판단 보존 · 행동 후보는 침입 완료 아님",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 사건 판단 변경",
+      "value": 0,
+      "unit": "건",
+      "sample_n": 45,
+      "scope": "기존 45개 회귀 · EXP-0062 사건 판단 보존 · 행동 후보는 침입 완료 아님 · 구조상 보존이며 성능 개선 증거 아님",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "사람 검수 기준 행동 정밀도",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "공식 라벨 표본 정렬만 검수 · 전체 행동 의미·경계 정답 검수 부족",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "사람 검수 기준 행동 재현율",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "공식 라벨 표본 정렬만 검수 · 전체 행동 의미·경계 정답 검수 부족",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "사람 검수 기준 행동 F1",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "공식 라벨 표본 정렬만 검수 · 전체 행동 의미·경계 정답 검수 부족",
+      "source": "outputs/action-recognition/exp0064/standalone-summary-v1/summary.json",
+      "source_sha256": "3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "사람 검출 누락 정답 건수",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "기존45 회귀 · 사람별 정답 대응과 검수 부족 · 관측 부족을 검출 FN으로 확정하지 않음",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "침입 완료 정확도",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "기존45 회귀 · 사람별 정답 대응과 검수 부족 · 관측 부족을 검출 FN으로 확정하지 않음",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "unavailable"
+    },
+    {
+      "label": "기존45 행동 정밀도",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "기존45 회귀 · 사람별 정답 대응과 검수 부족 · 관측 부족을 검출 FN으로 확정하지 않음",
+      "source": "outputs/action-recognition/exp0064/queued-inference/all45/3825ad63d2254611921ccb7b349c2feb/result.json",
+      "source_sha256": "b465170efe203655deb76f857549101180e6ce56171ae510c69347595d7e34a8",
+      "verification": "unavailable"
+    }
+  ]
+}

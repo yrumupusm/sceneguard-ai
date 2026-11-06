@@ -5068,6 +5068,71 @@
       "task_id": "task_bf2a00d90aec",
       "title": "첫 행동 학습 준비 · 월담/정상 감사와 검수",
       "worker_opinion": "프레임 원점과 배우 행동·음성 의미를 임의 확정하지 않고 실제 검수자료를 전달한다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-06T13:31:42.390110+00:00",
+      "attempt_id": "action-training-and-all45-v2",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_1518122215d9",
+      "evaluated_model": "R3D-18 KINETICS400_V1 이진 미세조정 · 검증 선택 epoch6 · 점수 기준0.5",
+      "evidence": [
+        {
+          "artifact_id": "exp0064-fp-00-video",
+          "kind": "video",
+          "label": "별도 장소 대기 1 · 공식 라벨과 모델 불일치"
+        },
+        {
+          "artifact_id": "exp0064-fp-01-video",
+          "kind": "video",
+          "label": "별도 장소 대기 2 · 공식 라벨과 모델 불일치"
+        },
+        {
+          "artifact_id": "exp0064-training-test-image",
+          "kind": "image",
+          "label": "학습·검증 손실과 공식 라벨 참조 시험"
+        },
+        {
+          "artifact_id": "exp0064-data-coverage-image",
+          "kind": "image",
+          "label": "행동별 데이터 구성 · 성능 지표 아님"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0064",
+      "limitations": [
+        "사람 검수 기준 행동 정밀도·재현율·F1과 침입 완료 정확도는 미측정이다.",
+        "별도 장소 시험은 넘기330개·정상2개이며 정상2개가 모두 오판이다.",
+        "검증 음성은 앉기만 있고 같은 장소 시험은 배경·카메라·사람 독립 평가가 아니다.",
+        "기존45의467개 행동 후보는 겹치는 입력이며 침입 사건·인원·TP 수가 아니다.",
+        "일부 관측 부족5057개는 검출 FN 정답이 아니며 기존 침입 판단을 그대로 보존했다.",
+        "원래 전체 학습의 수치 오류 실패는 보존했고 AMP 수정 후 별도 버전으로 실행했다.",
+        "현재 연결은 오프라인 비교이며 배치 처리의 원본 시각 차이가 최대85.9초였다. 실시간 알림 성능은 미측정이다."
+      ],
+      "metric_definitions": "records/EXP-0064/metrics.json",
+      "metrics_path": "records/EXP-0064/metrics.json",
+      "metrics_sha256": "ef39ca9ab51c1abebd3a31debf8bf5fa32b5879a008f95eaee1de3bf5eb688f2",
+      "next_step": "별도 장소의 충분한 정상 보행·대기·문 접근 후 돌아가기 사례와 의미 검수 정답을 확보한다. 이번 시험에 맞춘 추가 튜닝이나 기본 적용은 하지 않는다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "a104c8099b663228cb2c939741e751f0b6ca74e98131a93260b3f58b41c3b809",
+      "report_path": "docs/experiments/EXP-0064-results.md",
+      "report_sha256": "d222f1e8f2055c8a0a68d799157ff2b5ec0622b81c74d9f8ff531b9e1aa37337",
+      "review_binding_path": "docs/reviews/EXP-0064.binding.json",
+      "review_path": "docs/reviews/EXP-0064-coordinator-review.md",
+      "review_sha256": "64db367f4a25abbd10781c1ff5cefaa375351448c6dc685f6f60c8e871953194",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "ef39ca9ab51c1abebd3a31debf8bf5fa32b5879a008f95eaee1de3bf5eb688f2",
+      "reviewed_report_sha256": "d222f1e8f2055c8a0a68d799157ff2b5ec0622b81c74d9f8ff531b9e1aa37337",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "GPU 10회 학습·새 시험1,431클립·기존45 전구간 계산 완료. 공식 라벨 기준 TP582/FP2/FN0/TN847. 별도 장소 정상2개 모두 오판하여 모델 채택 보류.",
+      "synthetic": false,
+      "task_id": "task_097e754be4db",
+      "title": "첫 행동 모델 학습 · 공식 라벨 참조 평가",
+      "worker_opinion": "첫 학습과 별도 점수 계산은 완료했다. 높은 공식 참조 점수만으로 새 장소의 정상 행동 구별을 입증하지 못했다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

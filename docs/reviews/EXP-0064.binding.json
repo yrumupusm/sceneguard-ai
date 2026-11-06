@@ -1,0 +1,14 @@
+{
+  "registration_sha256": "a104c8099b663228cb2c939741e751f0b6ca74e98131a93260b3f58b41c3b809",
+  "review_path": "docs/reviews/EXP-0064-coordinator-review.md",
+  "review_sha256": "64db367f4a25abbd10781c1ff5cefaa375351448c6dc685f6f60c8e871953194",
+  "review_status": "accepted_for_comparison",
+  "reviewed_sources": {
+    "EXP-0064": {
+      "metrics_sha256": "ef39ca9ab51c1abebd3a31debf8bf5fa32b5879a008f95eaee1de3bf5eb688f2",
+      "report_sha256": "d222f1e8f2055c8a0a68d799157ff2b5ec0622b81c74d9f8ff531b9e1aa37337"
+    }
+  },
+  "schema_version": 1,
+  "synthetic": false
+}

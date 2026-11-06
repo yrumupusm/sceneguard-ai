@@ -1,8 +1,10 @@
 # EXP-0063 첫 행동 학습 준비 독립 검토
 
-2026-11-06. Astra 검토 역할의 독립 코드·계약 검토다. 실제 학습 결과, 사용자 행동 정확도 또는 운영 채택의 인증이 아니다. 구현 파일을 수정하지 않았으며 GPU·다운로드·공유 큐/DB 변경을 실행하지 않았다.
+2026-11-07 최종 보완. Astra 검토 역할의 독립 코드·계약·실제 결과 검토다. 총괄의 후속 배정에 따라 전체 CPU 준비, 수치 오류 복구, 실제 smoke·학습·시험 및 45개 별도 비교까지 읽기 전용으로 확인했다. 구현 파일을 수정하지 않았으며 GPU·다운로드·공유 큐/DB 변경을 실행하지 않았다. 저장된 학습 checkpoint는 CPU로만 검사했다.
 
-현재 판정은 **CPU 준비 GO, 실제36개 smoke 입력 검토 통과·GPU 자원 보류, 전체 학습 GO 대기**다. 실제17개 CPU benchmark와2,033개 순차 snapshot, smoke36 픽셀·공식 weight·실행 배정을 확인했다. 전체5,741개 prepared 완료와 실제 GPU smoke·전체 학습·시험 결과는 아직 없으며, GPU 실행에는 최종 소스/HEAD authorization와 현재 자원 gate가 필요하다. GPU 자원 보류 중 별도 승인된 train-only adapter 수정도 최종85시험과 독립 검토를 통과했다. 아래 초기 판정과 source-freeze는 단계별 이력이며 최신 바이트·실제 receipt·한계는 마지막 보완 절을 따른다.
+현재 판정은 **실제 5,741개 입력 준비·새 smoke·10 epoch 학습·1,431개 공식 참조 시험 검증 통과, 모델 채택 보류**다. 선택 epoch는 6이며 2,250회 갱신 시도 중 2,248회 적용·2회 AMP 건너뜀을 확인했다. 별도 장소 음성 2개를 모두 오판했고 사람 검수 기준 precision/recall/F1은 미측정이다. 높은 공식 참조 수치를 독립 일반화 성능이나 완전한 사람 정답으로 해석할 수 없다. 실제 45개 비교와 공개 보고서/39지표 검토는 마지막 절과 `EXP-0064-integration-readiness-review.md`를 따른다. 브라우저 전달·게시 완료는 본 검토의 인증 범위가 아니다.
+
+**아래의 준비 GO·대기 및 과거 source freeze는 당시 단계별 이력이다. 현재 판정은 위 요약과 마지막 실제 결과 보완 절이 우선한다.** 추가 학습·튜닝·기본 적용을 허가하는 문서가 아니다.
 
 ## 승인 및 정답 범위
 
@@ -127,3 +129,64 @@ Train의 smoke proof는 canonical DB의 실제 succeeded job/attempt, 비합성 
 17개 새 provenance/smoke proof 시험을 포함한 관련85개를 최종 바이트에서 독립 재실행해16.823초에 모두 통과했다. MP4가 모두 없는 fixture와 raw 읽기 trap, 네 번 guard의 실제 pixel hash 재검증, 변경/누락 NPY·주석·중복/누락 source receipt·부분/실패 준비·review/producer binding·regression45 누수·가짜/다른 smoke/훈련 코드 반례를 확인했다. 시험 전후 최종 SHA가 같고 금지된 변경 대상 소스와 기존95 jobs/95 attempts 각 행도 보존됐다. `train-provenance-tests.log`, `train-provenance-reviewed-hashes.json`이 근거다.
 
 **최종 adapter 수정 파일 커밋 GO**를 총괄에게 전달했고 구현 commit `4db1231`의 세 파일이 위 검토 SHA와 동일함을 확인했다. 실제 full prepared receipt가 아직 없으므로 실제 자료로 새 train input-contract가 통과했다고 인증하지 않는다. 실제 canonical smoke가 없으므로 전체 학습 GO도 아니다. 새 source freeze를 만든 뒤 정확한 실제 입력·현재 자원·현재 배정을 연결해야 한다. 원본/픽셀 준비와 합성 시험 통과를 사람 행동 성능 또는 완전한 사람 정답으로 해석하지 않는다.
+
+
+## 실제 전체 준비·원래 smoke와 첫 전체 학습 실패
+
+전체 prepared-v3의5,741개 NPY는 실제 ID·SHA·8×112×112×3 uint8 형식을 독립 확인했다. 먼저 완료한2,033개 순차 snapshot과 smoke36개도 전부 바이트·배열·형식이 같다. prepared SHA는 `9d8d05f20da34a797a0619c066e9142df3ad15d8aafb6b1f991290a83631f1b4`, 전체 준비 증거 SHA는 `06d666053fdc08209a86a01fbf32b5ee5b2e892972fbc119824dfaba9ba8e97b`다. 독립 근거는 `prepared-independent-audit.json`과 `train-evidence-independent-audit.json`이다.
+
+원래 core2a0d의 canonical smoke attempt `c386b63a5265425f85659d1015253c21`는 실제32train/4validation/test0,8microbatch4/누적4/2update로 성공했다. result SHA `e855631708e133c2ccdc670760399bd31a2e75a5ab55a4452e8535b1ca60eb09`와 canonical receipt·실제4개 검증 ID·유한 손실을 독립 확인했다. 작은 검증4개의 결과는 전체 행동 성능 근거가 아니다.
+
+첫 전체 학습 attempt `058639f80f394a71b345eb4eae5ceacb`는 exit1로 실패했다. `clip_grad_norm_(..., inf, error_if_nonfinite=True)`의 비유한 전체 노름 오류이며 첫 history/result가 없다. supervisor2286288과 child2287648의 종료를 확인했다. traceback만으로 개별 기울기 overflow와 노름 합산 overflow 중 하나를 확정하지 않는다. 실제 실패 전 update 수나 GPU peak는 기록 부재를0으로 바꾸지 않는다. 원래96행씩은 변함없으며 실패까지97 jobs/97 attempts를 각 행 SHA로 보호했다. 실패 receipt SHA `2d52713873d3a28363b2786fba3518ee9b473bc550cb757680b6bea0c11d6c5b`와 로그 SHA `4ec93636a582f7d016e8345a309b7a34c751587ae34eaa965849e931b6be1f6c`를 보존했다.
+
+## amp-overflow-v2 독립 수치·출처 검토
+
+총괄이 종료 증명 뒤 연 제한된 수정 창에서, 기존 무한 clipping을 제거하고 표준 GradScaler의 skip/backoff와 실제 ordinary AdamW post-step hook을 사용했다. attempted/actual/skipped,scale 전후를 JSONL로 기록하고 epoch당 실제 update0·비유한 forward loss·모델 parameter/buffer·Adam state는 거절한다. smoke는 고정32/4의 두 경계에서 실제 update2회여야 한다. skipped optimizer update가 forward의 BatchNorm buffer까지 변하지 않았다는 뜻은 아니다.
+
+최종 trainer SHA `770114f8eb9c09a44be33232c99b687e10989e5622eba82cd675d50e5156478a`, test SHA `276716c33e322a2635740cf50b3c0472ccedc76108a619191e16637ec3200fc7`에서31시험을 독립 실행해 모두 통과했다. 추가 실제 CPU GradScaler 반례로 scale0.5→0.25 skip 뒤 정상 update, 유한 gradient가 비유한 Adam moment를 만들 때 치명적 거절을 확인했다. CUDA는 초기화하지 않았다. 수치 수정은 `24bf0139733276adbdc4054b1c6b97f4e9b57df7`에 커밋됐다.
+
+초기 adapter draft는 smoke7파일을 fulltrain8파일과 비교해 거절하는 문제가 있었다. 또 신규 helper 이름과 main return annotation 등 정의 메타데이터가 기존 전처리 의존성을 가릴 수 있었다. 담당자에게 전달했고 최종본은 smoke의 공통6개 입력/train의 전체8개 입력을 구분하며, 신규 helper3개 이름만 허용하고 main 정의·기존10helper 원문/AST·import/global·AdamW 생성까지 main prefix를 대조한다. 원래 producer Git99d18b3/SHA2a0d와 현재 실행 SHA770114f8을 별도로 기록하고 기존 prepared metadata를 덮어쓰지 않는다.
+
+최종 adapter SHA `cddc583c53b2264d39fe412ca97c32e9ec93dd0cff30e8a2a7efff162edbf95c`, adapter test `3ad26b00cb749bfc90172d885a621ccbbeddc42e25d5e49e4bc760edd64ffbaa`, provenance test `61853fe0495245add25c17c1c0f98f7f9096ef94753fe9dcb7931bf9d256e809`, 설명 문서 `9f975604242b2a18728323f46b0496b130e43226b32a663549c828345c730886`에서 관련100시험을 독립 재실행해15.480초에 통과했다. 전후 바이트가 같고 실제 기존 smoke/fulltrain parent 바인딩도 읽기 전용으로 통과했다. 새 stage job key는 명시적인 amp-overflow-v2를 포함하며 Queue.retry를 사용하지 않는다. 기존 smoke는 새 core의 성공으로 사용할 수 없고 새 smoke의2actual/2attempt/0skip,유한 상태·scale·SHA 연결된 두 update를 요구한다.
+
+총괄 커밋 `166c96aa0ee3de18b8d1fe01f26b7430084adef3`, source-freeze-v5 SHA `de1b2368f7fda067422732d1e402da9631adca2361a7857b7bc17fca2ecafe5f`의21파일을 현재 및 Git 바이트와 대조했다. 새 smoke input digest `a27d7d4ea7b546e6081ff329b4f8fbb17850c693777ad306333794eae59771f6`, train digest `4d6491241b70643ea98743064e3dda478e2b812c15094668933e6f5ef5db052c`는 execution_revision과 train preprocessing_compatibility 증명 외 기존 입력과 완전히 같다. 실제36smoke 픽셀을 재해시했고 원본 영상 중복 scan이나5,741개 재추출은 하지 않았다.
+
+새 smoke 실행 전 root GO `msg_2f38dab66070`, authorization SHA `5b5a1d770d950df4e3b1863d62f1cc053f7f17ce2445c48f0ce6610d702c1ca5`, config SHA `4875e28fe5c2349ddf41bcc5f19ccae34858c4d7c2402d83cbf131affdd04217`, wrapper SHA `e56bf5c93240714dfc9c9167d6ae5727be8abd01e2bad22787d559b85418acf7`를 확인했다. 동결 문서/소스는 실행 동안 수정하지 않았고, 아래 완료 증거까지 runtime 검토에 보관한 뒤 프로세스 종료 후 이 문서에 반영했다.
+
+## 실제 revised smoke 독립 확인
+
+새 job `17ca440f9cd7453982a45e2b96e830a8`·attempt `e880e2d07ff1406793fd762fb7582416`는 canonical exit0/succeeded다. result SHA `296138bf10cb8484660dff856703ac0f8428407bc48865e146bd0bd71c945dab`를 실제 새 train 입력과 대조해 현재 adapter의 canonical smoke 증명이 통과했다. 같은166c96aa/770114f8/amp-overflow-v2,정확한36픽셀,2attempt/2actual/0skip,scale65536·유한 모델102/optimizer186tensor,events SHA `7fd142c64c852456df9ca762087bd6ab60084921f994ae00687ac9c334967f4e`를 확인했다. 검증4개 ID·점수와 train/validation 유한 손실, 시험 미접근·시험 출력 부재도 확인했다. 원래 작은 smoke와 손실이 같지만 전체 성능 증거로 해석하지 않는다.
+
+로컬 생성 `last.pt` SHA `0f98fa5dd8f229f5d8318ebb7c6ab166bd42ca4dcd1aea6979859526591f40d3`를 CPU로만 읽어62개 Adam state의 모든 step2와 model/optimizer tensor 유한성을 독립 확인했다. CUDA 초기화는 없었다. 기존97행씩이 같고 새 성공 smoke까지98행씩을 보호했다. `actual-revised-smoke-independent-review.json`, `revised-smoke-checkpoint-independent-audit.json`이 근거다. 총괄에게 `msg_6e1252188a94`로 정확한4d649124 입력·동결 소스의 한 번 전체 학습 준비 GO를 전달했다. 당시 이 GO는 전체 학습 성공 인증과 구분했으며, 이후 실제 결과를 아래와 같이 확인했다.
+
+
+## 실제 전체 학습·시험 독립 검증 통과
+
+새 job `2bc23fd542bc4b90b9ac22e66c40ab13`·attempt `67e95fc8cf204de7be9627e81f524931`는 canonical exit0/succeeded로10epoch를 완료했다. result SHA `9a8bb01f62973b91d959c3e8f9d3bfc80d9ef2094dc6169905295bc44aa8eaf5`, validation 최저 epoch6의 best.pt SHA `8b4e2eb74bee656f651a172403e4ddfe1e1ce8f9a4438d70c76b5a1b17825b73`다. 매 epoch의725개 validation 전체 ID/라벨/메타데이터와 지표, 최저 validation CE 선택, 전체1,431개 test 점수/실패 목록/공식 참조 cohort 및 행동별 수치를 독립 산술로 재현했다. test로 epoch나 threshold를 선택하지 않았으며 재평가·추가 학습은 하지 않았다.
+
+실제2,250update 시도 중2,248회 적용·2회 skip이다. 두 skip은 epoch1과10의 마지막 microbatch897, 각1개 sample을 포함하는 누적그룹이며 scale65536→32768로 감소했다. 총2개 sample 노출의 gradient update가 건너뛰어졌다는 뜻이고 고유2클립·새 정답·학습 실패2회를 뜻하지 않는다. 모든 epoch는 실제 update가 있고, JSONL 전체2,250행과 history/result의 카운터·scale·유한 상태가 일치했다. 학습 중간의 한 skip 관측을 최종2개로 정정한다.
+
+CPU로만 best/last checkpoint를 읽어62개 모든 Adam state step이 각각1,349/2,248이고 저장된 실제 카운터·epoch·config·manifest·scale 및 모델/optimizer tensor 유한성이 일치함을 확인했다. last.pt SHA는 `399202c6fed774d94d2969496eca1a791f2dbbc72865bd797224f72ec0d3dd61`다. 이 점검에서 CUDA는 초기화하지 않았다. `training-v2-result-independent-audit.json`, `training-checkpoints-v2-independent-audit.json`이 근거다. 기존98행씩과 원래 실패 산출물·동결21소스가 보존됐고 새 성공까지99행씩을 보호했다.
+
+| 공식 주석 참조 시험 | TP | FP | FN | TN | 해석 한계 |
+|---|---:|---:|---:|---:|---|
+| 같은 장소 별도 촬영 | 252 | 0 | 0 | 847 |1,099클립·188원본·5촬영 사건, 독립 장소 일반화 아님|
+| 별도 장소 | 330 | 2 | 0 | 0 |332클립·95원본·3촬영 사건, 유일한 음성2개를 모두 오판|
+
+**별도 장소의 정상2개 모두 FP**라는 실패를 높은 전체 F1로 가리지 않는다. 두 실패는4-61/4-62의 서로 다른 촬영 사건에 있는 stand 참조 클립이며 점수는 각각0.9999951124/0.9997382760이다. 공식 참조 전체는TP582/FP2/FN0/TN847이지만 사람 검증 행동 정답·정밀 경계·침입 완료 정확도나 충분한 정상 일반화 성능을 입증하지 않는다. 검증 음성은 앉기만 포함했고, 사람 precision/recall/F1은 계속null이다. 동작/배경 원인을 수치만으로 확정하지 않으며 추가 튜닝을 자동 시작하지 않는다.
+
+총괄에게 `msg_f9291db3ecfb`로 실제 standalone 검증 통과와 위 한계를 전달했다. 45개 기존 회귀는 별도 모델/입력/실행 승인을 확인해야 하며 이 결과만으로 실제 통합 추론이나 운영 개선 완료를 선언하지 않는다.
+
+
+오판 두 구간은 새 검수 장면이 아니다. 실제 적용 snapshot을 다시 읽어4-61 actor0 stand50–59는 `request-5beb7b452b1d4abd82f3e198c0f14cb2`/`exp0063-wall-00-video`,4-62 actor1 stand162–361은 `request-f6003c590bd64bb3afa7fb1a7f75866e`/`exp0063-wall-05-video`의 기존 답변(version4/answer_version1)임을 확인했다. 두 답변은 시작/종료 차이는 작고 오른쪽 박스가 사람을 더 잘 담는다는 관찰이며, 원래 처리도 전체 음성 정답으로 확대하지 않는다고 명시했다. 검토자가 초기에 새 장면 질문 대상으로 표현한 메시지는 `msg_0f8cccfc8b1e`로 정정했고 실제 새 검수 요청은0개다. 새로 관측된 것은 모델-공식 참조의 불일치이며, 기존 관찰을 재사용하고 반복 질문·정답 자동 승격을 하지 않는다. 근거는 `failure-prior-review-scope-correction.json`이다.
+
+실제 standalone summary SHA `3b9ac6817d3540f41ec808a38cfc8921ab0220c2a41528f95cff56a28e9f69e8`의 수치·가중치·출처 연결과 failure manifest SHA `2abca9ddd2fc2f164af2f83ea55fd557963050704292eb9850f0bab2b881bc54`의 정확한 두 FP를 대조했다. 두 표시 영상은960×630의3FPS·8프레임이며 native PTS/라벨/score/source·미디어 SHA가 일치한다. 모델이 입력받은8개 시점의 원본 문맥에 ROI를 표시한 영상이며,112px 입력 tensor나 원본FPS 연속 영상 자체는 아니다. 로컬 디코딩·메타데이터만 확인했고 원본 미디어를 cloud vision에 보내거나 행동 의미를 새로 확정하지 않았다.
+
+
+## 최종 연결 결과와 공개 표현 검토
+
+추가 배정한 실제 45개 비교도 attempt `3825ad63d2254611921ccb7b349c2feb`에서 완료됐다. 184,300 native 프레임·3,573개 점수·467개 후보 창, 기존 원본 출력 405개와 별도 복사본의 일치 및 이전 큐 99개 job/attempt 각각의 행 보존을 독립 확인했다. 후보 수는 인원·침입 사건·TP 수가 아니며, 기존 판단 변경 0은 보존 설계의 결과다. 상세 시각·큐·공식 참조와의 분리는 통합 독립 검토 문서를 따른다.
+
+최종 공개 보고서 `docs/experiments/EXP-0064-results.md` SHA `d222f1e8f2055c8a0a68d799157ff2b5ec0622b81c74d9f8ff531b9e1aa37337`와 `records/EXP-0064/metrics.json` SHA `ef39ca9ab51c1abebd3a31debf8bf5fa32b5879a008f95eaee1de3bf5eb688f2`를 실제 결과에 대조했다. 39개 중 수치 33개와 미측정 null 6개, 각 출처 SHA·범위·분모를 확인했다. 전체 공식 참조 precision 582/584, recall 582/582, F1 1164/1166은 산술적으로 맞지만 별도 장소 음성 2/2 FP와 앉기 편중 검증 음성의 한계를 유지한다. 공개 문서는 사람 정답 전체 검증·독립 일반화·실시간 침입 개선을 주장하지 않으며 채택을 보류한다.
+
+계산·계약·보존 검토의 미해결 차단 사유는 없다. 충분한 사람 의미 정답 및 별도 장소의 정상/접근/돌아가기 평가 부족은 성능·채택의 미해결 한계다. 반복 검수나 추가 튜닝을 자동 시작하지 않는다. 웹 등록·실제 브라우저 재생·GitHub 게시 완료는 별도 전달 증거가 필요하며 본 검토에서 인증하지 않았다.
