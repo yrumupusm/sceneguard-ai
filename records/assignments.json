@@ -779,6 +779,19 @@
       "synthetic": false,
       "task_id": "task_bf2a00d90aec",
       "title": "첫 행동 학습 준비 · 월담/정상 감사와 검수"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-06T13:31:42.390110+00:00",
+      "dispatch_id": "ctx_1518122215d9",
+      "experiment_id": "EXP-0064",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_097e754be4db",
+      "title": "첫 행동 모델 학습 · 공식 라벨 참조 평가"
     }
   ],
   "schema_version": 1
