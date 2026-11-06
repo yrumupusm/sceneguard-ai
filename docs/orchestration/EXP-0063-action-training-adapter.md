@@ -35,7 +35,7 @@ A local queue config has exactly four keys:
 | --- | --- |
 | `stage` | `smoke` or `train` |
 | `context` | Exact current `{run_id,task_id,dispatch_id,owner}` |
-| `files` | `{manifest,baseline_lock,split_manifest,config,prepared,review_release,weights}`; each value is `{path,sha256}` |
+| `files` | Smoke: `{manifest,baseline_lock,split_manifest,config,prepared,review_release,weights}`. Train adds exactly `preparation_evidence`; each value is `{path,sha256}` |
 | `authorization` | `{path,sha256}` of the coordinator authorization JSON |
 
 All file paths are absolute local paths. `files.prepared.path` points to `prepared.json`, not its directory. Authorization includes `context`, `stage`, `input_hash`, `sources`, `code_sha` and the four true flags above; train additionally includes `smoke_result:{path,sha256}`.
@@ -46,7 +46,7 @@ To calculate the read-only input contract from an assembled queue config:
 .venv-cv-batch02/bin/python -m orchestration.action_training_command --queue-config /absolute/path/to/assembled-queue-config.json
 ```
 
-The authorization hash is not part of its own `input_hash`; obtain that hash with `digest(input_contract(config))`. Source bindings come from `sources()`. The config can be assembled in two phases: calculate the input/source contracts, create authorization, then bind its hash into config. Creating these files does not enqueue work.
+The authorization hash is not part of its own `input_hash`; obtain that hash with `digest(input_contract(config))`. Source bindings come from `sources()` and include the frozen CPU preparation producer and the focused preparation-provenance counterexamples. The config can be assembled in two phases: calculate the input/source contracts, create authorization, then bind its hash into config. Creating these files does not enqueue work.
 
 After review and explicit coordinator execution GO, use the existing queue API to register and execute only the returned job ID:
 
@@ -66,7 +66,7 @@ def execute_reviewed_config(config_path, timeout_seconds):
 
 Use a deliberate timeout large enough for the stage; the adapter permits at most172800seconds. `run_once(job_id=...)` uses the existing detached supervisor and avoids draining unrelated jobs. This snippet was not executed against the actual queue.
 
-Outputs are new directories under `outputs/action-recognition/exp0063/queued-training/{smoke|train}/{attempt_id}`. Smoke deterministically selects the first16 official negative and16 positive training clips, plus2 negative and2 positive validation clips in manifest order. It rejects insufficient real examples, reads/hashes/loads no test source or prepared pixel files, and runs one epoch with8 full batch4 microbatches and2 AdamW steps, including persistent optimizer state. It records actual microbatch sizes, accumulation, optimizer steps, memory/history and `test_accessed:false`. Train authorization must bind a successful same-manifest/config smoke result with32train/4val, the requested full microbatches, accumulation4 and at least2optimizer steps. Smoke checkpoints are separate and are not resumed into the full training.
+Outputs are new directories under `outputs/action-recognition/exp0063/queued-training/{smoke|train}/{attempt_id}`. Smoke deterministically selects the first16 official negative and16 positive training clips, plus2 negative and2 positive validation clips in manifest order. It rejects insufficient real examples, reads/hashes/loads no test source or prepared pixel files, and runs one epoch with8 full batch4 microbatches and2 AdamW steps, including persistent optimizer state. It records actual microbatch sizes, accumulation, optimizer steps, memory/history and `test_accessed:false`. Train authorization must bind a successful same-manifest/config smoke result with32train/4val, the requested full microbatches, accumulation4, exactly2optimizer steps and the canonical proof described below. Smoke checkpoints are separate and are not resumed into the full training.
 
 Full train retains10epochs, seed6301, AMP, AdamW and validation-CE checkpoint selection. Only after selecting the best checkpoint does it evaluate the test once. Scores retain source/event/actor/action/PTS/evidence, and errors are exported with annotation-reference FP/FN types. Results separate `same_place` and `heldout_place`, source/event/clip denominators and per-action negative FP/TN/FPR or positive recall. Human precision/recall/F1 and intrusion completion accuracy remain null. Official reference action performance is not intrusion completion or production performance. The final config records the four explicitly supported normal classes and `validation_negative_coverage:"sitting_only"`; it does not claim walking/waiting validation coverage.
 
@@ -81,3 +81,44 @@ Focused CPU checks passed in the existing environment:24trainer tests,9adapter t
 ```
 
 No actual memory measurement or training success is claimed. Remaining: coordinator final clip/release/CPU preparation, independent review of committed files and final actual inputs, live execution assignment/GO, actual smoke, then the first full training/evaluation. Existing reports/catalog/bindings, production modules, all45 original regression videos and results, review DBs and actual queue rows are preserved by this worker.
+
+## 2026-11-06 train-only completed-preparation revision
+
+Root explicitly opened an adapter-only revision window in Orca message `msg_02a17481de9d` while no GPU authorization or attempt existed and GPU resources were externally occupied. This superseded the earlier after-smoke timing restriction; it did not permit changing the trainer, queue, CPU decoder, model/config, manifest, release, baseline, or inference code. Those files remain byte-identical to the reviewed source freeze. This section records implementation and CPU checks, not actual training or inference. No actual queue mutation, model load, GPU job, or raw-media rescan was performed for the revision. The initial implementation was committed previously; this revision awaits Astra diff review and root commit GO.
+
+The previous train path hashed the full original corpus once at input build, once at enqueue, once in the supervisor command, and once in the child guard. The full5741 manifest contains1081 unique videos with29,697,473,482bytes (27.6579274628GiB), so those four calls hash110.6317098513GiB of logical video bytes. Optional independent pre-validation adds another pass. These are metadata-derived logical-byte counts, not measured physical-disk reads or elapsed-time benchmarks. Smoke36 uses19 videos/573,676,957bytes (0.5342783006GiB) per pass.
+
+Smoke retains its exact seven-file schema and existing selected-original hashing, no-test-pixel behavior, model, sampling and actual computation. Train requires exactly those seven files plus `files.preparation_evidence`, an absolute `{path,sha256}` binding. Its JSON has the following exact shape; `binding` means exactly an absolute local path and a lowercase64hex SHA256, not a mutable filename-only reference.
+
+```text
+{
+  schema_version: 1,
+  kind: "completed_action_preparation_v1",
+  scope: "full_corpus",
+  prepared: binding,
+  producer_contract: binding,
+  successful_result: binding,
+  source_gate_receipt: binding,
+  equivalence: {report: binding, sequential_snapshot: binding}
+}
+```
+
+The evidence's prepared binding must equal `files.prepared`. The producer files are the same directory's exact `contract.json`, `result.json`, `verified-source-hashes.json` and `sequential-equivalence.json`; a `failure.json` marker rejects the publication. The producer contract must equal `prepared.preparation.contract`, have prepare mode/workers4/expected full clip count/counts, match current reviewed trainer and CPU driver bytes, and bind the same manifest/config/split/baseline/release/review snapshot/policy. Prepared clip IDs must equal all frozen manifest clip IDs with unique producer-local absolute NPY paths; the current full manifest has5741. The completed result must have status prepared, workers4, the same full clip count and the exact prepared.json SHA. Smoke-only, benchmark, partial, failed and missing results cannot authorize train.
+
+The source-gate receipt must have passed and contain each original video/official annotation path and its frozen manifest hash exactly once, with no missing, extra, duplicate or conflicting entries. This is HISTORICAL successful-preparation provenance. Training does not reopen or claim to freshly verify current unused raw video bytes. Current official annotation bytes are still hashed (34,465,431bytes/1081files in this corpus), and every actual selected NPY byte is freshly hashed at every training guard. No stat/mtime cache or unchecked pixel cache substitutes for those consumed-input checks.
+
+The exact2033 sequential prefix snapshot is additionally pinned to SHA `080bf01a7cd5c686e73cdd744b2087f46c3631ae73df9371e67b501f2c07633c`; it cannot be replaced by a shorter re-bound self-declared subset. Its manifest hash must match; every snapshot clip must exist in full prepared with identical recorded NPY SHA. The equivalence report must cover the whole snapshot, with byte/array/dtype/shape flags all true. Actual full prepared NPY bytes are verified; historical snapshot pixels are not training inputs and are not reread merely to repeat the completed producer's comparison. All split, content/path regression45 exclusion, alignment, review release and source/HEAD/live queue/FD/device/resource/no-retry guards remain in force. Actual all45 inference consumes originals, so its existing current-original hash verification remains unchanged.
+
+Train additionally requires a canonical successful smoke, beyond a self-declared result JSON. Read-only canonical SQLite lookup must find the same succeeded action-train smoke job/attempt and exact result-manifest path. Its receipt must be nonsynthetic, succeeded, and match all registered command/job/assignment/source/input/config/commit fields; attempt snapshot and stored config/input digests must agree. The recorded historical reviewed authorization and each source's committed bytes are verified, and the historical trainer core SHA must equal the current frozen trainer SHA even though adapter/queue revisions may differ. Manifest/config/official weights/baseline/split/release must match the requested training.
+
+The deterministic36 smoke IDs must be exactly32training/4validation/test0, have the exact source provenance and all36 pixel hashes equal the corresponding current full-prepared hashes; smoke result requires eight batch4 microbatches, accumulation4, exactly2optimizer steps, smoke-only completion and test_accessed=false. Historical smoke prepared metadata must match its queued pixel map. No old smoke NPY or raw video is reopened: current full-prepared NPY bytes were freshly verified. The returned proof is saved in action-live-assignment provenance. An invalid proof fails before live assignment/model/resource execution; it cannot be bypassed by binding only a result file. Smoke checkpoints remain unused as training initialization.
+
+CPU command:
+
+```bash
+.venv-cv-batch02/bin/python -m unittest tests_orca.test_action_training_provenance tests_orca.test_action_training tests_orca.test_action_inference tests.test_action_regression tests_orca.test_queue tests.test_action_recognizer -v
+```
+
+85tests passed in15.900seconds, including17 focused provenance/smoke-proof tests with multiple counterexamples. Training succeeds in the fixture with every original MP4 absent and raw opens trapped, while all38 consumed synthetic NPY files are freshly rehashed across each of four repeated contract calls. Tests reject missing/modified NPY and annotation bytes, failed/partial/smoke/benchmark publications, metadata/review/driver/trainer binding changes, source receipt duplicates/missing/extra/wrong hashes, regression45 path/content leakage, equivalence corruption and substituted canonical smoke receipt/config/input/pixel/core evidence. Existing smoke raw-source access and test-pixel exclusion, source/liveness/FD/resource/queue and action inference tests still pass. Synthetic queue proof uses only a temporary SQLite file; the actual canonical DB is read-only and unchanged.
+
+Next steps require independent review and root commit/source-freeze revision before any execution authorization. Full preparation must actually publish its successful complete receipts; a canonical actual smoke must succeed; then a new exact-source/input/HEAD train GO may authorize the unchanged model's first full run. No performance gain, action quality, actual GPU memory, training success or all45 inference is claimed by these CPU tests.

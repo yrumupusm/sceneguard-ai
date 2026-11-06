@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import re
+import sqlite3
 import subprocess
 
 from orchestration.queue import digest, process_state
@@ -20,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = Path('/home/jhc7484/dev/sceneguard-orca-lab/runtime/orca-lab/gpu-queue')
 INTERPRETER = ROOT / '.venv-cv-batch02/bin/python'
 OUTPUT = ROOT / 'outputs/action-recognition/exp0063/queued-training'
+FROZEN_SEQUENTIAL_SHA = '080bf01a7cd5c686e73cdd744b2087f46c3631ae73df9371e67b501f2c07633c'
 FROZEN_SPLIT_SHA = 'bfb0f9fcd570794036cc6d2eaad46f988679b612996e21282a34821203ad5499'
 FILE_KEYS = {'manifest', 'baseline_lock', 'split_manifest', 'config', 'prepared', 'review_release', 'weights'}
 
@@ -46,7 +48,8 @@ def trainer():
 def sources(config=None):
     paths = ('orchestration/queue.py', 'orchestration/mock_job.py',
              'orchestration/action_training_command.py', 'scripts/train_action_recognizer.py',
-             'tests/test_action_recognizer.py', 'tests_orca/test_action_training.py')
+             'tests/test_action_recognizer.py', 'tests_orca/test_action_training.py',
+             'scripts/prepare_action_pixels_parallel.py', 'tests_orca/test_action_training_provenance.py')
     return {name:file_hash(ROOT/name) for name in paths}
 
 
@@ -59,8 +62,9 @@ def checked_file(entry):
 
 def input_contract(config):
     """Verify selected real sources/pixels without reading test pixels during smoke."""
-    if set(config['files']) != FILE_KEYS:
-        raise ValueError('Exact action training file bindings required')
+    expected = FILE_KEYS | ({'preparation_evidence'} if config['stage'] == 'train' else set())
+    if config['stage'] not in ('smoke','train') or set(config['files']) != expected:
+        raise ValueError('Exact stage-specific action training file bindings required')
     paths = {k:checked_file(v) for k,v in config['files'].items()}
     if config['files']['weights']['sha256'] != 'b3b3357ead25631ec9c57362ff2128a92d0427e01e2cd184951a44380c3f2e9d':
         raise ValueError('Exact official R3D-18 pretrained weight hash required')
@@ -79,29 +83,204 @@ def input_contract(config):
         raise ValueError('Manifest baseline binding differs')
     if manifest.get('source_split_sha256') != FROZEN_SPLIT_SHA:
         raise ValueError('Manifest split binding differs')
-    module.validate_manifest(manifest, baseline, settings['frames'], split)
+    counts = module.validate_manifest(manifest, baseline, settings['frames'], split)
     release = module.validate_release(paths['manifest'], paths['split_manifest'], paths['review_release'],
                                       config['files']['review_release']['sha256'])
     selected = module.partition_rows(manifest, config['stage'])
+    provenance = None
     original_sources = {}
+    if config['stage'] == 'train':
+        original_sources, provenance = preparation_evidence(config, paths, manifest, counts, release)
+    annotation_hashes = {}
     for row in selected:
         path = row['source_path']
-        if path not in original_sources:
+        if config['stage'] == 'smoke' and path not in original_sources:
             original_sources[path] = file_hash(path)
         if original_sources[path] != row['source_sha256']:
             raise ValueError('Source video changed')
         if not row.get('label_path') or not row.get('label_sha256'):
             raise ValueError('Official annotation path/hash required')
         label_path = row['label_path']
-        if label_path not in original_sources:
-            original_sources[label_path] = file_hash(label_path)
-        if original_sources[label_path] != row['label_sha256']:
+        if label_path not in annotation_hashes:
+            annotation_hashes[label_path] = file_hash(label_path)
+        if annotation_hashes[label_path] != row['label_sha256']:
             raise ValueError('Official annotation changed')
+        original_sources[label_path] = annotation_hashes[label_path]
     arrays = module.prepared_entries(paths['prepared'].parent, paths['manifest'], paths['config'], selected)
     prepared = read(paths['prepared'])
-    return dict(files={k:v['sha256'] for k,v in config['files'].items()}, sources=original_sources,
-                pixels={key:prepared['clips'][key]['sha256'] for key in arrays},
-                review_snapshot_sha256=release['review_snapshot']['sha256'])
+    result = dict(files={k:v['sha256'] for k,v in config['files'].items()}, sources=original_sources,
+                  pixels={key:prepared['clips'][key]['sha256'] for key in arrays},
+                  review_snapshot_sha256=release['review_snapshot']['sha256'])
+    if provenance is not None:
+        result['preparation_provenance'] = provenance
+    return result
+
+
+def evidence_binding(entry):
+    if (not isinstance(entry, dict) or set(entry) != {'path','sha256'}
+            or not isinstance(entry['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', entry['sha256'])):
+        raise ValueError('Exact preparation artifact path/hash binding required')
+    return checked_file(entry)
+
+
+def preparation_evidence(config, paths, manifest, counts, release):
+    """Authenticate completed pixels' historical provenance; never open original video."""
+    evidence_binding(config['files']['preparation_evidence'])
+    evidence = read(paths['preparation_evidence'])
+    if (set(evidence) != {'schema_version','kind','scope','prepared','producer_contract',
+                          'successful_result','source_gate_receipt','equivalence'}
+            or type(evidence['schema_version']) is not int or evidence['schema_version'] != 1
+            or evidence['kind'] != 'completed_action_preparation_v1' or evidence['scope'] != 'full_corpus'
+            or set(evidence['equivalence']) != {'report','sequential_snapshot'}):
+        raise ValueError('Exact full completed-preparation evidence schema required')
+    if evidence['prepared'] != config['files']['prepared']:
+        raise ValueError('Preparation evidence prepared binding differs')
+    artifact = {key:evidence_binding(evidence[key]) for key in
+                ('prepared','producer_contract','successful_result','source_gate_receipt')}
+    equivalence = {key:evidence_binding(value) for key,value in evidence['equivalence'].items()}
+    folder = paths['prepared'].parent
+    for key,name in (('producer_contract','contract.json'),('successful_result','result.json'),
+                     ('source_gate_receipt','verified-source-hashes.json')):
+        if artifact[key] != folder/name:
+            raise ValueError('Preparation artifacts must belong to the same producer output')
+    if (paths['prepared'] != folder/'prepared.json' or equivalence['report'] != folder/'sequential-equivalence.json'
+            or (folder/'failure.json').exists()):
+        raise ValueError('Failed or noncanonical completed preparation')
+    prepared, producer, success, gate = [read(artifact[key]) for key in
+                                       ('prepared','producer_contract','successful_result','source_gate_receipt')]
+    snapshot = read(equivalence['sequential_snapshot']); report = read(equivalence['report'])
+    rows = manifest['clips']; by_id = {row['clip_id']:row for row in rows}
+    if (not rows or len(by_id) != len(rows) or set(prepared['clips']) != set(by_id)
+            or success.get('status') != 'prepared' or success.get('clips') != len(rows)
+            or success.get('workers') != 4 or success.get('prepared_sha256') != config['files']['prepared']['sha256']
+            or producer.get('mode') != 'prepare' or producer.get('workers') != 4
+            or producer.get('expected_clips') != len(rows) or producer.get('counts') != counts):
+        raise ValueError('Successful full preparation with exact clip inventory required')
+    prep = prepared.get('preparation', {})
+    trainer_sha = file_hash(ROOT/'scripts/train_action_recognizer.py')
+    driver_sha = file_hash(ROOT/'scripts/prepare_action_pixels_parallel.py')
+    if (prep.get('contract') != evidence['producer_contract'] or prep.get('workers') != 4
+            or prep.get('trainer_sha256') != trainer_sha or producer.get('trainer_sha256') != trainer_sha
+            or prep.get('driver_sha256') != driver_sha or producer.get('driver_sha256') != driver_sha):
+        raise ValueError('Reviewed producer contract/trainer/driver binding differs')
+    for key in ('manifest','baseline_lock','split_manifest','config','review_release'):
+        if (producer.get('paths',{}).get(key) != str(paths[key])
+                or producer.get('hashes',{}).get(key) != config['files'][key]['sha256']):
+            raise ValueError('Producer input contract differs: '+key)
+    for key in ('review_snapshot','interpretation_policy'):
+        if (producer.get('paths',{}).get(key) != release[key]['path']
+                or producer.get('hashes',{}).get(key) != release[key]['sha256']):
+            raise ValueError('Producer review contract differs: '+key)
+    if (evidence['equivalence']['sequential_snapshot']['sha256'] != FROZEN_SEQUENTIAL_SHA
+            or producer.get('paths',{}).get('sequential_snapshot') != str(equivalence['sequential_snapshot'])
+            or producer.get('hashes',{}).get('sequential_snapshot') != evidence['equivalence']['sequential_snapshot']['sha256']
+            or snapshot.get('manifest_sha256') != config['files']['manifest']['sha256']):
+        raise ValueError('Sequential snapshot producer binding differs')
+    prior = snapshot.get('clips', {})
+    if (not prior or not set(prior).issubset(by_id) or report.get('compared') != len(prior)
+            or any(report.get(key) is not True for key in
+                   ('npy_sha256_equal','arrays_equal','dtype_equal','shape_equal'))
+            or any(prior[key]['sha256'] != prepared['clips'][key]['sha256'] for key in prior)):
+        raise ValueError('Exact nonempty sequential pixel equivalence required')
+    npy_paths = set()
+    for entry in prepared['clips'].values():
+        path = Path(entry['path'])
+        if (not path.is_absolute() or path.parent != folder or path.suffix != '.npy'
+                or path.is_symlink() or str(path) in npy_paths
+                or not re.fullmatch('[0-9a-f]{64}',entry['sha256'])):
+            raise ValueError('Unique producer-local NPY bindings required')
+        npy_paths.add(str(path))
+    expected = {}
+    for row in rows:
+        for path_key,hash_key in (('source_path','source_sha256'),('label_path','label_sha256')):
+            path, value = row[path_key],row[hash_key]
+            if path in expected and expected[path] != value:
+                raise ValueError('Conflicting source gate hashes')
+            expected[path] = value
+    actual = {}
+    if gate.get('status') != 'passed' or not isinstance(gate.get('files'),list):
+        raise ValueError('Successful complete source gate receipt required')
+    for entry in gate['files']:
+        if (set(entry) != {'path','sha256'} or not Path(entry['path']).is_absolute()
+                or entry['path'] in actual or not re.fullmatch('[0-9a-f]{64}',entry['sha256'])):
+            raise ValueError('Unique exact source gate rows required')
+        actual[entry['path']] = entry['sha256']
+    if actual != expected:
+        raise ValueError('Source gate receipt differs from complete frozen manifest')
+    return actual, dict(mode='verified_during_completed_preparation_not_current_raw_revalidation',
+                        evidence_sha256=config['files']['preparation_evidence']['sha256'],
+                        producer_contract_sha256=evidence['producer_contract']['sha256'],
+                        source_gate_receipt_sha256=evidence['source_gate_receipt']['sha256'],
+                        successful_result_sha256=evidence['successful_result']['sha256'],
+                        equivalence_sha256=evidence['equivalence']['report']['sha256'])
+
+
+def validate_canonical_smoke(binding, config, inputs):
+    """Past succeeded canonical smoke must have consumed the same 36 pixel hashes."""
+    validate_smoke(binding, config)
+    result_path = checked_file(binding); attempt = result_path.parent.name
+    result = read(result_path)
+    if result.get('optimizer_steps') != 2 or result.get('training_complete') is not False:
+        raise ValueError('Exact two-step smoke-only execution required')
+    if (not re.fullmatch('[0-9a-f]{32}',attempt)
+            or result_path != output_path('smoke',attempt)/'result.json'):
+        raise ValueError('Canonical successful smoke result path required')
+    with sqlite3.connect('file:'+str(RUNTIME/'queue.sqlite3')+'?mode=ro',uri=True) as db:
+        db.row_factory = sqlite3.Row
+        row = db.execute('SELECT j.*,a.status AS attempt_status,a.result_manifest FROM jobs j '
+                         'JOIN attempts a USING(job_id) WHERE a.attempt_id=?',(attempt,)).fetchone()
+    if (row is None or row['command'] != 'action-train' or row['status'] != 'succeeded'
+            or row['attempt_status'] != 'succeeded'):
+        raise ValueError('Actually succeeded canonical smoke queue attempt required')
+    directory = RUNTIME/'attempts'/attempt
+    if row['result_manifest'] != str(directory/'manifest.json'):
+        raise ValueError('Canonical smoke queue receipt path differs')
+    receipt = read(directory/'manifest.json'); saved = json.loads(row['config_json'])
+    snapshot = read(directory/'action-training-config.json'); original = json.loads(row['input_json'])
+    expected_registration = {key:row[key] for key in ('command','job_id','run_id','task_id','dispatch_id',
+                              'owner','code_sha','source_hash','input_hash','config_hash')}
+    if (receipt.get('synthetic') is not False or receipt.get('execution_status') != 'succeeded'
+            or receipt.get('attempt_id') != attempt or receipt.get('result_path') != str(result_path.parent)
+            or receipt.get('registration') != expected_registration or saved != snapshot
+            or saved.get('stage') != 'smoke' or set(saved.get('files',{})) != FILE_KEYS
+            or row['job_key'] != job_key(saved)
+            or row['input_hash'] != digest(original) or row['config_hash'] != digest(saved)
+            or saved.get('context') != {key:row[key] for key in ('run_id','task_id','dispatch_id','owner')}):
+        raise ValueError('Canonical succeeded smoke registration/input/config proof differs')
+    authorization = read(checked_file(saved['authorization']))
+    if (authorization.get('stage') != 'smoke' or authorization.get('context') != saved['context']
+            or authorization.get('input_hash') != row['input_hash'] or authorization.get('code_sha') != row['code_sha']
+            or not authorization.get('sources') or digest(authorization['sources']) != row['source_hash']
+            or any(authorization.get(key) is not True for key in
+                   ('confirmed','training_authorized','independent_review_passed','explicit_gpu_go'))):
+        raise ValueError('Reviewed historical smoke authorization differs')
+    if authorization['sources'].get('scripts/train_action_recognizer.py') != file_hash(ROOT/'scripts/train_action_recognizer.py'):
+        raise ValueError('Historical smoke training-core source differs from current frozen trainer')
+    for name, expected in authorization['sources'].items():
+        committed = subprocess.check_output(['git','show',row['code_sha']+':'+name],cwd=ROOT)
+        if hashlib.sha256(committed).hexdigest() != expected:
+            raise ValueError('Historical smoke committed source differs')
+    for key in ('manifest','baseline_lock','split_manifest','config','review_release','weights'):
+        if saved['files'][key] != config['files'][key]:
+            raise ValueError('Smoke/training input binding differs: '+key)
+    if (original.get('files') != {key:value['sha256'] for key,value in saved['files'].items()}
+            or original.get('review_snapshot_sha256') != inputs['review_snapshot_sha256']):
+        raise ValueError('Smoke queued file/review bindings differ')
+    manifest = read(config['files']['manifest']['path']); selected = trainer().partition_rows(manifest,'smoke')
+    ids = {row['clip_id'] for row in selected}
+    expected_sources = {row[path_key]:row[hash_key] for row in selected for path_key,hash_key in
+                        (('source_path','source_sha256'),('label_path','label_sha256'))}
+    pixels = original.get('pixels',{})
+    if (len(ids) != 36 or set(pixels) != ids or original.get('sources') != expected_sources
+            or any(pixels[key] != inputs['pixels'].get(key) for key in ids)):
+        raise ValueError('Canonical smoke36/full preparation pixel/source equality required')
+    old_prepared = read(checked_file(saved['files']['prepared']))
+    if (old_prepared.get('manifest_sha256') != saved['files']['manifest']['sha256']
+            or old_prepared.get('config_sha256') != saved['files']['config']['sha256']
+            or any(old_prepared['clips'][key]['sha256'] != pixels[key] for key in ids)):
+        raise ValueError('Canonical smoke pixel provenance differs')
+    return dict(attempt_id=attempt,receipt_sha256=file_hash(directory/'manifest.json'),
+                input_hash=row['input_hash'],matching_pixels=36)
 
 
 def validate_assignment(context):
@@ -145,10 +324,14 @@ def validate(config, inputs, runtime):
         committed = subprocess.check_output(['git','show',head+':'+name],cwd=ROOT)
         if hashlib.sha256(committed).hexdigest() != expected:
             raise ValueError('Reviewed sources must be committed: '+name)
+    smoke_proof = None
     if config['stage'] == 'train':
-        validate_smoke(authorization.get('smoke_result'),config)
+        smoke_proof = validate_canonical_smoke(authorization.get('smoke_result'),config,inputs)
     live_assignment = validate_assignment(config['context'])
-    return dict(authorization=authorization, live_assignment=live_assignment)
+    result = dict(authorization=authorization, live_assignment=live_assignment)
+    if smoke_proof is not None:
+        result['canonical_smoke'] = smoke_proof
+    return result
 
 
 def validate_smoke(binding, config):
