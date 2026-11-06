@@ -41,6 +41,8 @@ v2 manifest SHA는 `f8bea6c8b4b36d5d09daf8f3b43a7e8923319ef5bde3b5c4e5cd5f00f0f7
 
 canonical DB를 읽기 전용으로 확인해 기존95 jobs와95 attempts의 각 행 해시가 최초 보호 스냅샷과 모두 같았다. 이 검토는 새 작업 등록·migration·GPU·실제 픽셀 디코딩을 수행하지 않았다.
 
+후속 train-only provenance adapter commit `4db1231`은 공용 `action_training_command.py`를 수정하지만 이 문서의 queue/inference/CPU 계획 소스는 바꾸지 않았다. 해당 변경의 독립85시험에는 이 integration/inference 회귀도 포함됐고 모두 통과했다. 최신 공용 adapter SHA와 실제 준비·자원 보류 상태는 `EXP-0063-training-readiness-review.md`의 마지막 보완 절을 따른다. 따라서 실제 inference authorization은 과거 source freeze를 재사용하지 않고 최신 공용 adapter까지 포함한 커밋 바이트를 새로 연결해야 한다.
+
 보존 한계: 구현 담당이 초기 v1 계획 디렉터리를 삭제한 뒤 재생성했고 최초 v1 해시는 기록하지 않았다고 보고했다. 현재 v1은 재생성 진단 자료이므로 최초 v1 바이트 보존을 인증하지 않는다. v2는 동결된 원래 tracking에서 독립 재계산했고 기존 baseline/원본/큐 변경이나 모델 결과 생성은 없었다. 이 한계를 v2 계획의 검증과 구분한다.
 
 ## 남은 검토

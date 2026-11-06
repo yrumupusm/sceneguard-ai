@@ -2,7 +2,7 @@
 
 2026-11-06. Astra 검토 역할의 독립 코드·계약 검토다. 실제 학습 결과, 사용자 행동 정확도 또는 운영 채택의 인증이 아니다. 구현 파일을 수정하지 않았으며 GPU·다운로드·공유 큐/DB 변경을 실행하지 않았다.
 
-현재 판정은 **정확히 고정된 v2 입력의 CPU preflight/prepare GO, GPU smoke 및 전체 학습 GO 대기**다. 최종 소스·후보·release 검사는 통과했다. 실제 prepared 픽셀·실행 배정·큐 authorization·smoke 결과는 아직 검토하지 않았으므로 GPU 실행 가능이나 학습 완료를 인증하지 않는다.
+현재 판정은 **CPU 준비 GO, 실제36개 smoke 입력 검토 통과·GPU 자원 보류, 전체 학습 GO 대기**다. 실제17개 CPU benchmark와2,033개 순차 snapshot, smoke36 픽셀·공식 weight·실행 배정을 확인했다. 전체5,741개 prepared 완료와 실제 GPU smoke·전체 학습·시험 결과는 아직 없으며, GPU 실행에는 최종 소스/HEAD authorization와 현재 자원 gate가 필요하다. GPU 자원 보류 중 별도 승인된 train-only adapter 수정도 최종85시험과 독립 검토를 통과했다. 아래 초기 판정과 source-freeze는 단계별 이력이며 최신 바이트·실제 receipt·한계는 마지막 보완 절을 따른다.
 
 ## 승인 및 정답 범위
 
@@ -97,3 +97,33 @@
 현재 허용은 **이 exact17개 CPU benchmark만 GO**다. 실제 benchmark 동등성·시간 receipt 확인 → 총괄의 원래 PID 종료 및 불변 완료-prefix snapshot → 별도 prepared-v3 전체 준비 → 모든 픽셀/계약 독립 확인 순으로 진행한다. 원래 순차 결과를 삭제하거나 미완료 파일을 성공 픽셀로 세지 않는다. 실제 속도 개선·전체 병렬 prepare·GPU smoke·전체 학습은 아직 이 보완 검토에서 완료 인증하지 않았다.
 
 통합 큐 추가 소스 `43867d3a8c937c3096ae7bd2cf972d05e78f0aafef80d1a0c20305c5888e6279`에서는 action-train 동작을 유지하고 action-infer만 추가했다. 최종 소스로 integration/inference/training adapter/queue44시험을 독립 재실행해 통과했다. 따라서 이전 source-freeze-v2의 queue SHA를 실제 GPU authorization에 재사용하지 않고 최종 커밋 HEAD와 현재 소스 전체를 새로 묶어야 한다. 이후 authorization된 단계 동안 HEAD/소스 변경은 금지한다.
+
+## 실제 CPU benchmark·smoke 부분 준비·순차 보존 확인
+
+위 benchmark 대기 상태는 실제 receipt로 해소됐다. 고정17개 전부의 순차/병렬 NPY SHA·배열·shape·dtype가 같았으며, 사전 전체2,162개 원본/주석 hash gate와 직접/중첩 입력 바인딩을 독립 확인했다. 순차 decode15.946199초, 병렬4.351445초로 이17개에서3.664575배였다. 전체 gate 포함662.703202초이며 이 작은 표본의 배수를 전체 corpus 실행 성능으로 확대하지 않는다. 실제 benchmark result SHA는 `ad710c9c8aeb421a2a70fea20dc7b1ec01c29a8c18c43b11d8238169cc5e3780`, 독립 근거는 `benchmark-independent-audit.json`이다.
+
+총괄이 원래 순차 PID2099445의 identity를 대조해 중단했고 pidfd exit를 관찰한 뒤 snapshot을 만들었다. 독립적으로 종료 상태, 실제 완료2,033개 원본/복사 NPY의 모든 SHA·shape·dtype·manifest ID/index 대응과 부분 파일0개를 확인했다. snapshot SHA `080bf01a7cd5c686e73cdd744b2087f46c3631ae73df9371e67b501f2c07633c`와 replacement command SHA `1951dda94db45bf9933a696957984a1eb26dcbdebc1d9368753bcaed2918ea4a`에 대해 별도 prepared-v3 CPU 실행 GO를 전달했다. 기존 순차 파일은 보존한다. 전체5,741개 새 준비와2,033개 전체 동등성은 아직 최종 receipt 대기다.
+
+별도로 frozen `partition_rows(smoke)`의 정확한32train/4validation/test0을 새 prepared-smoke-v1에 순차 준비했다. runtime command SHA `43bef240b927b8735d31760b515c32a48391fc3518f228c83140253eebb9fe74`, plan SHA `1234dfa04552d41005ab63099c535839446ebb2c6b77befc970e1bc6b7415c92`, ordered selection SHA `4a932ac30099a25962a7fa3acd5fe06e5b02ad13c9e5b702af883ba0dd752098`를 검토했다. 실제36개 픽셀·38개 선택 원본/주석 gate·전체/중첩 계약·공식 pretrained 가중치 바이트·현재 실행 배정을 독립 확인했다. prepared SHA `a30c1d9032dc02987796f9bb77444ef77dd1dfe0ea997998deffa4784ddca9c7`, contract SHA `d9226aa7473956281f58594fa51a7a9c3d99f98423ff4a20ebfac4d10ee78fce`이며, adapter의 실제 입력 digest는 `5b23691c4a05a666c8284a776c06035dd39d8fcd3b5109ccdcfa74b05758d6a6`이다. 이 부분 준비는 full_corpus_prepared=false이며 전체 학습 완료가 아니다. 최종 full prepared와 이36개도 전부 바이트 비교해야 한다.
+
+GPU smoke 입력 준비는 통과했으나 확인 당시 GPU0 여유3,290MiB로 고정6,144MiB 조건에 미달했다. 총괄에게 실행 보류를 전달했고 이 검토는 GPU·모델 로드·enqueue를 수행하지 않았다. 현재 자원은 실행 직전에 다시 확인해야 하며, 과거 준비 통과만으로 새 소스/HEAD authorization을 생략하지 않는다. 실제 smoke 성공·전체10epoch 학습·시험 평가·45개 추론은 미완료다.
+
+runtime queue wrapper의 enqueue 직후 caller interruption을 not_enqueued로 잘못 기록할 수 있는 모호함을 지적했다. 최종 SHA `bc6cceff5aa14f55fa266b0db30c295e986deede3bf3abe007dd3cc3db94a634`는 enqueue_started를 먼저 저장하고 이후 예외를 unknown으로 남기며 deterministic job_key로 SQLite mode=ro 조회만 한다. 자동 재호출/retry는 없다. invocation 수는 executor smoke input-contract1회와 reviewer1회를 분리해 총2회로 정정했다. wrapper 자체는 실행하지 않았다.
+
+## GPU 자원 보류 중 train-only provenance adapter 수정 독립 검토
+
+총괄은 실제 GPU authorization/attempt가 없는 상태에서 adapter·그 시험·설명 문서만 수정하는 별도 창을 명시적으로 열었다. 이전 after-smoke 시점 제한은 이 지시로 대체됐다. trainer·CPU driver·queue·config·모델·분할·review release·inference 소스는 그대로다.
+
+| 최종 검토 파일 | SHA256 |
+|---|---|
+| orchestration/action_training_command.py | `87eb7009455d295335eb0b53e301b55fea34fc09533b1ce5e784d8fde4abecb8` |
+| tests_orca/test_action_training_provenance.py | `3b90ae7774ef4685edf8cb983eeb2c2b751868fe6edcfc94aa3d3aa9db9d0058` |
+| docs/orchestration/EXP-0063-action-training-adapter.md | `74f34ceb7fcaeb39cd81381a6f1631b13fcc44e4f976746d1922ff8ef2d1d5c0` |
+
+Smoke는 기존7개 파일과 선택 원본 hash 검증을 유지한다. Train만 정확한 preparation_evidence 바인딩을 추가한다. 전체 prepared·동일 producer contract·성공 result·전체 원본/주석 receipt·동등성 report와 고정2,033 snapshot을 검증하며, 매 guard에서 실제 소비하는 모든 NPY와 현재 공식 주석 바이트를 해시한다. 현재 학습에서 사용하지 않는 MP4는 다시 열지 않는다. 출력은 이를 준비 시점의 원본 검증 provenance로 명시하며 현재 원본을 재검증했다고 주장하지 않는다. 기존4개 guard의 원본 반복 읽기 제거는 논리적 읽기량 변경이며 실제 전체 시간 개선 측정은 아니다.
+
+Train의 smoke proof는 canonical DB의 실제 succeeded job/attempt, 비합성 receipt, 인접 input/config snapshot/digest, 정확한 job key·context·기존 authorization와 해당 커밋 source를 읽기 전용으로 대조한다. 원래 draft의 과거 trainer 코드와 현재 trainer 코드 불일치 가능성을 지적했고 최종본은 두 SHA가 같아야 한다. 정확한32/4/0·8개 batch4·누적4·2optimizer step·training_complete=false와 동일 manifest/config/weights/release, 실제 full prepared의 대응36 pixel SHA를 요구한다. result JSON 하나만으로 이 증명을 대신할 수 없다.
+
+17개 새 provenance/smoke proof 시험을 포함한 관련85개를 최종 바이트에서 독립 재실행해16.823초에 모두 통과했다. MP4가 모두 없는 fixture와 raw 읽기 trap, 네 번 guard의 실제 pixel hash 재검증, 변경/누락 NPY·주석·중복/누락 source receipt·부분/실패 준비·review/producer binding·regression45 누수·가짜/다른 smoke/훈련 코드 반례를 확인했다. 시험 전후 최종 SHA가 같고 금지된 변경 대상 소스와 기존95 jobs/95 attempts 각 행도 보존됐다. `train-provenance-tests.log`, `train-provenance-reviewed-hashes.json`이 근거다.
+
+**최종 adapter 수정 파일 커밋 GO**를 총괄에게 전달했고 구현 commit `4db1231`의 세 파일이 위 검토 SHA와 동일함을 확인했다. 실제 full prepared receipt가 아직 없으므로 실제 자료로 새 train input-contract가 통과했다고 인증하지 않는다. 실제 canonical smoke가 없으므로 전체 학습 GO도 아니다. 새 source freeze를 만든 뒤 정확한 실제 입력·현재 자원·현재 배정을 연결해야 한다. 원본/픽셀 준비와 합성 시험 통과를 사람 행동 성능 또는 완전한 사람 정답으로 해석하지 않는다.
