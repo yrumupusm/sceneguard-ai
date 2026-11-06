@@ -1,0 +1,23 @@
+{
+  "experiment_id": "EXP-0063",
+  "status": "preparation_only_pending_temporal_box_and_negative_review",
+  "model": "torchvision.models.video.r3d_18",
+  "pretrained": "R3D_18_Weights.KINETICS400_V1",
+  "seed": 6301,
+  "frames": 8,
+  "sample_fps": 3,
+  "image_size": 112,
+  "spatial_policy": "reviewed_actor_plus_fence_context_roi_letterbox",
+  "temporal_policy": "all8_native_frames_inside_explicit_reviewed_action_interval_no_padding",
+  "batch_size": 4,
+  "accumulation": 4,
+  "epochs": 10,
+  "learning_rate": 0.0001,
+  "weight_decay": 0.0001,
+  "threshold": 0.5,
+  "selection": "minimum_validation_cross_entropy",
+  "precision": "amp_float16",
+  "production_integration": false,
+  "minimum_gpu_free_mib": 6144,
+  "actual_gpu_smoke": false
+}

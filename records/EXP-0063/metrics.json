@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0063",
+  "metrics": [
+    {
+      "label": "포함 월담 원본",
+      "value": 743,
+      "unit": "개",
+      "sample_n": 1056,
+      "scope": "데이터 감사·분할 수이며 학습/행동 성능이 아님",
+      "source": "outputs/action-recognition/exp0063/data-audit/summary.json",
+      "source_sha256": "d55811364f9fedb588bd801bf01781d422464dc976fba872f04d48c977cac6fe",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "정상행위 원본",
+      "value": 384,
+      "unit": "개",
+      "sample_n": 384,
+      "scope": "데이터 감사·분할 수이며 학습/행동 성능이 아님",
+      "source": "outputs/action-recognition/exp0063/normal-audit-v1/summary.json",
+      "source_sha256": "dd8b6c8527cdd28c968850efc530ec465de4858b0af1bba9dd90655c498a719c",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "정상 라벨 오류 격리",
+      "value": 7,
+      "unit": "개",
+      "sample_n": 384,
+      "scope": "데이터 감사·분할 수이며 학습/행동 성능이 아님",
+      "source": "outputs/action-recognition/exp0063/normal-audit-v1/summary.json",
+      "source_sha256": "dd8b6c8527cdd28c968850efc530ec465de4858b0af1bba9dd90655c498a719c",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 분할 원본",
+      "value": 671,
+      "unit": "개",
+      "sample_n": 1440,
+      "scope": "데이터 감사·분할 수이며 학습/행동 성능이 아님",
+      "source": "outputs/action-recognition/exp0063/combined-split-v3/summary.json",
+      "source_sha256": "1769ee5672fee07c440d21198c4d40c6ae4460b60e30bee9bc5058e5dfd97631",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검증 분할 원본",
+      "value": 153,
+      "unit": "개",
+      "sample_n": 1440,
+      "scope": "데이터 감사·분할 수이며 학습/행동 성능이 아님",
+      "source": "outputs/action-recognition/exp0063/combined-split-v3/summary.json",
+      "source_sha256": "1769ee5672fee07c440d21198c4d40c6ae4460b60e30bee9bc5058e5dfd97631",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "시험 분할 원본",
+      "value": 296,
+      "unit": "개",
+      "sample_n": 1440,
+      "scope": "데이터 감사·분할 수이며 학습/행동 성능이 아님",
+      "source": "outputs/action-recognition/exp0063/combined-split-v3/summary.json",
+      "source_sha256": "1769ee5672fee07c440d21198c4d40c6ae4460b60e30bee9bc5058e5dfd97631",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 시험 행동 정밀도",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "정답 검수와 실제 학습·평가 미완료",
+      "source": "docs/experiments/EXP-0063-results.md",
+      "source_sha256": "672ce31efaff2ee021d3aafd158454512a6cfd60a56a6b7280de7b3c82518165",
+      "verification": "unavailable"
+    },
+    {
+      "label": "새 시험 행동 재현율",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "정답 검수와 실제 학습·평가 미완료",
+      "source": "docs/experiments/EXP-0063-results.md",
+      "source_sha256": "672ce31efaff2ee021d3aafd158454512a6cfd60a56a6b7280de7b3c82518165",
+      "verification": "unavailable"
+    },
+    {
+      "label": "새 시험 행동 F1",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "정답 검수와 실제 학습·평가 미완료",
+      "source": "docs/experiments/EXP-0063-results.md",
+      "source_sha256": "672ce31efaff2ee021d3aafd158454512a6cfd60a56a6b7280de7b3c82518165",
+      "verification": "unavailable"
+    },
+    {
+      "label": "기존45 회귀 성능 변화",
+      "value": null,
+      "unit": "미측정",
+      "sample_n": null,
+      "scope": "정답 검수와 실제 학습·평가 미완료",
+      "source": "docs/experiments/EXP-0063-results.md",
+      "source_sha256": "672ce31efaff2ee021d3aafd158454512a6cfd60a56a6b7280de7b3c82518165",
+      "verification": "unavailable"
+    }
+  ]
+}
