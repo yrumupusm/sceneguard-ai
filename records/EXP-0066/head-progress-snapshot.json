@@ -1,0 +1,98 @@
+{
+  "experiment_id": "EXP-0066",
+  "snapshot_utc": "2026-11-07T17:16:09.802474+00:00",
+  "status": "partial_baseline_progress_not_paired_finetuning_result",
+  "trained_heads": [
+    {
+      "model_id": "videomaev2_b",
+      "stage": "frozen_backbone_trained_linear_head",
+      "train_scenes": 3282,
+      "validation_scenes": 702,
+      "selected_epoch": 76,
+      "head_sha256": "405b22027463586aeafcc4eaef8d96769b9b6e48413d6bd5c4783db4f1aecbaa",
+      "training_result_sha256": "06739387dcfada407323f28adf07844fbd5a407557fad9b154e1b48ae94a8199",
+      "training_receipt_sha256": "e2ee8181f89bc24099b838f5a188e6976a2ff04c51a8841aef16373a4c07eac8",
+      "reference_validation": {
+        "allowed_false_positives": 14,
+        "boundary_score": 0.4524947702884674,
+        "false_positives": 14,
+        "fn": 3,
+        "fp": 14,
+        "human_precision": null,
+        "human_recall": null,
+        "matched_false_positive_operating_point_verified": false,
+        "negative_count": 291,
+        "reference_fpr": 0.048109965635738834,
+        "reference_precision": 0.966824644549763,
+        "reference_recall": 0.9927007299270073,
+        "threshold": 0.45249477028846746,
+        "threshold_status": "provisional_official_reference_not_human_calibrated",
+        "tie_policy": "float64_nextafter_toward_positive_infinity",
+        "tn": 277,
+        "tp": 408
+      },
+      "validation_metric_scope": "weak_full_scene_not_actor_specific",
+      "validation_normal_subtypes": "sitting_only; walking/waiting/turnback unmeasured",
+      "school_scoring": {
+        "windows": 6219,
+        "result_sha256": "9301f6aabcf80b8ea71b714a9ca087f69aa871d75c589d2c84af4c5440261ae1",
+        "scores_sha256": "a8b1214f99ee99afe4d0242784cef32d8e8f6f3b78c10c422ab58e3aed41e7af",
+        "new_encoder_or_detector_forwards": 0,
+        "semantic_evaluation_complete": false
+      }
+    },
+    {
+      "model_id": "vjepa2_l",
+      "stage": "frozen_backbone_trained_linear_head",
+      "train_scenes": 3282,
+      "validation_scenes": 702,
+      "selected_epoch": 7,
+      "head_sha256": "4c74115eb1f16c38b61b94f4bdbdd498bab0f6b05b004383a8a76e975c4f72c1",
+      "training_result_sha256": "fe37bed3992474f6ddd680713e4f72f582134f68cc79c785fd29530fef4ac374",
+      "training_receipt_sha256": "e5c3e9c63c6927f0d86c6703d6ce5bfa1411abe7e8fd51703b8f8af2b52321ee",
+      "reference_validation": {
+        "allowed_false_positives": 14,
+        "boundary_score": 0.012240618467330933,
+        "false_positives": 14,
+        "fn": 0,
+        "fp": 14,
+        "human_precision": null,
+        "human_recall": null,
+        "matched_false_positive_operating_point_verified": false,
+        "negative_count": 291,
+        "reference_fpr": 0.048109965635738834,
+        "reference_precision": 0.9670588235294117,
+        "reference_recall": 1.0,
+        "threshold": 0.012240618467330934,
+        "threshold_status": "provisional_official_reference_not_human_calibrated",
+        "tie_policy": "float64_nextafter_toward_positive_infinity",
+        "tn": 277,
+        "tp": 411
+      },
+      "validation_metric_scope": "weak_full_scene_not_actor_specific",
+      "validation_normal_subtypes": "sitting_only; walking/waiting/turnback unmeasured",
+      "school_scoring": {
+        "windows": 6219,
+        "result_sha256": "fac97288c0d26e3adfbc6df4618396eea0e41677f07523887b087c17399c78eb",
+        "scores_sha256": "9a8a719b43324d76ba792a8b6f49e854ed1d9298ead44851e19ac925b26b51b4",
+        "new_encoder_or_detector_forwards": 0,
+        "semantic_evaluation_complete": false
+      }
+    }
+  ],
+  "completed_heads": 2,
+  "planned_frozen_heads": 7,
+  "all_candidates_retained": 11,
+  "detector_or_backbone_paired_finetuning_completed": false,
+  "school_person_recall": null,
+  "school_climbing_precision": null,
+  "school_climbing_recall": null,
+  "intrusion_improvement": null,
+  "school_used_for_training_or_threshold_selection": false,
+  "limitations": [
+    "Validation labels are weak scene references; negatives are sitting only.",
+    "Epoch and threshold are selected on the reported validation set; these are not independent test metrics.",
+    "School scores have no verified actor localization or semantic success.",
+    "Frozen head training does not change native detector boxes."
+  ]
+}

@@ -82,6 +82,10 @@ VLM 2B·4B·8B 및 양자화 구성, ONNX Runtime 기반 ReID는 별도 비교 �
 
 ## 개발·실험 기록
 
+**EXP-0066 진행 중:** 기존 8개 모델의 학교 45개 영상 출력 저장을 완료했고, VideoMAE·V-JEPA2의 고정 모델 분류기 학습과 학교 저장 입력 점수 계산을 마쳤다. YOLO26m/l/x를 추가해 총 11개 후보를 유지한다. 같은 모델의 추가 학습 전후 비교는 준비 중이며, 현재 수치를 사람 검출 개선이나 학교 행동 정확도 향상으로 해석하지 않는다.
+
+[현재 실행 결과](docs/experiments/EXP-0066-results.md) · [학습 전후 비교 계획](docs/experiments/EXP-0066-paired-box-evaluation.md) · [YOLO26 추가 범위](docs/experiments/EXP-0066-yolo26-addendum.md)
+
 [실험 보고서](docs/experiments/) · [설계 결정](docs/decisions/) · [검토 기록](docs/reviews/)
 
 Codex와 역할별 AI 에이전트를 활용한 구현·실험·검토 분담. 테스트·실행 기록과 직접 영상 검수를 통해 결과를 확인하고, 채택 여부와 남은 한계를 기록.

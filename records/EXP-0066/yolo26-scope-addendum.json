@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0066",
+  "revision": "yolo26-addendum-v1",
+  "status": "scope_added_execution_not_started",
+  "source_zip_sha256": "d8329fa91aa1016851f12aa70ff91d4b0251836f4bde79f7ab0734eef95b49d2",
+  "original_zip_sha256": "7faf28e60bd17043b4255eec1a25a9927a454a75251df848854dc3112e2538b1",
+  "original_candidates_preserved": [
+    "evad_vitb_vmaev2",
+    "evad_vitl",
+    "stmixer_vitb_vmaev2",
+    "internvideo_next_s2_l",
+    "vjepa2_l",
+    "vjepa2_1_l",
+    "videomaev2_b",
+    "r3d18_exp0064"
+  ],
+  "added_candidates": [
+    {
+      "id": "yolo26m_detection",
+      "name": "YOLO26m Detection",
+      "family": "frame_object_detection",
+      "comparison_stage": "stage_1_person_detection_and_task_specific_finetuning",
+      "public_source": "https://docs.ultralytics.com/models/yolo26/",
+      "pretrained_checkpoint": "yolo26m.pt",
+      "checkpoint_sha256": null,
+      "native_box_output": true,
+      "fcos_proposal_gating_allowed": false,
+      "new_benchmark_status": "not_executed",
+      "person_recovery_metric": "requires_same_person_ground_truth",
+      "cctv_climbing_metric": null,
+      "conditions": [
+        {
+          "id": "pretrained",
+          "task": "person_detection",
+          "weights": "yolo26m.pt",
+          "status": "not_executed_on_complete_miss_cohort",
+          "native_climbing_output": false
+        },
+        {
+          "id": "climbing_finetuned",
+          "task": "verified_person_boxes_and_climbing_state",
+          "initialize_from": "yolo26m.pt",
+          "weights": null,
+          "status": "not_trained"
+        }
+      ],
+      "selection_reason": "m은 기존 YOLO26m 실험과 연결하고, l/x는 크기를 줄여 편의성을 우선하지 않고 검출 품질을 비교하기 위한 후보다. 목표 영상의 실측 순위는 아직 없다."
+    },
+    {
+      "id": "yolo26l_detection",
+      "name": "YOLO26l Detection",
+      "family": "frame_object_detection",
+      "comparison_stage": "stage_1_person_detection_and_task_specific_finetuning",
+      "public_source": "https://docs.ultralytics.com/models/yolo26/",
+      "pretrained_checkpoint": "yolo26l.pt",
+      "checkpoint_sha256": null,
+      "native_box_output": true,
+      "fcos_proposal_gating_allowed": false,
+      "new_benchmark_status": "not_executed",
+      "person_recovery_metric": "requires_same_person_ground_truth",
+      "cctv_climbing_metric": null,
+      "conditions": [
+        {
+          "id": "pretrained",
+          "task": "person_detection",
+          "weights": "yolo26l.pt",
+          "status": "not_executed_on_complete_miss_cohort",
+          "native_climbing_output": false
+        },
+        {
+          "id": "climbing_finetuned",
+          "task": "verified_person_boxes_and_climbing_state",
+          "initialize_from": "yolo26l.pt",
+          "weights": null,
+          "status": "not_trained"
+        }
+      ],
+      "selection_reason": "m은 기존 YOLO26m 실험과 연결하고, l/x는 크기를 줄여 편의성을 우선하지 않고 검출 품질을 비교하기 위한 후보다. 목표 영상의 실측 순위는 아직 없다."
+    },
+    {
+      "id": "yolo26x_detection",
+      "name": "YOLO26x Detection",
+      "family": "frame_object_detection",
+      "comparison_stage": "stage_1_person_detection_and_task_specific_finetuning",
+      "public_source": "https://docs.ultralytics.com/models/yolo26/",
+      "pretrained_checkpoint": "yolo26x.pt",
+      "checkpoint_sha256": null,
+      "native_box_output": true,
+      "fcos_proposal_gating_allowed": false,
+      "new_benchmark_status": "not_executed",
+      "person_recovery_metric": "requires_same_person_ground_truth",
+      "cctv_climbing_metric": null,
+      "conditions": [
+        {
+          "id": "pretrained",
+          "task": "person_detection",
+          "weights": "yolo26x.pt",
+          "status": "not_executed_on_complete_miss_cohort",
+          "native_climbing_output": false
+        },
+        {
+          "id": "climbing_finetuned",
+          "task": "verified_person_boxes_and_climbing_state",
+          "initialize_from": "yolo26x.pt",
+          "weights": null,
+          "status": "not_trained"
+        }
+      ],
+      "selection_reason": "m은 기존 YOLO26m 실험과 연결하고, l/x는 크기를 줄여 편의성을 우선하지 않고 검출 품질을 비교하기 위한 후보다. 목표 영상의 실측 순위는 아직 없다."
+    }
+  ],
+  "candidate_count": 11,
+  "added_model_condition_count": 6,
+  "requested_order_in_zip": {
+    "stage_1": "FCOS 기준과 YOLO26m/l/x의 사람 검출을 동일 영상에서 비교하고, 검수된 월담 전용 자료 추가 학습 전후를 비교한다.",
+    "stage_1_candidate_ids": [
+      "yolo26m_detection",
+      "yolo26l_detection",
+      "yolo26x_detection"
+    ],
+    "stage_2": "월담 전용 학습 전후 평가에서 남은 실패가 확인된 뒤 EVAD/STMixer 등 위치+행동 모델의 도입 필요성을 판단한다.",
+    "other_previous_candidates": "기존 영상 인코더 후보 기록은 유지하되 이번 YOLO26 1차 비교의 실행 대상으로 섞지 않는다."
+  },
+  "scheduling_decision": "user_clarified_all_11_candidates_retained_no_yolo_only_replacement",
+  "existing_source_freeze_preserved": true,
+  "training_protection": [
+    "school45",
+    "same_capture_groups_as_school45",
+    "EXP0064_test"
+  ],
+  "pretrained_climbing_metric": "not_applicable",
+  "human_person_recovery_metrics": null,
+  "new_yolo_inference_count": 0,
+  "new_yolo_training_count": 0,
+  "remaining_preparation": [
+    "verify_model_runtime_compatibility_and_freeze_environment_sources",
+    "freeze_same_frame_evaluation_and_operating_point",
+    "audit_person_boxes_and_climbing_state_training_labels",
+    "split_by_capture_and_multicamera_group",
+    "canonical_queue_adapter_and_independent_review"
+  ],
+  "preparation_environment_metadata": {
+    "ultralytics": "8.4.192",
+    "torch": "2.5.1+cu124",
+    "torchvision": "0.20.1+cu124",
+    "numpy": "2.2.6",
+    "opencv-python": "4.12.0.88",
+    "status": "metadata_only_no_model_loaded"
+  },
+  "weight_inventory": [
+    {
+      "model_id": "yolo26m_detection",
+      "path": "weights/yolo26m.pt",
+      "bytes": 44255705,
+      "sha256": "401cea9ab23ad19246ff7744859816bc599f350e93c9dd30367b6f0a0745d0b7",
+      "loaded_for_new_comparison": false
+    },
+    {
+      "model_id": "yolo26l_detection",
+      "path": "runtime/model-comparison/exp0066/yolo26-preparation-v1/yolo26l.pt",
+      "bytes": 53211173,
+      "sha256": "9fe3c544f2b19bebad7ea41e76d7ad3d88b7c2f10d11d24430c5311f6b32db26",
+      "loaded_for_new_comparison": false,
+      "download_url": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26l.pt"
+    },
+    {
+      "model_id": "yolo26x_detection",
+      "path": "runtime/model-comparison/exp0066/yolo26-preparation-v1/yolo26x.pt",
+      "bytes": 118667365,
+      "sha256": "9fdd44a31c504547ffb81d2c6d9e6dac3493c8eaa8b0398d3f43bae6c7003e92",
+      "loaded_for_new_comparison": false,
+      "download_url": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26x.pt"
+    }
+  ],
+  "paired_evaluation_design": "docs/experiments/EXP-0066-paired-box-evaluation.md",
+  "existing_head_sequence_cancelled": false
+}

@@ -1,0 +1,44 @@
+{
+  "status": "candidate_label_audit_not_detector_training_release",
+  "plan_sha256": "28cd2ad0f57ec2230c8de5acf18dae56046ecf512e0e46f917de6c4c577add18",
+  "auditor_sha256": "9ccf66dd3861fb39b561031261d79429f73e32c2f1b36d1b727aea1ec028c8b7",
+  "windows": 3984,
+  "target_occurrences": 4309,
+  "unique_actor_frame_candidates": 4298,
+  "target_label_files_verified": 797,
+  "target_occurrences_by_split_and_action": {
+    "train:moving": 568,
+    "train:sit_down_bench": 159,
+    "train:sit_down_floor": 393,
+    "train:stand": 893,
+    "train:wall_over": 1571,
+    "validation:sit_down_bench": 134,
+    "validation:sit_down_floor": 180,
+    "validation:wall_over": 411
+  },
+  "groups_by_split": {
+    "train": 27,
+    "validation": 6
+  },
+  "source_hashes_by_split": {
+    "train": 652,
+    "validation": 140
+  },
+  "cross_split_event_group_overlap": 0,
+  "cross_split_source_hash_overlap": 0,
+  "target_occurrences_without_box_pairs": 0,
+  "target_occurrences_with_origin_coordinate_difference": 4162,
+  "invalid_box_pair_geometry": 0,
+  "candidate_actor_frames_with_conflicting_binary_labels": 0,
+  "all_visible_people_annotated_verified": false,
+  "frame_origin_semantics_verified_for_all_sources": false,
+  "training_release": false,
+  "new_detector_training_runs": 0,
+  "limitations": [
+    "Counts describe selected actor annotations, not a complete all-person frame dataset.",
+    "Origin coordinate differences do not by themselves establish misannotation.",
+    "Weak scene labels cannot become verified detector background or action states automatically.",
+    "Validation normal subtypes are sitting only; walking/waiting/turnback need augmentation.",
+    "No pixels, held-out test annotations, or protected school annotations were read."
+  ]
+}
