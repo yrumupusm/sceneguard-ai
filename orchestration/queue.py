@@ -497,6 +497,8 @@ class Queue:
             limit = 900 if config['phase'] == 'dev' else 1800
         if command == 'action-train':
             limit = 172800  # One fixed 10-epoch job; no implicit retry.
+        if command == 'model-compare':
+            limit = 14400  # Full45 measured throughput needs margin beyond the old one-hour cap.
         if type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= limit:
             raise ValueError(f"timeout must be finite and 0 < timeout <= {limit}")
         input_value = {"synthetic": True} if input_value is None else input_value

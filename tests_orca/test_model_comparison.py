@@ -17,6 +17,18 @@ from scripts.run_model_comparison import process_video,validate_window
 
 
 class ComparisonTests(unittest.TestCase):
+    def test_comparison_timeout_has_explicit_four_hour_bound_without_relaxing_other_commands(self):
+        context=dict(run_id='r',task_id='t',dispatch_id='d',owner='o')
+        config=dict(stage='all45',model_id='r3d18_exp0064',execution_revision='timeout-v2',context=context,files={})
+        with tempfile.TemporaryDirectory() as t,patch.object(command,'validate'),patch.object(command,'sources',return_value={}):
+            q=Queue.initialize(Path(t)/'queue')
+            q.enqueue(job_key=command.job_key(config),command='model-compare',input_value={},config=config,timeout=14400,**context)
+            for limit in (14400.01,float('nan'),float('inf'),0,-1):
+                with self.assertRaisesRegex(ValueError,'timeout'):
+                    q.enqueue(job_key=command.job_key(config),command='model-compare',input_value={},config=config,timeout=limit,**context)
+            with self.assertRaisesRegex(ValueError,'timeout'):
+                q.enqueue(job_key='mock',timeout=3601,**context)
+
     def test_queue_migration_preserves_existing_rows_and_is_idempotent(self):
         with tempfile.TemporaryDirectory() as t:
             q=Queue.initialize(Path(t)/'queue')
