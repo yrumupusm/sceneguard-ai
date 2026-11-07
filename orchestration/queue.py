@@ -30,6 +30,9 @@ def digest(value):
 
 
 def source_hash(command="cpu-mock", config=None):
+    if command == "model-compare":
+        from orchestration.model_comparison_command import sources
+        return digest(sources(config))
     if command == 'action-infer':
         from orchestration.action_inference_command import sources
         return digest(sources(config))
@@ -161,10 +164,10 @@ class Queue:
             queue.migrate_commands()
         return queue
 
-    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False, include_pose=False, include_public_pose=False, include_roi_pose=False, include_resolution_pose=False, include_detect=False, include_exp27_detect=False, include_exp29_cache=False, include_video_cards=False, include_exp39_roi=False, include_action_train=False, include_action_infer=False):
+    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False, include_pose=False, include_public_pose=False, include_roi_pose=False, include_resolution_pose=False, include_detect=False, include_exp27_detect=False, include_exp29_cache=False, include_video_cards=False, include_exp39_roi=False, include_action_train=False, include_action_infer=False, include_model_compare=False):
         """Backup then atomically rebuild only the old command CHECK; keep every row."""
-        if include_action_infer or include_action_train or include_exp39_roi or include_video_cards or include_mvp or include_cv or include_vlm_batch02 or include_pose or include_public_pose or include_roi_pose or include_resolution_pose or include_detect or include_exp27_detect or include_exp29_cache:
-            target = "'action-infer'" if include_action_infer else "'action-train'" if include_action_train else "'exp39-roi'" if include_exp39_roi else "'video-cards'" if include_video_cards else "'exp29-cache007'" if include_exp29_cache else "'exp27-detect'" if include_exp27_detect else "'batch07-detect'" if include_detect else "'batch06-pose'" if include_resolution_pose else "'batch05-pose'" if include_roi_pose else "'batch04-pose'" if include_public_pose else "'batch03-pose'" if include_pose else "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
+        if include_model_compare or include_action_infer or include_action_train or include_exp39_roi or include_video_cards or include_mvp or include_cv or include_vlm_batch02 or include_pose or include_public_pose or include_roi_pose or include_resolution_pose or include_detect or include_exp27_detect or include_exp29_cache:
+            target = "'model-compare'" if include_model_compare else "'action-infer'" if include_action_infer else "'action-train'" if include_action_train else "'exp39-roi'" if include_exp39_roi else "'video-cards'" if include_video_cards else "'exp29-cache007'" if include_exp29_cache else "'exp27-detect'" if include_exp27_detect else "'batch07-detect'" if include_detect else "'batch06-pose'" if include_resolution_pose else "'batch05-pose'" if include_roi_pose else "'batch04-pose'" if include_public_pose else "'batch03-pose'" if include_pose else "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
                 if target in sql:
@@ -174,7 +177,15 @@ class Queue:
                 raise ValueError('cannot migrate while a queue reservation is held')
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
-                if include_action_infer:
+                if include_model_compare:
+                    if "'model-compare'" in sql:
+                        return
+                    found = re.search(r"CHECK\(command IN \([^)]*\)\)", sql)
+                    if found is None or "'cpu-mock'" not in found.group(0):
+                        raise ValueError('Comparison requires preserved allowlisted queue schema')
+                    old_check = found.group(0)
+                    new_check = old_check[:-2] + ",'model-compare'))"
+                elif include_action_infer:
                     if "'action-infer'" in sql:
                         return
                     found = re.search(r"CHECK\(command IN \([^)]*\)\)", sql)
@@ -297,7 +308,7 @@ class Queue:
                 db.execute('BEGIN IMMEDIATE')
                 if db.execute("SELECT 1 FROM jobs WHERE status IN ('running','unknown')").fetchone():
                     raise ValueError('unresolved queue prevents schema migration')
-                migration = 'action-infer' if include_action_infer else 'action-train' if include_action_train else 'exp39-roi' if include_exp39_roi else 'video-cards' if include_video_cards else 'exp29-cache007' if include_exp29_cache else 'exp27-detect' if include_exp27_detect else 'batch07-detect' if include_detect else 'batch06-pose' if include_resolution_pose else 'batch05-pose' if include_roi_pose else 'batch04-pose' if include_public_pose else 'batch03-pose' if include_pose else 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
+                migration = 'model-compare' if include_model_compare else 'action-infer' if include_action_infer else 'action-train' if include_action_train else 'exp39-roi' if include_exp39_roi else 'video-cards' if include_video_cards else 'exp29-cache007' if include_exp29_cache else 'exp27-detect' if include_exp27_detect else 'batch07-detect' if include_detect else 'batch06-pose' if include_resolution_pose else 'batch05-pose' if include_roi_pose else 'batch04-pose' if include_public_pose else 'batch03-pose' if include_pose else 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
                 backup = self.runtime / f'queue-before-{migration}-{uuid.uuid4().hex}.sqlite3'
                 # Separate reader copies committed state while this write lock
                 # prevents enqueues. Backup precedes the first schema mutation.
@@ -360,7 +371,7 @@ class Queue:
     def enqueue(self, *, job_key, run_id, task_id, dispatch_id, owner,
                 command="cpu-mock", input_value=None, config=None, timeout=10,
                 expected_input_hash=None, expected_config_hash=None):
-        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "batch04-pose", "batch05-pose", "batch06-pose", "batch07-detect", "exp27-detect", "exp29-cache007", "video-cards", "exp39-roi", "action-train", "action-infer"}:
+        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "batch04-pose", "batch05-pose", "batch06-pose", "batch07-detect", "exp27-detect", "exp29-cache007", "video-cards", "exp39-roi", "action-train", "action-infer", "model-compare"}:
             raise ValueError("only registered cpu-mock/vlm-batch01/mvp-0001/batch02-cv/vlm-batch02/batch03-pose/batch04-pose commands are permitted")
         if any(not isinstance(x, str) or not x.strip() for x in
                (job_key, run_id, task_id, dispatch_id, owner)):
@@ -373,6 +384,12 @@ class Queue:
             if (type(seconds) not in (int, float) or not math.isfinite(seconds)
                     or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
                 raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
+        elif command == 'model-compare':
+            from orchestration.model_comparison_command import validate, job_key as comparison_key
+            validate(config, input_value, self.runtime)
+            if (config['context'] != dict(run_id=run_id, task_id=task_id, dispatch_id=dispatch_id, owner=owner)
+                    or job_key != comparison_key(config)):
+                raise ValueError('Exact model comparison assignment and job key required')
         elif command == 'action-infer':
             from orchestration.action_inference_command import validate, job_key as action_key
             validate(config, input_value, self.runtime)
@@ -494,6 +511,8 @@ class Queue:
                       config_json=json.dumps(config, sort_keys=True),
                       input_hash=ih, config_hash=ch, source_hash=source_hash(command, config),
                       code_sha=sha, timeout=timeout)
+        if command == 'model-compare':
+            self.migrate_commands(include_model_compare=True)
         if command == 'action-infer':
             self.migrate_commands(include_action_infer=True)
         if command == 'action-train':
@@ -577,6 +596,26 @@ class Queue:
             manifest = self.runtime / "attempts" / attempt / "manifest.json"
             manifest.parent.mkdir(parents=True, exist_ok=True)
             finished = time.time()
+            if job['command'] == 'model-compare':
+                from orchestration.model_comparison_command import output_path, interpreter, file_hash
+                config = json.loads(job['config_json'])
+                result = output_path(config['stage'], attempt)/'result.json'
+                result_sha = file_hash(result) if result.is_file() else None
+                if status == 'succeeded' and result_sha is None:
+                    status, reason = 'failed', 'Missing comparison result despite child exit zero'
+                atomic_json(manifest, dict(schema_version=1, synthetic=False, execution_status=status,
+                    registration={k: job[k] for k in ('command','job_id','run_id','task_id','dispatch_id',
+                        'owner','code_sha','source_hash','input_hash','config_hash')},
+                    attempt_id=attempt, interpreter=str(interpreter(config)),
+                    result_path=str(output_path(config['stage'], attempt)),
+                    result_sha256=result_sha,
+                    limitations=['Queue exit alone does not establish action quality or intrusion completion']))
+                db.execute('BEGIN IMMEDIATE')
+                db.execute('UPDATE attempts SET status=?,exit_code=?,finished_at=?,heartbeat=?,result_manifest=?,reason=? '
+                           'WHERE attempt_id=?', (status,exit_code,finished,finished,str(manifest),reason,attempt))
+                db.execute('UPDATE jobs SET status=? WHERE job_id=?', (status,row['job_id']))
+                db.commit()
+                return
             if job['command'] == 'action-infer':
                 from orchestration.action_inference_command import output_path, INTERPRETER
                 config = json.loads(job['config_json'])
@@ -731,6 +770,9 @@ class Queue:
                 count = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job_id,)).fetchone()[0]
                 if row is None or row["status"] not in RETRYABLE or count != 1:
                     raise ValueError("one explicit retry allowed only after a known failed/cancelled/interrupted attempt")
+                if row['command']=='model-compare':
+                    from orchestration.model_comparison_command import retry_guard
+                    retry_guard(db,dict(row))
                 if row['command']=='action-infer':
                     from orchestration.action_inference_command import retry_guard
                     retry_guard(db,dict(row))
@@ -806,7 +848,10 @@ class Queue:
                 if digest(json.loads(job["input_json"])) != job["input_hash"] or digest(json.loads(job["config_json"])) != job["config_hash"]:
                     raise ValueError("stored input/config hash mismatch")
                 config = json.loads(job["config_json"])
-                if job['command'] == 'action-infer':
+                if job['command'] == 'model-compare':
+                    from orchestration.model_comparison_command import command
+                    argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
+                elif job['command'] == 'action-infer':
                     from orchestration.action_inference_command import command
                     argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
                 elif job['command'] == 'action-train':
@@ -858,7 +903,7 @@ class Queue:
                 else:
                     raise ValueError('unregistered command in stored job')
                 child_env = None
-                if job['command'] in ('action-train', 'action-infer'):
+                if job['command'] in ('action-train', 'action-infer', 'model-compare'):
                     child_env = dict(os.environ, SCENEGUARD_GPU_LOCK_FD=str(lock.fileno()), CUDA_VISIBLE_DEVICES='0')
                 with (directory / "child.log").open("ab") as output:
                     child = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL,
@@ -918,7 +963,7 @@ def main(argv=None):
     enqueue = commands.add_parser("enqueue", help="register one allowlisted job (idempotent job key)")
     for field in ("job-key", "run-id", "task-id", "dispatch-id", "owner"):
         enqueue.add_argument("--" + field, required=True)
-    enqueue.add_argument("--command", choices=["cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "action-train", "action-infer"], default="cpu-mock")
+    enqueue.add_argument("--command", choices=["cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "action-train", "action-infer", "model-compare"], default="cpu-mock")
     enqueue.add_argument("--input-json", type=json.loads, default={"synthetic": True})
     enqueue.add_argument("--config-json", type=json.loads, default={"seconds": 0.1, "exit_code": 0})
     enqueue.add_argument("--expected-input-hash")

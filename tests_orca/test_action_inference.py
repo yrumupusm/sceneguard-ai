@@ -219,6 +219,8 @@ class ActionInferenceTests(unittest.TestCase):
                 src.backup(dst)
             before=q.status()
             self.assertGreaterEqual(len(before['jobs']),95)
+            with q.connection() as db:
+                already_registered="'action-infer'" in db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
             q.migrate_commands(include_action_infer=True);q.migrate_commands(include_action_infer=True)
             q.migrate_commands(include_action_train=True)
             self.assertEqual(q.status(),before)
@@ -226,7 +228,7 @@ class ActionInferenceTests(unittest.TestCase):
                 self.assertFalse(db.execute('PRAGMA foreign_key_check').fetchall())
                 schema=db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
                 self.assertIn("'action-infer'",schema);self.assertIn("'action-train'",schema)
-            self.assertEqual(len(list(Path(t).glob('queue-before-action-infer-*.sqlite3'))),1)
+            self.assertEqual(len(list(Path(t).glob('queue-before-action-infer-*.sqlite3'))),0 if already_registered else 1)
 
     def test_private_supervisor_fd_env_receipt_preserves_old_job_and_no_implicit_retry(self):
         with tempfile.TemporaryDirectory() as t:
