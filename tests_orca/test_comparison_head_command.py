@@ -1,4 +1,4 @@
-"""Synthetic canonical head guards; never initialize or mutate the real queue."""
+"""Canonical head guards and optional frozen metadata; never mutate the real queue."""
 import fcntl
 import hashlib
 import json
@@ -11,6 +11,41 @@ import unittest
 from unittest.mock import patch
 from orchestration import comparison_head_command as command
 from orchestration.queue import digest
+
+
+class PreparedAliasTests(unittest.TestCase):
+    def test_only_previously_verified_same_byte_alias_keeps_geometry_and_hash(self):
+        proof=dict(source_path='canonical.mp4',source_sha256='a'*64,source_size=[1920,1080],time_base='1/12288')
+        window={**proof,'source_path':'alias.mp4'}
+        aliases={'alias.mp4':'a'*64}
+        command.validate_prepared_window(window,proof,aliases)
+        command.validate_prepared_window(proof,proof,{})
+        for bad_aliases in ({},{'alias.mp4':'b'*64}):
+            with self.assertRaisesRegex(ValueError,'verified same-byte alias'):
+                command.validate_prepared_window(window,proof,bad_aliases)
+        for field,value in [('source_sha256','b'*64),('source_size',[1080,1920]),('time_base','1/30')]:
+            with self.assertRaisesRegex(ValueError,'geometry/clock/hash'):
+                command.validate_prepared_window({**window,field:value},proof,aliases)
+
+    @unittest.skipUnless(command.PLAN.is_file(),'Frozen local preparation is not present')
+    def test_actual_frozen_alias_windows_use_their_own_prepared_binding(self):
+        command.checked_file(dict(path=str(command.PLAN),sha256=command.PLAN_SHA))
+        preparation=command.ROOT/'outputs/model-comparison/exp0066/head-preparation/native-v2/review-ready.json'
+        command.checked_file(dict(path=str(preparation),sha256='2a0e0c3f71d273a68229e8982b5cd3967c8b5117d8a46f17642592611cb0bb28'))
+        prepared=command.read(preparation)
+        proofs={}
+        for b in prepared['sources']:
+            proof=command.read(command.checked_file({k:b[k] for k in ('path','sha256')}))
+            proofs[proof['source_sha256']]=proof
+        aliases=prepared['source_alias_bindings'];count=0
+        for window in command.read(command.PLAN)['windows']:
+            proof=proofs[window['source_sha256']]
+            command.validate_prepared_window(window,proof,aliases)
+            if window['source_path']!=proof['source_path']:
+                count+=1
+                with self.assertRaisesRegex(ValueError,'verified same-byte alias'):
+                    command.validate_prepared_window(window,proof,{})
+        self.assertEqual(count,22)
 
 
 class HeadCommandTests(unittest.TestCase):

@@ -41,6 +41,18 @@ def selected_windows(config,plan):
     return [w for w in plan['windows'] if config['stage']!='feature-smoke' or w['window_id'] in plan['smoke_window_ids']]
 
 
+def validate_prepared_window(window,proof,aliases):
+    """Reuse native pixels only for the exact source or a previously hashed alias."""
+    if (proof['source_sha256']!=window['source_sha256']
+            or proof['source_size']!=window['source_size'] or proof['time_base']!=window['time_base']):
+        raise ValueError('CPU source geometry/clock/hash changed')
+    if (proof['source_path']!=window['source_path']
+            and aliases.get(window['source_path'])!=window['source_sha256']):
+        raise ValueError('CPU source path is not a verified same-byte alias')
+    # input_contract separately rehashes every selected source path below. The
+    # immutable preparation alias map does not replace that current-byte check.
+
+
 def input_contract(config):
     required=BASE_FILES|({'features'} if config['stage']=='train' else set())
     if config['stage'] not in STAGES or config['model_id'] not in MODELS or set(config['files'])!=required:raise ValueError('Exact head stage/model/input bindings required')
@@ -69,7 +81,7 @@ def input_contract(config):
     if covered!={w['window_id'] for w in plan['windows']} or len(proofs)!=792:raise ValueError('Incomplete CPU pixel receipts')
     for w in plan['windows']:
         proof=proofs[w['source_sha256']]
-        if proof['source_path']!=w['source_path'] or proof['source_size']!=w['source_size'] or proof['time_base']!=w['time_base']:raise ValueError('CPU source geometry/clock changed')
+        validate_prepared_window(w,proof,prepared['source_alias_bindings'])
         frames={f['pts_tick']:f for f in proof['frames']}
         if any(t not in frames for t in w['sample_pts_ticks']):raise ValueError('Missing native RGB receipt')
     # Hash each selected source path once per contract, including alternate-name targets.

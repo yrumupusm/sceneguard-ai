@@ -1241,5 +1241,7 @@
     "AVA climb is not a task-specific CCTV wall-crossing probability.",
     "Regular and extra diagnostic windows are reported separately.",
     "No actor correspondence, event success, or intrusion completion is inferred."
-  ]
+  ],
+  "summarizer_sha256": "d1b777bb9f0ce9790085f0bfbba64e74b512706ee202e3290c174ecbbf475c94",
+  "evidence_verifier_sha256": "8ae3bc7de1ac6350e529909b715b2a93c4cc3fb13ab986b5ff438c5bb2779730"
 }
