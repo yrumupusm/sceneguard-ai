@@ -19,7 +19,7 @@ def load_adapter(joint):
     return module
 
 
-def read(path):return json.loads(Path(path).read_text())
+def read(path):return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
 def validate_window(window,clocks):

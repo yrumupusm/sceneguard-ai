@@ -10,7 +10,7 @@ import sqlite3
 import subprocess
 
 from orchestration.queue import digest, process_state
-from orchestration.action_training_command import checked_file, file_hash, read, resources, validate_assignment
+from orchestration.action_training_command import checked_file, file_hash, resources, validate_assignment
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = Path('/home/jhc7484/dev/sceneguard-orca-lab/runtime/orca-lab/gpu-queue')
@@ -22,6 +22,11 @@ BASELINE_SHA = '3799ae3eee427b60e698b21f6ee958ac5306eacba07b5d85e4c35dbfa6457b40
 MODEL_IDS = {'evad_vitb_vmaev2','evad_vitl','stmixer_vitb_vmaev2','internvideo_next_s2_l',
              'vjepa2_l','vjepa2_1_l','videomaev2_b','r3d18_exp0064'}
 JOINT = {'evad_vitb_vmaev2','evad_vitl','stmixer_vitb_vmaev2'}
+
+
+def read(path):
+    # Native dependencies may change LC_CTYPE during a forward. Metadata is UTF-8.
+    return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
 def interpreter(config):

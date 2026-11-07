@@ -43,7 +43,7 @@ def sha(path):
     return h.hexdigest()
 
 
-def read(path): return json.loads(Path(path).read_text())
+def read(path): return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
 def save(path, value):
@@ -190,6 +190,27 @@ def validate_scores(person_scores, action_scores):
         raise ValueError('All100 learned-query person probabilities and80native AVA probabilities required')
 
 
+def evad_native_boxes(person_boxes, action_boxes, geometry):
+    """EVAD returns original-pixel person boxes and normalized AVA action boxes.
+
+    Its postprocessor mutates the det_head tensor in place. Never inverse-resize
+    that hooked tensor again; verify the two native return paths agree instead.
+    """
+    import numpy as np
+    original = np.asarray(person_boxes, dtype=np.float64)
+    normalized = np.asarray(action_boxes, dtype=np.float64)
+    if (original.ndim != 2 or original.shape[1] != 4 or normalized.shape != original.shape
+            or not np.isfinite(original).all() or not np.isfinite(normalized).all()):
+        raise ValueError('Aligned finite EVAD native person/action boxes required')
+    scale = [geometry['original_width'], geometry['original_height']] * 2
+    if not np.allclose(original, normalized * scale, rtol=1e-5, atol=1e-3):
+        raise ValueError('EVAD native person/action coordinate correspondence differs')
+    if (original < 0).any() or (original > np.asarray(scale) + 1e-3).any():
+        raise ValueError('EVAD native original boxes out of bounds')
+    valid = ((original[:, 2] > original[:, 0]) & (original[:, 3] > original[:, 1])).tolist()
+    return original.tolist(), valid
+
+
 @dataclass
 class JointModel:
     native: object
@@ -268,8 +289,10 @@ def infer_clip(model, frames_rgb, spec: dict):
     if spec['model_id'].startswith('evad'):
         actions, action_boxes, metadata, persons = native_output
         scores = persons['scores'][0]
-        raw_boxes = model.captured['pred_boxes'][0]
-        boxes, valid = boxes_to_original(raw_boxes.detach().float().cpu().numpy(), geometry)
+        if action_boxes.shape != (100, 5) or not bool((action_boxes[:, 0] == 0).all()):
+            raise ValueError('EVAD single-input native query alignment required')
+        boxes, valid = evad_native_boxes(persons['boxes'][0].detach().float().cpu().numpy(),
+            action_boxes[:, 1:].detach().float().cpu().numpy(), geometry)
         action_logits = model.captured['pred_actions'][0]
         person_logits = model.captured['pred_logits'][0]
         probabilities = actions
@@ -298,6 +321,10 @@ def infer_clip(model, frames_rgb, spec: dict):
         task_specific_climbing_probability=None, person_recovery_accuracy=None,
         model_id=spec['model_id'], precision=spec['precision'],
         output_postfilter=spec['output_postfilter'], checkpoint_sha256=spec['checkpoint_sha256'])
+    if spec['model_id'].startswith('evad'):
+        result['box_coordinate_verification'] = 'native_original_person_equals_normalized_action_times_original_size'
+        result['box_coordinate_source'] = 'vendor_native_person_detector_original_pixels_no_second_resize'
+        result['native_action_boxes_normalized'] = values(action_boxes[:, 1:])
     model.captured.clear()
     torch.cuda.synchronize(device)
     finished = time.perf_counter()

@@ -17,6 +17,20 @@ from scripts.run_model_comparison import process_video,validate_window
 
 
 class ComparisonTests(unittest.TestCase):
+    def test_utf8_metadata_survives_native_dependency_locale_change(self):
+        import locale
+        from scripts.run_model_comparison import read as runner_read
+        previous = locale.setlocale(locale.LC_CTYPE)
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / 'manifest.json'
+                path.write_text('{"source": "월담행위"}', encoding='utf-8')
+                locale.setlocale(locale.LC_CTYPE, 'C')
+                self.assertEqual(command.read(path), {'source': '월담행위'})
+                self.assertEqual(runner_read(path), {'source': '월담행위'})
+        finally:
+            locale.setlocale(locale.LC_CTYPE, previous)
+
     def test_comparison_timeout_has_explicit_four_hour_bound_without_relaxing_other_commands(self):
         context=dict(run_id='r',task_id='t',dispatch_id='d',owner='o')
         config=dict(stage='all45',model_id='r3d18_exp0064',execution_revision='timeout-v2',context=context,files={})

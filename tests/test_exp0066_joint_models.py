@@ -12,6 +12,24 @@ j = importlib.util.module_from_spec(spec); sys.modules[spec.name] = j; spec.load
 
 
 class GeometryTests(unittest.TestCase):
+    def test_evad_official_postprocess_mutates_hooked_boxes_to_original_pixels(self):
+        import torch
+        sys.path.insert(0, str(ROOT / 'runtime/vendor/EVAD-exp0066'))
+        from slowfast.datasets.cv2_transform import clip_boxes_tensor, detector_postprocess
+        geometry = j.resize_geometry(1080, 1920, 'evad_vitb_vmaev2')
+        hooked = torch.tensor([[[200., 80., 250., 240.], [0., 0., 512., 288.]]])
+        view = clip_boxes_tensor(hooked[0], 288, 512)
+        actions = detector_postprocess(view[torch.ones(2, dtype=torch.bool)], 1080, 1920, 288, 512, True)
+        persons = detector_postprocess(view, 1080, 1920, 288, 512, False)
+        torch.testing.assert_close(hooked[0], persons)
+        actual, valid = j.evad_native_boxes(persons.numpy(), actions.numpy(), geometry)
+        np.testing.assert_allclose(actual[0], [750, 300, 937.5, 900])
+        self.assertEqual(valid, [True, True])
+        wrong, _ = j.boxes_to_original(hooked[0].numpy(), geometry)
+        self.assertNotEqual(wrong, actual)
+        with self.assertRaisesRegex(ValueError, 'correspondence'):
+            j.evad_native_boxes(persons.numpy(), actions.numpy()[::-1], geometry)
+
     def test_landscape_full_field_without_center_crop(self):
         g = j.resize_geometry(1080, 1920, 'evad_vitb_vmaev2')
         self.assertEqual((g['resized_height'], g['resized_width']), (288, 512))
