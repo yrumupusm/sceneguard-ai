@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0067",
+  "phase": "explicit_box_review_application",
+  "reviewed_cases": [
+    1,
+    3,
+    5
+  ],
+  "answer_versions": {
+    "5": 1,
+    "3": 1,
+    "1": 1
+  },
+  "frame_counts": {
+    "train": 50,
+    "validation": 25
+  },
+  "box_counts": {
+    "train": 151,
+    "validation": 31
+  },
+  "group_counts": {
+    "train": 2,
+    "validation": 1
+  },
+  "person_boxes_human_verified": true,
+  "action_ground_truth_verified": false,
+  "training_release": false,
+  "training_runs": 0,
+  "school_improvement": null,
+  "manifest_sha256": "1bda84cc3421bcfc1b528bfb4e4092c02e9ec22d4a09c41907ff46211381ad18",
+  "exporter_sha256": "dd036048cfb455c56c24ad8d51835780b6b6b1c637fdc8525701cbb8b0d20c8f",
+  "new_gpu_jobs": 0,
+  "hidden_proposals_accepted": 0,
+  "original_annotations_merged": 0
+}
