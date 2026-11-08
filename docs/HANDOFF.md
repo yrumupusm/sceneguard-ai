@@ -1,3 +1,13 @@
+## 2026-11-08 — EXP-0066 학습 라벨 검수 적용
+
+여섯 구간을 모두 읽었다. 웹 저장5개와5번 사용자 채팅 전사1개이며3번은 수정 answer_version2, 나머지는1이다. 1·5번은 비월담 사람의 박스 부재,3번은 약60초 라벨 종료와 누락 문제로 전체 사람 학습 보류다. 2·4·6번의 표시된75프레임/100박스만 원본 RGB·nativePTS·해시를 대조해 준비 자료로 추출했다(train50/validation25). 원래 촬영 그룹/분할을 보존한다. `training_release=false`; 실제 추가 학습0회, 학교 성능 개선 미측정이다. 5번은 사용자 관찰 출처를 명시해 기존 요청에 기록했으므로 다시 답변받지 않는다.
+
+[후속 보고서](experiments/EXP-0066-label-review-application.md)와 `records/EXP-0066/label-review-application.json`을 따른다. 추출은 `scripts/export_reviewed_person_pilot.py`, 출력은 `outputs/model-comparison/exp0066/reviewed-person-pilot-v1/manifest.json` SHA1df00c365ed086e3d6a2fa801a65fdf78bda5f41361c600c3ce3c237385ff814. 로컬 답변/결정/객체 라벨 스캔은 `runtime/model-comparison/exp0066/label-review-followup/reviewed-v1/`다. 객체 라벨51,840JSON에 person 클래스 없음, 빈 JSON1개 오류는 별도 보존. 누락 위치 주석 보완 또는 검증된 부분 주석 손실 처리가 다음 단계다. 정상 검증 앉기 편중도 해결해야 한다. 같은 의미 검수를 반복하거나 미주석 사람을 배경으로 넣지 않는다. 학교45/EXP64시험 보호와 EXP62AFTER/EXP64선택가중치0.5는 유지한다.
+
+기존 YOLO26m/l/x 사전학습 학교45개·6,219입력 결과와 총11개 후보는 보존한다. 원래 웹 등록 보고서/지표/바인딩/미디어는 수정하지 않는다. 이번에는 CPU 추출만 실행했으며 모델/GPU 작업은 없다. 범위/답변 버전/분할/빈 라벨 보호9개 시험 통과. 기존 사용자 미추적 두 작업 디렉터리는 보존한다.
+
+---
+
 ## 2026-11-07 — EXP-0065 검수 완료 통지와 의미 반영
 
 후속 저장 확인: 사용자가 오판2의 검수 완료 버튼을 누른 뒤 answer_version1을 읽었다. 현재9개 웹 답변을 모두 반영했다. 오판2는85초대 빈 빨간 라벨 박스와 약89초부터 회색 박스 인물의 넘기라는 관찰이며, 모델 입력85.667–88초의 시간/대상 대응은 미확정으로 유지한다. 회색 역시 공원 데이터 annotation이고 실제 검출기 결과로 해석하지 않는다. 아래8개/미저장은 최초 확인 시점의 이력이다.

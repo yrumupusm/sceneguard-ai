@@ -1,0 +1,87 @@
+{
+  "experiment_id": "EXP-0066",
+  "stage": "label_review_application",
+  "web_answers": 5,
+  "chat_observations_transcribed": 1,
+  "reviewed_cases": 6,
+  "training_release": false,
+  "detector_finetuning_runs": 0,
+  "new_model_inference_count": 0,
+  "exported_frame_counts": {
+    "train": 50,
+    "validation": 25
+  },
+  "exported_box_rows": 100,
+  "held_case_numbers": [
+    1,
+    3,
+    5
+  ],
+  "held_frame_count": 75,
+  "whole_dataset_completeness_certified": false,
+  "action_truth_certified": false,
+  "precise_boxes_certified": false,
+  "frame_origin_certified": false,
+  "school_performance_improvement": null,
+  "export_manifest_sha256": "1df00c365ed086e3d6a2fa801a65fdf78bda5f41361c600c3ce3c237385ff814",
+  "review_sha256": "c6a64a9a8cac5f3ca6e6f149b4152cdb82b0f0938d5476695cafed10b40dae0e",
+  "decisions_sha256": "97524bd90b66e1b8ab1d90fb84fc4f999735523ae2a6f0f1c4aff7a3234f414f",
+  "object_schema_scan": {
+    "parsed_json_files": 51840,
+    "parse_error_files": 1,
+    "annotation_classes": 18,
+    "person_class_found": false
+  },
+  "cases": [
+    {
+      "case_number": 1,
+      "window_id": "head-6b84373a523e9da50441d193",
+      "answer_version": 1,
+      "source_binding_sha256": "391a42146de9f015a3c9d3a584352473048187810a7569cdedbd6ea59213eb52",
+      "disposition": "hold_incomplete_or_uncertain_person_scope",
+      "original_split": "train"
+    },
+    {
+      "case_number": 2,
+      "window_id": "head-7c03add7fc3782afc4e27f72",
+      "answer_version": 1,
+      "source_binding_sha256": "a4c902f6a40ef3a2c0928f0b240736bf6cf69fb68dd1c676bae11d44e5f2c9d9",
+      "disposition": "export_reviewed_person_scope",
+      "original_split": "train"
+    },
+    {
+      "case_number": 3,
+      "window_id": "head-be2ed59e9ea3e6dbe9b48ab3",
+      "answer_version": 2,
+      "source_binding_sha256": "7fa95795732bc151e7c53617969a63269b90d6173536b04a5a64c41e0d83ec92",
+      "disposition": "hold_incomplete_or_uncertain_person_scope",
+      "original_split": "train"
+    },
+    {
+      "case_number": 4,
+      "window_id": "head-9605c0518fbd7149ce8e97ab",
+      "answer_version": 1,
+      "source_binding_sha256": "557f29fc053ada4292b5d019de728f1d97f36fcd81ae17c060d3f261fd8939ea",
+      "disposition": "export_reviewed_person_scope",
+      "original_split": "train"
+    },
+    {
+      "case_number": 5,
+      "window_id": "head-0cd263c9a9b288fc5d9a187f",
+      "answer_version": 1,
+      "source_binding_sha256": "3391b37ee9b662a60d5417a6c56d9bd5d4718a846bc001377965d6b5fa9ee441",
+      "disposition": "hold_incomplete_or_uncertain_person_scope",
+      "original_split": "validation"
+    },
+    {
+      "case_number": 6,
+      "window_id": "head-170a52bd842e5dd52fa10ce2",
+      "answer_version": 1,
+      "source_binding_sha256": "1450f05abcfaa7e08be993a6f71ee4d56efdaccaedc070f1ef9198a3ac71ae19",
+      "disposition": "export_reviewed_person_scope",
+      "original_split": "validation"
+    }
+  ],
+  "web_request_status": "applied_to_preparation_and_exclusion",
+  "resolved_request_count": 6
+}
