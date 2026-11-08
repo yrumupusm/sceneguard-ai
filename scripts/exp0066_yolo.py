@@ -48,9 +48,21 @@ def load_model(spec, device):
         raise ValueError('Pinned Ultralytics version/import origin required')
     SETTINGS.update({k:False for k in ('sync','clearml','comet','dvc','mlflow','raytune','tensorboard','wandb')})
     model = YOLO(spec['checkpoint_path'], task='detect')
-    if model.task != 'detect' or model.names.get(0) != 'person' or not model.model.end2end:
-        raise ValueError('Native end-to-end COCO person detector required')
+    validate_loaded_model(model)
     return model
+
+
+def validate_loaded_model(model):
+    # 8.4.192 selects end2end from predict(nms=False) before official fusion.
+    # Older official weights retain both heads but no _end2end mode flag at load.
+    head=model.model.model[-1]
+    if (model.task != 'detect' or model.names.get(0) != 'person'
+            or getattr(head,'one2one_cv2',None) is None
+            or getattr(head,'one2one_cv3',None) is None):
+        raise ValueError('COCO person detector with native one-to-one heads required')
+    model.model.end2end=True
+    if not model.model.end2end:
+        raise ValueError('Official native head selection did not take effect')
 
 
 def result_rows(result, height, width):

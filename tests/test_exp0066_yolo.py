@@ -21,6 +21,15 @@ def result(boxes=((10,20,80,50),), scores=(.7,), labels=(0,)):
 
 
 class YoloTests(unittest.TestCase):
+    def test_official_predict_selects_mode_after_loading_both_heads(self):
+        head=NS(one2one_cv2=object(),one2one_cv3=object())
+        model=NS(task='detect',names={0:'person'},model=NS(end2end=False,model=[head]))
+        y.validate_loaded_model(model)
+        self.assertTrue(model.model.end2end)
+        # Having only a one-to-many detector cannot satisfy the native contract.
+        head.one2one_cv2=None
+        with self.assertRaises(ValueError):y.validate_loaded_model(model)
+
     def test_exact_center_frame_rgb_conversion_and_original_coordinates(self):
         frames=np.zeros((16,60,100,3),dtype=np.uint8)
         frames[8,...]=[12,34,56]
