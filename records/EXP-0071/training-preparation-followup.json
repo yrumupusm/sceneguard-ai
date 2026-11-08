@@ -1,0 +1,48 @@
+{
+  "experiment_id": "EXP-0071",
+  "kind": "followup_preparation_and_review_application",
+  "focused_source_pairs": 1620,
+  "train_review_pool_wall": 350,
+  "train_review_pool_normal": 173,
+  "development_review_pool_wall": 18,
+  "development_review_pool_normal": 0,
+  "held_or_excluded_sources": 1079,
+  "training_reservations": 10,
+  "development_reservations": 1,
+  "independent_event_count_certified": null,
+  "answer_versions_applied": [
+    {
+      "review_id": "R01",
+      "answer_version": 1
+    },
+    {
+      "review_id": "R03",
+      "answer_version": 1
+    },
+    {
+      "review_id": "R05",
+      "answer_version": 1
+    },
+    {
+      "review_id": "R04",
+      "answer_version": 1
+    },
+    {
+      "review_id": "R02",
+      "answer_version": 1
+    }
+  ],
+  "review_observations_reused_frames": 97,
+  "coordinate_correction_R02_frames": 24,
+  "coordinate_exception_R01_frames": 1,
+  "new_training_release": false,
+  "training_runs": 0,
+  "new_model_inference": 0,
+  "gpu_runs": 0,
+  "archives_1_3_4_required": false,
+  "new_review_questions": 0,
+  "old_75_frames_reasked": 0,
+  "old_editor_preserved": true,
+  "editor_browser_validation": "passed_readonly_no_saved_answers",
+  "existing_editor_tests_passed": 11
+}

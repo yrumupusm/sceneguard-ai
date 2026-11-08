@@ -151,7 +151,11 @@ def handler(store):
                 if path not in files:
                     return self.reply({'error': 'Not found'}, 404)
                 filename, mime = files[path]
-                self.send_bytes(200, (ASSETS / filename).read_bytes(), mime)
+                content = (ASSETS / filename).read_bytes()
+                experiment = store.package.get('experiment_id', 'EXP-0067')
+                if filename == 'index.html' and isinstance(experiment, str) and re.fullmatch(r'EXP-[0-9]{4}', experiment):
+                    content = content.replace(b'experiment=EXP-0067', ('experiment='+experiment).encode())
+                self.send_bytes(200, content, mime)
             except Conflict as exc:
                 self.reply({'error': str(exc)}, 409)
             except (KeyError, OSError, ValueError):
