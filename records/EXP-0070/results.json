@@ -1,0 +1,72 @@
+{
+  "experiment_id": "EXP-0070",
+  "status": "data_inventory_and_review_proposal_only",
+  "historical_source_pairs": 6534,
+  "currently_available_source_label_pairs": 3318,
+  "missing_previously_catalogued_archive_count": 6,
+  "audit": {
+    "candidate_count": 29,
+    "reservation_count": 20,
+    "closure_members": 1052,
+    "review_candidate_counts": {
+      "development": 5,
+      "new_test": 7,
+      "train": 12
+    },
+    "held_counts": {
+      "hold_location_and_capture_identity": 3,
+      "hold_training_to_preserve_development_scene": 2
+    },
+    "reserved_counts": {
+      "development": 5,
+      "new_test": 8,
+      "train": 7
+    },
+    "inputs_preserved": true,
+    "protected_or_user_excluded_closure_members": 0,
+    "cross_split_source_hashes": 0,
+    "cross_split_active_capture_reservations": 0,
+    "complete_new_person_label_windows": 0,
+    "fresh_wall_pose_test_windows": 0,
+    "action_semantic_truth_certified": false,
+    "all_candidate_native_fps": [
+      3
+    ],
+    "source_decode_frames": 1410,
+    "source_content_check_bytes": 1010860304,
+    "gpu_inference": 0,
+    "training": 0,
+    "quarantined_sibling_count_reserved_not_selected": 6
+  },
+  "media_validation": {
+    "clips_decoded": 58,
+    "frames": 1410,
+    "all_match_source_window_frame_counts": true,
+    "fps": 3
+  },
+  "independent_event_count_certified": null,
+  "new_data_training_release": false,
+  "new_test_wall_pose_coverage_complete": false,
+  "protected_school_videos": 45,
+  "protected_exp0064_test_sources": 296,
+  "protected_exp0064_connected_members": 327,
+  "existing_review_reuse": {
+    "frames": 75,
+    "boxes": 182,
+    "scope": "exact previously reviewed frames only"
+  },
+  "limitations": [
+    "Capture reservations are not certified independent shooting events.",
+    "New person boxes, action semantics and empty backgrounds require review.",
+    "Three source location records conflict with observed waterfront background.",
+    "Five-point content fingerprints do not exclude all partial or shifted duplicates.",
+    "No new model inference, retraining or performance evaluation."
+  ],
+  "local_evidence_sha256": {
+    "final-audit.json": "fef28a717b158562b1f6f7190f02670031f62f9ac53a5aef197b63fda1823dd1",
+    "split-proposal.json": "db6731fb268b1185f70971573472e55e4432f3692ff238f1234461ec7528d1fd",
+    "source-checks.json": "3c9820d938944874ca4b90fb4c70ea099fd821694600f74ba56eba287d28820f",
+    "media-validation.json": "6e0f09c93cccee12cdcfb2a0e060f687705476ea7e298a67373169d879cae14a",
+    "review-reuse.json": "3b453013cd868d520c0e6d8d6ee171a2f780b7e59f2a934355bd2de3c4dc31f6"
+  }
+}
