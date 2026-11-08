@@ -1,0 +1,113 @@
+{
+  "experiment_id": "EXP-0066",
+  "status": "three_pretrained_detector_baselines_complete",
+  "cohort_sha256": "480b1410c568b9a038c7be6d124f7be1890b3b7375cbed43e87b165346a2aa18",
+  "summarizer_sha256": "f257002c4e82b4a87cfa26b52693cd40cb1b6d5b6646835128a15deec88e8acd",
+  "verifier_sha256": "84bcddc8ff5e844cad7840f4d7ea8c433682f4eebc8cb972c79b0c969f1d2f90",
+  "models": {
+    "yolo26m": {
+      "completion": {
+        "path": "runtime/model-comparison/exp0066/yolo26-execution-v3/stages/yolo26m/all45/completion.json",
+        "sha256": "5e56e1c88a669dd0c0c80819bc0f3bf55b00785b3cf4454e574895f9962c3fca"
+      },
+      "result_sha256": "969f59b675b148fea612d166fe7a0e34e633374e0a3c998a837b2bcc913e53cf",
+      "queue_attempt": "7ce50e9efddc459e866cf21aac17bcc8",
+      "code_sha": "280f2f3944a1e5f00051d3c92657024d84ad9aee",
+      "model_spec_sha256": "80525b9a4ca9951aa2bdc9d92e5af2fd4d0727c021357d3831eb442657353d7a",
+      "scored_inputs": 6219,
+      "decoded_native_frames": 184300,
+      "elapsed_seconds": 429.98030204104725,
+      "peak_torch_allocated_bytes": 201232896,
+      "peak_torch_reserved_bytes": 257949696,
+      "person_threshold": 0.5,
+      "groups": {
+        "fullvideo_regular": {
+          "inputs": 6177,
+          "inputs_with_person_boxes": 1749,
+          "person_box_rows": 2693
+        },
+        "supplemental_diagnostic_not_regular_denominator": {
+          "inputs": 42,
+          "inputs_with_person_boxes": 13,
+          "person_box_rows": 15
+        }
+      },
+      "person_recall": null,
+      "false_positive_rate": null,
+      "finetuning_effect": null
+    },
+    "yolo26l": {
+      "completion": {
+        "path": "runtime/model-comparison/exp0066/yolo26-execution-v3/stages/yolo26l/all45/completion.json",
+        "sha256": "f0322b4572905d34f1621e32ecd118f6e5d9147eae6111dfce5fafa2291d499f"
+      },
+      "result_sha256": "e96ed90ecf95e82e604200a6ea95a9fdc253101e83de1ea42d88912defacebe3",
+      "queue_attempt": "c9207abd704c4893b8e54aad5c473db1",
+      "code_sha": "280f2f3944a1e5f00051d3c92657024d84ad9aee",
+      "model_spec_sha256": "551aba0652e57ce8f5303fc0c2a3d8b42efad427fe28d522f1e6817948fe0d5b",
+      "scored_inputs": 6219,
+      "decoded_native_frames": 184300,
+      "elapsed_seconds": 445.7616507560015,
+      "peak_torch_allocated_bytes": 233916416,
+      "peak_torch_reserved_bytes": 272629760,
+      "person_threshold": 0.5,
+      "groups": {
+        "fullvideo_regular": {
+          "inputs": 6177,
+          "inputs_with_person_boxes": 1922,
+          "person_box_rows": 3073
+        },
+        "supplemental_diagnostic_not_regular_denominator": {
+          "inputs": 42,
+          "inputs_with_person_boxes": 14,
+          "person_box_rows": 16
+        }
+      },
+      "person_recall": null,
+      "false_positive_rate": null,
+      "finetuning_effect": null
+    },
+    "yolo26x": {
+      "completion": {
+        "path": "runtime/model-comparison/exp0066/yolo26-execution-v3/stages/yolo26x/all45/completion.json",
+        "sha256": "1748955430c07503cfd0136fa998625fbde49dafbb4983abf1003ef8c10e8185"
+      },
+      "result_sha256": "09abb44f7f713b251e3b0e9943c104dc4ae19818cf7e3de795ef2f4c1f1439fc",
+      "queue_attempt": "49f9af8570f84dd59c32f031cf42ea81",
+      "code_sha": "280f2f3944a1e5f00051d3c92657024d84ad9aee",
+      "model_spec_sha256": "e314c38d874e3a73903fb387e7f611a07c067a16d017e3a3367d04012c45136f",
+      "scored_inputs": 6219,
+      "decoded_native_frames": 184300,
+      "elapsed_seconds": 456.1372903729789,
+      "peak_torch_allocated_bytes": 439169024,
+      "peak_torch_reserved_bytes": 635437056,
+      "person_threshold": 0.5,
+      "groups": {
+        "fullvideo_regular": {
+          "inputs": 6177,
+          "inputs_with_person_boxes": 2396,
+          "person_box_rows": 3816
+        },
+        "supplemental_diagnostic_not_regular_denominator": {
+          "inputs": 42,
+          "inputs_with_person_boxes": 21,
+          "person_box_rows": 25
+        }
+      },
+      "person_recall": null,
+      "false_positive_rate": null,
+      "finetuning_effect": null
+    }
+  },
+  "new_detector_finetuning_runs": 0,
+  "semantic_evaluation_complete": false,
+  "limitations": [
+    "Fixed native slot8 from 6219 planned inputs, not inference on every decoded frame.",
+    "Regular and supplemental diagnostic inputs have separate denominators.",
+    "Box rows and inputs containing a box are not unique people, target recall or event success.",
+    "Same score threshold does not establish equal false-positive operating points.",
+    "Elapsed includes loading, official warmup, decoding and integrity checks; total forward calls unmeasured.",
+    "Torch memory peaks are not total GPU memory usage.",
+    "School45 remains protected from training and threshold selection."
+  ]
+}

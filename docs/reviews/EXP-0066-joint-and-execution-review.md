@@ -1,8 +1,10 @@
 # EXP-0066 joint 모델 및 실제 실행 독립 검토
 
+**최종 추가 판정: YOLO26 m/l/x의 실제 smoke＋전체45 6단계, 원본137행 보존·최종143/143 idle, 실제3모델 요약과56개 저장 비교 panel을 수용한다.** 이는 사전학습 baseline의 실행/출력/표시 계약 통과다. Detector 추가 미세조정·사람 정답 기반 성능은 미완료이며 보조 경로는11/21단계·3/7head에서 보류 중이다.6개 새 주석 QA 요청은 등록됐지만 답변을 정답으로 확보한 상태가 아니다.
+
 **최신 판정(2026-11-08): 수정 후8개 모델의 실제 smoke·전체45 출력 계약, 고정21단계의 실행 준비도와 root GO, 실제 완료 head3개(VideoMAE·V-JEPA2·V-JEPA2.1), 학교 저장 점수2개(VideoMAE·V-JEPA2)를 독립 검증했다.** 각 결과의 정확한 SHA와 검사 범위는 아래 순차 기록에 있다. InternVideo smoke/full까지 총11단계가 통과했고, 사용자 우선순위 정정에 따라 나머지10개 보조 단계는 root가 단계 경계에서 보류했다. 나머지4개 head 및 후속 학교 점수·최종 전체 지표는 아직 검토 완료가 아니다. 기존 EVAD 좌표 판정 철회·STMixer 최초 실패·alias 입력 계약 차단 이력은 그대로 보존한다.
 
-전체11후보 유지와 추가 미세조정 전후 평가의 설계 요구, 선택 주석 개수 감사, 부분 게시 commit `ef8508e` 및 원격 ref를 확인했다. 현재 frozen-head 학습은 native 검출 박스를 바꾸지 않는다. Weak full-scene/자동 matched-query 조건부·sitting-only 검증 수치를 사람 검수 precision/F1·동일 오경보율·학교 박스 회복·침입 완료·독립 일반화 성능으로 인증하지 않는다. 향후11후보의 detector/backbone 추가 미세조정은 현재 grant의 실행 범위가 아니다. 보조 단계 보류 뒤 root가 실행 저장소를 게시 commit으로 동기화하고 YOLO 준비 소스를 `a8d6e852800c7266eba663419fd9c916b7624a33`에 커밋했다. 옛 보조 grant는 재개되지 않았다. 수정된 FP viewer의 실제 프레임 동기화는 아래 v2 검토에서 통과했다. YOLO baseline v1은 실제 최초 smoke의 loader guard 실패로 중단됐으며, 앞선 준비도 승인은 이 실패로 대체됐다. 수정 commit `280f2f3`과 새 v2 준비도/GO는 아래에서 통과했으나, 실제 v2는 child 생성 전 GPU 여유6144MiB 검사에 막혔다. 두 실패를 보존한 별도v3의 m smoke7출력은 이후 실제 검토를 통과했다. 나머지 YOLO smoke/전체 결과는 실제 완료 뒤 별도로 검토하며, 앞선 부분 웹 스냅샷의 당시0성공 상태는 변경하지 않는다.
+전체11후보 유지와 추가 미세조정 전후 평가의 설계 요구, 선택 주석 개수 감사, 부분 게시 commit `ef8508e` 및 원격 ref를 확인했다. 현재 frozen-head 학습은 native 검출 박스를 바꾸지 않는다. Weak full-scene/자동 matched-query 조건부·sitting-only 검증 수치를 사람 검수 precision/F1·동일 오경보율·학교 박스 회복·침입 완료·독립 일반화 성능으로 인증하지 않는다. 향후11후보의 detector/backbone 추가 미세조정은 현재 grant의 실행 범위가 아니다. 보조 단계 보류 뒤 root가 실행 저장소를 게시 commit으로 동기화하고 YOLO 준비 소스를 `a8d6e852800c7266eba663419fd9c916b7624a33`에 커밋했다. 옛 보조 grant는 재개되지 않았다. 수정된 FP viewer의 실제 프레임 동기화는 아래 v2 검토에서 통과했다. YOLO baseline v1은 실제 최초 smoke의 loader guard 실패로 중단됐으며, 앞선 준비도 승인은 이 실패로 대체됐다. 수정 commit `280f2f3`과 새 v2 준비도/GO는 아래에서 통과했으나, 실제 v2는 child 생성 전 GPU 여유6144MiB 검사에 막혔다. 두 실패를 보존한 별도v3의 m/l/x 모두 smoke와 전체45 실제 검토를 통과했다. 최종6단계·143/143 idle·기존137행 보존도 확인했으며, 앞선 부분 웹 스냅샷의 당시0성공 상태는 변경하지 않는다.
 
 2026-11-07. Orca Task `task_a005e3d1bd50`, Dispatch `ctx_d755ff30c48e`. 이전 encoder 준비도 검토는 그대로 보존한다. 이 문서는 실제 도착한 근거만 순차 기록하며, 미완료 실행·task head·행동 성능을 인증하지 않는다. 검토자는 GPU/모델 forward/설치/큐 변경/생산 코드 수정/commit을 하지 않았다. 시작 시 WEB-0005 `pending --include-acknowledged` 조회는 성공했고 요청은 0개였다.
 
@@ -562,3 +564,69 @@ v3 controller SHA `5f575ed8b32428c11334fd5cefb573ef3eb20db8adfa06511c3c262b59ec1
 Result SHA `d22e311fc1f8f1cb353968b89e345a134d6dac0e685a0496d8d2bed90f26746d`, receipt SHA `8c0f059360d24526c90bb1f04e438da2155398f1a01fd261071cf53e643c3cdc`; 근거 `yolo-yolo26m-smoke-review.json`이다. 반환 person14행·유효@0.5 1행·기하 무효0행이며 고유 사람 수나 recall/행동 성공 수가 아니다. 실제 peak allocated/reserved는201,232,384/257,949,696bytes, wrapper elapsed30.782802초다. Native speed 합계와 warmup/전체 decode 시간은 구분한다.
 
 검토 시 다음 m all45가 이미 고정 grant 아래 등록돼 큐139/139였으나 이 smoke 수용은 진행 중 전체 출력을 인증하지 않는다. 앞선 부분 웹 스냅샷은 그 당시YOLO0성공 기록으로 그대로 보존하고 나중 성공으로 덮어쓰지 않는다.
+
+Root의 실제 웹 전달 receipt v2를 읽었다.6영상 재생/seek/rewind·6질문 연결·poll 중 재생 유지, 답변 제출0, 웹 상태inconclusive를 기록한다. Root가 보고한 기존68catalog·18request·499artifact 보존과 새 질문6개는 해당 전달 receipt의 범위다. 검토자는 네 service source hash를 실제 로컬 report/metrics/review/binding과 재대조해 일치를 확인했으며 별도 브라우저 재실행이나 DB 보존 감사를 한 것으로 표현하지 않는다. 근거 `partial-checkpoint-delivery-receipt-review.json`이다. 고정된 별도 checkpoint review 문서는 바꾸지 않았다.
+
+### 실제 YOLO v3 m 전체45 — 출력 계약 수용
+
+Attempt `7ce50e9efddc459e866cf21aac17bcc8`의 전체45원본·184,300native프레임·6,219고정창과 실제slot8 frame/PTS, 모든 반환 좌표/점수/class0/면적/native 의미를 독립 검사했다. Source/input/grant/result/receipt 연결, 기존137행 보존과 두 프로세스 종료가 통과했다. Result SHA `969f59b675b148fea612d166fe7a0e34e633374e0a3c998a837b2bcc913e53cf`, receipt SHA `ac7f179e0e91637661a83e0ef58f45e332fed4f93bf0f95e2414bf3e86216ca8`; 근거 `yolo-yolo26m-all45-review.json`이다.
+
+반환13,095행·유효@0.5 2,708행·기하 무효0이며 사람 recall/고유 인원/행동 성공은 미측정이다. Native inference 합계104.240133초는 warmup·decode·wrapper를 제외한다. 실제 wrapper elapsed429.980302초와 peak allocated/reserved201,232,896/257,949,696bytes는 별도다. 검토 시 큐140/140에서 다음 l smoke가 등록됐으며 l/x 실제 결과는 아직 별도 검토 대상이다.
+
+### 추가 detector 정지화면 renderer — provenance 검사 보완 요청
+
+Root 요청의 untracked `render_yolo_baseline_panels.py` SHA `4fe2a8822445b4d6c681c8df6b137b18056bb2b6427f70ad2728a907b2a42e50`는 저장 결과를7진단 장면·원본+7detector 보기로 그리는 CPU 경로다. 실제 m all45의 immutable result는 그대로 두고 검토자 소유 임시 completion/receipt만 바꾸어 네 반례를 재현했다. 실패 receipt, receipt source hash 불일치, code SHA 불일치, result_path 불일치를 모두 `load_completed`가 받아들였다. 이를 canonical provenance 검증 완료라고 인증하지 않는다.
+
+Root에 성공 receipt의 result/path/command/registration source-input-code/context와 result/completion의 엄격한 연결 및 반례 시험을 요청했다. 기존 v6 comparison 자체도7case/threshold만 확인하므로 정확한 reviewed SHA를 고정/요구하도록 권고했다. 근거 `yolo-panel-provenance-gap-v1.json`이며 실제 m 출력의 독립 acceptance는 영향을 받지 않는다. 검토자는 생산 파일 수정·모델·큐 호출·미디어 cloud 전송을 하지 않았다.
+
+### 실제 YOLO v3 l smoke — 출력 계약 수용
+
+Attempt `3ca26e1e14bd460bb7497a82bcc97a9d`의7출력·6영상·24,155native프레임과 고정 source/window·slot8 frame/PTS, 모든 원본 좌표/점수/personclass/native 의미를 독립 확인했다. Canonical grant/result/receipt 연결·기존137행 보존과 두 프로세스 종료가 통과했다. Result SHA `a36b53c528e3e8713e2f0f9dec0c7076c34bfac77290e03d78baad6d2c5b7c29`, receipt SHA `42c2e66f5b7eba00adba435ab57df2e677be6655300b4c02aa2aa29c70c9a367`; 근거 `yolo-yolo26l-smoke-review.json`이다.
+
+반환21행·유효@0.5 2행·기하 무효0이며 사람 recall/행동 성능은 미측정이다. Peak allocated/reserved233,915,904/272,629,760bytes, wrapper elapsed29.829888초이며 scored output 수와 추가 warmup forward는 구분한다. 다음 l all45는 진행 중으로 별도 검토한다.
+
+### Detector renderer provenance 수정 소스 수용
+
+수정 renderer SHA `84bcddc8ff5e844cad7840f4d7ea8c433682f4eebc8cb972c79b0c969f1d2f90`, tests SHA `d0aab4df3a1d9b2b07468f8d2824cab1a5390f90777ba6607d643a3cd753c2b0`에서 앞의 네 실제 반례를 다시 적용했으며 모두 거부했다. 독립6시험이 통과했다. 성공·non-synthetic receipt의 경로/command/job/source/input/code 및 canonical read-only job/attempt/context/config/spec/cohort를 연결한다. 기존 comparison SHA `ad7016f934b97316a0616f0a0668b43c86df4d9ac276f3f378674a26effa629c`를 고정하고 바뀐 comparison은 출력 생성 전 거부한다.
+
+실제 수용된 m 전체6,219행을 loader로 읽고7개 native JPEG 해시·크기·source time·slot8 correspondence를 재확인했다. Source finding은 해결됐고 CPU 저장 출력 표시 준비도를 수용한다. 근거 `yolo-panel-provenance-fixed-v2.json`·`yolo-panel-corrected-source-review.json`이다. l/x 실제 완료 전 전체 rendering을 실행/인증하지 않았으며 생성 뒤56panel의 metadata/pixel 검사는 별도다.
+
+### YOLO 저장 집계기 소스 준비도
+
+추가 `summarize_yolo_baselines.py` SHA `026db94af0b275ab4fdb47be102bdc4de1f83e34ce35fa32bcf4235dc8b1992c`와 수정 verifier SHA `84bcddc8ff5e844cad7840f4d7ea8c433682f4eebc8cb972c79b0c969f1d2f90`를 검토했다. 실제 m만 주면 canonical 입력/계획을 검사한 후3모델 미완료로 거부하며 출력은 만들지 않았다. 별도 산술에서 m 정규6,177입력 중 박스 있는1,749입력·2,693행, 진단42입력 중13입력·15행으로 전체유효@0.5 2,708행과 일치했다.
+
+정규/진단 분모·고정 threshold·source/window/slot8 대응을 지키며 recall/FPR/학습 효과는null이다. 디코딩 수와 추론 수, elapsed의 load/warmup 포함, torch peak와 전체GPU 사용량 차이도 명시한다. Source 준비도를 수용하되 실제3모델 집계 산술과 출력 해시는 l/x 완료 뒤 별도로 확인한다. 근거 `yolo-summary-source-review.json`이다.
+
+### 실제 YOLO v3 l 전체45 — 출력 계약 수용
+
+Attempt `c9207abd704c4893b8e54aad5c473db1`의 전체45원본·184,300native프레임·6,219고정창, 실제slot8 frame/PTS와 모든 반환 원본 좌표/점수/class/native 의미가 독립 검사에 통과했다. Canonical source/input/grant/result/receipt, 기존137행 보존과 두 프로세스 종료를 확인했다. Result SHA `e96ed90ecf95e82e604200a6ea95a9fdc253101e83de1ea42d88912defacebe3`, receipt SHA `1e6170057419c38a13108bf3bc0feaf730112b13754e6f729a9f73dbffb8c9d5`; 근거 `yolo-yolo26l-all45-review.json`이다.
+
+반환14,453행·유효@0.5 3,089행·기하 무효0이며 실제 사람 수/recall/학습 효과는 미확정이다. Native inference 합계158.878695초, wrapper elapsed445.761651초, peak allocated/reserved233,916,416/272,629,760bytes를 구분한다. 다음 x smoke가 등록된 큐142/142에서 검토했으며 실제 x 결과와 최종3모델 집계·panel은 별도다.
+
+### 실제 YOLO v3 x smoke — 출력 계약 수용
+
+Attempt `db1f56acc0ea4003bfae8e6b3c407473`의7출력·6영상·24,155native프레임, 모든 source/window·slot8 frame/PTS·원본 좌표·person class·native 의미가 통과했다. Canonical grant/result/receipt, 기존137행 보존과 두 프로세스 종료를 확인했다. Result SHA `da20bc972299246ccf802297c404c38da33439ef502dfaa1ad3d2cdf1ed94040`, receipt SHA `7731e21b1682773b667a228cdb12f719b071463be9bbc0583b1dcb07bc087153`; 근거 `yolo-yolo26x-smoke-review.json`이다.
+
+반환28행·유효@0.5 3행·기하 무효0이며 실제 사람 수/recall/학습 효과가 아니다. Peak allocated/reserved439,168,512/635,437,056bytes, wrapper elapsed26.210700초다. x 전체45와 실제3모델 요약·panel은 아직 별도 검토 대상이다. 재개 시 WEB pending 조회는 성공·답변0이었다.
+
+집계기의 public completion 경로를 repo 상대 경로로 바꾸는 한 줄만 추가됐음을 이전 SHA와 역대조했다. 산술은 동일하며 새 실제 artifact 검토는 `yolo-summary-source-review-v2.json`의 새 SHA에 묶는다.
+
+### 실제 YOLO v3 x 전체45 및 최종6단계 — 수용
+
+Attempt `49f9af8570f84dd59c32f031cf42ea81`의 전체45원본·184,300native프레임·6,219고정창과 slot8 frame/PTS, 모든 원본 좌표/점수/class/native 의미가 통과했다. Result SHA `09abb44f7f713b251e3b0e9943c104dc4ae19818cf7e3de795ef2f4c1f1439fc`, receipt SHA `5487cf9a6f05ff343139b3d756f9bfbece492d4943a13b6c9426f6747dbddd7a`; 근거 `yolo-yolo26x-all45-review.json`이다. 반환17,368행·유효@0.5 3,841행·기하 무효0이며 사람 recall/행동 성공/학습 효과가 아니다. Native inference 합계168.272430초, wrapper elapsed456.137290초, peak allocated/reserved439,169,024/635,437,056bytes를 구분한다.
+
+별도 최종 barrier는6개 실제 완료/result/receipt를 다시 묶고12개 child/supervisor identity의 종료를 확인했다. 큐143jobs/143attempts는 idle이며 v3 이전137행 전부 동일하고 정확히6성공만 추가됐다. 앞선 두 YOLO 실패와 중지된 보조 단계는 보존됐고 재개되지 않았다. 근거 `yolo-final-six-stage-barrier-review.json`; 실제3모델 저장 요약과56panel은 아직 별도 검사 대상이다.
+
+### 최종 실제 저장 요약·56panel — 수용
+
+Public 요약 `records/EXP-0066/yolo-pretrained-baselines.json` SHA `13bda4cc67d0a920d0280e13ffaa3a208d32dbc87b58c3896bf4250fe948e1e3`, local panel manifest `outputs/model-comparison/exp0066/review-yolo-baselines-v1/manifest.json` SHA `e078b4bd3127127df84099f0c9681fcedf4d858d113ac901e44ced92841ae56f`를 실제 바이트에 묶어 수용한다. 집계기 최종 SHA `f257002c4e82b4a87cfa26b52693cd40cb1b6d5b6646835128a15deec88e8acd`, renderer SHA `84bcddc8ff5e844cad7840f4d7ea8c433682f4eebc8cb972c79b0c969f1d2f90`다. Public 상대 경로도 실제 canonical completion의 동일 SHA로 해석되는지 확인했다.
+
+세 모델의 모든 저장6,219행을 독립 집계했다. 정규6,177입력의 박스 있는 입력/박스 행은 m1,749/2,693, l1,922/3,073, x2,396/3,816이다. 별도 진단42입력은 각각13/15,14/16,21/25다. Threshold0.5·분모·elapsed·메모리·실제 attempt/result/spec/source 연결이 맞고 person recall/FPR/finetuning effect는null이다. 박스가 많은 모델의 성능이 좋다는 결론은 내리지 않는다.
+
+이미 검증한 원본 JPEG7개와 실제 저장 FCOS/EVAD-B/EVAD-L/STMixer/YOLOm/l/x 박스로56panel을 각각 독립 재구성했다. 모든 source hash·native slot8 시각·표시threshold·shown행·좌표 축척·원본비율·JPEG/HTML hash가 맞았다. JPEG 압축을 포함한 원본 재구성 대비 전체 픽셀 평균절대차 최대1.954109/255, 박스 테두리 최대32.995773/255로 사전 검사 범위 내였다. 전체화면1회축소와 실제 원본좌표1회축척이며 q번호를 track ID로 해석하지 않는다.16프레임 영상모델과1프레임 YOLO/FCOS의 입력 범위를 구별한다. 검토자 이미지 cloud전송·모델 forward·GPU실행은0이다.
+
+독립 최종 근거 `yolo-final-summary-and-panel-review.json` SHA `c3232ca96c4cf1265f7a84323320edd576d264e16a662f11aab63b1f0d518728`, 독립6단계 barrier `yolo-final-six-stage-barrier-review.json` SHA `8d147c13bd8565613c1c8cc9c1042b88ece661010b2a7296e2b0e0209c3ba068`이다. Executor 최종 report SHA `e761c0ab7a81ddc1b1642d0ed7ca6a7cc3335ef490298cf24ce50094223877c3`와 aggregate SHA `7f7dc8838f6cf3aeb06b5789db9d5b5b3c7a2a6661278fb752d7a6077c852b0b`의 최종 상태·수치·한계도 대조했다. Root의 이번 panel 브라우저 전달과 후속 publication은 별도 책임이며 이 픽셀 검사만으로 실제 브라우저/원격 게시를 인증하지 않는다.
+
+### 종료 범위와 남은 일
+
+이번 실제 baseline 및 저장 표시 독립 검토는 완료다. 실행 중 발견한 EVAD 좌표·초기 YOLO guard·renderer provenance·FP viewer frame 동기화 문제와 수정 전 실패를 삭제하지 않았고, 수정 후 실제 근거에만 수용을 부여했다. 과거 부분 웹 checkpoint의 당시YOLO0성공 snapshot과 별도 review SHA는 그대로 보존했다. 향후 detector/backbone 미세조정, 남은10개 보조 단계, 새 주석 QA 답변 반영, 사람 검수 precision/F1과 독립 일반화 평가는 미완료다. 기존 corpus 주석을 전부 사람 검증 GT로 승격하지 않으며 학교45·보호test를 학습/threshold 선택에 사용하지 않는다. 모델·기본서비스·큐·생산소스 변경이나 추가실행을 승인하는 판정이 아니다. Root 지시에 따라 검토자는 commit/push 없이 소유 문서와 runtime 증거만 인계한다.
