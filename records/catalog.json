@@ -5308,6 +5308,81 @@
       "task_id": "task_7f2aba8173dc",
       "title": "학교 CCTV 행동 후보 진단 · 다음 학습 자료 준비",
       "worker_opinion": "저장 점수 진단·출처 검증·검수 자료 생성과 보강 후보 조사를 완료했다. 시간 겹침 후보는 사람·문 대응 검수 전이며 학교 행동 성능 개선은 미측정이다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-08T06:07:47.589226+00:00",
+      "attempt_id": "partial-comparison-label-review-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_1f7e21e2479d",
+      "evaluated_model": "기존8개 + YOLO26m/l/x 준비 · EXP-0062 AFTER 및 EXP-0064 기준 유지",
+      "evidence": [
+        {
+          "artifact_id": "exp0066-label-01-video",
+          "kind": "video",
+          "label": "학습 라벨 1 · 보이는 사람의 박스 누락 확인"
+        },
+        {
+          "artifact_id": "exp0066-label-02-video",
+          "kind": "video",
+          "label": "학습 라벨 2 · 보이는 사람의 박스 누락 확인"
+        },
+        {
+          "artifact_id": "exp0066-label-03-video",
+          "kind": "video",
+          "label": "학습 라벨 3 · 보이는 사람의 박스 누락 확인"
+        },
+        {
+          "artifact_id": "exp0066-label-04-video",
+          "kind": "video",
+          "label": "학습 라벨 4 · 보이는 사람의 박스 누락 확인"
+        },
+        {
+          "artifact_id": "exp0066-label-05-video",
+          "kind": "video",
+          "label": "학습 라벨 5 · 보이는 사람의 박스 누락 확인"
+        },
+        {
+          "artifact_id": "exp0066-label-06-video",
+          "kind": "video",
+          "label": "학습 라벨 6 · 보이는 사람의 박스 누락 확인"
+        }
+      ],
+      "execution_status": "inconclusive",
+      "experiment_id": "EXP-0066",
+      "limitations": [
+        "이 기록은 부분 스냅샷이며 전체 비교 완료가 아니다.",
+        "YOLO 시험2회는 각각 초기 모드 검사 오류와 자식 실행 전 GPU 자원 거절이다. 성공 출력은0이다.",
+        "보조 분류기3개 학습은 사람 검출기 가중치를 수정하지 않으므로 박스 개선 증거가 아니다.",
+        "학교 사람·행동 성공과 학습 전후 효과는 미측정이다.",
+        "정상 검증 자료의 앉기 편중과 보행·대기·접근 후 돌아가기 부족은 남아 있다.",
+        "6표본 검수는 전체797라벨의 사람 주석 완전성을 인증하지 않는다.",
+        "보호45개와 EXP-0064 시험 자료를 학습 또는 임계값 선택에 넣지 않는다."
+      ],
+      "metric_definitions": "records/EXP-0066/review-checkpoint-metrics.json",
+      "metrics_path": "records/EXP-0066/review-checkpoint-metrics.json",
+      "metrics_sha256": "d1732ce5689b3ecbdf09305067efae8405c6ad90106353ee50b740c2ba129720",
+      "next_step": "새6질문의 사람 박스 누락을 확인하고 학습 후보를 보완한다. GPU 여유 조건 충족 뒤 YOLO 학습 전 출력을 확보하고 검출 모델 추가 학습 전후 비교를 이어간다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "1afe54df62df40e5ec8052904d3d786f7274a4a9290d782275b138f38b1aa323",
+      "report_path": "docs/experiments/EXP-0066-review-checkpoint.md",
+      "report_sha256": "1b27aae942fdb662f013eda9942573ff0fc7554e3d8d218482d1ecc6353ebb1a",
+      "review_binding_path": "docs/reviews/EXP-0066.binding.json",
+      "review_path": "docs/reviews/EXP-0066-review-checkpoint-review.md",
+      "review_sha256": "9a5d54f0b8e4ee403880040c65a72b2ea2419fd8b87d62fbf0e6c8f6e6912516",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "d1732ce5689b3ecbdf09305067efae8405c6ad90106353ee50b740c2ba129720",
+      "reviewed_report_sha256": "1b27aae942fdb662f013eda9942573ff0fc7554e3d8d218482d1ecc6353ebb1a",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "기존8개 모델의45원본 처리와3개 보조 분류기 학습을 보존한 중간 기록. YOLO 출력과 검출 추가 학습 전후는 미완료이며, 새로운 사람 라벨 누락 확인6영상을 제공한다.",
+      "synthetic": false,
+      "task_id": "task_7c78c104046f",
+      "title": "모델 비교 중간 기록 · 추가 학습 라벨 검수",
+      "worker_opinion": "기존 실행과 새 준비 상태를 분리했다. 새6표본의 실제 가시 사람 주석 누락은 사용자에게 확인하며, 전체 자료의 정답으로 확대하지 않는다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

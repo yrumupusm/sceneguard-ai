@@ -1,0 +1,14 @@
+{
+  "registration_sha256": "1afe54df62df40e5ec8052904d3d786f7274a4a9290d782275b138f38b1aa323",
+  "review_path": "docs/reviews/EXP-0066-review-checkpoint-review.md",
+  "review_sha256": "9a5d54f0b8e4ee403880040c65a72b2ea2419fd8b87d62fbf0e6c8f6e6912516",
+  "review_status": "accepted_for_comparison",
+  "reviewed_sources": {
+    "EXP-0066": {
+      "metrics_sha256": "d1732ce5689b3ecbdf09305067efae8405c6ad90106353ee50b740c2ba129720",
+      "report_sha256": "1b27aae942fdb662f013eda9942573ff0fc7554e3d8d218482d1ecc6353ebb1a"
+    }
+  },
+  "schema_version": 1,
+  "synthetic": false
+}

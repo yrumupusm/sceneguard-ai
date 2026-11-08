@@ -1,6 +1,8 @@
 # EXP-0066 joint 모델 및 실제 실행 독립 검토
 
-**최신 판정: 수정 후 8개 모델의 실제 smoke 계약을 확인했다. 이전 두 EVAD smoke의 좌표 오류 및 STMixer 첫 실패는 그대로 유지한다.** root의 실제 렌더링에서 발견한 좌표 몰림을 독립 재현했고, vendor in-place 변경과 adapter 이중 역변환을 수정한 새 결과만 받아들였다. 아래 이전 통과 기록은 실행 출처·개수·유한값·shape 검사 이력으로 보존하며 올바른 좌표 인증으로 재사용하지 않는다. Head 구현·실제 CPU 준비도 별도 검토해 수용했다. 8개 모델 모두 전체45 실제 결과의 계약 검증을 통과했으며, 정확한 결과·영수증을 묶은 immutable raw8 완료 증거를 발행했다. 최종 실행 후보 v1의22개 alias 창 입력 오류를 차단한 뒤 수정된 commit `36d14d4`와 v2 후보를 검토해 고정21단계 실행 준비도를 수용했다. 실제 실행에는 정확한 root GO가 필요하며, 실제 head 결과와 행동 성능은 아직 인증하지 않았다.
+**최신 판정(2026-11-08): 수정 후8개 모델의 실제 smoke·전체45 출력 계약, 고정21단계의 실행 준비도와 root GO, 실제 완료 head3개(VideoMAE·V-JEPA2·V-JEPA2.1), 학교 저장 점수2개(VideoMAE·V-JEPA2)를 독립 검증했다.** 각 결과의 정확한 SHA와 검사 범위는 아래 순차 기록에 있다. InternVideo smoke/full까지 총11단계가 통과했고, 사용자 우선순위 정정에 따라 나머지10개 보조 단계는 root가 단계 경계에서 보류했다. 나머지4개 head 및 후속 학교 점수·최종 전체 지표는 아직 검토 완료가 아니다. 기존 EVAD 좌표 판정 철회·STMixer 최초 실패·alias 입력 계약 차단 이력은 그대로 보존한다.
+
+전체11후보 유지와 추가 미세조정 전후 평가의 설계 요구, 선택 주석 개수 감사, 부분 게시 commit `ef8508e` 및 원격 ref를 확인했다. 현재 frozen-head 학습은 native 검출 박스를 바꾸지 않는다. Weak full-scene/자동 matched-query 조건부·sitting-only 검증 수치를 사람 검수 precision/F1·동일 오경보율·학교 박스 회복·침입 완료·독립 일반화 성능으로 인증하지 않는다. 향후11후보의 detector/backbone 추가 미세조정은 현재 grant의 실행 범위가 아니다. 보조 단계 보류 뒤 root가 실행 저장소를 게시 commit으로 동기화하고 YOLO 준비 소스를 `a8d6e852800c7266eba663419fd9c916b7624a33`에 커밋했다. 옛 보조 grant는 재개되지 않았다. 수정된 FP viewer의 실제 프레임 동기화는 아래 v2 검토에서 통과했다. YOLO baseline v1은 실제 최초 smoke의 loader guard 실패로 중단됐으며, 앞선 준비도 승인은 이 실패로 대체됐다. 수정 commit `280f2f3`과 새 v2 준비도/GO는 아래에서 통과했으나, 실제 v2는 child 생성 전 GPU 여유6144MiB 검사에 막혔다. 두 실패를 보존한 별도v3의 m smoke7출력은 이후 실제 검토를 통과했다. 나머지 YOLO smoke/전체 결과는 실제 완료 뒤 별도로 검토하며, 앞선 부분 웹 스냅샷의 당시0성공 상태는 변경하지 않는다.
 
 2026-11-07. Orca Task `task_a005e3d1bd50`, Dispatch `ctx_d755ff30c48e`. 이전 encoder 준비도 검토는 그대로 보존한다. 이 문서는 실제 도착한 근거만 순차 기록하며, 미완료 실행·task head·행동 성능을 인증하지 않는다. 검토자는 GPU/모델 forward/설치/큐 변경/생산 코드 수정/commit을 하지 않았다. 시작 시 WEB-0005 `pending --include-acknowledged` 조회는 성공했고 요청은 0개였다.
 
@@ -439,3 +441,124 @@ Root 요청 `msg_77f8d0e5c9ba`의 감사 source SHA `9ccf66dd3861fb39b561031261d
 이는 전체 보이는 사람의 완전한 정답이나 모든 origin 의미가 검수됐다는 뜻이 아니다. 검증 음성의 sitting 편중과 선택 주석 범위를 유지하며 detector training release는false다. 원본 픽셀·보호 test/학교 라벨·모델을 읽거나 실행하지 않았다. 근거 `paired-detector-label-count-review.json`이며 공개 `paired-data-readiness.json`은 실제 v2 감사와 동일한 내용이다. 초기 corner-list 오계수 감사는 사용하지 않았다.
 
 앞서 지적한 results의 진행 전 문구와 YOLO addendum의 답변 대기 문구는 모두 현재 사실에 맞게 수정됐다. 현재 부분 게시 문서·스냅샷을 `publication-current-corrections-review.json`에 정확한 SHA로 묶었다. 실제 게시 commit/checkout 바이트 검증과 전체 작업 완료는 별도 대기다.
+
+### 실제 중간 게시 commit·원격 ref 검증
+
+별도 checkout의 커밋 `ef8508e1c0aa9de882c7c66e2938cd4a1078c861`은 부모 `36d14d4e01987d34eba066fb10313d2f98c21a3f`와 정확한12파일 스냅샷(README 추가 포함)을 가진다. Commit tree·checkout 파일 SHA가 `publication-snapshot.json` SHA `9c9827f9fe6e82c13e8280e237b5440f24a36543b96b63eda864ca50d44c2e0f`와 모두 일치하고 checkout은 깨끗했다. README도2개 완료 head와11후보·전후 추가학습 미실행·학교 개선 미측정을 구분한다.
+
+읽기 전용 `git ls-remote`로 실제 GitHub main ref가 위 게시 commit임을 독립 확인했다. 실행 저장소는 여전히36d14d4이며 활성 grant의15개 source 바이트가 그대로다. 검토자는 fetch/pull/merge/reset/push나 큐 변경을 하지 않았다. 근거 `publication-exact-commit-review.json`·`publication-remote-review.json`이다. 게시된 내 검토 문서 스냅샷은 SHA `6a2d68542b42a1fb4fb748e1dfff1ce879fc3557323b13b3b9260b071542fd3f`까지이며, 이 게시 검증 자체와 이후 실제 단계는 후속 로컬 기록이다. 부분 게시 완료는 전체7head/최종 웹/11후보 추가 미세조정 완료를 뜻하지 않는다.
+
+### 실제 head 단계 검토 — V-JEPA 2.1 전체 특징
+
+V-JEPA 2.1-L `feature-full` attempt `97813fdfc281432b9e188c6f5da524b0`의3,984창·1,024차원 특징이 보존 native output과 모두 일치했다. 고정 source/sample/픽셀 영수증, train 양성1,571/음성1,711·validation 양성411/음성291, 실제 grant/predecessor·canonical binding, 이전131행 보존과 두 프로세스 종료를 확인했다. Result SHA `2c006134164fde4734510d33d01c16816401b22add106feabc6bbb28d69f2353`, receipt SHA `200f94a3f16927512f11677bf48ff00f5c7a137ad3a1f5e78e20d6ef2fd4d4ae`; 근거 `head-vjepa21-full.json`이다. 학습 선택·학교 점수·행동 성능 검증은 별도다.
+
+### 실제 head 단계 검토 — V-JEPA 2.1 학습·선택
+
+Train attempt `d730b1e961144182bca772a27e0919bb`의100 epoch 기록·가중치/selection/입력·predecessor·grant binding, 이전132행 보존과 실제 프로세스 종료가 통과했다.3,984 sample key/분할/라벨, train-only 평균·population 표준편차·class weight를 독립 계산했다. 재학습·모델 forward는 없다.
+
+최소 validation CE의 최초 epoch79, float64 nextafter 임계값 `0.000045745797251584015`, 공식 참조 TP411/FP14/TN277/FN0이 저장된702개 검증 점수/라벨의 재계산과 일치한다. 참조 FPR14/291·precision `0.9670588235294117`·recall1.0은 weak full-scene·sitting-only 검증 범위이며 낮은 선택 임계값을 사람 검수 오경보율 보장으로 해석하지 않는다.
+
+Head SHA `cb6d94df31fd8d33dbe36c9f7591c43969012c78866221545b91d12a2fef10c9`, result SHA `d8d5213868f4ce8104d608f68375f1736cad09777bc595085ce44d99a7407351`, receipt SHA `4409520524a0509f904e8e15768b3e9e8dedebbe7b16e4fb0a26ab684557587b`; 근거 `head-vjepa21-train.json`이다. 현재3/7head 검토 완료이며 나머지4개 head와 이 모델의 실제 학교 점수는 별도다.
+
+### 실제 head 단계 검토 — InternVideo smoke
+
+InternVideo-Next-S2-L `feature-smoke` attempt `18b5c1842d9146688a2555386f7845c6`의40창·1,024차원 특징/native output, train32/validation8 및 고정 양성6/2·음성26/6, source/sample/픽셀 영수증, grant/predecessor·canonical binding, 이전133행 보존과 두 프로세스 종료가 독립 검사에 통과했다. Result SHA `b385088429db055aa1b7569efe0978fe3e502e48e1a941515d8c2870c2c0d46e`, receipt SHA `7c42a564ddb0b43e8d035273a3b00f4003cbfe3e7fa6fe7cdd4676662ffa912e`; 근거 `head-internvideo-smoke.json`이다. 전체 추출·학습·학교 점수·의미 성능은 별도다.
+
+### 실제 head 단계 검토 — InternVideo 전체 특징
+
+InternVideo-Next-S2-L `feature-full` attempt `6290bdf8618b4748a905270b74bf0a8c`의3,984창·1,024차원 특징이 보존 native output과 모두 일치했다. 고정 source/sample/픽셀 영수증, train 양성1,571/음성1,711·validation 양성411/음성291, 실제 grant/predecessor·canonical binding, 이전134행 보존과 두 프로세스 종료를 확인했다. Result SHA `3bee6618c0711622807252fe6256262cb5e0e1d79d382c9755411fa111f5503c`, receipt SHA `2e31524e2ba39f98e44bd4e9d448ddaec58704d0cc4a2886991d37a1d477dfee`; 근거 `head-internvideo-full.json`이다. 학습 선택과 학교 점수는 아직 별도다.
+
+### 검증 참조 오탐 뷰어 — 실제 자료 수용, 재생 박스 동기화 차단
+
+사용자 요청을 전달한 root `msg_9a1abcad7f68`에 따라 새 local-only `review-validation-fp-v1`을 검토했다. WEB pending 조회는 성공했고 비어 있었다. Renderer SHA `312df6f06b018d65b30cb4872d9328336d18fe1c29832d3782dbb294bb2937cb`, review SHA `2abc5b49efa4a1bc594f81ced0fc19ced7b8d7cabdc46d328a36145520911e68`, HTML SHA `263463ff20e8088fa8f9a51e33591ab07f5500dde2f12eb554ff5a2871854957`를 대상으로 했다.
+
+세 실제 head의702개 validation sample key/라벨/점수와 고정 임계값에서 각각14개 참조 FP, 합집합41창/15source를 독립 재구성했다. 모두 선택 라벨 `sit_down_floor`이며, viewer의123개 score/threshold/판정 값이 맞다. 원본·라벨 SHA, 두 origin의 모든 프레임별 주석/target 표시, 원본 native PTS와 연속3FPS 문맥을 대조했다. 실제41개 문맥 영상의1,025프레임과 원본 축소 이미지 비교 최대 평균 절대 차이는2.3857 RGB level로 H264 손실 미리보기 범위다.123개 입력 미리보기의1,968프레임·해상도·7.5FPS,656개 원본 선택 슬롯의 준비 영수증 RGB SHA 및 독립 OpenCV letterbox RGB SHA가 일치했다. 압축 영상 자체를 모델 텐서 바이트라고 표현하지 않는다. 근거 `validation-fp-v1-artifact-review.json`이다.
+
+그러나 **실제 재생 중 박스 동기화는 수용하지 않았다.** 별도 로컬 GPU-disabled Chromium에서 `requestVideoFrameCallback`의 제시 프레임 시각과 실제 canvas draw 기록을 관측했다. 첫 case의0.333333–5초15프레임 모두 새 프레임 제시 시 이전 프레임 박스를 표시했고50ms 뒤에도15/15가 뒤처졌다. 코드가 `timeupdate`에서만 `floor(video.currentTime*3)`로 갱신하므로 영상 프레임 제시와 동기화되지 않는다. 박스가 사람을 따라가는지 검수하는 목적에 영향을 주며, annotation 자체가 틀렸다는 증거로 사용하면 안 된다.
+
+Root에 `msg_67c52c80ef4f`로 실제 frame callback의 `metadata.mediaTime`에 맞춘 draw와 seek/source-change 초기화·fallback 수정을 요청했다. JS-only 수정으로 기존 미디어 재생성은 필요하지 않다. 근거 `validation-fp-v1-browser-sync.json`과 자체 관측 script이며 screenshot·클라우드 미디어·모델 forward는 없다. 별도 root 브라우저41case/필터/seek/rewind/123preview 통과 기록은 읽었지만 이 프레임별 지연 검사를 대신하지 않는다. UI 숫자는6유효숫자로 표시되며 현재123항목에서 임계값과 같게 반올림되어 판정이 모순돼 보이는 사례는 없었다. 실제 행동 의미·모든 사람 주석·origin 정답은 여전히 미검증이다.
+
+### 사용자 우선순위에 따른 단계 경계 보류 체크포인트
+
+Root `msg_ab9e05c91957`는 사용자 대화의 우선 목표를 YOLO26m/l/x·EVAD-B/L·STMixer 검출 모델의 학습 전후 비교로 정정하고 기존 blanket sequence의 보조 head 추가 enqueue를 명시적으로 보류했다. 이 보류는 실패나 retry 사유가 아니며 detector 학습을 옛 grant로 시작할 권한도 아니다. 검토자는 새 실행을 승인하거나 큐/프로세스를 변경하지 않았다.
+
+`coordinator-hold-checkpoint-v1.json`에서 실제11개 완료 단계(3개 완료 head + InternVideo smoke/full)의 모든 result/receipt 해시와22개 child/supervisor identity의 종료를 확인했다. Canonical jobs/attempts는 각각135개, 기존 성공129/실패6이며 queued/running/reserved는0이다. 현재11단계는 모두성공이고 기존6실패를 이번 보류의 실패로 세지 않는다. 실행 HEAD36d14d4와 bound source15개도 그대로다.3개 head·2개 학교 점수 검토와41개 FP 자료 검증은 보존하며, viewer 재생 박스 지연 수정 검토는 별도로 남아 있다. 보류 이후 추가 보조 단계 검토는 root의 재개 지시와 실제 새 결과가 있을 때만 진행한다.
+
+
+### FP viewer v2 — 실제 프레임 동기화 수정 수용
+
+Root의 JS-only 수정은 renderer SHA `d4ac41208be9063b36af9ec30d1ba8dddd2cb53b3bb4934cce6b2a21afc83aa1`, HTML SHA `8a026271f3a8c00c65131dac09a3c088493aa555d0d59efa6c18248ed167c0bc`다. `requestVideoFrameCallback`의 실제 `metadata.mediaTime`으로 박스를 그리며 source generation과 callback 취소/초기화를 추가했다. 별도 로컬 GPU-disabled Chromium에서15개 제시 프레임 모두 즉시 및50ms 뒤 정확한 box frame을 표시했고,3개 source의4초→1초→0초 seek/rewind와 두 origin 전환18개 검사가 통과했다. 이 범위의 프레임 지연 차단을 해제한다.
+
+Review JSON/embedded payload 및41문맥·123입력 영상의 모든 해시는 v1과 같으며 재생성되지 않았다. `viewer-frame-sync-v2/patch.json`이 옛/새 HTML과 renderer를 연결한다. 근거는 `validation-fp-v2-browser-sync.json`과 `validation-fp-v2-acceptance.json`이다. 최초 실패와 v1 검토를 보존한다. 이는 브라우저 표시 검증이며 주석 의미·모든 사람 정답 확인은 아니다.
+
+### YOLO26 pretrained 소스·실제 명세 검토
+
+Root 요청으로 새로운 m/l/x pretrained baseline 준비도를 검토했다. 정확한 source commit은 `a8d6e852800c7266eba663419fd9c916b7624a33`이다. 세 실제 spec SHA는 m `80525b9a4ca9951aa2bdc9d92e5af2fd4d0727c021357d3831eb442657353d7a`, l `551aba0652e57ce8f5303fc0c2a3d8b42efad427fe28d522f1e6817948fe0d5b`, x `e314c38d874e3a73903fb387e7f611a07c067a16d017e3a3367d04012c45136f`다. 각357개 checkpoint/vendor/config/environment binding과12개 committed source가 실제 바이트와 일치했다. 기존 환경을 변경하거나 모델을 생성·forward하지 않았다.
+
+독립12개 CPU adapter/queue contract 시험 및 설치된 Ultralytics8.4.192의 실제 letterbox·native end2end filtering·Results 좌표 복원 CPU 검사가 통과했다. 가로/세로/홀수 크기 네 조건에서 원본 좌표를 한 번만 복원하고, 겹친 두 person row는 억제하지 않으며 class1과 정확히0.05인 점수는 제외한다(공식 비교는 `>0.05`). 최초 독립 기하 fixture는 resize 정수 반올림을 누락하여 실패했으며 fixture를 고쳐 검증했다. 이 실패 로그는 보존했고 생산 코드 오류로 세지 않는다.
+
+실제 원본16칸 중 slot8 하나만 BGR로 입력하고 FP32·640×640·class0·추가 NMS 없음·표시0.5를 고정한다. `box_frame_index`, `box_pts`, `model_input_available_after_pts`는 실제 slot8 native 시각을 명시하며 옛 창 끝 시각과 다르다. 표준 predictor의 최초 warmup에는 실제 첫 입력을 이용한 추가 forward와 synthetic NMS warmup이 있다. 따라서6,219개는 scored output 수이며 총 forward 호출 수는 별도 미측정이다. `native_speed_ms`는 warmup을 제외하고 바깥 elapsed는 포함한다. Root와 실행자에게 이 구분을 전달했다.
+
+근거는 `yolo-source-bindings-v1.json`, `yolo-committed-contract-tests.log`, `yolo-native-postprocess-v1.json`이다. Source/spec 수용은 실제 GPU 결과나 사람 recall·행동 precision/F1·추가 학습 효과 인증이 아니다. 실제 controller/candidate의 별도 검토와 root GO가 필요하며 옛 보조 단계 보류는 유지한다.
+
+### YOLO bounded 6단계 실행 준비도 — 정확한 candidate 수용
+
+Candidate `candidate-6a73c5e2da1b2833.json` SHA `6c4b10bc8b4b1d2686726ea22dc3fbc94fd1e8558c85d22884f1be771b9a4f99`, controller SHA `b6d4a22ecab9eccdc9796526225be926c71e0ff3c39c92e8a283529435389f4e`를 전부 읽고 세 실제 `input_contract`를 독립 재계산했다. 소스/환경/가중치/원본/PTS/계획/보호 baseline이 일치하고, 최초135jobs/135attempts는 정확히 보존·idle이었다. 실행자의8개 CPU 반례 시험도 검토자 소유 임시 경로에서 독립 통과했다. 미승인 GO·잘못된 source/grant·부분 단계·enqueue 실패·가짜 성공·변경된 시각/좌표/의미·중복/누락 창·기존 row 변조를 거부한다.
+
+독립 release `yolo-fixed-sequence-execution-release-v1.json` SHA `edcd72fa543ef479c7e7a111cf7f336855eb50995b4ff30f0d2c53e15d5e9556`는 `accepted_yolo26_baseline_sequence`이며 controller의 모든 REVIEW_KEYS를 정확히 복사해 묶었다. m smoke7→m all45→l smoke7→l all45→x smoke7→x all45의6단계 준비도를 수용한다. 같은 committed source/spec·실제 canonical 성공 predecessor·프로세스 종료·기존 row 보존을 확인하고 실패/미확인 시 자동 retry나 skip 없이 중단하는 조건이다. 전체 실행 timeout은 각14,400초로 고정돼 있다.
+
+이 acceptance는 root의 새로운 정확한 GPU GO를 대체하지 않으며 실제 출력은 아직 없다. 실행 명령·큐 변경·모델 forward·학습은 검토자가 하지 않았다. 기존 보조 head hold는 유지한다. 이후 실제 smoke/전체 출력의 좌표·native time·수치·영수증 검증은 별도이며, 사람 recall/행동 precision/F1/학습 효과는 여전히 미측정이다.
+
+Root는 새 GO `msg_3346654ef191`와 `root-yolo-release-v1/root-go.json` SHA `8d8e51fa39bde2d19611adc27b01966e637ff66c4b3c25af48d15f85e85b33f6`를 발행했다. 독립적으로 `checked_grant`의 정확한 release/REVIEW_KEYS/source/context/기존135행 보존 검사를 통과했다(`yolo-root-go-acceptance.json`). 이 새 grant는 위6개 pretrained baseline 단계만 허용하며 옛 보조 학습은 계속 보류한다. 실제 완료 출력은 다음 기록에서 별도로 검증한다.
+
+### YOLO v1 실제 smoke 실패 — 준비도 판정 대체·후속 실행 차단
+
+실제 m smoke attempt `028841bc84c24f37a1bd2026d025c0fc`는 `load_model`의 `Native end-to-end COCO person detector required` guard에서 child exit1로 실패했다. 모델 입력/score 단계 전에 끝나 windows/result 출력은 없고 scored output은0이다. Receipt SHA `c504377dc92bfcffe990caf3c1f47e4337d5c4b9c0986df920d5a8b283157065`, child log SHA `bb944fce47f2675c342c268e04ad10dc71e8d23b16758d9ef5df0d95215e3a7e`를 보존했다. 독립 검사에서 child/supervisor identity 모두 종료했고 큐136/136·idle, 기존135행은 정확히 같았다. Controller STOP가 다음 단계와 자동 retry를 차단한다.
+
+**v1 준비도는 이 실제 실패로 대체되며 더 이상 후속 실행을 허용하지 않는다.** CPU 합성 결과와 설치 후처리 검사는 초기 compound 모델 guard의 실제 checkpoint 상태를 확인하지 못했다. 이 검토 한계를 인정하고 기존 승인/실패를 지우지 않는다. 설치 source에서 predictor는 `nms=False`를 AutoBackend `end2end=True`로 전달하고 backend가 fusion 전에 mode를 선택한다. Adapter는 그보다 먼저 이미 선택된 mode가true인지 요구하므로 저장된 기본 mode와 branch 보유 여부를 혼동했을 가능성이 있다. 현재 compound guard만으로 어느 조건이 실패했는지 확정하지 않으며 root의 CPU 메타데이터 진단을 기다린다.
+
+근거 `yolo-v1-failure-checkpoint.json`이다. 이후 root 소유 수정·실제 branch capability/선택 mode 반례 시험·새 committed source/revision/명시 grant가 필요하다. 기존 실패를 retry로 덮어쓰거나 옛 보조 head를 재개하지 않는다.
+
+
+Root의 실제 CPU inspection SHA `18e2b60c897e303f3a0fe01e3ad47b024efd02ebf0fb91918d9eaeb8a718cbb0`를 읽었다. 세 checkpoint 모두 detect/person0/80classes·one2one_cv2/cv3 보유·CPU only·forward0이고 현재 end2endfalse/_end2end 없음이다. 설치 getter/공식 predictor/backend 선택 순서와 일치하므로 초기 mode를 branch capability로 오인한 guard 원인을 확인했다. 양쪽 branch가 non-None인지 확인하고 공식 setter로 선택한 뒤true 재확인, 실행 후 backend mode/FP32 guard 유지, 지원되지 않는 branch/default-false지원 branch 반례 시험을 root에 권고했다. 이는 검출 threshold나 weights 완화가 아니며 검토자가 구현하지 않는다.
+
+### YOLO v2 수정 소스·정확한 새 실행 준비도 수용
+
+수정 commit `280f2f3944a1e5f00051d3c92657024d84ad9aee`의 adapter SHA `090b7b03342df01a0068ae9e5c4351b5c4a4a077a62ae357eeee1b3ee45f09d0`는 양쪽 native branch 존재를 확인하고 공식 setter로 end2end를 선택한 뒤true를 재확인한다. 기존 predict의 native mode/FP32 guard·고정 nms=False·threshold·weights·specs는 유지한다. Root의 실제 세 checkpoint CPU setup v2 proof는 loadedFalse→setterTrue→backendTrue/FP32/forward0을 보여 준다. 검토자는 이 근거를 읽었으며 직접 실제 모델을 생성/forward하지 않았다.
+
+독립13개 committed source/queue 시험,8개 v2 controller 시험,7개 추가 guard 반례(각 branch 없음·잘못된 task/class·무효 setter·실행 modefalse·FP16)가 통과했다. Controller v2는 새 directory/revision 및136행 보호만 달라졌고 실패v1의 controller·STOP·영수증·release를 정확히 보존했다. 실제 세 input contract를 다시 계산하고 idle136jobs/136attempts와 새 committed source/vendor/environment/weights를 확인했다.
+
+Candidate SHA `61b845f2d83f73fa253cd1ce0c62efca06c9c1881169b9264d386e338cad1d25`, controller SHA `61e37e0fa9a55347a1550dd2d07be3dd48e490b795450a3efd2bbd069ea5618d`를 묶은 독립 release는 `yolo-fixed-sequence-execution-release-v2.json` SHA `d4ec3128d3d15f2a191a332138b5b0a45d140ea4199371ab609e7bbca518d757`다. 동일한6개 pretrained baseline 단계의 준비도를 새로 수용하며 새 root GO가 별도로 필요하다. v1 실패를 성공으로 바꾸지 않았고 실제 v2 GPU 결과·행동 성능·추가 학습 효과는 아직 인증하지 않는다.
+
+새 root v2 GO `msg_bc3fa7997332`와 `root-yolo-release-v2/root-go.json` SHA `df604fc67d3149c91def95aca564de199848b0b1b9c19069fd90363f91bf7360`도 독립 `checked_grant` 검사를 통과했다. `yolo-root-go-v2-acceptance.json`에 정확한 commit/release/context binding을 보존했다. 이 GO는 실패v1을 재사용하지 않으며 보조 head hold를 해제하지 않는다.
+
+
+### YOLO v2 실제 자원 차단 — 수정 모델 실행 전 실패
+
+v2 m smoke attempt `30c2ba8b219e4ad2948105d7557004ec`는 canonical `Action training requires at least 6144MiB free` guard에서 child 생성 전에 실패했다. child PID/identity/exit code는 모두null이며 output directory도 없다. 실제 수정 모델 forward나 scored output은0으로, 이 실패를 수정 adapter의 또 다른 오류라고 해석하지 않는다. 공통 자원 함수의 역사적 오류 문구가 action training이어도 실제 등록 command는 model-compare다.
+
+독립적으로 실제 실패 receipt의 모든 canonical registration 필드를 job row와 대조했다. Receipt SHA `3a6477c6f0413173cb04a21df4897498284350505e7635e75d895979144154d3`, v2 STOP SHA `6c2f93407bd859c43296c2c7fd1441124719f16ed989449a91fedc43a83762e0`를 보존했다. Supervisor identity는 종료됐고 큐137/137·idle, 기존136행은 정확히 같다. `next_pair`는 STOP로 후속 단계를 거부한다. 근거 `yolo-v2-resource-failure-checkpoint.json`이다.
+
+v2는 중단 상태이며 재실행/실패 행 retry/자원 기준 완화/다른 GPU 작업 종료를 하지 않았다. 이후 root의 자원 판단과 별도 revision/정확한 GO가 필요하며 실제 smoke·전체 결과·행동 성능은 아직 없다.
+
+### 여섯 라벨 검수 자료와 부분 웹 스냅샷 검토
+
+Root가 별도 소유를 지정한 `docs/reviews/EXP-0066-review-checkpoint-review.md` SHA `9a5d54f0b8e4ee403880040c65a72b2ea2419fd8b87d62fbf0e6c8f6e6912516`에 정확한 부분 보고서/측정값/스냅샷 해시를 묶어 `accepted_for_comparison`으로 기록했다.3,984주석 감사행·6층 선정·기존8검수/15FP 원본 제외·보호 test/group 및 학교 source 제외, 실제150프레임 RGB/nativePTS/두 origin 주석·left/right 박스 영상과16개 측정값이 독립 재계산에 일치했다. 첫 자체 count fixture는 origin1만 세어1,330을 기대했으나 실제1,346은 어느 origin이든 해당하는 합집합이었다. 행 전체는 처음부터 일치했으며 fixture를 수정하고 초기 로그를 보존했다. 생산 자료 오류로 세지 않는다.
+
+검수 질문은 아직 등록되지 않았고 의미 GT·training release는false다. 부분 게시 수용은 전체 비교/YOLO 성공/추가 학습 효과/실제 웹 전달 인증이 아니다. 근거 `detector-label-qa-review-v1.json`·`partial-web-checkpoint-review-v1.json`과 위 별도 리뷰를 따른다.
+
+### YOLO v3 — enqueue 전 자원 대기와 정확한 준비도
+
+v3 controller SHA `5f575ed8b32428c11334fd5cefb573ef3eb20db8adfa06511c3c262b59ec18bb`는 기존6144MiB 함수로 stage 생성 전 및 enqueue 직전 확인을 추가한다. 여유 부족/조회 오류는 명시적인 wait75·zeroenqueue로 남긴다. 같은 grant/config/source/입력과 실제 job 부재를 확인한 zeroenqueue 준비만 이어갈 수 있으며 enqueue 시작·실패·다른 grant·동일 job 충돌은 재개하지 않는다. Canonical lock·자원 검사·실패 STOP·no retry는 그대로다. 사전 확인 뒤 자원이 줄어드는 race까지 성공으로 보장하지 않는다.
+
+독립12개 CPU controller 시험과 세 실제 input contract 재계산, 현재137행 보존/idle 및 두 실패v1/v2의 controller/STOP/receipt/release 해시 검사가 통과했다. Source는 수정 commit `280f2f3944a1e5f00051d3c92657024d84ad9aee` 그대로이며 weights/spec/threshold는 변경하지 않았다. Candidate SHA `88635a7fefa5fae3b9259cdf55277cc585d8aefaf3f3ce32453c5eb2f315ed52`에 대한 새 release `yolo-fixed-sequence-execution-release-v3.json` SHA `c6cba3bf50a2f07af4a520f752d02423d77bd692ce2d6b43291f62b188687178`를 수용했다.
+
+새 root GO와 실제 자원 확보는 별도이며 검토자가 자원 probe/큐/모델을 실행하지 않았다. 준비도는 실제 GPU 결과 인증이 아니고 두 실패나 보조 head hold를 지우지 않는다.
+
+### 실제 YOLO v3 m smoke — 출력 계약 수용
+
+새 root v3 grant `root-yolo-release-v3/root-go.json` SHA `9a6f486951379bb5e5bd4a7ea099872d92c58a28024f2aa4c008d70a58df82e3`는 독립 v3 release와 정확한 REVIEW_KEYS를 묶었다. 실제 m smoke attempt `b7087446b70a4f098036f3beb7df7a1b`의7출력·6영상·24,155native프레임, 고정 source/window와 slot8 실제 frame/PTS, 원본 좌표·class0·유효 면적·native/FP32 의미, canonical config/grant/receipt와137기존행 보존·두 프로세스 종료를 독립 확인했다.
+
+Result SHA `d22e311fc1f8f1cb353968b89e345a134d6dac0e685a0496d8d2bed90f26746d`, receipt SHA `8c0f059360d24526c90bb1f04e438da2155398f1a01fd261071cf53e643c3cdc`; 근거 `yolo-yolo26m-smoke-review.json`이다. 반환 person14행·유효@0.5 1행·기하 무효0행이며 고유 사람 수나 recall/행동 성공 수가 아니다. 실제 peak allocated/reserved는201,232,384/257,949,696bytes, wrapper elapsed30.782802초다. Native speed 합계와 warmup/전체 decode 시간은 구분한다.
+
+검토 시 다음 m all45가 이미 고정 grant 아래 등록돼 큐139/139였으나 이 smoke 수용은 진행 중 전체 출력을 인증하지 않는다. 앞선 부분 웹 스냅샷은 그 당시YOLO0성공 기록으로 그대로 보존하고 나중 성공으로 덮어쓰지 않는다.

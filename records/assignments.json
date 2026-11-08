@@ -805,6 +805,19 @@
       "synthetic": false,
       "task_id": "task_7f2aba8173dc",
       "title": "학교 CCTV 행동 후보 진단 · 다음 학습 자료 준비"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-08T06:07:47.589226+00:00",
+      "dispatch_id": "ctx_1f7e21e2479d",
+      "experiment_id": "EXP-0066",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_7c78c104046f",
+      "title": "모델 비교 중간 기록 · 추가 학습 라벨 검수"
     }
   ],
   "schema_version": 1

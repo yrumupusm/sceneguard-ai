@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-0066",
+  "snapshot_utc": "2026-11-08T06:06:40.982981+00:00",
+  "scope": "partial_execution_and_new_label_review_preparation_not_final_model_comparison",
+  "raw_eight": {
+    "path": "records/EXP-0066/raw-execution-summary.json",
+    "sha256": "a8181499c00de8541b74270b2fa09ee36016905ad67f60fe3ca937dcda812fe4"
+  },
+  "raw_models_complete": 8,
+  "candidate_models_total": 11,
+  "frozen_heads_complete": 3,
+  "frozen_head_stages_complete": 11,
+  "frozen_head_stages_planned": 21,
+  "heads": {
+    "videomaev2_b": {
+      "result": {
+        "path": "outputs/model-comparison/exp0066/head-preparation/queued/train/3ad64050026c4d79bce3c3c805c6ce99/result.json",
+        "sha256": "06739387dcfada407323f28adf07844fbd5a407557fad9b154e1b48ae94a8199"
+      },
+      "head_sha256": "405b22027463586aeafcc4eaef8d96769b9b6e48413d6bd5c4783db4f1aecbaa",
+      "selection": {
+        "allowed_false_positives": 14,
+        "boundary_score": 0.4524947702884674,
+        "false_positives": 14,
+        "fn": 3,
+        "fp": 14,
+        "human_precision": null,
+        "human_recall": null,
+        "matched_false_positive_operating_point_verified": false,
+        "negative_count": 291,
+        "reference_fpr": 0.048109965635738834,
+        "reference_precision": 0.966824644549763,
+        "reference_recall": 0.9927007299270073,
+        "threshold": 0.45249477028846746,
+        "threshold_status": "provisional_official_reference_not_human_calibrated",
+        "tie_policy": "float64_nextafter_toward_positive_infinity",
+        "tn": 277,
+        "tp": 408
+      },
+      "semantic_verification": false
+    },
+    "vjepa2_l": {
+      "result": {
+        "path": "outputs/model-comparison/exp0066/head-preparation/queued/train/6062bfea7a7740439f22a7b60b0ba691/result.json",
+        "sha256": "fe37bed3992474f6ddd680713e4f72f582134f68cc79c785fd29530fef4ac374"
+      },
+      "head_sha256": "4c74115eb1f16c38b61b94f4bdbdd498bab0f6b05b004383a8a76e975c4f72c1",
+      "selection": {
+        "allowed_false_positives": 14,
+        "boundary_score": 0.012240618467330933,
+        "false_positives": 14,
+        "fn": 0,
+        "fp": 14,
+        "human_precision": null,
+        "human_recall": null,
+        "matched_false_positive_operating_point_verified": false,
+        "negative_count": 291,
+        "reference_fpr": 0.048109965635738834,
+        "reference_precision": 0.9670588235294117,
+        "reference_recall": 1.0,
+        "threshold": 0.012240618467330934,
+        "threshold_status": "provisional_official_reference_not_human_calibrated",
+        "tie_policy": "float64_nextafter_toward_positive_infinity",
+        "tn": 277,
+        "tp": 411
+      },
+      "semantic_verification": false
+    },
+    "vjepa2_1_l": {
+      "result": {
+        "path": "outputs/model-comparison/exp0066/head-preparation/queued/train/d730b1e961144182bca772a27e0919bb/result.json",
+        "sha256": "d8d5213868f4ce8104d608f68375f1736cad09777bc595085ce44d99a7407351"
+      },
+      "head_sha256": "cb6d94df31fd8d33dbe36c9f7591c43969012c78866221545b91d12a2fef10c9",
+      "selection": {
+        "allowed_false_positives": 14,
+        "boundary_score": 4.574579725158401e-05,
+        "false_positives": 14,
+        "fn": 0,
+        "fp": 14,
+        "human_precision": null,
+        "human_recall": null,
+        "matched_false_positive_operating_point_verified": false,
+        "negative_count": 291,
+        "reference_fpr": 0.048109965635738834,
+        "reference_precision": 0.9670588235294117,
+        "reference_recall": 1.0,
+        "threshold": 4.5745797251584015e-05,
+        "threshold_status": "provisional_official_reference_not_human_calibrated",
+        "tie_policy": "float64_nextafter_toward_positive_infinity",
+        "tn": 277,
+        "tp": 411
+      },
+      "semantic_verification": false
+    }
+  },
+  "school_head_score_streams_complete": 2,
+  "yolo_full_baselines_complete": 0,
+  "yolo_successful_scored_outputs": 0,
+  "yolo_failed_attempts": [
+    "028841bc84c24f37a1bd2026d025c0fc",
+    "30c2ba8b219e4ad2948105d7557004ec"
+  ],
+  "yolo_failure_reasons": [
+    "pre_setup_mode_guard_corrected",
+    "resource_gate_before_child_spawn"
+  ],
+  "new_detector_finetuning_runs": 0,
+  "new_encoder_backbone_finetuning_runs": 0,
+  "new_label_review_clips": 6,
+  "new_label_review_frames": 150,
+  "new_label_review_encoded_seconds": 50,
+  "label_review_source": {
+    "path": "outputs/model-comparison/exp0066/detector-label-review-v1/review.json",
+    "sha256": "c6a64a9a8cac5f3ca6e6f149b4152cdb82b0f0938d5476695cafed10b40dae0e"
+  },
+  "label_review_human_complete": false,
+  "training_data_release": false,
+  "school_person_recall": null,
+  "school_climbing_precision": null,
+  "school_climbing_recall": null,
+  "paired_finetuning_effect": null,
+  "baseline_confirmation_reference": {
+    "confirmed": 37,
+    "total": 52,
+    "changed": false
+  }
+}

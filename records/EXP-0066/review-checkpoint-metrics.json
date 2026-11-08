@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0066",
+  "metrics": [
+    {
+      "label": "비교 후보 모델 구성",
+      "value": 11,
+      "unit": "구성",
+      "sample_n": 11,
+      "scope": "기존8개와 YOLO26m/l/x 유지 · 전후 비교 완료 수 아님",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존45개 원본 처리를 완료한 구성",
+      "value": 8,
+      "unit": "구성",
+      "sample_n": 11,
+      "scope": "정규6177창+진단42창 · 검출 성공/학습 효과 아님",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "완료 구성당 저장 출력",
+      "value": 6219,
+      "unit": "출력",
+      "sample_n": 45,
+      "scope": "모델별 같은45원본 · 고유 사람 수/전체native프레임 검출 수 아님",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "완료 구성당 원본 디코딩",
+      "value": 184300,
+      "unit": "프레임",
+      "sample_n": 45,
+      "scope": "시간 검증을 위한 전체 읽기 · 추론은 고정시점",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "고정 영상 모델의 학습된 보조 분류기",
+      "value": 3,
+      "unit": "구성",
+      "sample_n": 7,
+      "scope": "VideoMAE/V-JEPA2/V-JEPA2.1 · 사람 검출기 가중치 변경 없음",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "완료한 보조 학습 단계",
+      "value": 11,
+      "unit": "단계",
+      "sample_n": 21,
+      "scope": "우선순위 조정으로 나머지 보존·대기 · 실행 실패 수 아님",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "YOLO26 전체45 실행 완료",
+      "value": 0,
+      "unit": "구성",
+      "sample_n": 3,
+      "scope": "스냅샷 시점 · 초기 검사 오류1회와 GPU 자원 거절1회 · 출력0",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "YOLO26 실패로 기록한 시험 시도",
+      "value": 2,
+      "unit": "시도",
+      "sample_n": 2,
+      "scope": "모델 초기 상태 검사1회, 모델 자식 실행 전 자원 거절1회",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검출 모델 추가 학습 완료",
+      "value": 0,
+      "unit": "구성",
+      "sample_n": 6,
+      "scope": "YOLO26m/l/x·EVAD-B/L·STMixer · 학습용 사람 라벨 점검 필요",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 라벨 누락 확인 자료",
+      "value": 6,
+      "unit": "영상",
+      "sample_n": 6,
+      "scope": "기존검수8표본 및 오판보기15원본 제외 · 의미 검수 전",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 라벨 확인 영상 길이",
+      "value": 50,
+      "unit": "초",
+      "sample_n": 6,
+      "scope": "각25연속프레임/3FPS · 총150프레임 · 원본 시각 표시",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "EXP-0062 AFTER 기존 확인 대응",
+      "value": 37,
+      "unit": "참조 사건",
+      "sample_n": 52,
+      "scope": "이전 고정 결과 보존 · 신규 성공 수 아님",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학교 사람 검출 재현율",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "관심 인물 정답 대응 및 학습 전후 쌍 미완료 · 미측정",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "unavailable"
+    },
+    {
+      "label": "학교 넘기 정밀도",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "관심 인물 정답 대응 및 학습 전후 쌍 미완료 · 미측정",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "unavailable"
+    },
+    {
+      "label": "학교 넘기 재현율",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "관심 인물 정답 대응 및 학습 전후 쌍 미완료 · 미측정",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "unavailable"
+    },
+    {
+      "label": "검출 모델 추가 학습 효과",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "관심 인물 정답 대응 및 학습 전후 쌍 미완료 · 미측정",
+      "source": "records/EXP-0066/review-checkpoint.json",
+      "source_sha256": "a385e9bc722ffbf3955b49d509a51e1093ee0c3143838aec8d551404b03be7b2",
+      "verification": "unavailable"
+    }
+  ]
+}
