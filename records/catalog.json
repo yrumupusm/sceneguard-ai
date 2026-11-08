@@ -5439,6 +5439,52 @@
       "task_id": "task_2cc40cbc8e6e",
       "title": "추가 학습용 사람 박스 보완 초안",
       "worker_opinion": "실제 초안 생성과 보존은 확인했다. 새 박스의 의미 확인 전 학습 정답으로 사용하지 않는다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-08T10:50:23.651780+00:00",
+      "attempt_id": "exp0068-train5-47adf16ca4fa4145b50e0ee150106c38",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_b6e78151c35e",
+      "evaluated_model": "YOLO26m pretrained person adaptation vs fixed epoch5",
+      "evidence": [
+        {
+          "artifact_id": "exp0068-person-before-after-video",
+          "kind": "video",
+          "label": "사람 검출 학습 전후 · 검증25프레임"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0068",
+      "limitations": [
+        "검증25프레임은 한 촬영 사건으로 상관됨; YOLO26x 제안 기원 선택 편향",
+        "학교45/EXP64시험 미사용; 학교 성능과 행동 정확도 미측정",
+        "YOLO26m 소량 학습만 실행; YOLO26l/x·EVAD-B/L·STMixer 추가학습 미완료"
+      ],
+      "metric_definitions": "records/EXP-0068/metrics.json",
+      "metrics_path": "records/EXP-0068/metrics.json",
+      "metrics_sha256": "a8819dd38a7943244091ad856e31a69125b461d55f6cada34c7efe0ef25f70ba",
+      "next_step": "다사건 사람 주석과 정상/가림 사례를 보강하고 점수 하락 원인을 확인한 뒤 다음 학습 조건을 고정한다.",
+      "reasoning_effective": "high",
+      "registration_sha256": "5bae3c234196f483bf39245770ee7285e81666b063ef5f9bc3631ca40c280da1",
+      "report_path": "docs/experiments/EXP-0068-results.md",
+      "report_sha256": "1d2b55cc19b16aef7f2df3c2842a592b01801785aa89e69977d341e6229e5192",
+      "review_binding_path": "docs/reviews/EXP-0068.binding.json",
+      "review_path": "docs/reviews/EXP-0068-independent-review.md",
+      "review_sha256": "2dc0d30616964b488a58afd4d0fac39c90db0e62bac3d93a04911f5a4e708929",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "a8819dd38a7943244091ad856e31a69125b461d55f6cada34c7efe0ef25f70ba",
+      "reviewed_report_sha256": "1d2b55cc19b16aef7f2df3c2842a592b01801785aa89e69977d341e6229e5192",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "실제 5회 학습/125회 가중치 갱신을 완료했다. 같은 검증25프레임/31박스의 검출은31→6, 누락0→25로 악화되어 채택하지 않는다.",
+      "synthetic": false,
+      "task_id": "task_4d59dff177fe",
+      "title": "YOLO26m 사람 검출 소량 추가학습 전후 비교",
+      "worker_opinion": "추가학습 실행과 동일 정답 비교는 완료했다. 성능은 악화돼 기존 모델을 유지한다."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

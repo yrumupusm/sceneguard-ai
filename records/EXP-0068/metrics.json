@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0068",
+  "metrics": [
+    {
+      "label": "학습 프레임",
+      "value": 50,
+      "unit": "프레임",
+      "sample_n": 50,
+      "scope": "확정 사람 라벨 · 2개 촬영 사건",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검증 프레임",
+      "value": 25,
+      "unit": "프레임",
+      "sample_n": 25,
+      "scope": "학습과 다른 1개 사건 · 프레임 간 상관 존재",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검증 정답 박스",
+      "value": 31,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "프레임마다 반복된 사람 박스 · 31명이 아님",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 반복",
+      "value": 5,
+      "unit": "회",
+      "sample_n": 50,
+      "scope": "고정 마지막 epoch5 선택",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "실제 가중치 갱신",
+      "value": 125,
+      "unit": "회",
+      "sample_n": 50,
+      "scope": "50프레임 × 5회 / batch2",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 전 검출 정답",
+      "value": 31,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 전 오검출",
+      "value": 0,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 전 누락",
+      "value": 0,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 전 정밀도",
+      "value": 1.0,
+      "unit": "비율",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 전 재현율",
+      "value": 1.0,
+      "unit": "비율",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 전 F1",
+      "value": 1.0,
+      "unit": "비율",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 검출 정답",
+      "value": 6,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 오검출",
+      "value": 0,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 누락",
+      "value": 25,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 정밀도",
+      "value": 1.0,
+      "unit": "비율",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 재현율",
+      "value": 0.1935483870967742,
+      "unit": "비율",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 F1",
+      "value": 0.32432432432432434,
+      "unit": "비율",
+      "sample_n": 25,
+      "scope": "검증 1사건/25프레임/31박스 · person≥0.5·IoU≥0.5",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 새 누락",
+      "value": 25,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "동일 프레임별 정답 박스 대응 · 신원 추적 아님",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후 회복",
+      "value": 0,
+      "unit": "행",
+      "sample_n": 25,
+      "scope": "동일 프레임별 정답 박스 대응",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "실행 경과",
+      "value": 52.64261466602329,
+      "unit": "초",
+      "sample_n": 75,
+      "scope": "자식 monotonic 측정 · 적응/학습/저장/검증 포함 · 실시간 FPS 아님",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학교 학습 전후 개선",
+      "value": null,
+      "unit": "비율",
+      "sample_n": 45,
+      "scope": "학교45 미실행 · 독립 일반화 미측정",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "not_measured"
+    },
+    {
+      "label": "넘기 행동 성능",
+      "value": null,
+      "unit": "비율",
+      "sample_n": 25,
+      "scope": "이번에는 사람 검출만 학습 · 행동 정답 미사용",
+      "source": "records/EXP-0068/results.json",
+      "source_sha256": "343f2808a94bb80fa5608617c8ff59a2935e248201616c26c5e7d78c2df57fe6",
+      "verification": "not_measured"
+    }
+  ]
+}

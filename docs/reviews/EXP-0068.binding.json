@@ -1,0 +1,14 @@
+{
+  "registration_sha256": "5bae3c234196f483bf39245770ee7285e81666b063ef5f9bc3631ca40c280da1",
+  "review_path": "docs/reviews/EXP-0068-independent-review.md",
+  "review_sha256": "2dc0d30616964b488a58afd4d0fac39c90db0e62bac3d93a04911f5a4e708929",
+  "review_status": "accepted_for_comparison",
+  "reviewed_sources": {
+    "EXP-0068": {
+      "metrics_sha256": "a8819dd38a7943244091ad856e31a69125b461d55f6cada34c7efe0ef25f70ba",
+      "report_sha256": "1d2b55cc19b16aef7f2df3c2842a592b01801785aa89e69977d341e6229e5192"
+    }
+  },
+  "schema_version": 1,
+  "synthetic": false
+}
