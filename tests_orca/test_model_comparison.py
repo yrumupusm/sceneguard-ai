@@ -113,6 +113,11 @@ class ComparisonTests(unittest.TestCase):
             self.assertEqual(rows[0]['output']['pixel_values'],indices)
             self.assertFalse(rows[0]['same_person_verified'])
             self.assertFalse(rows[0]['intrusion_completed'])
+            single=[]
+            process_video(video,[window],frames,lambda pixels:{'actual_input_frames':1,'input_frame_index':8},single.append)
+            self.assertEqual(single[0]['box_frame_index'],1)
+            self.assertEqual(single[0]['box_pts'],3003/90000)
+            self.assertLess(single[0]['model_input_available_after_pts'],window['available_after_pts'])
             with self.assertRaisesRegex(ValueError,'Incomplete'):
                 process_video(video,[window],frames[:-1],lambda x:{},lambda x:None)
             frames[1]=(1/30,frames[1][1])

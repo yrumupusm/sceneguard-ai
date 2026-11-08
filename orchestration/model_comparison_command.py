@@ -20,8 +20,9 @@ COHORT_SHA = '480b1410c568b9a038c7be6d124f7be1890b3b7375cbed43e87b165346a2aa18'
 SMOKE_SHA = '8ee64caa28fed6b756aecf39c5d392c6b544f204ad12ed39ed617d727a3481c0'
 BASELINE_SHA = '3799ae3eee427b60e698b21f6ee958ac5306eacba07b5d85e4c35dbfa6457b40'
 MODEL_IDS = {'evad_vitb_vmaev2','evad_vitl','stmixer_vitb_vmaev2','internvideo_next_s2_l',
-             'vjepa2_l','vjepa2_1_l','videomaev2_b','r3d18_exp0064'}
+             'vjepa2_l','vjepa2_1_l','videomaev2_b','r3d18_exp0064', 'yolo26m','yolo26l','yolo26x'}
 JOINT = {'evad_vitb_vmaev2','evad_vitl','stmixer_vitb_vmaev2'}
+YOLO = {'yolo26m','yolo26l','yolo26x'}
 
 
 def read(path):
@@ -31,6 +32,8 @@ def read(path):
 
 def interpreter(config):
     model = config['model_id']
+    if model in YOLO:
+        return ROOT/'.venv-pose-batch03/bin/python'
     name = '.venv-exp0066-joint' if model in JOINT else (
         '.venv-cv-batch02' if model == 'r3d18_exp0064' else '.venv-exp0066-encoders')
     return ROOT/name/'bin/python'
@@ -41,7 +44,10 @@ def sources(config=None):
              'orchestration/action_training_command.py','orchestration/model_comparison_command.py',
              'scripts/run_model_comparison.py','docs/experiments/EXP-0066-protocol.md',
              'scripts/prepare_model_comparison.py','tests_orca/test_model_comparison.py']
-    if config and config['model_id'] in JOINT:
+    if config and config['model_id'] in YOLO:
+        names += ['scripts/exp0066_yolo.py','scripts/prepare_comparison_yolo.py',
+                  'tests/test_exp0066_yolo.py','docs/experiments/EXP-0066-yolo-baseline-protocol.md']
+    elif config and config['model_id'] in JOINT:
         names += ['scripts/exp0066_joint_models.py','tests/test_exp0066_joint_models.py']
     else:
         names += ['scripts/exp0066_encoders.py']
@@ -52,6 +58,9 @@ def model_contract(config):
     spec = read(checked_file(config['files']['model_spec']))
     if spec.get('model_id') != config['model_id'] or config['model_id'] not in MODEL_IDS:
         raise ValueError('Exact declared comparison model required')
+    if config['model_id'] in YOLO:
+        from scripts.exp0066_yolo import validate_spec
+        validate_spec(spec)
     # Every external checkpoint/config/vendor Python file loaded by the adapter is bound.
     if not isinstance(spec.get('bindings'),dict) or not spec['bindings']:
         raise ValueError('Checkpoint/config/vendor dependency bindings required')

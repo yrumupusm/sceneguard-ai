@@ -12,8 +12,9 @@ import time
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def load_adapter(joint):
-    path=ROOT/'scripts'/('exp0066_joint_models.py' if joint else 'exp0066_encoders.py')
+def load_adapter(joint, yolo=False):
+    path=ROOT/'scripts'/('exp0066_yolo.py' if yolo else
+                         'exp0066_joint_models.py' if joint else 'exp0066_encoders.py')
     spec=importlib.util.spec_from_file_location('comparison_adapter',path)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     return module
@@ -71,6 +72,13 @@ def process_video(video,windows,frames,infer,sink):
                         window=w,output=output,assembly_seconds=assemble,
                         observed_unique_frames=len(set(w['sample_frame_indices'])),
                         same_person_verified=False,intrusion_completed=False)
+            if output.get('actual_input_frames') == 1:
+                slot=output['input_frame_index']
+                if type(slot)!=int or not 0<=slot<len(w['sample_frame_indices']):
+                    raise ValueError('Single-frame output must identify its actual native input')
+                record.update(box_frame_index=w['sample_frame_indices'][slot],
+                              box_pts=w['sample_pts'][slot],
+                              model_input_available_after_pts=w['sample_pts'][slot])
             sink(record);scored+=1
             for i in set(w['sample_frame_indices']):
                 uses[i]-=1
@@ -100,7 +108,7 @@ def main(argv=None):
     parser.add_argument('--output',required=True,type=Path)
     args=parser.parse_args(argv)
     sys.path.insert(0,str(ROOT))
-    from orchestration.model_comparison_command import runner_guard,JOINT,sources,input_contract,file_hash
+    from orchestration.model_comparison_command import runner_guard,JOINT,YOLO,sources,input_contract,file_hash
     from orchestration.queue import digest
     config,inputs=runner_guard(args)
     source_snapshot=sources(config)
@@ -111,7 +119,7 @@ def main(argv=None):
     torch.cuda.reset_peak_memory_stats()
     args.output.mkdir(parents=True,exist_ok=False)
     spec=read(config['files']['model_spec']['path'])
-    adapter=load_adapter(config['model_id'] in JOINT)
+    adapter=load_adapter(config['model_id'] in JOINT, config['model_id'] in YOLO)
     started=time.perf_counter();model=adapter.load_model(spec,'cuda')
     torch.cuda.synchronize();load_seconds=time.perf_counter()-started
     cohort=read(config['files']['cohort']['path'])
