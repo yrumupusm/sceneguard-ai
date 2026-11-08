@@ -1,0 +1,301 @@
+{
+  "status": "completed_cpu_diagnostic",
+  "schema_version": 1,
+  "experiment_id": "EXP-0069",
+  "groups": {
+    "A_initial": {
+      "train": {
+        "tp": 148,
+        "fp": 6,
+        "fn": 3,
+        "frames": 50,
+        "gt_rows": 151,
+        "events": 2,
+        "precision": 0.961038961038961,
+        "recall": 0.9801324503311258,
+        "f1": 0.9704918032786886
+      },
+      "validation": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 0,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "case-1": {
+        "tp": 75,
+        "fp": 1,
+        "fn": 2,
+        "frames": 25,
+        "gt_rows": 77,
+        "events": 1,
+        "precision": 0.9868421052631579,
+        "recall": 0.974025974025974,
+        "f1": 0.9803921568627451
+      },
+      "case-3": {
+        "tp": 73,
+        "fp": 5,
+        "fn": 1,
+        "frames": 25,
+        "gt_rows": 74,
+        "events": 1,
+        "precision": 0.9358974358974359,
+        "recall": 0.9864864864864865,
+        "f1": 0.9605263157894737
+      },
+      "case-5": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 0,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "B_trained": {
+      "train": {
+        "tp": 150,
+        "fp": 2,
+        "fn": 1,
+        "frames": 50,
+        "gt_rows": 151,
+        "events": 2,
+        "precision": 0.9868421052631579,
+        "recall": 0.9933774834437086,
+        "f1": 0.9900990099009901
+      },
+      "validation": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 25,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 0.1935483870967742,
+        "f1": 0.32432432432432434
+      },
+      "case-1": {
+        "tp": 77,
+        "fp": 0,
+        "fn": 0,
+        "frames": 25,
+        "gt_rows": 77,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "case-3": {
+        "tp": 73,
+        "fp": 2,
+        "fn": 1,
+        "frames": 25,
+        "gt_rows": 74,
+        "events": 1,
+        "precision": 0.9733333333333334,
+        "recall": 0.9864864864864865,
+        "f1": 0.9798657718120806
+      },
+      "case-5": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 25,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 0.1935483870967742,
+        "f1": 0.32432432432432434
+      }
+    },
+    "C_trained_initial_bn": {
+      "train": {
+        "tp": 147,
+        "fp": 2,
+        "fn": 4,
+        "frames": 50,
+        "gt_rows": 151,
+        "events": 2,
+        "precision": 0.9865771812080537,
+        "recall": 0.9735099337748344,
+        "f1": 0.98
+      },
+      "validation": {
+        "tp": 14,
+        "fp": 1,
+        "fn": 17,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 0.9333333333333333,
+        "recall": 0.45161290322580644,
+        "f1": 0.6086956521739131
+      },
+      "case-1": {
+        "tp": 74,
+        "fp": 0,
+        "fn": 3,
+        "frames": 25,
+        "gt_rows": 77,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 0.961038961038961,
+        "f1": 0.9801324503311258
+      },
+      "case-3": {
+        "tp": 73,
+        "fp": 2,
+        "fn": 1,
+        "frames": 25,
+        "gt_rows": 74,
+        "events": 1,
+        "precision": 0.9733333333333334,
+        "recall": 0.9864864864864865,
+        "f1": 0.9798657718120806
+      },
+      "case-5": {
+        "tp": 14,
+        "fp": 1,
+        "fn": 17,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 0.9333333333333333,
+        "recall": 0.45161290322580644,
+        "f1": 0.6086956521739131
+      }
+    },
+    "D_initial_trained_bn": {
+      "train": {
+        "tp": 143,
+        "fp": 2,
+        "fn": 8,
+        "frames": 50,
+        "gt_rows": 151,
+        "events": 2,
+        "precision": 0.9862068965517241,
+        "recall": 0.9470198675496688,
+        "f1": 0.9662162162162162
+      },
+      "validation": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 29,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 0.06451612903225806,
+        "f1": 0.12121212121212122
+      },
+      "case-1": {
+        "tp": 72,
+        "fp": 0,
+        "fn": 5,
+        "frames": 25,
+        "gt_rows": 77,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 0.935064935064935,
+        "f1": 0.9664429530201343
+      },
+      "case-3": {
+        "tp": 71,
+        "fp": 2,
+        "fn": 3,
+        "frames": 25,
+        "gt_rows": 74,
+        "events": 1,
+        "precision": 0.9726027397260274,
+        "recall": 0.9594594594594594,
+        "f1": 0.9659863945578231
+      },
+      "case-5": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 29,
+        "frames": 25,
+        "gt_rows": 31,
+        "events": 1,
+        "precision": 1.0,
+        "recall": 0.06451612903225806,
+        "f1": 0.12121212121212122
+      }
+    }
+  },
+  "state_preservation": {
+    "A_initial": {
+      "state_sha256": "850100d681c99d70924cc1b7898fdcd737419016f875f86bf2781d5ec345bf8a",
+      "unchanged_after_forward": true,
+      "bn_buffer_count": 372,
+      "weights": "initial",
+      "bn_statistics": "initial"
+    },
+    "B_trained": {
+      "state_sha256": "b606b2f25d45fe604d026806bbe732e85cfbc681b93a280857b78e257f57a3d6",
+      "unchanged_after_forward": true,
+      "bn_buffer_count": 372,
+      "weights": "last",
+      "bn_statistics": "last"
+    },
+    "C_trained_initial_bn": {
+      "state_sha256": "2710a122976cc298d146f093335858928faf4ec6ff3491e2ac438cf2d8ee5bca",
+      "unchanged_after_forward": true,
+      "bn_buffer_count": 372,
+      "weights": "last",
+      "bn_statistics": "initial"
+    },
+    "D_initial_trained_bn": {
+      "state_sha256": "7225ece8ebda012667acdfe765db05d8bbcd7af77e34f9c03d3afaa324dc9a62",
+      "unchanged_after_forward": true,
+      "bn_buffer_count": 372,
+      "weights": "initial",
+      "bn_statistics": "last"
+    }
+  },
+  "gpu_reproduction": {
+    "A_initial": {
+      "all25_frame_counts_equal": true,
+      "max_box_pixel_delta": 0.037445068359375,
+      "max_score_delta": 5.632638931274414e-06
+    },
+    "B_trained": {
+      "all25_frame_counts_equal": true,
+      "max_box_pixel_delta": 0.06243896484375,
+      "max_score_delta": 5.930662155151367e-06
+    }
+  },
+  "elapsed_seconds": 54.04468210297637,
+  "manifest_sha256": "1bda84cc3421bcfc1b528bfb4e4092c02e9ec22d4a09c41907ff46211381ad18",
+  "checkpoint_sha256": {
+    "initial": "436426a56cb2699c7be3391b3dc1e4c06b268b357b330e3b1cf13409ee01ef53",
+    "last": "42c348982b4788c23fe731ede7117a40098b2fb3c995d6f4faee3687fc5544b9"
+  },
+  "source_sha256": {
+    "scripts/diagnose_person_overfit.py": "46feef8d8992a847b423691109b4d1579e8c8cc2aa4c29bf416e0d7c80a9678d",
+    "scripts/train_person_detector.py": "1341cd524fa4557dd1ae0094f647373196a271cf4527681aca075732003f45a6",
+    "scripts/evaluate_person_detector_pair.py": "2aaebc66e4030b6b0e0a3aa657967fb8148f29b82a5f3d104bc995d819be29a9",
+    "docs/experiments/EXP-0069-protocol.md": "01c12c9442797dfc831b534092d87a1e9cb8f5c413ac2fda323551ba21fb785e"
+  },
+  "device": "cpu",
+  "cuda_initialized": false,
+  "new_training": false,
+  "threshold_changed": false,
+  "school_or_protected_test_used": false,
+  "independent_generalization": false,
+  "result_sha256": "3dfc4677257ba83b9cf2028c5ebd1da3614a6dfc1c700bf949de203ba916a722",
+  "audit_sha256": "1453a8fefa7113a00ab6cf148d697d0668aa42045d00f80a49faf1460788249f",
+  "verification": "same-author subset-DP count and state reconstruction; no independent reviewer",
+  "finding": "train improves while held-out event degrades; BN-statistic substitution changes validation substantially; no single cause proven",
+  "model_adopted": false,
+  "web_registration": false
+}
