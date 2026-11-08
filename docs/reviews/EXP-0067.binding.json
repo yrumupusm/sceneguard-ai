@@ -1,0 +1,14 @@
+{
+  "registration_sha256": "78582861975160a801f527f47d22800540c052cca3d5c0e5c8ed3966f6a16ccc",
+  "review_path": "docs/reviews/EXP-0066-label-repair-review.md",
+  "review_sha256": "a091ba2b24cc0c23e1d76cade69900545957090db85cba28883230d4c5bed42f",
+  "review_status": "accepted_for_comparison",
+  "reviewed_sources": {
+    "EXP-0067": {
+      "metrics_sha256": "cccc309e3e7ad1127a27c235482bf7796d9ab1f3c7476d89e1b7d6dd20f8c09a",
+      "report_sha256": "2b78bb016e77a6ac55cc4c84c054b94c95a43f5f6af73f038188b4267a994047"
+    }
+  },
+  "schema_version": 1,
+  "synthetic": false
+}

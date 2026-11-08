@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0067",
+  "model_id": "yolo26x",
+  "code_sha": "a8dfd8fdd63d22902de807a591fca2e6d5dd6b44",
+  "attempt_id": "7aa4c4bb65ec46ac9d4cd4f4dcb00775",
+  "frames_scored": 75,
+  "frame_counts": {
+    "train": 50,
+    "validation": 25
+  },
+  "proposal_count": 217,
+  "display_threshold": 0.5,
+  "retained_threshold": 0.05,
+  "elapsed_seconds": 10.984834885923192,
+  "peak_gpu_allocated_bytes": 439168512,
+  "peak_gpu_reserved_bytes": 635437056,
+  "cases": [
+    {
+      "case_number": 1,
+      "frames": 25,
+      "original_box_rows": 12,
+      "model_proposals_at_005": 98,
+      "displayed_model_boxes_at_05": 77,
+      "frames_without_displayed_box": 0
+    },
+    {
+      "case_number": 3,
+      "frames": 25,
+      "original_box_rows": 49,
+      "model_proposals_at_005": 84,
+      "displayed_model_boxes_at_05": 74,
+      "frames_without_displayed_box": 0
+    },
+    {
+      "case_number": 5,
+      "frames": 25,
+      "original_box_rows": 18,
+      "model_proposals_at_005": 35,
+      "displayed_model_boxes_at_05": 31,
+      "frames_without_displayed_box": 0
+    }
+  ],
+  "training_release": false,
+  "detector_finetuning_runs": 0,
+  "human_verified": false,
+  "person_precision": null,
+  "person_recall": null,
+  "school_improvement": null,
+  "prior_queue_rows_preserved": 143,
+  "final_jobs": 144,
+  "final_attempts": 144,
+  "result_sha256": "f1b71dc1756c5d1a32c38a13dd96e6197680c3bca7d670ed1ab86ba2e05dec63",
+  "proposals_sha256": "bab8bf53add31dca3715f413d09b1cc1e280eecf08cfd81c5355cc004371fb60",
+  "preparation_sha256": "758660c56333e6712c980c6f0f8eddaff93fcc9d7594fcc8dadf5c8191324aa8",
+  "editor_package_sha256": "f5c327472fe72da00c19ffe895d24d2267b869c2aee0f641e601db225ef5546a",
+  "preview_manifest_sha256": "2471d865d4245b2764c237ea7880c832747005531b4f61ebdb59b4f2a8444960"
+}

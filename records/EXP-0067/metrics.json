@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0067",
+  "metrics": [
+    {
+      "label": "초안 추론 프레임",
+      "value": 75,
+      "unit": "프레임",
+      "sample_n": 75,
+      "scope": "기존 검수1·3·5 · train50/validation25",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "원래 라벨 박스 행",
+      "value": 79,
+      "unit": "행",
+      "sample_n": 75,
+      "scope": "보완 전 원래 주석 · 사람 수 아님",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "모델 반환 박스 행",
+      "value": 217,
+      "unit": "행",
+      "sample_n": 75,
+      "scope": "person0.05 이상 · 정답/복원 성공 아님",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "비교 영상 표시 박스 행",
+      "value": 182,
+      "unit": "행",
+      "sample_n": 75,
+      "scope": "person0.5 이상 · 반복 프레임 포함",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "박스 초안 추론 경과",
+      "value": 10.984834885923192,
+      "unit": "초",
+      "sample_n": 75,
+      "scope": "로딩·PNG 읽기·추론·검증 포함 · 원본 전체 처리 아님",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검출 모델 추가 학습",
+      "value": 0,
+      "unit": "회",
+      "sample_n": 75,
+      "scope": "이 실행은 사전학습 모델을 이용한 주석 초안 생성",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "사람 정밀도",
+      "value": null,
+      "unit": "비율",
+      "sample_n": 75,
+      "scope": "새 초안의 의미 검수 전",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "not_measured"
+    },
+    {
+      "label": "사람 재현율",
+      "value": null,
+      "unit": "비율",
+      "sample_n": 75,
+      "scope": "완전한 사람 정답 미확보",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "not_measured"
+    },
+    {
+      "label": "학교 학습 전후 개선",
+      "value": null,
+      "unit": "비율",
+      "sample_n": 75,
+      "scope": "추가 학습/전후 평가 미실행",
+      "source": "records/EXP-0067/results.json",
+      "source_sha256": "7e73bbfb7548439f4cd04752353b9815078e412d0a2d38e671ed8756a35918ff",
+      "verification": "not_measured"
+    }
+  ]
+}

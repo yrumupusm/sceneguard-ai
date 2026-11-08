@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SceneGuard 사람 박스 보완</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body><main><h1>사람 박스 보완</h1>
+<p>넘는 사람과 주변에서 걷거나 기다리는 사람을 모두 표시합니다. 기존 라벨과 자동 초안은 참고용이며, 저장한 박스만 검수 결과에 남습니다.</p>
+<nav id="cases" aria-label="영상 선택"></nav><p id="progress"></p>
+<div class="controls"><button id="prev">이전 프레임</button><button id="play">재생</button><button id="next">다음 프레임</button><input id="seek" type="range" min="0" value="0" aria-label="프레임 이동"><strong id="clock"></strong></div>
+<div class="controls"><label><input id="showOriginal" type="checkbox" checked> 기존 라벨 · 청록색</label><label><input id="showModel" type="checkbox" checked> 자동 초안 · 주황색</label><label><input id="showLow" type="checkbox"> 낮은 점수 초안도 보기</label><label><input id="drawMode" type="checkbox"> 드래그해서 박스 추가</label></div>
+<canvas id="canvas" aria-label="원본 영상과 사람 박스"></canvas><p>채택한 박스는 초록색입니다. 번호는 현재 프레임의 박스 번호이며 사람의 추적 번호가 아닙니다. 아래 목록에서 채택·삭제하거나 좌표를 수정할 수 있습니다. 가려서 보이지 않는 사람의 위치는 추측하지 마세요.</p>
+<section class="columns"><div><h2>참고 박스</h2><div id="candidates"></div></div><div><h2>저장할 박스</h2><div id="selected"></div></div></section>
+<section class="save"><label>검토자 <input id="reviewer" maxlength="100" placeholder="이름 또는 별칭"></label><label>현재 프레임 상태 <select id="status"><option value="draft">수정 중</option><option value="complete">사람과 박스 위치 확인 완료</option><option value="incomplete">아직 빠진 사람 있음</option><option value="uncertain">가림·화질로 판단 어려움</option></select></label>
+<label><input id="confirmed" type="checkbox"> 현재 프레임의 보이는 사람 모두와 박스 위치를 확인했습니다.</label>
+<label><input id="empty" type="checkbox"> 현재 프레임에는 보이는 사람이 없습니다. (박스가 없다는 이유로 선택하지 마세요.)</label>
+<label>메모 <textarea id="note" rows="2" maxlength="4000"></textarea></label><button id="save">현재 프레임 저장</button><button id="reload">저장된 내용 다시 읽기</button><strong id="message" role="status"></strong></section>
+<p>프레임마다 결과와 수정 이력이 저장됩니다. 검수하지 않은 프레임은 미확인으로 남습니다. 이 화면에서 모델 학습이 자동으로 시작되지는 않습니다.</p>
+<a href="http://127.0.0.1:8765/#video-review?experiment=EXP-0067">실험 검수 화면으로 돌아가기</a></main></body></html>
