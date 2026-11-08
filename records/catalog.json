@@ -5485,6 +5485,83 @@
       "task_id": "task_4d59dff177fe",
       "title": "YOLO26m 사람 검출 소량 추가학습 전후 비교",
       "worker_opinion": "추가학습 실행과 동일 정답 비교는 완료했다. 성능은 악화돼 기존 모델을 유지한다."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-08T15:28:50Z",
+      "attempt_id": "acquisition-and-review-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_1b52b59b420f",
+      "evaluated_model": "기존 YOLO26x CPU 검수 초안; 모델 성능 미평가",
+      "evidence": [
+        {
+          "artifact_id": "exp0071-r01-comparison",
+          "kind": "video",
+          "label": "1묶음 R01 작은 보행인 · 사람 박스 초안"
+        },
+        {
+          "artifact_id": "exp0071-r02-comparison",
+          "kind": "video",
+          "label": "1묶음 R02 월담자와 동행자 · 사람 박스 초안"
+        },
+        {
+          "artifact_id": "exp0071-r03-comparison",
+          "kind": "video",
+          "label": "1묶음 R03 이동과 보행 · 사람 박스 초안"
+        },
+        {
+          "artifact_id": "exp0071-r04-comparison",
+          "kind": "video",
+          "label": "2묶음 R04 서 있는 사람 · 사람 박스 초안"
+        },
+        {
+          "artifact_id": "exp0071-r05-comparison",
+          "kind": "video",
+          "label": "2묶음 R05 빈 배경 후보 · 사람 유무 미확정"
+        },
+        {
+          "artifact_id": "exp0071-r01-original",
+          "kind": "image",
+          "label": "R01 전체 해상도 원본 · 작은 사람 확대 확인용"
+        },
+        {
+          "artifact_id": "exp0071-r01-proposals",
+          "kind": "image",
+          "label": "R01 전체 해상도 제안 박스 · 미검수"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0071",
+      "limitations": [
+        "성능 미측정·재학습 없음.",
+        "추가 침입5개는 독립 사건 확인 전 보류.",
+        "박스 초안과 무박스 프레임은 확정 정답이 아님.",
+        "분할 예약 충돌 없음과 독립 촬영 인증을 구별함."
+      ],
+      "metric_definitions": "records/EXP-0071/metrics.json",
+      "metrics_path": "records/EXP-0071/metrics.json",
+      "metrics_sha256": "8f94ee214fa6009d338da1a30de320f2bc8a3647be52aa50fecf1e90631d24f2",
+      "next_step": "두 묶음5구간의 모든 사람 박스 검수, 촬영 연결 확인, 누락 파일 복구와 별도 월담 시험 확보.",
+      "reasoning_effective": null,
+      "registration_sha256": "4da5ab0caf6c0e1ed871534e5ff970b13b634256a7836da32528c6ab94c515e3",
+      "report_path": "docs/experiments/EXP-0071-data-acquisition-and-review.md",
+      "report_sha256": "9b871a2471977b5be5c305e33fc6bd09d23122d84b2c59c54c1cfd9168648220",
+      "review_binding_path": "docs/reviews/EXP-0071.binding.json",
+      "review_path": "docs/reviews/EXP-0071-coordinator-review.md",
+      "review_sha256": "95e743c918fee83b48970eff3c6061a27f47896e1b5f8806da9cc6c09002817a",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "8f94ee214fa6009d338da1a30de320f2bc8a3647be52aa50fecf1e90631d24f2",
+      "reviewed_report_sha256": "9b871a2471977b5be5c305e33fc6bd09d23122d84b2c59c54c1cfd9168648220",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot3",
+      "summary": "누락 ZIP6 회수0·새 독립 월담 시험 확정0. 보유 4원본의5구간122프레임 검수 초안; 기존75프레임 반복 질문 없음.",
+      "synthetic": false,
+      "task_id": "task_b1dd8524e2a5",
+      "title": "자료 확보 감사와 모든 사람 박스 검수 준비",
+      "worker_opinion": "확보 감사와 초안 생성은 완료. 독립 촬영 인증과 완전한 사람 정답은 미완료."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

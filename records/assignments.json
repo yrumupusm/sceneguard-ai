@@ -844,6 +844,19 @@
       "synthetic": false,
       "task_id": "task_4d59dff177fe",
       "title": "YOLO26m 사람 검출 소량 추가학습 전후 비교"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-08T15:28:50Z",
+      "dispatch_id": "ctx_1b52b59b420f",
+      "experiment_id": "EXP-0071",
+      "reasoning_effective": null,
+      "run_id": "run_3d23462a014a",
+      "slot": "slot3",
+      "synthetic": false,
+      "task_id": "task_b1dd8524e2a5",
+      "title": "자료 확보 감사와 모든 사람 박스 검수 준비"
     }
   ],
   "schema_version": 1
