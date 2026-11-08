@@ -21,3 +21,9 @@
 기존 Run `run_3d23462a014a`의 실행 task `task_4d59dff177fe`/dispatch `ctx_b6e78151c35e`와 독립 검토 task `task_5d27d4595330`/dispatch `ctx_59ca3a72c969`가 각각 succeeded로 정산됐다. 실행은 실제 학습과 결과 저장, 검토는 실제 출력·큐·공개 보고서·영상 검증을 완료했다. 두 정산 뒤 공식 worker-release를 호출했으며 기존 터미널 재사용으로 분류되어 `retained/external_terminal/processAction=none`을 반환했다. 두 터미널을 닫았다고 주장하지 않는다. Run의 `terminal-state=reclaimable` 목록은0건이다. 시작 전 업데이트 화면에서 실패한 첫 실행 배정의 생성 터미널은 공식 release로 정리했고 실제 GPU 작업 실패나 재시도는 아니었다.
 
 GPU 작업은 끝났으며 다른 사용자 프로세스는 종료하지 않았다. 전체 모델 학습이나 학교 개선은 미완료다. 이번 결과를 바탕으로 데이터 보강·학습 설정 원인 점검이 필요하며, 현재 가중치의 기본 채택은 보류한다. 원본·가중치·검수 DB·영상은 로컬에 보존한다. GitHub 원격 게시의 실제 확인은 이어지는 별도 기록을 따른다.
+
+## GitHub 게시 확인
+
+학습 구현 `7a41f9f`, 실행 전 native loss 로그 보완 `40c434a`, 실제 결과 `3efd008184fa5c0cc0a520fedd96213ef88ba1d1`을 GitHub main에 게시했다. 원격 refs/heads/main이 결과 commit과 동일함을 조회했고, 해당 commit의 보고서·지표·독립 검토·binding·집계 JSON 다섯 파일을 로컬과 해시 대조했다. 서비스가 읽는 보고서/지표/검토도 동일하다. 근거는 `runtime/model-comparison/exp0068/delivery/publication.json`이다.
+
+웹 등록·실제 재생·원격 게시 확인을 완료했다. 이 전달 기록은 결속된 보고서/지표/리뷰 원문과 별도로 갱신하므로 기존 검토 바인딩은 유지된다. 사용자 미추적 `sg-passage-first-impl/`, `sg-passage-first-review/`는 변경·추가하지 않았다.
