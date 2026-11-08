@@ -51,6 +51,26 @@ class PersonTrainingTests(unittest.TestCase):
             self.assertTrue(torch.allclose(batch['bboxes'][0],torch.tensor([.3,.475,.4,.35])))
             self.assertEqual(batch['batch_idx'].tolist(),[0,1]);self.assertEqual(batch['cls'].tolist(),[[0],[0]])
 
+    def test_native_named_loss_items_serialization(self):
+        self.assertEqual(trainer.loss_items({'box_loss':torch.tensor(2.),'cls_loss':torch.tensor(.5)}),
+                         {'box_loss':2.,'cls_loss':.5})
+        with self.assertRaises(ValueError):trainer.loss_items(torch.tensor([1.,2.,3.]))
+
+    def test_pinned_native_dual_head_loss_and_epoch_gain_schedule(self):
+        from ultralytics.utils.loss import E2ELoss
+        model=self.fake();head=model.model[-1];head.nc=1;head.stride=torch.tensor([8.,16.,32.])
+        model.args=SimpleNamespace(box=7.5,cls=.5,dfl=1.5,epochs=5)
+        criterion=E2ELoss(model)
+        predictions={name:dict(boxes=torch.ones(2,4,84,requires_grad=True),scores=torch.zeros(2,1,84,requires_grad=True),
+            feats=[torch.zeros(2,4,n,n) for n in (8,4,2)]) for name in ('one2many','one2one')}
+        batch=dict(img=torch.zeros(2,3,64,64),batch_idx=torch.tensor([0.,1.]),cls=torch.zeros(2,1),
+            bboxes=torch.tensor([[.5,.5,.25,.25],[.5,.5,.25,.25]]))
+        loss,items=criterion(predictions,batch);self.assertTrue(torch.isfinite(loss).all())
+        loss.sum().backward();self.assertTrue(torch.isfinite(predictions['one2many']['scores'].grad).all())
+        self.assertEqual(set(trainer.loss_items(items)),{'box_loss','cls_loss','l1_loss'})
+        for _ in range(4):criterion.update()
+        self.assertAlmostEqual(criterion.o2m,.1);self.assertAlmostEqual(criterion.o2o,.9)
+
     def test_nonfinite_weights_and_optimizer_rejected(self):
         model=self.fake();optimizer=torch.optim.AdamW(model.parameters(),lr=.0001)
         trainer.finite_state(model,optimizer)

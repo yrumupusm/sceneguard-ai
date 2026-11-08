@@ -113,6 +113,12 @@ def predict_set(model,rows,folder,directory,prefix):
     return logs
 
 
+def loss_items(items):
+    # Pinned8.4.192 returns named detached scalars, not the historical tensor vector.
+    if not isinstance(items,dict) or not items:raise ValueError('Native named loss items required')
+    return {key:float(value.detach().cpu()) for key,value in items.items()}
+
+
 def finite_state(model,optimizer):
     import torch
     tensors=list(model.state_dict().values())
@@ -196,7 +202,7 @@ def execute(args):
                 grad_norm=torch.nn.utils.clip_grad_norm_(model.parameters(),10.0,error_if_nonfinite=True)
                 optimizer.step();steps+=1
                 event=dict(epoch=epoch,step=steps,frame_ids=[r['frame_id'] for r in selected],loss=scalar.item(),
-                    native_loss_items=items.detach().cpu().tolist(),grad_norm_before_clip=float(grad_norm),lr=1e-4)
+                    native_loss_items=loss_items(items),grad_norm_before_clip=float(grad_norm),lr=1e-4)
                 log.write(json.dumps(event,allow_nan=False)+'\n');log.flush();losses.append(scalar.item())
             finite_state(model,optimizer)
             epochs.append(dict(epoch=epoch,optimizer_steps=steps,frames=seen,mean_loss=sum(losses)/len(losses),
