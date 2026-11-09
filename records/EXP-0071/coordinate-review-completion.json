@@ -1,0 +1,41 @@
+{
+  "experiment_id": "EXP-0071",
+  "kind": "coordinate_review_completion_and_export",
+  "coordinate_review_frames": 25,
+  "coordinate_review_boxes": 48,
+  "status_only_new_revisions": 24,
+  "coordinates_unchanged": true,
+  "old_revisions_preserved": true,
+  "export_frames": 122,
+  "export_boxes": 207,
+  "frame_counts": {
+    "train_candidate": 72,
+    "development_diagnostic": 50
+  },
+  "box_counts": {
+    "development_diagnostic": 25,
+    "train_candidate": 182
+  },
+  "human_confirmed_empty_frames": 25,
+  "old75_overlap_frames": 0,
+  "train_capture_reservations": 2,
+  "new_independent_training_events_certified": 0,
+  "independent_test_secured": false,
+  "source_pts_rgb_verified": true,
+  "png_rgb_verified": 122,
+  "geometry_roundtrip_verified": true,
+  "invalid_geometry_rejected_checks": 4,
+  "live_editor_complete_frames": 25,
+  "pending_web_answers": 0,
+  "training_release": false,
+  "training_runs": 0,
+  "new_model_inference": 0,
+  "gpu_runs": 0,
+  "manifest_sha256": "837bbb18e2a6cd2d565387f60128768e02b014b897205b3245548dec54bbb90b",
+  "exporter_sha256": "a2aee2f95a231999689d66accacd4fb268557541b9ac6c9acbd5183d0fb8cc04",
+  "legacy75_manifest_sha256": "1bda84cc3421bcfc1b528bfb4e4092c02e9ec22d4a09c41907ff46211381ad18",
+  "editor_package_sha256": "1539fc248203b6728cefad135c1f94614d40ad1ea8a40f328318979145634cb5",
+  "completion_scope_sha256": "2bde66966c2f80acefec1a64a96a86d1cfa9f56cb93013d0c6c46848c7d2399b",
+  "editor_revisions_sha256": "a91ee9e69956e6641723a371da407044eeb082ce8bf6d2519a24a10ae8074a50",
+  "new_review_questions": 0
+}
