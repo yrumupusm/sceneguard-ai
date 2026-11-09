@@ -1,0 +1,227 @@
+{
+  "experiment_id": "EXP-0073",
+  "audit_kind": "independent_bounded_annotation_repair_arithmetic_changeset_hash_audit",
+  "status": "passed_bounded_metadata_and_byte_audit",
+  "review_disposition": "accepted_for_coordinate_review_only",
+  "critical_bugs": [],
+  "checked_at_utc": "2026-11-09T05:18:43.495897+00:00",
+  "checks_passed": 1346,
+  "checks_failed": 0,
+  "totals": {
+    "input_frames": 72,
+    "input_proposals": 196,
+    "output_draft_boxes": 169,
+    "retained_original_boxes": 164,
+    "replaced_original_boxes": 15,
+    "new_envelopes": 5,
+    "background_removed_proposals": 17,
+    "background_affected_frames": 13,
+    "whole_frames_held": 1
+  },
+  "per_case": [
+    {
+      "review_id": "R01",
+      "input_boxes": 29,
+      "output_boxes": 27,
+      "reserved_split": "train",
+      "capture_reservation": "capture-reservation-19"
+    },
+    {
+      "review_id": "R02",
+      "input_boxes": 38,
+      "output_boxes": 30,
+      "reserved_split": "train",
+      "capture_reservation": "capture-reservation-19"
+    },
+    {
+      "review_id": "R03",
+      "input_boxes": 129,
+      "output_boxes": 112,
+      "reserved_split": "development",
+      "capture_reservation": "capture-reservation-01"
+    }
+  ],
+  "target_pts": [
+    {
+      "review_id": "R01",
+      "decoded_index": 60,
+      "native_pts_tick": 245760,
+      "time_base": "1/12288",
+      "source_pts": 20.0,
+      "user_seconds": 20.0,
+      "absolute_rounding_error_seconds": 0.0
+    },
+    {
+      "review_id": "R02",
+      "decoded_index": 70,
+      "native_pts_tick": 286720,
+      "time_base": "1/12288",
+      "source_pts": 23.333333333333332,
+      "user_seconds": 23.333,
+      "absolute_rounding_error_seconds": 0.0003333333333337407
+    },
+    {
+      "review_id": "R02",
+      "decoded_index": 71,
+      "native_pts_tick": 290816,
+      "time_base": "1/12288",
+      "source_pts": 23.666666666666668,
+      "user_seconds": 23.667,
+      "absolute_rounding_error_seconds": 0.0003333333333337407
+    },
+    {
+      "review_id": "R02",
+      "decoded_index": 72,
+      "native_pts_tick": 294912,
+      "time_base": "1/12288",
+      "source_pts": 24.0,
+      "user_seconds": 24.0,
+      "absolute_rounding_error_seconds": 0.0
+    },
+    {
+      "review_id": "R02",
+      "decoded_index": 73,
+      "native_pts_tick": 299008,
+      "time_base": "1/12288",
+      "source_pts": 24.333333333333332,
+      "user_seconds": 24.333,
+      "absolute_rounding_error_seconds": 0.0003333333333337407
+    },
+    {
+      "review_id": "R02",
+      "decoded_index": 75,
+      "native_pts_tick": 307200,
+      "time_base": "1/12288",
+      "source_pts": 25.0,
+      "user_seconds": 25.0,
+      "absolute_rounding_error_seconds": 0.0
+    }
+  ],
+  "non_target_boxes_exact": true,
+  "r03_selector_native_xyxy": [
+    720,
+    35,
+    760,
+    90
+  ],
+  "native_source_size": [
+    1920,
+    1080
+  ],
+  "r03_removal_frame_counts": {
+    "168": 1,
+    "176": 1,
+    "178": 1,
+    "180": 2,
+    "181": 1,
+    "182": 2,
+    "183": 1,
+    "184": 1,
+    "185": 1,
+    "186": 2,
+    "187": 2,
+    "188": 1,
+    "190": 1
+  },
+  "all_five_new_coordinates_unconfirmed": true,
+  "r01_actor_reference_verified": false,
+  "r02_same_person_semantics_source": "user_answer_version_1",
+  "r02_frame70_disposition": "whole_frame_hold_all_original_boxes_retained_not_background",
+  "old_reviewed_frames_preserved": 197,
+  "old_image_label_byte_hashes_checked": 394,
+  "old_frame_overlap": 0,
+  "legacy_manifest_hashes_match_pre_exp0072": true,
+  "split_proposal_hash_matches_pre_exp0072": true,
+  "protected_binding_count": 8,
+  "protected_raw_corpus_rehashed": false,
+  "answer_bindings": [
+    {
+      "id": "request-99aaa0aa2f4e4a738e93ea2956d62498",
+      "artifact_id": "exp0072-r03-comparison",
+      "version": 4,
+      "answer_version": 1,
+      "status": "applied",
+      "source_binding_sha256": "96a9bc2dd9f1b33df359ba9ed55f59c6e1ea60d6650f9f471cbdcd3f0c4ab8a8"
+    },
+    {
+      "id": "request-aade921135464961b29a0d990aee80ef",
+      "artifact_id": "exp0072-r01-comparison",
+      "version": 4,
+      "answer_version": 1,
+      "status": "applied",
+      "source_binding_sha256": "f5510fc7bc0d912c3a100427995a0f740bea9360e22208609d8d9ede263c07fd"
+    },
+    {
+      "id": "request-ec44ca105ae84ac48ed2b6d2d4dd6ffd",
+      "artifact_id": "exp0072-r02-comparison",
+      "version": 4,
+      "answer_version": 1,
+      "status": "applied",
+      "source_binding_sha256": "61df2b70e7cd318859bdb8af4df1877034f5f0b1dcf1b3086ff7e2a1eadce286"
+    }
+  ],
+  "current_review_rows_equal_snapshot": true,
+  "current_registered_source_bindings_recomputed": true,
+  "pending_query_exit_code": 0,
+  "pending_requests": 0,
+  "input_sha256": {
+    "runtime/model-comparison/exp0073/delivery/answers-read.json": "b273cfb3661c94c9c777fad97c199302dd8b64b341179efa293bef2a84f4055e",
+    "runtime/model-comparison/exp0072/user-observations/r01-20sec-duplicate-v1/observation.json": "ae99caa6428bebb21e5384a8c003987aa1652c8741bcff7fe73ab55b602e7674",
+    "runtime/model-comparison/exp0072/user-observations/r02-right-person-v1/observation.json": "771b72a7fb0c05b44bf42234285fb6291c9873087b32ce7bbde4098cc5bb5a9e",
+    "runtime/model-comparison/exp0072/user-observations/r03-upper-road-v1/observation.json": "fc5288626a44fa88beecbe678a0b8cd0143e8d7968c06ec53b8354bde8c1e7b2",
+    "outputs/action-recognition/exp0065/augmentation-v1/split-manifest.json": "938bb20cf6189d6d04fb1f4ba5aafd6448341530c79a6e801db99888b553fa62",
+    "outputs/action-recognition/exp0065/augmentation-v1/verified-candidates.jsonl": "50c2749ee486e1f4a16e98f86f49a5abc19786ba7fa91c0126df2ce44b45d29b",
+    "outputs/action-recognition/exp0063/combined-split-v3/split-manifest.json": "bfb0f9fcd570794036cc6d2eaad46f988679b612996e21282a34821203ad5499",
+    "outputs/action-recognition/exp0063/baseline/attempt-002/baseline-lock.json": "3799ae3eee427b60e698b21f6ee958ac5306eacba07b5d85e4c35dbfa6457b40",
+    "outputs/action-recognition/exp0063/data-audit/manifest.jsonl": "8fef23cf8410a27f64a43d1ae5bba1e461e176e549ccf908a213c0cbaa0d9c69",
+    "outputs/action-recognition/exp0063/normal-audit-v1/manifest.jsonl": "52cfe8864a0fe189672acdf8573aca26138a7b06bd99637f57dd2c46e8b87d46",
+    "outputs/model-comparison/exp0067/confirmed-person-v1/manifest.json": "1bda84cc3421bcfc1b528bfb4e4092c02e9ec22d4a09c41907ff46211381ad18",
+    "runtime/model-comparison/exp0067/review-application-v1/resolved-answers.json": "293500265a96275ec8abfe75784c1c9b1b5646e7e4d6c926f747a96e90768c10",
+    "outputs/model-comparison/exp0071/confirmed-person-v1/manifest.json": "837bbb18e2a6cd2d565387f60128768e02b014b897205b3245548dec54bbb90b",
+    "outputs/model-comparison/exp0072/person-drafts-v1/R01-drafts.json": "00942597df9bfc8dad683d64ccd0fc6151bb52ab80366b7b79c2ff5c12a47a91",
+    "outputs/model-comparison/exp0072/person-drafts-v1/R02-drafts.json": "0edb523a3745bf18c5a1a015f2deefd6a6e300d32a46504a2d84367cb394b5f7",
+    "outputs/model-comparison/exp0072/person-drafts-v1/R03-drafts.json": "3498627afbfb077ca71aa91211f7527b438e4a2b68ba06eac5567ba178e3becc"
+  },
+  "repair_script_sha256": "9011e49e712bc25a23ed90cdbfb819367094228e933793b4244b02d9f5e69ba2",
+  "repair_output_sha256": {
+    "outputs/model-comparison/exp0073/box-repairs-v1/editor-package.json": "966d34cc59f4c977d078beca4dd9c36dbc5fa30b7f7cf3a572ca4df7e563e20e",
+    "outputs/model-comparison/exp0073/box-repairs-v1/R01-repaired-draft.json": "398f14e92d9316e33522d030bdbb741e97dbf04ef2f9f0a3f7830e26c84103ae",
+    "outputs/model-comparison/exp0073/box-repairs-v1/R02-repaired-draft.json": "56d3d955de339f597997604e3f4797445c0924188a31a23da533c7e817873764",
+    "outputs/model-comparison/exp0073/box-repairs-v1/R03-repaired-draft.json": "11f7e5334f2c28573122ddde766f7e6cd5f1866528f40466cca596b765bbcc58",
+    "outputs/model-comparison/exp0073/box-repairs-v1/images/exp0073-r01-frame-000060.png": "1bdc8502e1e4adb28b31f5ec928e0609779792b45317fc0ec34deae8f2d8aa99",
+    "outputs/model-comparison/exp0073/box-repairs-v1/images/exp0073-r02-frame-000071.png": "3d55e207249454040a526bcf810091dd7ffdead1654dab463b3fdf6df116283d",
+    "outputs/model-comparison/exp0073/box-repairs-v1/images/exp0073-r02-frame-000072.png": "ae513285ba80bc99c99a52a69e58a6dc6924aa9395e98ee6169bb563190b85da",
+    "outputs/model-comparison/exp0073/box-repairs-v1/images/exp0073-r02-frame-000073.png": "ecd0d2e618af4dc53fbbcc69545c422fa0e3f8a5ac7bc4bc55a33b0fedd672ef",
+    "outputs/model-comparison/exp0073/box-repairs-v1/images/exp0073-r02-frame-000075.png": "62566f28400fbf7419098d590214bf8fff07268bf733490bb36e7b184f4c85c6",
+    "outputs/model-comparison/exp0073/box-repairs-v1/media/R01-coordinate-review.mp4": "3013a250f2b175ace7ce34fb695484542ff2940cb4468e8edcc15f352f6c0d13",
+    "outputs/model-comparison/exp0073/box-repairs-v1/media/R02-coordinate-review.mp4": "12e3313497c1fc68d57cc619cab571a7be0edaccb609a66f64e450b6cc8c3fce",
+    "outputs/model-comparison/exp0073/box-repairs-v1/media/exp0073-r01-frame-000060-comparison.jpg": "b00c2f47cb6b49b7d669bf7f6445daa92f9dcafb6a28fcdb42e874f5f196bd5c",
+    "outputs/model-comparison/exp0073/box-repairs-v1/media/exp0073-r02-frame-000071-comparison.jpg": "0082d8624be8c91d52b1f4515daecf217bb62176dae70de71bb6f2f09ac7be99",
+    "outputs/model-comparison/exp0073/box-repairs-v1/media/exp0073-r02-frame-000072-comparison.jpg": "7632a020d255e93f4d20f535c9280bd3bd2154e9828c16e2fe6df79b6a6fb7e9",
+    "outputs/model-comparison/exp0073/box-repairs-v1/media/exp0073-r02-frame-000073-comparison.jpg": "6bd2a5ad8882cd767a9da6bc1b687198a3ca9f2fcc123782d68880496632df51",
+    "outputs/model-comparison/exp0073/box-repairs-v1/media/exp0073-r02-frame-000075-comparison.jpg": "106e410b67d409d0ec0594627489ea830a3b67443ae236ee485559829f9109ee",
+    "outputs/model-comparison/exp0073/box-repairs-v1/summary.json": "d4a42d00090bd16180d3320c775d8e715f7379c60c020b35aeafc685a01beaea"
+  },
+  "audit_artifact_sha256": {
+    "outputs/model-comparison/exp0073/repair-audit-v1/audit.py": "847626729e843bfb2d36702f75ac9c5c711134a0f0e17520d52d07c9aca01f80",
+    "outputs/model-comparison/exp0073/repair-audit-v1/checks.json": "e24d57b0d104ba35b1677bcb726c36b3b1995c6e78b1a6583a15154f3cd17e49",
+    "outputs/model-comparison/exp0073/repair-audit-v1/verification.json": "dec2ecf19b450eb58b90e8d42f3fdb3cc86c1761666f900e9f1e0bd5eb8e0aa5"
+  },
+  "report_path": "docs/reviews/EXP-0073-repair-audit.md",
+  "report_sha256": "3fccd2cb37ea4520a7dc843bda89fb201ed6d56a2edbd0a9037d2c1e9262fad3",
+  "training_release": false,
+  "new_ground_truth_frames": 0,
+  "training_runs": 0,
+  "new_detector_inference": 0,
+  "audit_media_pixel_decodes": 0,
+  "limitations": [
+    "No pixels decoded or inspected; RGB digests were compared as metadata only.",
+    "Native PTS checked from compressed packet metadata, not decoded RGB frames.",
+    "User observations provide semantics; actor alignment, person completeness, ROI appropriateness and envelope fit are not independently visually certified.",
+    "R01 original actor and origin1 frame61 remain unverified; R02 same-person semantics do not confirm replacement coordinates.",
+    "Protected split/manifest files verified against frozen hashes; protected raw corpus was not rehashed.",
+    "Five new boxes remain coordinate proposals requiring confirmation; no GT/training release, detector/NMS policy or performance claim.",
+    "Repair script itself does not recompute live web source bindings or fail closed on changed semantic observations; this audit verified the actual fixed inputs against current bindings."
+  ],
+  "reproduce": "/home/jhc7484/dev/sceneguard-orca-lab/.venv-orca-lab/bin/python outputs/model-comparison/exp0073/repair-audit-v1/audit.py"
+}

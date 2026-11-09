@@ -1,0 +1,22 @@
+{
+  "experiment_id": "EXP-0073",
+  "reviewed_observations_reused": 3,
+  "input_frames": 72,
+  "input_proposals": 196,
+  "output_draft_boxes": 169,
+  "background_removed_proposals": 17,
+  "background_affected_frames": 13,
+  "duplicate_coordinate_proposal_frames": 5,
+  "uncertain_whole_frames_held": 1,
+  "new_ground_truth_frames": 0,
+  "training_release": false,
+  "training_runs": 0,
+  "new_model_inference": 0,
+  "script_sha256": "9011e49e712bc25a23ed90cdbfb819367094228e933793b4244b02d9f5e69ba2",
+  "preview_kind": "noncontinuous source stills at 1FPS; R01 single frame repeated3",
+  "editor_package_sha256": "966d34cc59f4c977d078beca4dd9c36dbc5fa30b7f7cf3a572ca4df7e563e20e",
+  "summary_sha256": "d4a42d00090bd16180d3320c775d8e715f7379c60c020b35aeafc685a01beaea",
+  "changes_scope": "versioned annotation drafts only; no runtime detector change",
+  "person_precision": null,
+  "person_recall": null
+}
