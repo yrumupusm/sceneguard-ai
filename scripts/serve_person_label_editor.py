@@ -141,6 +141,15 @@ def handler(store):
                     frames = [{k: v for k, v in f.items() if k != 'image_path'} for f in store.frames.values()]
                     return self.reply(dict(package_sha256=store.sha, frames=frames, training_release=False,
                                            revisions={f: store.current(f) for f in store.frames}))
+                if path.startswith('/context/') and store.package.get('evaluation_only') is True:
+                    entry = store.package.get('media', {})[path[len('/context/'):]]
+                    media_path = Path(entry['path'])
+                    if entry['kind'] != 'video' or media_path.suffix != '.mp4':
+                        raise ValueError('Video context required')
+                    data = media_path.read_bytes()
+                    if hashlib.sha256(data).hexdigest() != entry['sha256']:
+                        raise Conflict('Context video changed')
+                    return self.send_bytes(200, data, 'video/mp4')
                 if path.startswith('/images/'):
                     frame = store.frames[path[len('/images/'):]]
                     data = Path(frame['image_path']).read_bytes()
@@ -155,6 +164,9 @@ def handler(store):
                 experiment = store.package.get('experiment_id', 'EXP-0067')
                 if filename == 'index.html' and isinstance(experiment, str) and re.fullmatch(r'EXP-[0-9]{4}', experiment):
                     content = content.replace(b'experiment=EXP-0067', ('experiment='+experiment).encode())
+                    if store.package.get('evaluation_only') is True:
+                        content = content.replace(('http://127.0.0.1:8765/#video-review?experiment='+experiment).encode(), b'http://127.0.0.1:8765/')
+                        content = content.replace('실험 검수 화면으로 돌아가기'.encode(), '기존 실험 목록 열기'.encode())
                 self.send_bytes(200, content, mime)
             except Conflict as exc:
                 self.reply({'error': str(exc)}, 409)

@@ -1,0 +1,33 @@
+{
+  "frames": 12,
+  "sources": 6,
+  "candidates": 21,
+  "new_gt": 0,
+  "training": 0,
+  "model_forwards": 0,
+  "school_training_overlap": 0,
+  "queue": {
+    "jobs": 145,
+    "attempts": 145
+  },
+  "package_sha256": "f5388cf9e1be1c1897aaf7d061f68b612fc09ed5c618e9d5552046abeb57b446",
+  "evidence_sha256": "42f2478fe8fde501fd14eca2277e1fba608f0595b161ff09728186a7778b6abb",
+  "initial_revisions_all_zero": true,
+  "experiment_id": "EXP-0075",
+  "status": "school_review_prepared_not_ground_truth",
+  "batches": {
+    "miss_candidates": 6,
+    "retention_controls": 3,
+    "background_controls": 3
+  },
+  "camera_groups": 4,
+  "person_recall": null,
+  "person_precision": null,
+  "recovered": null,
+  "new_misses": null,
+  "school_used_for_training": false,
+  "school_used_for_threshold_selection": false,
+  "independent_test": false,
+  "web": "separate_loopback_editor_8773_not_main_catalog_registration",
+  "report": "docs/experiments/EXP-0075-school-review-preparation.md"
+}
