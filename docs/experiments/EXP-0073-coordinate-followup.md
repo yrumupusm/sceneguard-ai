@@ -7,3 +7,7 @@
 정확한 승인 좌표·답변 버전·원본 SHA/PTS·편집 패키지 SHA는 로컬 `runtime/model-comparison/exp0073/day-bottom-v2/night-four-box-approval.json`에 있다. 주간 수정은 `scripts/refine_exp0073_day_box.py --output NEW_OUTPUT`으로 기존 디코딩 환경에서 재현한다. 원본 이미지 해시, 위·양옆 동일성 및 실제 HTTP 제공 이미지 해시를 대조했다. 새로운 모델 추론·학습·운영 규칙 변경은 없다.
 
 검수 화면의 반영 완료는 요청을 반영했다는 뜻이며 주간 새 좌표 최종 승인이나 전체 학습 자료 완성을 뜻하지 않는다. 기존 질문의 자료는 이전 수정안 그대로 보존하며 새 수정본과 혼동하지 않는다.
+
+## 주간 새 수정본 승인 완료
+
+같은 날 사용자가 밑변을 올린 별도 수정본을 보고 “괜찮네”라고 승인했다. 주간 answer_version2에 day-bottom-v2의 정확한 revision/이미지 해시를 명시해 기존 연결 영상의 이전 좌표와 구분했다. 주간1개와 이미 승인한 야간4개, 총5개 대체 좌표를 로컬 `coordinate-approval-v1/approved-replacement-boxes.json`에 보존했다. 이 다섯 새 좌표 확인은 완료이며 다시 묻지 않는다. 다른 주황 박스나 전체 프레임 완전성 승인으로 확대하지 않고23.333초의 전체 보류와 학습 release=false를 유지했다.

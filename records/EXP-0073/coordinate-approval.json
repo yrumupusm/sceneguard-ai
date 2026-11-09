@@ -1,0 +1,13 @@
+{
+  "experiment_id": "EXP-0073",
+  "kind": "five_replacement_coordinates_approved",
+  "approved_replacement_boxes": 5,
+  "day_answer_version": 2,
+  "day_approved_revision": "day-bottom-v2",
+  "night_answer_version": 1,
+  "whole_frame_completeness_confirmed": false,
+  "uncertain_23_333_frame_hold_preserved": true,
+  "training_release": false,
+  "training_runs": 0,
+  "approval_manifest_sha256": "1c0f45ed1fb1e11e485d6202f585abdfc52d88c2b63de97f185ce9146b640e63"
+}

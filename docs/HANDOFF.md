@@ -1,3 +1,9 @@
+## 2026-11-09 — EXP73 새5좌표 승인 완료
+
+사용자가 주간 day-bottom-v2를 보고 승인했다. 주간 answer_version2는 밑변을 올린 별도 수정본의 해시를 명시하며 기존 연결 영상의 옛 좌표 승인이 아니다. 야간 answer_version1의4좌표와 함께 총5개 대체 좌표 확인 완료. 로컬 `runtime/model-comparison/exp0073/coordinate-approval-v1/approved-replacement-boxes.json`과 `records/EXP-0073/coordinate-approval.json` 참조. 이 다섯 좌표는 재질문하지 않는다. 전체 프레임 완전성 승인은 별개이며23.333초 전체 보류·학습 release=false·재학습0 유지. 아래 주간 미확인은 이전 이력이다.
+
+---
+
 ## 2026-11-09 — EXP73 주간 밑변 조정·야간4좌표 승인
 
 사용자 요청으로 주간20초 박스의 밑변만 신발 쪽으로 올린 새 day-bottom-v2를 저장했다. 위·양옆과 기존 등록 자료는 보존했고 새 주간 경계는 미확인이다. 로컬 http://127.0.0.1:8771/ 에서 수정본을 볼 수 있다. 야간 웹 answer_version1의 새 청록색4박스 승인을 정확히 반영했다. 해당4좌표만 승인하며 전체 프레임/주황 박스 승인으로 확대하지 않는다.23.333초 보류와 학습 release=false 유지. [후속 기록](experiments/EXP-0073-coordinate-followup.md), `records/EXP-0073/coordinate-followup-v2.json` 및 로컬 `day-bottom-v2/night-four-box-approval.json`을 따른다. 기존 EXP73 두 답변은 각각 수정 요청 반영/야간 좌표 승인 반영으로 처리했고 새 질문은 만들지 않았다. 재학습·새 모델0.
