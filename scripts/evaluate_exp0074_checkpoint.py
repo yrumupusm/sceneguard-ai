@@ -32,8 +32,8 @@ def verify_receipt(receipt,checkpoint,manifest_path):
         raise ValueError('Exact real epoch checkpoint and frozen manifest required')
 
 
-def summarize_epoch(frames,predictions):
-    result=summarize(frames,predictions)
+def summarize_epoch(frames,predictions,evaluation_split='development'):
+    result=summarize(frames,predictions,evaluation_split=evaluation_split)
     result['condition_missed_gt_rows']=result.pop('recovery_denominator')
     result.pop('future_recovered')
     result.pop('future_new_misses')
@@ -43,13 +43,29 @@ def summarize_epoch(frames,predictions):
     return result
 
 
-def evaluate(checkpoint,receipt_path,manifest_path,output):
+def evaluation_frames(training_manifest_path,school_manifest_path=None):
+    training=json.loads(training_manifest_path.read_text())
+    if school_manifest_path is None:
+        return training_manifest_path,[f for f in training['frames'] if f['split']=='development'],'development'
+    school=json.loads(school_manifest_path.read_text())
+    if (school.get('purpose')!='protected_school_regression_only'
+            or school.get('training_eligible') is not False
+            or school.get('threshold_selection_eligible') is not False
+            or any(f['split']!='school_regression' or f.get('training_eligible') is not False for f in school['frames'])):
+        raise ValueError('Separate protected school regression required')
+    for key in ('source_sha256','image_sha256'):
+        if {f[key] for f in training['frames']}&{f[key] for f in school['frames']}:
+            raise ValueError('School source/image overlaps training or development')
+    return school_manifest_path,school['frames'],'school_regression'
+
+
+def evaluate(checkpoint,receipt_path,manifest_path,output,school_manifest_path=None):
     if os.environ.get('CUDA_VISIBLE_DEVICES')!='':raise ValueError('CPU-only evaluation required')
     receipt=json.loads(receipt_path.read_text());verify_receipt(receipt,checkpoint,manifest_path)
-    manifest=json.loads(manifest_path.read_text())
-    frames=[f for f in manifest['frames'] if f['split']=='development']
+    training_manifest_path=manifest_path
+    manifest_path,frames,evaluation_split=evaluation_frames(training_manifest_path,school_manifest_path)
     if not frames or not all(f['person_completeness_verified'] for f in frames):
-        raise ValueError('Full-person reviewed development frames required')
+        raise ValueError('Full-person reviewed evaluation frames required')
     for f in frames:
         for k in ('image','label'):
             if sha(manifest_path.parent/f[k])!=f[k+'_sha256']:raise ValueError('Input changed')
@@ -96,9 +112,10 @@ def evaluate(checkpoint,receipt_path,manifest_path,output):
     with (output/'predictions.jsonl').open('x') as stream:
         for r in predictions:stream.write(json.dumps(r)+'\n')
     np.savez_compressed(output/'all-anchors.npz',**anchors)
-    result=summarize_epoch(frames,predictions)
+    result=summarize_epoch(frames,predictions,evaluation_split=evaluation_split)
     result.update(checkpoint=receipt['checkpoint'],epoch=receipt['epoch'],variant=receipt['provenance']['variant'],
-        manifest_sha256=sha(manifest_path),receipt_sha256=sha(receipt_path),model_state_unchanged=True,
+        manifest_sha256=sha(manifest_path),training_manifest_sha256=sha(training_manifest_path),
+        evaluation_split=evaluation_split,receipt_sha256=sha(receipt_path),model_state_unchanged=True,
         device='cpu',inference_source_sha256=sha(__file__),summarizer_sha256=sha(ROOT/'scripts/evaluate_exp0074_baseline.py'))
     write(output/'evaluation.json',result)
 
@@ -107,10 +124,11 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);s=p.add_subparsers(dest='command',required=True)
     e=s.add_parser('evaluate')
     for k in ('checkpoint','receipt','manifest','output'):e.add_argument('--'+k,type=Path,required=True)
+    e.add_argument('--school-manifest',type=Path)
     e=s.add_parser('extract-development')
     for k in ('manifest','predictions','output'):e.add_argument('--'+k,type=Path,required=True)
     a=p.parse_args()
-    if a.command=='evaluate':evaluate(a.checkpoint.resolve(),a.receipt.resolve(),a.manifest.resolve(),a.output.resolve())
+    if a.command=='evaluate':evaluate(a.checkpoint.resolve(),a.receipt.resolve(),a.manifest.resolve(),a.output.resolve(),a.school_manifest.resolve() if a.school_manifest else None)
     else:
         rows=development_subset(json.loads(a.manifest.read_text()),[json.loads(l) for l in a.predictions.read_text().splitlines()])
         with a.output.open('x') as stream:

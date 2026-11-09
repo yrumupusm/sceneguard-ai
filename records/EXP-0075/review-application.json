@@ -1,0 +1,131 @@
+{
+  "experiment_id": "EXP-0075",
+  "status": "review_applied_baseline_measured_no_training",
+  "reviewed_frames": 12,
+  "accepted_frames": 10,
+  "held_frames": 2,
+  "held_saved_box_rows": 6,
+  "gt_box_rows": 19,
+  "explicit_empty_frames": 2,
+  "groups": {
+    "event:E01_006": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 1,
+      "frames": 1,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666
+    },
+    "event:E01_007": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 2,
+      "frames": 3,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666
+    },
+    "event:E01_028": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "frames": 1,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "event:E01_030": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 3,
+      "frames": 3,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666
+    },
+    "event:E01_031": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 4,
+      "frames": 1,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "event:E01_043": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 2,
+      "frames": 1,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "school_regression": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 13,
+      "frames": 10,
+      "precision": 1.0,
+      "recall": 0.3157894736842105,
+      "f1": 0.48
+    }
+  },
+  "conditions": {
+    "school_regression": {
+      "small": {
+        "gt_rows": 7,
+        "detected": 1,
+        "missed": 6
+      },
+      "medium": {
+        "gt_rows": 12,
+        "detected": 5,
+        "missed": 7
+      },
+      "large": {
+        "gt_rows": 0,
+        "detected": 0,
+        "missed": 0
+      },
+      "explicit_empty": {
+        "frames": 2,
+        "false_positive_boxes": 0,
+        "false_positive_frames": 0
+      }
+    }
+  },
+  "recovery_denominator": 13,
+  "retention_denominator": 6,
+  "B": null,
+  "C": null,
+  "historical_native_counts": {
+    "tp": 5,
+    "fp": 0,
+    "fn": 14
+  },
+  "historical_difference_is_training_effect": false,
+  "independent_test": false,
+  "school_training_use": false,
+  "school_threshold_selection_use": false,
+  "verification": {
+    "independent_matching_counts": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 13
+    },
+    "editor_revisions_unchanged": true,
+    "training_manifest_unchanged": true,
+    "school_rejected_by_training_contract": "Explicit confirmed-person and protected-data exclusion declarations required",
+    "queue": {
+      "jobs": 145,
+      "attempts": 145
+    },
+    "manifest_sha256": "9b3276c3526119c58a9e16107b04d22759324a67686d83c52ecf2ce65080f6eb",
+    "evaluation_sha256": "3f484810415d2e8dab129914e52408dfbd7d4531d6ee592330f53aa35ebe4e5c",
+    "processing_sha256": "8ec82ef5331f958c7bc02b929db8452c1c3369c930b75a0fba3562c0eac1f77a",
+    "new_training": false
+  },
+  "report": "docs/experiments/EXP-0075-review-application.md"
+}

@@ -23,7 +23,7 @@ def write(path, data):
         f.write('\n')
 
 
-def summarize(frames, predictions):
+def summarize(frames, predictions, evaluation_split='development'):
     rows = validate_predictions(predictions, frames)
     detail, people = [], []
     for f in frames:
@@ -60,13 +60,13 @@ def summarize(frames, predictions):
             false_positive_boxes=sum(r['fp'] for r in detail if r['frame_id'] in empties),
             false_positive_frames=sum(r['fp']>0 for r in detail if r['frame_id'] in empties))
     return dict(groups=groups, conditions=conditions, frames=detail, people=people,
-        confidence=.5, iou_threshold=.5, recovery_denominator=sum(r['fn'] for r in detail if r['split']=='development'),
+        confidence=.5, iou_threshold=.5, recovery_denominator=sum(r['fn'] for r in detail if r['split']==evaluation_split),
         future_recovered=None, future_new_misses=None, independent_test=False,
         size_definition='sqrt native bbox area after 640-square letterbox scale: <32/<96/otherwise; not COCO native-area AP',
         temporal_person_identity_known=False, event_counts_are_frame_box_rows=True)
 
 
-def execute(manifest_path, output):
+def execute(manifest_path, output, evaluation_split='development'):
     if os.environ.get('CUDA_VISIBLE_DEVICES') != '':
         raise ValueError('CPU-only: set CUDA_VISIBLE_DEVICES empty before launch')
     manifest = json.loads(manifest_path.read_text())
@@ -107,7 +107,7 @@ def execute(manifest_path, output):
         device='cpu', torch_version=torch.__version__, ultralytics_version=ultralytics.__version__,
         image_size=640, dtype='float32', square_letterbox=True, extra_nms=False,
         native_one2one_topk=300, save_confidence=.05, eval_confidence=.5, eval_iou=.5,
-        dataset_frozen_before_forward=True, no_training=True))
+        dataset_frozen_before_forward=True, no_training=True, evaluation_split=evaluation_split))
     predictions, raw = [], {}
     start = time.monotonic()
     with torch.inference_mode():
@@ -132,7 +132,7 @@ def execute(manifest_path, output):
     with (output/'A-predictions.jsonl').open('x') as stream:
         for row in predictions: stream.write(json.dumps(row)+'\n')
     np.savez_compressed(output/'A-all-anchors.npz',**raw)
-    results = summarize(frames,predictions)
+    results = summarize(frames,predictions,evaluation_split=evaluation_split)
     results.update(manifest_sha256=sha(manifest_path), initial_checkpoint_sha256=sha(checkpoint),
                    model_state_preserved=True, model_state_sha256=before, seconds=time.monotonic()-start)
     write(output/'A-evaluation.json',results)
