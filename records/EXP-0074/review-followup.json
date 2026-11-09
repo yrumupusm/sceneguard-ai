@@ -1,0 +1,69 @@
+{
+  "experiment_id": "EXP-0074",
+  "kind": "review_followup_separate_from_frozen_web_metrics",
+  "development": {
+    "tp": 62,
+    "fp": 0,
+    "fn": 0,
+    "frames": 78,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "new_P01": {
+    "frames": 3,
+    "boxes": 6,
+    "tp": 6,
+    "fp": 0,
+    "fn": 0
+  },
+  "train": {
+    "tp": 288,
+    "fp": 9,
+    "fn": 45,
+    "frames": 122,
+    "precision": 0.9696969696969697,
+    "recall": 0.8648648648648649,
+    "f1": 0.9142857142857143
+  },
+  "conditions": {
+    "small": {
+      "gt_rows": 2,
+      "detected": 2,
+      "missed": 0
+    },
+    "medium": {
+      "gt_rows": 32,
+      "detected": 32,
+      "missed": 0
+    },
+    "large": {
+      "gt_rows": 28,
+      "detected": 28,
+      "missed": 0
+    },
+    "explicit_empty": {
+      "frames": 25,
+      "false_positive_boxes": 0,
+      "false_positive_frames": 0
+    }
+  },
+  "recovery_denominator": 0,
+  "B": null,
+  "C": null,
+  "training_executed": false,
+  "reused_predictions": 197,
+  "new_cpu_predictions": 3,
+  "bindings": {
+    "editor_exact_revision_preserved": true,
+    "training_plan_and_order_unchanged": true,
+    "queue": {
+      "jobs": 145,
+      "attempts": 145
+    },
+    "combined_manifest_sha256": "22ee2a361eaf613e63a1d8af74b6b530530814935796b86313dc7a1024497f09",
+    "combined_evaluation_sha256": "23e34a1ddd30fe9db3b41fa2cb45d4a22f7ca100601c5cf1ac0a80686624144c",
+    "plan_sha256": "013220537294e5aae995ccc9f7e427c5004dbe948343c3387bbc915efbb9ad6f"
+  },
+  "report_path": "docs/experiments/EXP-0074-review-followup.md"
+}
