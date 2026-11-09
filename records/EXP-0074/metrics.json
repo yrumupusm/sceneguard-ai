@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0074",
+  "metrics": [
+    {
+      "label": "사용 가능한 학습 프레임",
+      "value": 122,
+      "unit": "프레임",
+      "sample_n": 197,
+      "scope": "완전한 사람 라벨 검수 범위",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "고정 개발 프레임",
+      "value": 75,
+      "unit": "프레임",
+      "sample_n": 197,
+      "scope": "기존25·이동25·명시적 빈 배경25",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "승인 수정 좌표 반영",
+      "value": 5,
+      "unit": "박스",
+      "sample_n": 5,
+      "scope": "주간1·야간4; 전체 프레임 승인과 구분",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "지정 배경 후보 제거 유지",
+      "value": 17,
+      "unit": "박스",
+      "sample_n": 72,
+      "scope": "다른 위치를 정상으로 확정하지 않음",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "개발 A 검출 성공",
+      "value": 56,
+      "unit": "박스 행",
+      "sample_n": 56,
+      "scope": "confidence0.5·IoU0.5; 독립 시험 아님",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "개발 A 누락",
+      "value": 0,
+      "unit": "박스 행",
+      "sample_n": 56,
+      "scope": "누락 회복 분모0",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "개발 A 오검출",
+      "value": 0,
+      "unit": "박스",
+      "sample_n": 75,
+      "scope": "명시적 빈 배경25 포함",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "학습 자료 A 누락 진단",
+      "value": 45,
+      "unit": "박스 행",
+      "sample_n": 333,
+      "scope": "개발 성능과 분리",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "작은 사람 추가 검수",
+      "value": 3,
+      "unit": "프레임",
+      "sample_n": 3,
+      "scope": "P01만; 아직 정답·누락 미확정",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "B 누적 통계 변경",
+      "value": 372,
+      "unit": "buffer",
+      "sample_n": 372,
+      "scope": "실제 모델 합성 입력 CPU forward; 학습 아님",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "C 누적 통계 변경",
+      "value": 0,
+      "unit": "buffer",
+      "sample_n": 372,
+      "scope": "실제 모델 합성 입력 CPU forward; 학습 아님",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "실제 B/C 학습",
+      "value": 0,
+      "unit": "회",
+      "sample_n": 2,
+      "scope": "이번 승인 범위에서 미실행",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "actual_cpu_output_and_saved_labels"
+    },
+    {
+      "label": "B/C 개발 누락 회복률",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "B/C 미실행·현재 A 누락 분모0",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "unavailable"
+    },
+    {
+      "label": "새 독립 시험 성능",
+      "value": null,
+      "unit": "%",
+      "sample_n": null,
+      "scope": "독립 시험 미확보",
+      "source": "records/EXP-0074/results.json",
+      "source_sha256": "589067269ce64537523bf72c674236cfde8609fc26e93b46f4f11b0c6010d72d",
+      "verification": "unavailable"
+    }
+  ]
+}

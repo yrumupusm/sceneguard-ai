@@ -30,6 +30,9 @@ def digest(value):
 
 
 def source_hash(command="cpu-mock", config=None):
+    if command == "person-bn-comparison-train":
+        from orchestration.person_bn_comparison_command import sources
+        return digest(sources(config))
     if command == "person-detector-train":
         from orchestration.person_detector_training_command import sources
         return digest(sources(config))
@@ -173,10 +176,10 @@ class Queue:
             queue.migrate_commands()
         return queue
 
-    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False, include_pose=False, include_public_pose=False, include_roi_pose=False, include_resolution_pose=False, include_detect=False, include_exp27_detect=False, include_exp29_cache=False, include_video_cards=False, include_exp39_roi=False, include_action_train=False, include_action_infer=False, include_model_compare=False, include_comparison_head=False, include_person_label_repair=False, include_person_detector_train=False):
+    def migrate_commands(self, include_mvp=False, include_cv=False, include_vlm_batch02=False, include_pose=False, include_public_pose=False, include_roi_pose=False, include_resolution_pose=False, include_detect=False, include_exp27_detect=False, include_exp29_cache=False, include_video_cards=False, include_exp39_roi=False, include_action_train=False, include_action_infer=False, include_model_compare=False, include_comparison_head=False, include_person_label_repair=False, include_person_detector_train=False, include_person_bn_comparison_train=False):
         """Backup then atomically rebuild only the old command CHECK; keep every row."""
-        if include_person_detector_train or include_person_label_repair or include_comparison_head or include_model_compare or include_action_infer or include_action_train or include_exp39_roi or include_video_cards or include_mvp or include_cv or include_vlm_batch02 or include_pose or include_public_pose or include_roi_pose or include_resolution_pose or include_detect or include_exp27_detect or include_exp29_cache:
-            target = "'person-detector-train'" if include_person_detector_train else "'person-label-repair'" if include_person_label_repair else "'comparison-head'" if include_comparison_head else "'model-compare'" if include_model_compare else "'action-infer'" if include_action_infer else "'action-train'" if include_action_train else "'exp39-roi'" if include_exp39_roi else "'video-cards'" if include_video_cards else "'exp29-cache007'" if include_exp29_cache else "'exp27-detect'" if include_exp27_detect else "'batch07-detect'" if include_detect else "'batch06-pose'" if include_resolution_pose else "'batch05-pose'" if include_roi_pose else "'batch04-pose'" if include_public_pose else "'batch03-pose'" if include_pose else "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
+        if include_person_bn_comparison_train or include_person_detector_train or include_person_label_repair or include_comparison_head or include_model_compare or include_action_infer or include_action_train or include_exp39_roi or include_video_cards or include_mvp or include_cv or include_vlm_batch02 or include_pose or include_public_pose or include_roi_pose or include_resolution_pose or include_detect or include_exp27_detect or include_exp29_cache:
+            target = "'person-bn-comparison-train'" if include_person_bn_comparison_train else "'person-detector-train'" if include_person_detector_train else "'person-label-repair'" if include_person_label_repair else "'comparison-head'" if include_comparison_head else "'model-compare'" if include_model_compare else "'action-infer'" if include_action_infer else "'action-train'" if include_action_train else "'exp39-roi'" if include_exp39_roi else "'video-cards'" if include_video_cards else "'exp29-cache007'" if include_exp29_cache else "'exp27-detect'" if include_exp27_detect else "'batch07-detect'" if include_detect else "'batch06-pose'" if include_resolution_pose else "'batch05-pose'" if include_roi_pose else "'batch04-pose'" if include_public_pose else "'batch03-pose'" if include_pose else "'vlm-batch02'" if include_vlm_batch02 else ("'batch02-cv'" if include_cv else "'mvp-0001'")
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
                 if target in sql:
@@ -186,7 +189,15 @@ class Queue:
                 raise ValueError('cannot migrate while a queue reservation is held')
             with self.connection() as db:
                 sql = db.execute("SELECT sql FROM sqlite_master WHERE name='jobs'").fetchone()[0]
-                if include_person_detector_train:
+                if include_person_bn_comparison_train:
+                    if "'person-bn-comparison-train'" in sql:
+                        return
+                    found = re.search(r"CHECK\(command IN \([^)]*\)\)", sql)
+                    if found is None or "'cpu-mock'" not in found.group(0):
+                        raise ValueError('BN comparison requires preserved allowlisted queue schema')
+                    old_check = found.group(0)
+                    new_check = old_check[:-2] + ",'person-bn-comparison-train'))"
+                elif include_person_detector_train:
                     if "'person-detector-train'" in sql:
                         return
                     found = re.search(r"CHECK\(command IN \([^)]*\)\)", sql)
@@ -341,7 +352,7 @@ class Queue:
                 db.execute('BEGIN IMMEDIATE')
                 if db.execute("SELECT 1 FROM jobs WHERE status IN ('running','unknown')").fetchone():
                     raise ValueError('unresolved queue prevents schema migration')
-                migration = 'person-label-repair' if include_person_label_repair else 'comparison-head' if include_comparison_head else 'model-compare' if include_model_compare else 'action-infer' if include_action_infer else 'action-train' if include_action_train else 'exp39-roi' if include_exp39_roi else 'video-cards' if include_video_cards else 'exp29-cache007' if include_exp29_cache else 'exp27-detect' if include_exp27_detect else 'batch07-detect' if include_detect else 'batch06-pose' if include_resolution_pose else 'batch05-pose' if include_roi_pose else 'batch04-pose' if include_public_pose else 'batch03-pose' if include_pose else 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
+                migration = 'person-bn-comparison-train' if include_person_bn_comparison_train else 'person-label-repair' if include_person_label_repair else 'comparison-head' if include_comparison_head else 'model-compare' if include_model_compare else 'action-infer' if include_action_infer else 'action-train' if include_action_train else 'exp39-roi' if include_exp39_roi else 'video-cards' if include_video_cards else 'exp29-cache007' if include_exp29_cache else 'exp27-detect' if include_exp27_detect else 'batch07-detect' if include_detect else 'batch06-pose' if include_resolution_pose else 'batch05-pose' if include_roi_pose else 'batch04-pose' if include_public_pose else 'batch03-pose' if include_pose else 'batch02-vlm' if include_vlm_batch02 else ('batch02-cv' if include_cv else ('mvp' if include_mvp else 'vlm'))
                 backup = self.runtime / f'queue-before-{migration}-{uuid.uuid4().hex}.sqlite3'
                 # Separate reader copies committed state while this write lock
                 # prevents enqueues. Backup precedes the first schema mutation.
@@ -404,7 +415,7 @@ class Queue:
     def enqueue(self, *, job_key, run_id, task_id, dispatch_id, owner,
                 command="cpu-mock", input_value=None, config=None, timeout=10,
                 expected_input_hash=None, expected_config_hash=None):
-        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "batch04-pose", "batch05-pose", "batch06-pose", "batch07-detect", "exp27-detect", "exp29-cache007", "video-cards", "exp39-roi", "action-train", "action-infer", "model-compare", "comparison-head", "person-label-repair", "person-detector-train"}:
+        if command not in {"cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "batch04-pose", "batch05-pose", "batch06-pose", "batch07-detect", "exp27-detect", "exp29-cache007", "video-cards", "exp39-roi", "action-train", "action-infer", "model-compare", "comparison-head", "person-label-repair", "person-detector-train", "person-bn-comparison-train"}:
             raise ValueError("only registered cpu-mock/vlm-batch01/mvp-0001/batch02-cv/vlm-batch02/batch03-pose/batch04-pose commands are permitted")
         if any(not isinstance(x, str) or not x.strip() for x in
                (job_key, run_id, task_id, dispatch_id, owner)):
@@ -417,6 +428,12 @@ class Queue:
             if (type(seconds) not in (int, float) or not math.isfinite(seconds)
                     or not 0 <= seconds <= 3600 or type(code) is not int or not 0 <= code <= 125):
                 raise ValueError("seconds must be 0..3600; exit_code must be integer 0..125")
+        elif command == 'person-bn-comparison-train':
+            from orchestration.person_bn_comparison_command import validate, job_key as comparison_key
+            validate(config, input_value, self.runtime)
+            if (config['context'] != dict(run_id=run_id, task_id=task_id, dispatch_id=dispatch_id, owner=owner)
+                    or job_key != comparison_key(config)):
+                raise ValueError('Exact BN comparison assignment and job key required')
         elif command == 'person-detector-train':
             from orchestration.person_detector_training_command import validate, job_key as comparison_key
             validate(config, input_value, self.runtime)
@@ -550,6 +567,8 @@ class Queue:
             limit = 172800  # One fixed 10-epoch job; no implicit retry.
         if command == 'model-compare':
             limit = 14400  # Full45 measured throughput needs margin beyond the old one-hour cap.
+        if command == 'person-bn-comparison-train':
+            limit = 3600
         if command == 'person-detector-train':
             limit = 1800
         if command == 'person-label-repair':
@@ -570,6 +589,8 @@ class Queue:
                       config_json=json.dumps(config, sort_keys=True),
                       input_hash=ih, config_hash=ch, source_hash=source_hash(command, config),
                       code_sha=sha, timeout=timeout)
+        if command == 'person-bn-comparison-train':
+            self.migrate_commands(include_person_bn_comparison_train=True)
         if command == 'person-detector-train':
             self.migrate_commands(include_person_detector_train=True)
         if command == 'person-label-repair':
@@ -661,6 +682,28 @@ class Queue:
             manifest = self.runtime / "attempts" / attempt / "manifest.json"
             manifest.parent.mkdir(parents=True, exist_ok=True)
             finished = time.time()
+            if job['command'] == 'person-bn-comparison-train':
+                from orchestration.person_bn_comparison_command import output_path, interpreter, file_hash, verify_result
+                config = json.loads(job['config_json'])
+                result = output_path(config['stage'], attempt) / 'result.json'
+                result_sha = file_hash(result) if result.is_file() else None
+                if status == 'succeeded':
+                    try:
+                        verify_result(config, result)
+                    except (ValueError, OSError, KeyError, TypeError) as error:
+                        status, reason = 'failed', 'Invalid BN comparison result: ' + str(error)
+                atomic_json(manifest, dict(schema_version=1, synthetic=False, execution_status=status,
+                    registration={k: job[k] for k in ('command','job_id','run_id','task_id','dispatch_id',
+                        'owner','code_sha','source_hash','input_hash','config_hash')},
+                    attempt_id=attempt, interpreter=str(interpreter(config)),
+                    result_path=str(result.parent), result_sha256=result_sha,
+                    limitations=['B/C training; development diagnostics are not independent generalization']))
+                db.execute('BEGIN IMMEDIATE')
+                db.execute('UPDATE attempts SET status=?,exit_code=?,finished_at=?,heartbeat=?,result_manifest=?,reason=? '
+                           'WHERE attempt_id=?', (status,exit_code,finished,finished,str(manifest),reason,attempt))
+                db.execute('UPDATE jobs SET status=? WHERE job_id=?', (status,row['job_id']))
+                db.commit()
+                return
             if job['command'] == 'person-detector-train':
                 from orchestration.person_detector_training_command import output_path, interpreter, file_hash
                 config = json.loads(job['config_json'])
@@ -895,6 +938,9 @@ class Queue:
                 count = db.execute("SELECT COUNT(*) FROM attempts WHERE job_id=?", (job_id,)).fetchone()[0]
                 if row is None or row["status"] not in RETRYABLE or count != 1:
                     raise ValueError("one explicit retry allowed only after a known failed/cancelled/interrupted attempt")
+                if row['command']=='person-bn-comparison-train':
+                    from orchestration.person_bn_comparison_command import retry_guard
+                    retry_guard(db,dict(row))
                 if row['command']=='person-detector-train':
                     from orchestration.person_detector_training_command import retry_guard
                     retry_guard(db,dict(row))
@@ -982,7 +1028,10 @@ class Queue:
                 if digest(json.loads(job["input_json"])) != job["input_hash"] or digest(json.loads(job["config_json"])) != job["config_hash"]:
                     raise ValueError("stored input/config hash mismatch")
                 config = json.loads(job["config_json"])
-                if job['command'] == 'person-detector-train':
+                if job['command'] == 'person-bn-comparison-train':
+                    from orchestration.person_bn_comparison_command import command
+                    argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
+                elif job['command'] == 'person-detector-train':
                     from orchestration.person_detector_training_command import command
                     argv = command(config, json.loads(job['input_json']), self.runtime, attempt, lock.fileno())
                 elif job['command'] == 'person-label-repair':
@@ -1046,7 +1095,7 @@ class Queue:
                 else:
                     raise ValueError('unregistered command in stored job')
                 child_env = None
-                if job['command'] in ('action-train', 'action-infer', 'model-compare', 'comparison-head', 'person-label-repair', 'person-detector-train'):
+                if job['command'] in ('action-train', 'action-infer', 'model-compare', 'comparison-head', 'person-label-repair', 'person-detector-train', 'person-bn-comparison-train'):
                     child_env = dict(os.environ, SCENEGUARD_GPU_LOCK_FD=str(lock.fileno()), CUDA_VISIBLE_DEVICES='0')
                 with (directory / "child.log").open("ab") as output:
                     child = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL,
@@ -1106,7 +1155,7 @@ def main(argv=None):
     enqueue = commands.add_parser("enqueue", help="register one allowlisted job (idempotent job key)")
     for field in ("job-key", "run-id", "task-id", "dispatch-id", "owner"):
         enqueue.add_argument("--" + field, required=True)
-    enqueue.add_argument("--command", choices=["cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "action-train", "action-infer", "model-compare", "comparison-head", "person-label-repair", "person-detector-train"], default="cpu-mock")
+    enqueue.add_argument("--command", choices=["cpu-mock", "vlm-batch01", "mvp-0001", "batch02-cv", "vlm-batch02", "batch03-pose", "action-train", "action-infer", "model-compare", "comparison-head", "person-label-repair", "person-detector-train", "person-bn-comparison-train"], default="cpu-mock")
     enqueue.add_argument("--input-json", type=json.loads, default={"synthetic": True})
     enqueue.add_argument("--config-json", type=json.loads, default={"seconds": 0.1, "exit_code": 0})
     enqueue.add_argument("--expected-input-hash")

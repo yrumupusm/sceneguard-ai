@@ -1,0 +1,143 @@
+{
+  "experiment_id": "EXP-0074",
+  "source_sha256": {
+    "manifest": "01a08a3d42e610a3489b05859c9425ffe462b3709f46f967ea4537a48df2cf90",
+    "corrections": "39f467258ff66ccf685a362e4fc53f910e9b11df084d070767cb0e68c9a9d1bf",
+    "evaluation": "5563222273d2d579d0591a98ff800b21929ef671cdc7965fc05a96ea893cec57",
+    "bn_verification": "079ae192bad725d92b1eb724dfdedaf79dd715b730130590b0e2021e4ecbac57",
+    "targeted_review": "640c342268402b70fa4e19760cbb83c343dd64bdd9311577f846eb7cd22f300e"
+  },
+  "train_frames": 122,
+  "development_frames": 75,
+  "train_gt_rows": 333,
+  "development_gt_rows": 56,
+  "explicit_empty_development_frames": 25,
+  "approved_replacements_applied": 5,
+  "background_proposals_removed": 17,
+  "incomplete_candidate_frames": 71,
+  "excluded_night_frames": 1,
+  "development": {
+    "tp": 56,
+    "fp": 0,
+    "fn": 0,
+    "frames": 75,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "train_diagnostic": {
+    "tp": 288,
+    "fp": 9,
+    "fn": 45,
+    "frames": 122,
+    "precision": 0.9696969696969697,
+    "recall": 0.8648648648648649,
+    "f1": 0.9142857142857143
+  },
+  "event_groups": {
+    "event:aug-409dbbc92fa789ba34f9": {
+      "tp": 31,
+      "fp": 0,
+      "fn": 0,
+      "frames": 25,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "event:aug-44880ca3739b0cc77df5": {
+      "tp": 180,
+      "fp": 8,
+      "fn": 30,
+      "frames": 73,
+      "precision": 0.9574468085106383,
+      "recall": 0.8571428571428571,
+      "f1": 0.9045226130653267
+    },
+    "event:aug-6b8cff5aa1956c4cf261": {
+      "tp": 25,
+      "fp": 0,
+      "fn": 0,
+      "frames": 50,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "event:aug-92f061124db657c626c9": {
+      "tp": 33,
+      "fp": 0,
+      "fn": 13,
+      "frames": 24,
+      "precision": 1.0,
+      "recall": 0.717391304347826,
+      "f1": 0.8354430379746836
+    },
+    "event:aug-e3a4180d7fc0dffd3374": {
+      "tp": 75,
+      "fp": 1,
+      "fn": 2,
+      "frames": 25,
+      "precision": 0.9868421052631579,
+      "recall": 0.974025974025974,
+      "f1": 0.9803921568627451
+    }
+  },
+  "size_conditions": {
+    "development": {
+      "small": {
+        "gt_rows": 0,
+        "detected": 0,
+        "missed": 0
+      },
+      "medium": {
+        "gt_rows": 28,
+        "detected": 28,
+        "missed": 0
+      },
+      "large": {
+        "gt_rows": 28,
+        "detected": 28,
+        "missed": 0
+      },
+      "explicit_empty": {
+        "frames": 25,
+        "false_positive_boxes": 0,
+        "false_positive_frames": 0
+      }
+    },
+    "train": {
+      "small": {
+        "gt_rows": 91,
+        "detected": 59,
+        "missed": 32
+      },
+      "medium": {
+        "gt_rows": 242,
+        "detected": 229,
+        "missed": 13
+      },
+      "large": {
+        "gt_rows": 0,
+        "detected": 0,
+        "missed": 0
+      },
+      "explicit_empty": {
+        "frames": 0,
+        "false_positive_boxes": 0,
+        "false_positive_frames": 0
+      }
+    }
+  },
+  "development_recovery_denominator": 0,
+  "additional_review_frames": 3,
+  "bn_modules": 124,
+  "b_changed_buffers": 372,
+  "c_changed_buffers": 0,
+  "actual_training_runs": 0,
+  "trained_checkpoints": 0,
+  "protected_school_or_test_used": false,
+  "independent_test_secured": false,
+  "independent_generalization": null,
+  "B_performance": null,
+  "C_performance": null,
+  "units": "frame-level person-box rows, not unique persons or intrusion incidents"
+}

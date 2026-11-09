@@ -5728,6 +5728,68 @@
       "task_id": "task_70a9e21f0050",
       "title": "사용자 검수에 따른 사람 박스 보완",
       "worker_opinion": "정확한 수정 집합과 나머지 좌표·분할·출처 보존 확인. 새 좌표와 사람 완전성은 시각 인증하지 않음."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-09T07:21:22.215278+00:00",
+      "attempt_id": "baseline-and-bn-preparation-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_ff55c8d604c0",
+      "evaluated_model": "사전학습 YOLO26m person 행; B/C 미학습",
+      "evidence": [
+        {
+          "artifact_id": "exp0074-dev-01",
+          "kind": "video",
+          "label": "기존 개발25 · 원본과 정답·A 검출"
+        },
+        {
+          "artifact_id": "exp0074-dev-02",
+          "kind": "video",
+          "label": "P05 빈 배경25 · 원본과 A 검출"
+        },
+        {
+          "artifact_id": "exp0074-dev-03",
+          "kind": "video",
+          "label": "P05 이동25 · 원본과 정답·A 검출"
+        },
+        {
+          "artifact_id": "exp0074-p01-targeted-review",
+          "kind": "video",
+          "label": "추가 확인 P01 세 장 · 원본과 먼 대상 확대"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0074",
+      "limitations": [
+        "개발 A 누락0·작은 GT0으로 현재 누락 회복 효과 측정 불가.",
+        "수정71프레임은 완전성 미확인으로 학습/개발 제외, 야간23.333초 전체 제외.",
+        "물리적 촬영 독립성 미인증·새 독립 시험 미확보.",
+        "B/C optimizer step·실제 학습 checkpoint·성능0회/미측정."
+      ],
+      "metric_definitions": "records/EXP-0074/metrics.json",
+      "metrics_path": "records/EXP-0074/metrics.json",
+      "metrics_sha256": "6b9d5c80e8cea6fb2deaafd666153d886fdb8aeeab4fa17ed266c56c20f37590",
+      "next_step": "P01의 작은 대상 세 프레임만 추가 확인하고 개발 목록 새 버전·A 평가를 준비. 이후 별도 요청 시 B/C 실행.",
+      "reasoning_effective": "high",
+      "registration_sha256": "b88252c811ab9bb9ec3ebfe3a9aa840a8c9c1d557c20be4b03915d05647910b2",
+      "report_path": "docs/experiments/EXP-0074-results.md",
+      "report_sha256": "15ea621c6b74b8ce0f206ac15f03707cff39f94f67c3156d179fa57b97d0c4a8",
+      "review_binding_path": "docs/reviews/EXP-0074.binding.json",
+      "review_path": "docs/reviews/EXP-0074-coordinator-review.md",
+      "review_sha256": "de6dea66e6aa9caaf0b4c9117db83f0cb6c96abe8d422bb528e2503059deb7eb",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "6b9d5c80e8cea6fb2deaafd666153d886fdb8aeeab4fa17ed266c56c20f37590",
+      "reviewed_report_sha256": "15ea621c6b74b8ce0f206ac15f03707cff39f94f67c3156d179fa57b97d0c4a8",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot1",
+      "summary": "승인5좌표·배경17후보 제거 반영. 학습122/개발75 고정과 CPU A 평가 완료. 개발56TP/0FP/0FN으로 회복 분모0; P01 세 장만 추가 확인. B/C 5epoch/305step 준비, 재학습0.",
+      "synthetic": false,
+      "task_id": "task_1c18aa91eb7f",
+      "title": "사람 검출 라벨 반영·기준선 평가와 BN 비교 준비",
+      "worker_opinion": "고정 자료·미확정 수정본 분리, BN 통계/affine 분리, epoch별 저장 및 미래 큐 경로 검증. 실제 학습·독립 성능은 미측정."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",

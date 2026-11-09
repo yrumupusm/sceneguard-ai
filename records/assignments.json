@@ -883,6 +883,19 @@
       "synthetic": false,
       "task_id": "task_70a9e21f0050",
       "title": "사용자 검수에 따른 사람 박스 보완"
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-09T07:21:22.215278+00:00",
+      "dispatch_id": "ctx_ff55c8d604c0",
+      "experiment_id": "EXP-0074",
+      "reasoning_effective": "high",
+      "run_id": "run_3d23462a014a",
+      "slot": "slot1",
+      "synthetic": false,
+      "task_id": "task_1c18aa91eb7f",
+      "title": "사람 검출 라벨 반영·기준선 평가와 BN 비교 준비"
     }
   ],
   "schema_version": 1
