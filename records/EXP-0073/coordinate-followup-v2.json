@@ -1,0 +1,26 @@
+{
+  "experiment_id": "EXP-0073",
+  "kind": "day_lower_edge_revision_and_night_coordinate_approval",
+  "day_source_seconds": 20,
+  "day_changed_edges": [
+    "bottom"
+  ],
+  "day_other_edges_unchanged": true,
+  "day_coordinate_confirmed": false,
+  "night_new_boxes_confirmed": 4,
+  "night_source_seconds": [
+    23.667,
+    24,
+    24.333,
+    25
+  ],
+  "night_answer_version": 1,
+  "whole_frame_completeness_confirmed": false,
+  "uncertain_23_333_frame_hold_preserved": true,
+  "parent_artifacts_preserved": true,
+  "training_release": false,
+  "training_runs": 0,
+  "new_model_inference": 0,
+  "day_revision_sha256": "5e0ea37c11ffb01a2ce67769114fb690db03cb92c6b04a5dfaf36e3a1839d95a",
+  "night_approval_sha256": "07259408bab57fd856119d7d77fbbe7b16faecb27f3011f9ed090959b3937092"
+}
