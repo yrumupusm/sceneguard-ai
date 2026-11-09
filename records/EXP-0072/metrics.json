@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-0072",
+  "metrics": [
+    {
+      "label": "새 검수 원본",
+      "value": 3,
+      "unit": "개",
+      "sample_n": 3,
+      "scope": "학습2·개발1",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검수 구간",
+      "value": 3,
+      "unit": "구간",
+      "sample_n": 3,
+      "scope": "두 묶음; 전부 미검수",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "검수 프레임",
+      "value": 72,
+      "unit": "프레임",
+      "sample_n": 72,
+      "scope": "원본3FPS 연속 프레임",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "미검수 사람 후보",
+      "value": 196,
+      "unit": "박스",
+      "sample_n": 72,
+      "scope": "사람 점수0.05; 인원수·정답 아님",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "학습 후보 프레임",
+      "value": 48,
+      "unit": "프레임",
+      "sample_n": 48,
+      "scope": "같은 촬영 예약19",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "개발 후보 프레임",
+      "value": 24,
+      "unit": "프레임",
+      "sample_n": 24,
+      "scope": "별도 촬영 예약01; 정상 전용 영상 아님",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "기존 검수 재질문",
+      "value": 0,
+      "unit": "프레임",
+      "sample_n": 197,
+      "scope": "EXP67·71 검수197프레임과 중복 없음",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "새 독립 시험 확보",
+      "value": 0,
+      "unit": "개",
+      "sample_n": 3,
+      "scope": "이번 자료는 학습·개발 후보",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "추가학습 실행",
+      "value": 0,
+      "unit": "회",
+      "sample_n": 3,
+      "scope": "자료 준비만 수행",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "GPU 실행",
+      "value": 0,
+      "unit": "회",
+      "sample_n": 3,
+      "scope": "CPU 초안만 생성",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": "d54d49a59837464ccfe02d044fdac7037f4f0167243035abf3bcc40384089dc0",
+      "verification": "saved_output_recomputed"
+    },
+    {
+      "label": "사람 검출 정밀도",
+      "value": null,
+      "unit": "비율",
+      "sample_n": null,
+      "scope": "의미·좌표 검수 전 미측정",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    },
+    {
+      "label": "사람 검출 재현율",
+      "value": null,
+      "unit": "비율",
+      "sample_n": null,
+      "scope": "의미·좌표 검수 전 미측정",
+      "source": "records/EXP-0072/results.json",
+      "source_sha256": null,
+      "verification": "unavailable"
+    }
+  ]
+}

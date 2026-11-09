@@ -1,0 +1,49 @@
+{
+  "status": "audit_complete_no_safe_normal_development_candidates",
+  "normal_sources": 432,
+  "current_available_normal_pairs": 432,
+  "unavailable_normal_pairs": 0,
+  "disposition_counts": {
+    "prior_content_hold": 108,
+    "protected_test_closure": 147,
+    "quarantine_in_train_reservation": 4,
+    "train_reserved_not_development": 173
+  },
+  "walking_standing_sources": 324,
+  "walking_standing_dispositions": {
+    "train_reserved_not_development": 173,
+    "quarantine_in_train_reservation": 4,
+    "protected_test_closure": 147
+  },
+  "safe_normal_development_candidates": 0,
+  "certified_independent_events": null,
+  "current_source_hashes_checked": 435,
+  "current_label_hashes_checked": 435,
+  "normal_source_hashes_with_prior_comparison": 411,
+  "source_or_label_hash_changes": 0,
+  "current_label_metadata_changes": 0,
+  "protected_school45": 45,
+  "protected_exp64_originals": 296,
+  "protected_exp64_inventory_closure_members": 327,
+  "protected_exp64_all_group_members": 329,
+  "certified_p01_p26_p28_physical_independence": false,
+  "training_runs": 0,
+  "inference_runs": 0,
+  "gpu_runs": 0,
+  "new_decodes": 0,
+  "split_assignments_changed": 0,
+  "holds_overridden": 0,
+  "new_person_ground_truth_frames": 0,
+  "source_hash_scope": "current local bytes or decompressed ZIP member; all normal pairs plus P01/P26/P28",
+  "protected_hash_scope": "frozen test296/school45 hashes and saved protected341 fingerprints; protected files not rehashed",
+  "script_sha256": "c6c922951b2b3fc15f4f42c62fd3d4221d2405fe297835eda07df562ce6dea45",
+  "output_hashes": {
+    "candidate-hold-list.json": "7a869bc5eb4d8be14b02973315a139b150a6f63e5f1b8b3c157b6b554fa24d2d",
+    "normal-group-audit.json": "2186d9e74769a774d130510d92c698f50a2f99455aed91b8e3050fc1acba8f9e",
+    "normal-source-audit.jsonl": "da724acfe872a961371f322992125d48a52061f5b7a8cebae6b9319c45aebf83",
+    "p01-p26-p28-audit.json": "f2ad51059f90df5834365a6bf7fb3baf95c9fbc9bdc41dd4246af898b5a97118",
+    "summary.json": "c9ca3bc0d006fbd1e07b9723cc4c64ac4d58c2ca67801940e7519238d92cbe2b"
+  },
+  "output_hash_manifest_sha256": "1902d789c6cf07107d14a5e51e1b00b8ba6663dec1ec383c52aafc5f6de6be20",
+  "reproduce": "python3 scripts/audit_exp0072_development_sources.py --output NEW_OUTPUT"
+}

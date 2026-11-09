@@ -1,0 +1,57 @@
+{
+  "experiment_id": "EXP-0072",
+  "frames": 72,
+  "proposals": 196,
+  "cases": [
+    {
+      "review_id": "R01",
+      "candidate_id": "P26",
+      "reserved_split": "train",
+      "capture_reservation": "capture-reservation-19",
+      "frame_count": 24,
+      "proposal_count": 29,
+      "zero_proposal_frames": 0,
+      "video_sha256": "ebca407ee677ea7b97f5b89c7ec2dc3f8cfa9a01ff4d59214e6188444d6d0e80"
+    },
+    {
+      "review_id": "R02",
+      "candidate_id": "P28",
+      "reserved_split": "train",
+      "capture_reservation": "capture-reservation-19",
+      "frame_count": 24,
+      "proposal_count": 38,
+      "zero_proposal_frames": 0,
+      "video_sha256": "b2a3f85ee8434580b6635087eaacb74cdddc7cba1b600a69f5a24cd704ead660"
+    },
+    {
+      "review_id": "R03",
+      "candidate_id": "P01",
+      "reserved_split": "development",
+      "capture_reservation": "capture-reservation-01",
+      "frame_count": 24,
+      "proposal_count": 129,
+      "zero_proposal_frames": 0,
+      "video_sha256": "238e299ebe7a0b4238d8d48665cb8360946159debc410e8b882950d1aa98971c"
+    }
+  ],
+  "prior_reviewed_frames_preserved": 197,
+  "old_frame_overlap": 0,
+  "protected_input_hashes_preserved": 9,
+  "training_release": false,
+  "gpu_runs": 0,
+  "training_runs": 0,
+  "manifest_sha256": "93cec392e9f864cc2a2738ee7ee4ab7a65ca3da52ae22b2d74e94d0a4aa4ce8a",
+  "generator_sha256": "ed0699654f0247f4a9485795d3b5ef4b2e4caf5a5dc467309270908c6be3e876",
+  "status": "annotation_preparation_complete_semantic_review_pending",
+  "new_training_frames": 48,
+  "new_development_frames": 24,
+  "new_independent_test_sources": 0,
+  "independent_events_certified": null,
+  "new_confirmed_ground_truth_frames": 0,
+  "person_precision": null,
+  "person_recall": null,
+  "normal_development_audit_record": "records/EXP-0072/development-source-audit.json",
+  "normal_source_pairs_available": 432,
+  "walking_standing_source_pairs": 324,
+  "safe_normal_development_candidates": 0
+}

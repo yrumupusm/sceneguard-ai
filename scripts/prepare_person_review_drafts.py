@@ -21,6 +21,8 @@ WEIGHT_SHA = '9fdd44a31c504547ffb81d2c6d9e6dac3493c8eaa8b0398d3f43bae6c7003e92'
 # Each tuple is one small, explicit question, not a release of the whole source.
 SELECTION = [('R01', 'P16', 0, 1), ('R02', 'P20', 0, 1),
              ('R03', 'P05', 0, 1), ('R04', 'P18', 0, 2), ('R05', 'P05', 1, 2)]
+EXP0072_SELECTION = [('R01', 'P26', 0, 1), ('R02', 'P28', 0, 1),
+                     ('R03', 'P01', 0, 2)]
 
 
 def sha(path):
@@ -42,7 +44,9 @@ def get_bytes(ref):
         return z.read(ref['member'])
 
 
-def preflight(out):
+def preflight(out, profile='exp0071'):
+    if profile not in ('exp0071', 'exp0072'):
+        raise ValueError('Unknown fixed review profile')
     split = read(OLD / 'split-proposal.json')
     reuse = read(OLD / 'review-reuse.json')['EXP0067']
     for path, expected in read(OLD / 'input-bindings.json').items():
@@ -51,8 +55,15 @@ def preflight(out):
     by_id = {r['candidate_id']: r for r in split['cases']}
     reservations = {r['reservation_id']: r for r in split['captures']}
     members = split['closure_members']
+    reviewed = []
+    reviewed_bindings = {}
+    if profile == 'exp0072':
+        for eid in ('exp0067', 'exp0071'):
+            path = ROOT / f'outputs/model-comparison/{eid}/confirmed-person-v1/manifest.json'
+            reviewed.extend(read(path)['frames'])
+            reviewed_bindings[str(path.relative_to(ROOT))] = sha(path)
     selected = []
-    for rid, cid, wi, batch in SELECTION:
+    for rid, cid, wi, batch in (EXP0072_SELECTION if profile == 'exp0072' else SELECTION):
         case = by_id[cid]
         assert case['disposition'] == 'review_candidate'
         reservation = reservations[case['capture_reservation']]
@@ -66,11 +77,15 @@ def preflight(out):
         for old in reuse:
             if old['source_sha256'] == case['source_sha256']:
                 assert all(not old['pts_range'][0]-1e-6 <= p <= old['pts_range'][1]+1e-6 for p in pts)
+        for old in reviewed:
+            if old['source_sha256'] == case['source_sha256']:
+                assert all(abs(p-old['source_pts']) > 1e-6 for p in pts)
         selected.append(dict(review_id=rid, batch=batch, case=case, window_index=wi,
                              pts=pts, reserved_members=len(closure)))
     # Explicitly distinguish reservation checks from unknown capture identity.
     save(out / 'selection-before-inference.json', dict(
-        selection=selected, exact_old_review_overlap=0,
+        selection=selected, exact_old_review_overlap=0, profile=profile,
+        reviewed_manifest_bindings=reviewed_bindings,
         known_reservation_conflicts=0, camera_identity_certified=False,
         event_independence_certified=False, training_release=False,
         old_input_bindings=read(OLD / 'input-bindings.json'),
@@ -78,9 +93,9 @@ def preflight(out):
     return selected
 
 
-def main(out):
+def main(out, profile='exp0071'):
     out.mkdir(parents=True, exist_ok=False)
-    selected = preflight(out)
+    selected = preflight(out, profile)
     # Offline setup is shared; the CUDA adapter and its queue guard are untouched.
     from exp0066_yolo import configure_offline, validate_loaded_model, result_rows
     configure_offline(out / 'runtime-settings')
@@ -107,7 +122,8 @@ def main(out):
                    verbose=False, stream=False, visualize=False)
     font = ImageFont.truetype('/home/jhc7484/.local/share/fonts/sceneguard-portfolio/malgun.ttf', 24)
     media = out / 'media'; media.mkdir()
-    manifest = dict(experiment_id='EXP-0071', status='unreviewed_annotation_drafts',
+    manifest = dict(experiment_id='EXP-0072' if profile=='exp0072' else 'EXP-0071', status='unreviewed_annotation_drafts',
+                    profile=profile, script_sha256=sha(Path(__file__)),
                     mode='CPU_annotation_preparation_not_benchmark', device='cpu',
                     pretrained_model='yolo26x', checkpoint_sha256=WEIGHT_SHA,
                     ultralytics=ultralytics.__version__, torch=torch.__version__,
@@ -191,10 +207,13 @@ def main(out):
         print(json.dumps(manifest['cases'][-1], ensure_ascii=False), flush=True)
     assert sha(WEIGHT) == WEIGHT_SHA
     for path, expected in read(OLD / 'input-bindings.json').items(): assert sha(ROOT/path) == expected
+    for path, expected in read(out/'selection-before-inference.json')['reviewed_manifest_bindings'].items():
+        assert sha(ROOT/path) == expected
     manifest['inputs_and_checkpoint_preserved']=True
     save(out / 'manifest.json', manifest)
 
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(); parser.add_argument('--output',type=Path,required=True)
-    main(parser.parse_args().output)
+    parser.add_argument('--profile',choices=('exp0071','exp0072'),default='exp0071')
+    args=parser.parse_args(); main(args.output,args.profile)

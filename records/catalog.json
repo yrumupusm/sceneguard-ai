@@ -5562,6 +5562,94 @@
       "task_id": "task_b1dd8524e2a5",
       "title": "자료 확보 감사와 모든 사람 박스 검수 준비",
       "worker_opinion": "확보 감사와 초안 생성은 완료. 독립 촬영 인증과 완전한 사람 정답은 미완료."
+    },
+    {
+      "agent_model_effective": "gpt-6.1-sol",
+      "agent_model_requested": "gpt-6.1-sol",
+      "assigned_at": "2026-11-09T00:43:28.943340+00:00",
+      "attempt_id": "capture-diversity-review-v1",
+      "decision_status": "adoption_on_hold",
+      "dispatch_id": "ctx_5b5ce1a983a1",
+      "evaluated_model": "기존 YOLO26x CPU 사람 박스 초안; 성능 미평가",
+      "evidence": [
+        {
+          "artifact_id": "exp0072-r01-comparison",
+          "kind": "video",
+          "label": "1묶음 · 주간 월담과 난간 가림 · 사람 박스 검수"
+        },
+        {
+          "artifact_id": "exp0072-r01-original",
+          "kind": "image",
+          "label": "1묶음 · 주간 월담과 난간 가림 · 대표 원본 전체 해상도"
+        },
+        {
+          "artifact_id": "exp0072-r01-proposals",
+          "kind": "image",
+          "label": "1묶음 · 주간 월담과 난간 가림 · 대표 사람 박스 초안"
+        },
+        {
+          "artifact_id": "exp0072-r02-comparison",
+          "kind": "video",
+          "label": "1묶음 · 야간 월담과 주변 사람 · 사람 박스 검수"
+        },
+        {
+          "artifact_id": "exp0072-r02-original",
+          "kind": "image",
+          "label": "1묶음 · 야간 월담과 주변 사람 · 대표 원본 전체 해상도"
+        },
+        {
+          "artifact_id": "exp0072-r02-proposals",
+          "kind": "image",
+          "label": "1묶음 · 야간 월담과 주변 사람 · 대표 사람 박스 초안"
+        },
+        {
+          "artifact_id": "exp0072-r03-comparison",
+          "kind": "video",
+          "label": "2묶음 · 개발용 월담과 주변 대기 인물 · 사람 박스 검수"
+        },
+        {
+          "artifact_id": "exp0072-r03-original",
+          "kind": "image",
+          "label": "2묶음 · 개발용 월담과 주변 대기 인물 · 대표 원본 전체 해상도"
+        },
+        {
+          "artifact_id": "exp0072-r03-proposals",
+          "kind": "image",
+          "label": "2묶음 · 개발용 월담과 주변 대기 인물 · 대표 사람 박스 초안"
+        }
+      ],
+      "execution_status": "succeeded",
+      "experiment_id": "EXP-0072",
+      "limitations": [
+        "모든 새 박스는 미검수 초안이다.",
+        "촬영 예약 충돌 없음과 실제 독립성 인증은 다르다.",
+        "두 학습 영상은 같은 촬영 묶음이다.",
+        "정상 전용 개발자료와 새 독립 월담 시험은 미확보다.",
+        "재학습·성능 개선은 수행/측정하지 않았다."
+      ],
+      "metric_definitions": "records/EXP-0072/metrics.json",
+      "metrics_path": "records/EXP-0072/metrics.json",
+      "metrics_sha256": "23d2596c72085ad91bd31504a7ade2751ba25f97825b91620a9f827e81e54963",
+      "next_step": "새3구간 사람 박스 검수 및 필요한 좌표 보완; 별도 촬영 정상 개발과 새 월담 시험 확보.",
+      "reasoning_effective": "high",
+      "registration_sha256": "313cb849c5e7da8d58ee509a9e0e60ec0f8cfa22e9608fabc16dc9a0ef69a75e",
+      "report_path": "docs/experiments/EXP-0072-person-review-preparation.md",
+      "report_sha256": "caa2fd4719065fb5b10c8faecc5a01f7ec2b95a53bfe820d07cfa53d82809322",
+      "review_binding_path": "docs/reviews/EXP-0072.binding.json",
+      "review_path": "docs/reviews/EXP-0072-coordinator-review.md",
+      "review_sha256": "0785764172d39a4219fcaaa3ea8ed49e2f50178643da2cc3800e012e83098804",
+      "review_status": "accepted_for_comparison",
+      "reviewed_metrics_sha256": "23d2596c72085ad91bd31504a7ade2751ba25f97825b91620a9f827e81e54963",
+      "reviewed_report_sha256": "caa2fd4719065fb5b10c8faecc5a01f7ec2b95a53bfe820d07cfa53d82809322",
+      "role": "experiment_worker",
+      "run_id": "run_3d23462a014a",
+      "schema_version": 1,
+      "slot": "slot1",
+      "summary": "주·야간 월담 학습 후보와 별도 개발 후보3구간72프레임·196박스 초안. 정상432쌍 감사에서 즉시 개발 편입 후보0; 기존197프레임 재질문 없음.",
+      "synthetic": false,
+      "task_id": "task_e6c0d8e3ce85",
+      "title": "촬영 다양성 보강과 사람 박스 검수 준비",
+      "worker_opinion": "정상 자료 파일은 모두 존재하나 학습/시험 보호와 기존 보류로 별도 정상 개발 자료 확보가 미완료."
     }
   ],
   "note": "기존 보고서 읽기 전용. 실험 모델과 작업자 모델은 서로 다름. TEST 큐는 별도.",
